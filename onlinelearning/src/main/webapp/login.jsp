@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
+<%@ page isELIgnored="false" %>
 <head>
 
 	<!-- META ============================================= -->
@@ -62,7 +62,7 @@
 					<h2 class="title-head">Login to your <span>Account</span></h2>
 					<p>Don't have an account? <a href="register.html">Create one here</a></p>
 				</div>	
-				<form class="contact-bx">
+				<form class="contact-bx" method="post" action="login">
 					<div class="row placeani">
 						<div class="col-lg-12">
 							<div class="form-group">
@@ -80,6 +80,8 @@
 								</div>
 							</div>
 						</div>
+                            <h5 style="color: red">${requestScope.error}</h5>
+
 						<div class="col-lg-12">
 							<div class="form-group form-forget">
 								<div class="custom-control custom-checkbox">
