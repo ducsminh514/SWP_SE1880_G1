@@ -14,6 +14,9 @@ public class Course {
     private boolean status ;
     private Expert expert ;
 
+    public Course() {
+    }
+
     public Course(int courseId, CourseType courseType, String courseName, String description, Date createDate, float price, String title, String thumbnail, boolean status, Expert expert) {
         this.courseId = courseId;
         this.courseType = courseType;

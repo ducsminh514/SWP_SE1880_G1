@@ -4,6 +4,9 @@ public class CourseType {
     private int courseTypeId ;
     private String courseTypeName ;
 
+    public CourseType() {
+    }
+
     public CourseType(int courseTypeId, String courseTypeName) {
         this.courseTypeId = courseTypeId;
         this.courseTypeName = courseTypeName;
