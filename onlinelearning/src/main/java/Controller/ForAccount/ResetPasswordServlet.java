@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author admin
  */
-@WebServlet(name="ResetPasswordServlet", urlPatterns={"/resetpass"})
+@WebServlet(name="ResetPasswordServlet", urlPatterns={"/reset"})
 public class ResetPasswordServlet extends HttpServlet {
 
     /**
@@ -65,7 +65,7 @@ public class ResetPasswordServlet extends HttpServlet {
                 request.getRequestDispatcher("resetpass.jsp");
             } else {
                 d.changePassword(newPassword, id);
-                response.sendRedirect("log");
+                response.sendRedirect("login");
             }
         } else {
             request.setAttribute("errorMessage", "Confirm password not valid");

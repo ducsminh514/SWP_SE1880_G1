@@ -6,6 +6,11 @@ import Module.Role;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
+
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import org.mindrot.jbcrypt.BCrypt;
 public class UserDao extends DBContext {
 
@@ -38,11 +43,7 @@ public class UserDao extends DBContext {
         }
         return null;
     }
-    public static void main(String[] args) {
-        UserDao ud = new UserDao();
-        String e = "admin@gmail.com";
-        ud.existUserByEmail(e);
-    }
+
 
     public boolean existUserByEmail(String email) {
         String sql = "SELECT * FROM Users WHERE email = ?";
@@ -87,5 +88,13 @@ public class UserDao extends DBContext {
         }
         return 0;
     }
+    public static void main(String[] args) {
+        UserDao ud = new UserDao();
+        String e = "duynguyenthe195@gmail.com";
+        String otp1 ="123";
+
+    }
+
+
 
 }
