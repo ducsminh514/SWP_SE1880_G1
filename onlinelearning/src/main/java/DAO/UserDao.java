@@ -12,6 +12,7 @@ import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.mindrot.jbcrypt.BCrypt;
+import DAO.RoleDAO;
 public class UserDao extends DBContext {
 
 
@@ -24,6 +25,7 @@ public class UserDao extends DBContext {
             System.out.println("hhh");
         }
         try {
+            RoleDAO ro= new RoleDAO();
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, username);
             st.setString(2, username);
@@ -31,8 +33,8 @@ public class UserDao extends DBContext {
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
 
-                User u = new User(rs.getInt("userId"), username,rs.getString("firstName"),rs.getString("lastName"),password,rs.getString("email"),rs.getString("phoneNumber"),rs.getDate("CreatedDate"),rs.getInt("Age"),rs.getByte("status"));
-                System.out.println("hhheeeeeeee");
+                User u = new User(rs.getInt("userId"), username,rs.getString("firstName"),rs.getString("lastName"),password,rs.getString("email"),rs.getString("phoneNumber"),rs.getDate("CreatedDate"),rs.getInt("Age"),ro.getByRoleID(rs.getInt("roleId")),rs.getByte("status"));
+                System.out.println(u.getUserId());
                 return u;
             }
             else {
