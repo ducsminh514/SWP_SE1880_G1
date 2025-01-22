@@ -29,6 +29,22 @@ public class User {
         this.status = status;
     }
 
+    public User() {
+    }
+
+    public User(int userId, String userName, String firstName, String lastName, String password, String email, String phoneNumber, Date createDate, int age, byte status) {
+        this.userId = userId;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.createDate = createDate;
+        this.age = age;
+        this.status = status;
+    }
+
     public int getUserId() {
         return userId;
     }
