@@ -10,12 +10,12 @@ public class User {
     private String password ;
     private String email ;
     private String phoneNumber ;
-    private Date createdDate ;
+    private Date createDate ;
     private int age ;
     private Role role ;
     private byte status ;
 
-    public User(int userId, String userName, String firstName, String lastName, String password, String email, String phoneNumber, Date createdDate, int age, Role role, byte status) {
+    public User(int userId, String userName, String firstName, String lastName, String password, String email, String phoneNumber, Date createDate, int age, Role role, byte status) {
         this.userId = userId;
         this.userName = userName;
         this.firstName = firstName;
@@ -23,7 +23,7 @@ public class User {
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.createdDate = createdDate;
+        this.createDate = createDate;
         this.age = age;
         this.role = role;
         this.status = status;
@@ -32,7 +32,7 @@ public class User {
     public User() {
     }
 
-    public User(int userId, String userName, String firstName, String lastName, String password, String email, String phoneNumber, Date createdDate, int age, byte status) {
+    public User(int userId, String userName, String firstName, String lastName, String password, String email, String phoneNumber, Date createDate, int age, byte status) {
         this.userId = userId;
         this.userName = userName;
         this.firstName = firstName;
@@ -40,7 +40,7 @@ public class User {
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.createdDate = createdDate;
+        this.createDate = createDate;
         this.age = age;
         this.status = status;
     }
@@ -101,12 +101,12 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
+    public Date getCreateDate() {
+        return createDate;
     }
 
     public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+        this.createDate = createDate;
     }
 
     public int getAge() {

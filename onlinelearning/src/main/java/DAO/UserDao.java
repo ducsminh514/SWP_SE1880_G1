@@ -63,7 +63,7 @@ public class UserDao extends DBContext {
     }
 
     public void changePassword(String plainPassword, int id) {
-        String sql = "update Users set password = ? where id = ?";
+        String sql = "update Users set Password = ? where UserID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, hashPassword(plainPassword));
@@ -90,12 +90,13 @@ public class UserDao extends DBContext {
         }
         return 0;
     }
-    public static void main(String[] args) {
-        UserDao ud = new UserDao();
-        String e = "duynguyenthe195@gmail.com";
-        String otp1 ="123";
-
-    }
+//    public static void main(String[] args) {
+//        UserDao ud = new UserDao();
+//        String e = "duynguyenthe195@gmail.com";
+//        String otp1 ="123";
+//
+//
+//    }
 
 
 
