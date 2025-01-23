@@ -1,24 +1,27 @@
 package Module;
 
 import java.util.Date;
-import Module.Marketing ;
-import Module.CategoryBlog ;
+
+import Module.Marketing;
+import Module.CategoryBlog;
+
 public class Post {
-     private int postId ;
-     private Marketing marketing;
-     private String title ;
-     private String content ;
-     private String thumbnail;
-     private Date createDate ;
-     private Date updateDate ;
-     private boolean status ;
-     private String postFile ;
-     private CategoryBlog categoryBlog ;
+    private int postId;
+    private Marketing marketing;
+    private String title;
+    private String content;
+    private String thumbnail;
+    private Date createDate;
+    private Date updateDate;
+    private boolean status;
+    private String postFile;
+    private CategoryBlog categoryBlog;
+    private int view;
 
     public Post() {
     }
 
-    public Post(int postId, Marketing marketing, String title, String content, String thumbnail, Date createDate, Date updateDate, boolean status, String postFile, CategoryBlog categoryBlog) {
+    public Post(int postId, Marketing marketing, String title, String content, String thumbnail, Date createDate, Date updateDate, boolean status, String postFile, CategoryBlog categoryBlog, int view) {
         this.postId = postId;
         this.marketing = marketing;
         this.title = title;
@@ -29,6 +32,7 @@ public class Post {
         this.status = status;
         this.postFile = postFile;
         this.categoryBlog = categoryBlog;
+        this.view = view;
     }
 
     public int getPostId() {
@@ -109,5 +113,13 @@ public class Post {
 
     public void setCategoryBlog(CategoryBlog categoryBlog) {
         this.categoryBlog = categoryBlog;
+    }
+
+    public int getView() {
+        return view;
+    }
+
+    public void setView(int view) {
+        this.view = view;
     }
 }
