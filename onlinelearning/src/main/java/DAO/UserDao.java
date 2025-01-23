@@ -152,28 +152,28 @@ public class UserDAO extends DBContext {
                 + "           ([Username]\n"
                 + "           ,[FirstName]\n"
                 + "           ,[LastName]\n"
+                + "           ,[Fullname]\n"
                 + "           ,[Password]\n"
                 + "           ,[Email]\n"
                 + "           ,[PhoneNumber]\n"
                 + "           ,[Age]\n"
                 + "           ,[RoleID])\n"
-                + " Values(?,?,?,?,?,?,?,?)";
+                + " Values(?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, c.getUserName());
-            st.setString(2,c.getFirstName());
-            st.setString(3,c.getLastName());
-            st.setString(4,c.getPassword());
-            st.setString(5,c.getEmail());
-            st.setString(6,c.getPhoneNumber());
-
-            st.setString(3, c.getEmail());
-            st.setInt(4, c.getAge());
-            //st.setInt(5, c.getRoleId());
+            st.setString(2, c.getFirstName());
+            st.setString(3, c.getLastName());
+            st.setString(4,c.getFirstName()+c.getLastName());
+            st.setString(5, c.getPassword());
+            st.setString(6, c.getEmail());
+            st.setString(7, c.getPhoneNumber());
+            st.setInt(8, c.getAge());
+            st.setInt(9,c.getRole().getRoleId());
             st.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println(e);
         }
-
+    }
 }
