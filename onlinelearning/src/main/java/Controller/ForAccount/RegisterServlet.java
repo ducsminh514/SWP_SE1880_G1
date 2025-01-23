@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import Module.User;
+import Module.Role;
 
 @WebServlet(name = "RegisterServlet", urlPatterns = {"/register"})
 public class RegisterServlet extends HttpServlet {
@@ -85,18 +86,19 @@ public class RegisterServlet extends HttpServlet {
                     }
                 }
                 //add
-                User newU = new User();
+                Role newRole=  new Role(2,"User");
+                User newU = new User(name,firstName,lastName,password,email,phoneNumber,age,newRole);
                 ud.insert(newU);
 
                 request.setAttribute("notication", "Add new account succesfuly, please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("register.jsp").forward(request, response);
             } else {
                 HttpSession session = request.getSession();
                 session.setAttribute("error", "The email address or user name you entered already exist!");
                 response.sendRedirect("register");
             }
         } catch (Exception e) {
-
+                System.out.println(e);
         }
 
     }
