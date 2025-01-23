@@ -17,6 +17,7 @@ public class CourseDAO extends DBContext {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
             CourseTypeDAO ctDAO = new CourseTypeDAO();
+            ExpertDAO eDAO = new ExpertDAO() ;
             while (rs.next()) {
                 Course c= new Course();
                 c.setCourseId(rs.getInt("CourseID"));
@@ -28,12 +29,45 @@ public class CourseDAO extends DBContext {
                 c.setThumbnail(rs.getString("thumbnail"));
                 c.setStatus(rs.getBoolean("status"));
                 c.setCourseType(ctDAO.getByID(rs.getInt("course_typeId")));
-
+                c.setExpert(eDAO.getByID(rs.getInt("ExpertID")));
+                listCourse.add(c) ;
             }
             return listCourse;
         } catch (SQLException e) {
             System.out.println(e);
         }
         return listCourse;
+    }
+
+    public ArrayList<Course> getAllByPage(int start) {
+        ArrayList<Course> listCoursePage = new ArrayList<>();
+        String sql = "SELECT * FROM Courses \n"
+                + "ORDER BY CourseID\n"
+                + "OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY;";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            CourseTypeDAO ctDAO = new CourseTypeDAO();
+            ExpertDAO eDAO = new ExpertDAO() ;
+            while (rs.next()) {
+                Course c= new Course();
+                c.setCourseId(rs.getInt("CourseID"));
+                c.setCourseName(rs.getString("CourseName"));
+                c.setDescription(rs.getString("Description"));
+                c.setCreateDate(rs.getDate("CreatedDate"));
+                c.setPrice(rs.getFloat("Price"));
+                c.setTitle(rs.getString("title"));
+                c.setThumbnail(rs.getString("thumbnail"));
+                c.setStatus(rs.getBoolean("status"));
+                c.setCourseType(ctDAO.getByID(rs.getInt("course_typeId")));
+                c.setExpert(eDAO.getByID(rs.getInt("ExpertID")));
+                listCoursePage.add(c) ;
+            }
+            return listCoursePage;
+        } catch (SQLException e) {
+            System.out.println("ngu");
+        }
+        return listCoursePage;
     }
 }
