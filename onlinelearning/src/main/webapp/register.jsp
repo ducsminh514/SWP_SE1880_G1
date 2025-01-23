@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
 <head>
 
 	<!-- META ============================================= -->
@@ -61,21 +62,70 @@
 					<h2 class="title-head">Sign Up <span>Now</span></h2>
 					<p>Login Your Account <a href="login.jsp">Click here</a></p>
 				</div>	
-				<form class="contact-bx">
+				<form class="contact-bx" method="post" action= "register">
 					<div class="row placeani">
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="input-group">
 									<label>Your Name</label>
-									<input name="dzName" type="text" required="" class="form-control">
+									<input name="name" type="text" required="" class="form-control">
 								</div>
 							</div>
+						</div>
+                        <div class="col-lg-12">
+							<div class="form-group">
+								<div class="input-group">
+									<label>Your First Name</label>
+									<input name="firstName" type="text" required="" class="form-control">
+								</div>
+							</div>
+                            <div class="form-group">
+								<div class="input-group">
+									<label>Your Last Name</label>
+									<input name="lastName" type="text" required="" class="form-control">
+								</div>
+							</div>
+						</div>
+                        <div class="col-lg-12">
+							<div class="form-group">
+								<div class="input-group">
+									<label>Your Phone Number</label>
+									<input name="phoneNumber" type="text" required="" class="form-control">
+								</div>
+							</div>
+						</div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="gender">Your Gender</label>
+                                <select name="gender" id="gender" class="form-control" required>
+                                    <option value="-1" disabled selected>Select your gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+							<div class="form-group">
+                                 <label for="age">Your Age</label>
+                                 <select name="age" id="age" class="form-control" required onchange="this.style.color = 'black'">
+                                    <option value="-1" disabled selected style="color: gray;">Select your age</option>
+                                      <script>
+                                            let ageSelect = document.getElementById("age");
+                                            for (let i = 18; i <= 99; i++) {
+                                                let option = document.createElement("option");
+                                                option.value = i;
+                                                option.textContent = i;
+                                                ageSelect.appendChild(option);
+                                            }
+                                      </script>
+                                 </select>
+                            </div>
 						</div>
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="input-group">
 									<label>Your Email Address</label>
-									<input name="dzName" type="email" required="" class="form-control">
+									<input name="email" type="email" required="" class="form-control">
 								</div>
 							</div>
 						</div>
@@ -83,20 +133,22 @@
 							<div class="form-group">
 								<div class="input-group"> 
 									<label>Your Password</label>
-									<input name="dzEmail" type="password" class="form-control" required="">
+									<input name="password" type="password" class="form-control" required="">
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="form-group">
+								<div class="input-group">
+									<label>Confirm Password</label>
+									<input name="confirmPassword" type="password" class="form-control" required="">
 								</div>
 							</div>
 						</div>
 						<div class="col-lg-12 m-b30">
 							<button name="submit" type="submit" value="Submit" class="btn button-md">Sign Up</button>
 						</div>
-						<div class="col-lg-12">
-							<h6>Sign Up with Social media</h6>
-							<div class="d-flex">
-								<a class="btn flex-fill m-r5 facebook" href="#"><i class="fa fa-facebook"></i>Facebook</a>
-								<a class="btn flex-fill m-l5 google-plus" href="#"><i class="fa fa-google-plus"></i>Google Plus</a>
-							</div>
-						</div>
+
 					</div>
 				</form>
 			</div>

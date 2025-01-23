@@ -36,7 +36,7 @@ public class VerifyServlet extends HttpServlet {
         String email = request.getParameter("email");
         if (otpReal != null && otpReal.equals(otpUserInput)) {
             request.setAttribute("email", email);
-            request.getRequestDispatcher("resetpass.jsp").forward(request, response);
+            request.getRequestDispatcher("reset.jsp").forward(request, response);
         } else {
             request.setAttribute("errorMessage", "Invalid OTP. Please try again.");
             request.getRequestDispatcher("verification.jsp").forward(request, response);

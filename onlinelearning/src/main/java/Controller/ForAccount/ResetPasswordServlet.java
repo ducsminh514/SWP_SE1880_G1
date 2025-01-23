@@ -1,6 +1,6 @@
 package Controller.ForAccount;
 
-import DAO.UserDao;
+import DAO.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -44,7 +44,7 @@ public class ResetPasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserDao d = new UserDao();
+        UserDAO d = new UserDAO();
         String email = request.getParameter("email");
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
@@ -52,14 +52,15 @@ public class ResetPasswordServlet extends HttpServlet {
             int id = d.getIdUserByEmail(email);
             if (id <= 0) {
                 request.setAttribute("errorMessage", "User not existed");
-                request.getRequestDispatcher("resetpass.jsp");
+                request.getRequestDispatcher("reset.jsp");
             } else {
                 d.changePassword(newPassword, id);
-                response.sendRedirect("login");
+                request.setAttribute("successMessage", "Confirm password valid");
+                request.getRequestDispatcher("reset.jsp").forward(request, response);;
             }
         } else {
             request.setAttribute("errorMessage", "Confirm password not valid");
-            request.getRequestDispatcher("resetpass.jsp");
+            request.getRequestDispatcher("reset.jsp").forward(request, response);;
         }
     }
 

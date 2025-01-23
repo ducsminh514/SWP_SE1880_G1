@@ -15,6 +15,9 @@ public class Expert {
         this.user = user;
     }
 
+    public Expert() {
+    }
+
     public int getExpertId() {
         return expertId;
     }

@@ -3,7 +3,7 @@ package Controller.ForAccount;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import DAO.UserDao;
+import DAO.UserDAO;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -47,7 +47,7 @@ public class forgetServel extends HttpServlet {
         String email = request.getParameter("email");
         if (isValidEmail(email)) {
             String otp = generateOTP();
-            UserDao d= new UserDao();
+            UserDAO d= new UserDAO();
             boolean emailSent = sendOTPEmail(email, otp);
             if (emailSent) {
                 request.setAttribute("otp", otp);
@@ -61,7 +61,7 @@ public class forgetServel extends HttpServlet {
         }
     }
     private boolean isUserExistByEmail(String email){
-        UserDao ud = new UserDao();
+        UserDAO ud = new UserDAO();
         return ud.existUserByEmail(email);
     }
     private boolean isValidEmail(String email) {

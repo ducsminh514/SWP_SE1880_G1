@@ -105,7 +105,7 @@ public class User {
         return createDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 

@@ -11,7 +11,7 @@ import Module.Role;
 
 public class RoleDAO extends DBContext {
     public Role getByRoleID(int id) {
-    String sql = "select * from Role where RoleID=?";
+    String sql = "select * from Roles where RoleID=?";
 
         Role role = new Role();
         try {
@@ -21,15 +21,18 @@ public class RoleDAO extends DBContext {
             if (rs.next()) {
                role.setRoleId(rs.getInt("roleId"));
                role.setRoleName(rs.getString("roleName"));
-
+               System.out.println("getByRoleID");
             }
 
         } catch (SQLException e) {
-            System.out.println("ngu");
+            e.printStackTrace();
         }
         return role;
     }
-
+    public static void main(String[] args) {
+        RoleDAO r= new RoleDAO();
+        r.getByRoleID(1);
+    }
 
 
 

@@ -3,7 +3,7 @@ package Controller.ForAccount;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import DAO.UserDao;
+import DAO.UserDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -43,7 +43,7 @@ public class LoginServlet  extends HttpServlet {
             throws ServletException, IOException {
         String u=request.getParameter("user");
         String p=request.getParameter("password");
-       UserDao d = new UserDao();
+       UserDAO d = new UserDAO();
         User a =d.checkAuthen(u, p);
         if (a==null) {
             request.setAttribute("error", "Username/Email  or Password incorrect!!!");
