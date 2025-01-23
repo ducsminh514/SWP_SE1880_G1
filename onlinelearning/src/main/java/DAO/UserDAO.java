@@ -45,7 +45,6 @@ public class UserDAO extends DBContext {
         return null;
     }
 
-
     public boolean existUserByEmail(String email) {
         String sql = "SELECT * FROM Users WHERE email = ?";
 
@@ -87,6 +86,7 @@ public class UserDAO extends DBContext {
                 return rs.getInt("id");
             }
         } catch (SQLException e) {
+            System.out.println(e);
         }
         return 0;
     }
@@ -116,8 +116,8 @@ public class UserDAO extends DBContext {
             }
         }
         return null;
-
     }
+
 //    public static void main(String[] args) {
 //        UserDAO ud = new UserDAO();
 //        String e = "duynguyenthe195@gmail.com";
