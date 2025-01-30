@@ -1,6 +1,7 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
-
 	<!-- META ============================================= -->
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,9 +54,8 @@
 </head>
 <body id="bg">
 <div class="page-wraper">
-<div id="loading-icon-bx"></div>
+<div id="loading-icon-bx row"></div>
 	<!-- Header Top ==== -->
-    <header class="header rs-nav">
         <!-- Above Header -->
 		<div class="top-bar">
 			<div class="container">
@@ -205,7 +205,6 @@
                 </div>
             </div>
         </div>
-    </header>
     <!-- Header Top END ==== -->
     <!-- Content -->
 
