@@ -45,20 +45,24 @@ public class LoginServlet  extends HttpServlet {
         String p=request.getParameter("password");
        UserDAO d = new UserDAO();
         User a =d.checkAuthen(u, p);
-        if (a==null) {
-            request.setAttribute("error", "Username/Email  or Password incorrect!!!");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+        if (a!=null) {
+            if(a!=null) {//a.getStatus()==1
+                HttpSession session = request.getSession();
+                session.setAttribute("account", a);
+                response.sendRedirect("home");
+            }else{
+                request.setAttribute("error", "You need to verify your email before logging in.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+
+            }
         }else if (a.getUserName().equalsIgnoreCase("admin")) {
             HttpSession session = request.getSession();
             session.setAttribute("account", a);
             response.sendRedirect("admin");
         }
-
-        else {
-            HttpSession session = request.getSession();
-            session.setAttribute("account", a);
-            response.sendRedirect("home");
-
+        else  {
+            request.setAttribute("error", "Username/Email  or Password incorrect!!!");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 

@@ -176,4 +176,16 @@ public class UserDAO extends DBContext {
             System.out.println(e);
         }
     }
+    public boolean verifyUser(String email) {
+        try {
+            String sql = "UPDATE Users SET status = 1 WHERE Email = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, email);
+            int rowsUpdated = st.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

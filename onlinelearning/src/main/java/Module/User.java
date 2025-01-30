@@ -147,4 +147,12 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    public byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(byte status) {
+        this.status = status;
+    }
 }

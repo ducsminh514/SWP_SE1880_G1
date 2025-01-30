@@ -31,7 +31,7 @@ public class RoleDAO extends DBContext {
     }
     public static void main(String[] args) {
         RoleDAO r= new RoleDAO();
-        r.getByRoleID(1);
+        r.getByRoleID(2);
     }
 
 
