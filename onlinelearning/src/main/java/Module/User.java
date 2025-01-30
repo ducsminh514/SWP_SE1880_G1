@@ -40,8 +40,7 @@ public class User {
         this.role = role;
     }
 
-    public User() {
-    }
+
 
     public User(int userId, String userName, String firstName, String lastName, String password, String email, String phoneNumber, Date createDate, int age, byte status) {
         this.userId = userId;
@@ -53,6 +52,19 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.createDate = createDate;
         this.age = age;
+        this.status = status;
+    }
+
+    public User(int userId, String userName, String firstName, String lastName, String password, String email, String phoneNumber, int age, Role role, byte status) {
+        this.userId = userId;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.age = age;
+        this.role = role;
         this.status = status;
     }
 

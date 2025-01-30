@@ -62,6 +62,19 @@ public class LoginServlet  extends HttpServlet {
         }
     }
 
+//    User user = ud.getUserByEmailAndPassword(email, password);
+//if (user != null) {
+//        if (user.getVerified() == 1) {
+//            session.setAttribute("user", user);
+//            response.sendRedirect("home.jsp");
+//        } else {
+//            request.setAttribute("error", "Bạn cần xác thực email trước khi đăng nhập.");
+//            request.getRequestDispatcher("login.jsp").forward(request, response);
+//        }
+//    } else {
+//        request.setAttribute("error", "Sai email hoặc mật khẩu.");
+//        request.getRequestDispatcher("login.jsp").forward(request, response);
+//    }
     @Override
     public String getServletInfo() {
         return "Short description";
