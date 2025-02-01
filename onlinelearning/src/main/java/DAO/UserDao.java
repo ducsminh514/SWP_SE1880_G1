@@ -26,7 +26,7 @@ public class UserDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
 
-                User u = new User(rs.getInt("userId"), username,rs.getString("firstName"),rs.getString("lastName"),password,rs.getString("email"),rs.getString("phoneNumber"),rs.getDate("CreatedDate"),rs.getInt("Age"),ro.getByRoleID(rs.getInt("roleId")),rs.getByte("status"));
+                User u = new User(rs.getInt("userId"), username,rs.getString("firstName"),rs.getString("lastName"),password,rs.getString("email"),rs.getString("phoneNumber"),rs.getDate("CreatedDate"),rs.getInt("Age"),ro.getByRoleID(rs.getInt("roleId")),rs.getBoolean("status"));
                 System.out.println(u.getUserId());
                 return u;
             }
@@ -106,7 +106,7 @@ public class UserDAO extends DBContext {
             st.setString(2, email);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                User u = new User(rs.getInt("userId"), username,rs.getString("firstName"),rs.getString("lastName"),rs.getString("password"),rs.getString("email"),rs.getString("phoneNumber"),rs.getDate("CreatedDate"),rs.getInt("Age"),ro.getByRoleID(rs.getInt("roleId")),rs.getByte("status"));
+                User u = new User(rs.getInt("userId"), username,rs.getString("firstName"),rs.getString("lastName"),rs.getString("password"),rs.getString("email"),rs.getString("phoneNumber"),rs.getDate("CreatedDate"),rs.getInt("Age"),ro.getByRoleID(rs.getInt("roleId")),rs.getBoolean("status"));
                 System.out.println(u.getUserId());
                 return u;
             }
@@ -125,7 +125,7 @@ public class UserDAO extends DBContext {
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                User u = new User(rs.getInt("userId"), rs.getString("userName"),rs.getString("firstName"),rs.getString("lastName"),rs.getString("password"),rs.getString("email"),rs.getString("phoneNumber"),rs.getDate("CreatedDate"),rs.getInt("Age"),ro.getByRoleID(rs.getInt("roleId")),rs.getByte("status"));
+                User u = new User(rs.getInt("userId"), rs.getString("userName"),rs.getString("firstName"),rs.getString("lastName"),rs.getString("password"),rs.getString("email"),rs.getString("phoneNumber"),rs.getDate("CreatedDate"),rs.getInt("Age"),ro.getByRoleID(rs.getInt("roleId")),rs.getBoolean("status"));
                 System.out.println(u.getUserId());
                 return u;
             }
@@ -158,7 +158,8 @@ public class UserDAO extends DBContext {
                 + "           ,[PhoneNumber]\n"
                 + "           ,[Age]\n"
                 + "           ,[RoleID])\n"
-                + " Values(?,?,?,?,?,?,?,?,?)";
+                + "           ,[Status])\n"
+                + " Values(?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, c.getUserName());
@@ -170,6 +171,7 @@ public class UserDAO extends DBContext {
             st.setString(7, c.getPhoneNumber());
             st.setInt(8, c.getAge());
             st.setInt(9,c.getRole().getRoleId());
+            st.setObject(10,c.getStatus());
             st.executeUpdate();
 
         } catch (SQLException e) {
@@ -178,7 +180,7 @@ public class UserDAO extends DBContext {
     }
     public boolean verifyUser(String email) {
         try {
-            String sql = "UPDATE Users SET status = 1 WHERE Email = ?";
+            String sql = "UPDATE Users SET Status = 1 WHERE Email = ?";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, email);
             int rowsUpdated = st.executeUpdate();

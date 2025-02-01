@@ -150,7 +150,8 @@
 						<div class="col-lg-12 m-b30">
 							<button name="submit" type="submit" value="Submit" class="btn button-md">Sign Up</button>
 						</div>
-
+                        <h5 style="color: red">${requestScope.error}</h5>
+                        <h5 style="color: green">${requestScope.notication}</h5>
 					</div>
 				</form>
 			</div>

@@ -13,9 +13,9 @@ public class User {
     private Date createDate ;
     private int age ;
     private Role role ;
-    private byte status ;
+    private boolean status ;
 
-    public User(int userId, String userName, String firstName, String lastName, String password, String email, String phoneNumber, Date createDate, int age, Role role, byte status) {
+    public User(int userId, String userName, String firstName, String lastName, String password, String email, String phoneNumber, Date createDate, int age, Role role, boolean status) {
         this.userId = userId;
         this.userName = userName;
         this.firstName = firstName;
@@ -40,9 +40,19 @@ public class User {
         this.role = role;
     }
 
+    public User(String userName, String firstName, String lastName, String password, String email, String phoneNumber, int age, Role role, boolean status) {
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.age = age;
+        this.role = role;
+        this.status = status;
+    }
 
-
-    public User(int userId, String userName, String firstName, String lastName, String password, String email, String phoneNumber, Date createDate, int age, byte status) {
+    public User(int userId, String userName, String firstName, String lastName, String password, String email, String phoneNumber, Date createDate, int age, boolean status) {
         this.userId = userId;
         this.userName = userName;
         this.firstName = firstName;
@@ -55,7 +65,7 @@ public class User {
         this.status = status;
     }
 
-    public User(int userId, String userName, String firstName, String lastName, String password, String email, String phoneNumber, int age, Role role, byte status) {
+    public User(int userId, String userName, String firstName, String lastName, String password, String email, String phoneNumber, int age, Role role, boolean status) {
         this.userId = userId;
         this.userName = userName;
         this.firstName = firstName;
@@ -148,11 +158,11 @@ public class User {
         this.role = role;
     }
 
-    public byte getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 }
