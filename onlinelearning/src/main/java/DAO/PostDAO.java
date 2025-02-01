@@ -40,6 +40,15 @@ public class PostDAO extends DBContext {
         return listPost;
     }
 
+   public Post getById(int postID){
+        ArrayList<Post> list = getAll() ;
+        for(Post p: list){
+            if(p.getPostId() == postID){
+                return p;
+            }
+        }
+        return null;
+   }
 
     public ArrayList<Post> getAllByPage(int start) {
         ArrayList<Post> listPost = new ArrayList<>();

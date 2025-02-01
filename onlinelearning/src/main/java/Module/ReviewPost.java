@@ -5,7 +5,7 @@ public class ReviewPost {
     private int reviewPostId ;
     private Post post ;
     private Customer customer ;
-    private int rating ;
+    private float rating ;
     private String comment ;
     private Date reviewDate ;
     private boolean status ;
@@ -13,7 +13,7 @@ public class ReviewPost {
     public ReviewPost() {
     }
 
-    public ReviewPost(int reviewPostId, Post post, Customer customer, int rating, String comment, Date reviewDate, boolean status) {
+    public ReviewPost(int reviewPostId, Post post, Customer customer, float rating, String comment, Date reviewDate, boolean status) {
         this.reviewPostId = reviewPostId;
         this.post = post;
         this.customer = customer;
@@ -47,11 +47,11 @@ public class ReviewPost {
         this.customer = customer;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 

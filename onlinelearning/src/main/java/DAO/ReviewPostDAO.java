@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import Module.ReviewPost ;
 import Module.Post;
 
 public class ReviewPostDAO extends DBContext {
@@ -27,37 +27,42 @@ public class ReviewPostDAO extends DBContext {
         return rating;
     }
 
-    public ArrayList<Post> getAll() {
+    public ArrayList<ReviewPost> getAll() {
         String sql = "select * from PostReview";
-        ArrayList<Post> listPostReview = new ArrayList<>();
+        ArrayList<ReviewPost> listPostReview = new ArrayList<>();
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
             PostDAO pDAO = new PostDAO();
-            CustomerDAO
+            CustomerDAO cDAO = new CustomerDAO();
             while (rs.next()) {
-                Post p = new Post();
-                p.setPostId(rs.getInt("PostID"));
-                p.setContent(rs.getString("Content"));
-                p.setCategoryBlog(cDAO.getByID(rs.getInt("CategoryBlogID")));
-                p.setStatus(rs.getBoolean("Status"));
-                p.setThumbnail(rs.getString("Thumbnail"));
-                p.setCreateDate(rs.getDate("CreateDate"));
-                p.setUpdateDate(rs.getDate("UpdateDate"));
-                p.setTitle(rs.getString("Title"));
-                p.setView(rs.getInt("Amount_View"));
-                p.setPostFile(rs.getString("PostFile"));
-                p.setMarketing(mDAO.getByID(rs.getInt("MarketingID")));
-                listPost.add(p);
+                ReviewPost r = new ReviewPost() ;
+                r.setPost(pDAO.getById(rs.getInt("PostID")));
+                r.setReviewPostId(rs.getInt("PostReviewID"));
+                r.setComment(rs.getString("Comment"));
+                r.setStatus(rs.getBoolean("Status"));
+                r.setReviewDate(rs.getDate("ReviewDate"));
+                r.setCustomer(cDAO.getByID(rs.getInt("CustomerID")));
+                r.setRating(rs.getFloat("Rating"));
+                listPostReview.add(r);
             }
-            return listPost;
+            return listPostReview;
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return listPost;
+        return listPostReview;
     }
 
     public HashMap<Integer, Float> mapRating() {
-
+        HashMap<Integer,Float> map = new HashMap<>();
+        ArrayList<Float>  listRating = new ArrayList<>() ;
+        PostDAO pDAO = new PostDAO();
+        ArrayList<Post> listPost = pDAO.getAll() ;
+        for(Post p: listPost){
+            map.put(p.getPostId(),getRatingOfPost(p.getPostId()));
+        }
+        return map ;
     }
 }
+
+
