@@ -29,10 +29,10 @@ public class RoleDAO extends DBContext {
         }
         return role;
     }
-    public static void main(String[] args) {
-        RoleDAO r= new RoleDAO();
-        r.getByRoleID(2);
-    }
+//    public static void main(String[] args) {
+//        RoleDAO r= new RoleDAO();
+//        r.getByRoleID(2);
+//    }
 
 
 

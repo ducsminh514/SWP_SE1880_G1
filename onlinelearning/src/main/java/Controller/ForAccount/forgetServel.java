@@ -74,8 +74,8 @@ public class forgetServel extends HttpServlet {
         return String.valueOf(otp);
     }
     private boolean sendOTPEmail(String to, String otp) {
-        final String from = "duynthe180374@fpt.edu.vn"; // Your Gmail address
-        final  String password = "bftxjjzagtmxotjm"; // Your Gmail password (use App Passwords for security)
+        final String from = "duynthe180374@fpt.edu.vn";
+        final  String password = "bftxjjzagtmxotjm";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");

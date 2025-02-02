@@ -25,6 +25,6 @@ public class VerifyServlet2 extends HttpServlet {
                 request.setAttribute("error", "Authentication failed! Invalid email.");
             }
         }
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        request.getRequestDispatcher("verification2.jsp").forward(request, response);
     }
 }

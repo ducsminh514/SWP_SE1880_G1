@@ -123,7 +123,7 @@ public class RegisterServlet extends HttpServlet {
         message.setFrom(new InternetAddress(from));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
         message.setSubject("Verify your account");
-        message.setText("Click here to verify your account: http://localhost:8080/verify?email=" + email);
+        message.setText("Click here to verify your account: http://localhost:8080/onlinelearning/verify2?email=" + email);
 
         Transport.send(message);
     }

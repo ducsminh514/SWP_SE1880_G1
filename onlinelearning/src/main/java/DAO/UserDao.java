@@ -5,6 +5,7 @@ import Module.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import Module.Role;
 import org.mindrot.jbcrypt.BCrypt;
 public class UserDAO extends DBContext {
 
@@ -86,15 +87,7 @@ public class UserDAO extends DBContext {
         }
         return 0;
     }
-//    public static void main(String[] args) {
-//        UserDAO ud = new UserDAO();
-//        String e = "duynguyenthe195@gmail.com";
-//        String otp1 ="123";
-//        String as="1234";
-//        ud.getIdUserByEmail(e);
-//
-//
-//    }
+
     public User getUserByName(String username, String email) {
 
         String sql = "select*from Users where Username =? or Email =?";
@@ -157,7 +150,7 @@ public class UserDAO extends DBContext {
                 + "           ,[Email]\n"
                 + "           ,[PhoneNumber]\n"
                 + "           ,[Age]\n"
-                + "           ,[RoleID])\n"
+                + "           ,[RoleID]\n"
                 + "           ,[Status])\n"
                 + " Values(?,?,?,?,?,?,?,?,?,?)";
         try {
@@ -178,6 +171,18 @@ public class UserDAO extends DBContext {
             System.out.println(e);
         }
     }
+//        public static void main(String[] args) {
+//        UserDAO ud = new UserDAO();
+//        String e = "duynguyenthe195@gmail.com";
+//        String otp1 ="123";
+//        String as="1234";
+//        int a= 1;
+//        boolean b= false;
+//        Role userRole = new Role(2, "User");
+//        ud.verifyUser(e);
+//
+//
+//    }
     public boolean verifyUser(String email) {
         try {
             String sql = "UPDATE Users SET Status = 1 WHERE Email = ?";

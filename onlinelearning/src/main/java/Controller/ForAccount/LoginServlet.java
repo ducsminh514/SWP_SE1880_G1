@@ -46,7 +46,12 @@ public class LoginServlet  extends HttpServlet {
        UserDAO d = new UserDAO();
         User a =d.checkAuthen(u, p);
         if (a!=null) {
-            if(a!=null) {//a.getStatus()==1
+            if (a.getUserName().equalsIgnoreCase("admin")) {
+                HttpSession session = request.getSession();
+                session.setAttribute("account", a);
+                response.sendRedirect("admin");
+            }
+            if(a.getStatus()==true) {//a.getStatus()==1
                 HttpSession session = request.getSession();
                 session.setAttribute("account", a);
                 response.sendRedirect("home");
@@ -55,10 +60,6 @@ public class LoginServlet  extends HttpServlet {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
 
             }
-        }else if (a.getUserName().equalsIgnoreCase("admin")) {
-            HttpSession session = request.getSession();
-            session.setAttribute("account", a);
-            response.sendRedirect("admin");
         }
         else  {
             request.setAttribute("error", "Username/Email  or Password incorrect!!!");
