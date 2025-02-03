@@ -6,10 +6,7 @@ import java.io.PrintWriter;
 import DAO.UserDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 
 import Module.User;
 
@@ -43,6 +40,7 @@ public class LoginServlet  extends HttpServlet {
             throws ServletException, IOException {
         String u=request.getParameter("user");
         String p=request.getParameter("password");
+        String rememberMe = request.getParameter("rememberMe");
        UserDAO d = new UserDAO();
         User a =d.checkAuthen(u, p);
         if (a!=null) {
@@ -55,6 +53,16 @@ public class LoginServlet  extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("account", a);
                 response.sendRedirect("home");
+                if ("on".equals(rememberMe)) {
+                    Cookie cookie = new Cookie("rememberUser", u);
+                    cookie.setMaxAge(60 * 60 * 24 * 7);
+                    response.addCookie(cookie);
+                } else {
+                    // Xóa Cookie nếu không chọn "Remember Me"
+                    Cookie cookie = new Cookie("rememberUser", "");
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                }
             }else{
                 request.setAttribute("error", "You need to verify your email before logging in.");
                 request.getRequestDispatcher("login.jsp").forward(request, response);

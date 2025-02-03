@@ -86,7 +86,18 @@
 							<div class="form-group form-forget">
 								<div class="custom-control custom-checkbox">
 									<input type="checkbox" class="custom-control-input" id="customControlAutosizing">
-									<label class="custom-control-label" for="customControlAutosizing">Remember me</label>
+									<input type="checkbox" name="rememberMe"> Remember Me<br>
+									<%
+                                            String savedUsername = "";
+                                            Cookie[] cookies = request.getCookies();
+                                            if (cookies != null) {
+                                                for (Cookie cookie : cookies) {
+                                                    if ("rememberUser".equals(cookie.getName())) {
+                                                        savedUsername = cookie.getValue();
+                                                    }
+                                                }
+                                            }
+                                        %>
 								</div>
 								<a href="forget-password.jsp" class="ml-auto">Forgot Password?</a>
 							</div>
@@ -118,5 +129,6 @@
 <script src="assets/js/contact.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
 </body>
+
 
 </html>
