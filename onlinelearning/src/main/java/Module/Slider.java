@@ -13,18 +13,23 @@ public class Slider {
     private Date createDate ;
     private Date updateDate ;
     private boolean status ;
+    private String backLink ;
 
-    public Slider(boolean status, Date updateDate, Date createDate, boolean isShow, String description, String image, String title, Marketing marketing, String slideUrl, int slideId) {
-        this.status = status;
-        this.updateDate = updateDate;
-        this.createDate = createDate;
-        this.isShow = isShow;
-        this.description = description;
-        this.image = image;
-        this.title = title;
-        this.marketing = marketing;
-        this.slideUrl = slideUrl;
+    public Slider() {
+    }
+
+    public Slider(int slideId, String slideUrl, Marketing marketing, String title, String image, String description, boolean isShow, Date createDate, Date updateDate, boolean status, String backLink) {
         this.slideId = slideId;
+        this.slideUrl = slideUrl;
+        this.marketing = marketing;
+        this.title = title;
+        this.image = image;
+        this.description = description;
+        this.isShow = isShow;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
+        this.status = status;
+        this.backLink = backLink;
     }
 
     public int getSlideId() {
@@ -105,5 +110,13 @@ public class Slider {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getBackLink() {
+        return backLink;
+    }
+
+    public void setBackLink(String backLink) {
+        this.backLink = backLink;
     }
 }

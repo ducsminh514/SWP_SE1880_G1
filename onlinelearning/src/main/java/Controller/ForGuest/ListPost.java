@@ -1,16 +1,19 @@
-package Controller.ForAccount;
+package Controller.ForGuest;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
+import DAO.PostDAO;
+import Module.Post;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "VerifyServlet", urlPatterns = {"/verify"})
-public class VerifyServlet extends HttpServlet {
+@WebServlet(name = "listPost", urlPatterns = {"/listPost"})
+public class ListPost extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -19,10 +22,10 @@ public class VerifyServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet VerifyServlet</title>");
+            out.println("<title>Servlet listPost</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet VerifyServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet listPost at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -31,15 +34,19 @@ public class VerifyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String otpUserInput = request.getParameter("otp");
-        String otpReal = request.getParameter("otpmail");
-        String email = request.getParameter("email");
-        if (otpReal != null && otpReal.equals(otpUserInput)) {
-            request.setAttribute("email", email);
-            request.getRequestDispatcher("reset.jsp").forward(request, response);
+        PostDAO pDAO = new PostDAO();
+        ArrayList<Post> listPost = new ArrayList<>();
+        String pagePost = request.getParameter("page");
+        if (pagePost == null) {
+            listPost = pDAO.getAllByPage(1);
         } else {
-            request.setAttribute("errorMessage", "Invalid OTP. Please try again.");
-            request.getRequestDispatcher("verification.jsp").forward(request, response);
+            int pageNumPost = 0;
+            try {
+                pageNumPost = Integer.parseInt(pagePost);
+                listPost = pDAO.getAllByPage(5 * pageNumPost - 5);
+            } catch (NumberFormatException e) {
+                System.out.println(e);
+            }
         }
     }
 

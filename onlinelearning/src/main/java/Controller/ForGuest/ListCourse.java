@@ -1,28 +1,31 @@
-package Controller.ForAccount;
+package Controller.ForGuest;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
+import DAO.CourseDAO;
+import Module.Course ;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "VerifyServlet", urlPatterns = {"/verify"})
-public class VerifyServlet extends HttpServlet {
+@WebServlet(name="ListCourse", urlPatterns={"/listCourse"})
+public class ListCourse extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet VerifyServlet</title>");
+            out.println("<title>Servlet ListCourse</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet VerifyServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ListCourse at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -30,22 +33,26 @@ public class VerifyServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String otpUserInput = request.getParameter("otp");
-        String otpReal = request.getParameter("otpmail");
-        String email = request.getParameter("email");
-        if (otpReal != null && otpReal.equals(otpUserInput)) {
-            request.setAttribute("email", email);
-            request.getRequestDispatcher("reset.jsp").forward(request, response);
+    throws ServletException, IOException {
+        CourseDAO cDAO = new CourseDAO();
+        ArrayList<Course> listCourse= new ArrayList<>() ;
+        String pageCourse = request.getParameter("page");
+        if (pageCourse == null) {
+            listCourse = cDAO.getAllByPage(1);
         } else {
-            request.setAttribute("errorMessage", "Invalid OTP. Please try again.");
-            request.getRequestDispatcher("verification.jsp").forward(request, response);
+            int pageNumCourse = 0;
+            try {
+                pageNumCourse = Integer.parseInt(pageCourse);
+                listCourse = cDAO.getAllByPage(5 * pageNumCourse - 5);
+            } catch (NumberFormatException e) {
+                System.out.println(e);
+            }
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         processRequest(request, response);
     }
 

@@ -6,6 +6,9 @@ public class Customer {
     private String socialRole ;
     private String levelOfEnglish ;
 
+    public Customer() {
+    }
+
     public Customer(int customerId, User user, String socialRole, String levelOfEnglish) {
         this.customerId = customerId;
         this.user = user;
