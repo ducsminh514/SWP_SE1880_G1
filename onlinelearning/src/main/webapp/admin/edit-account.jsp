@@ -356,62 +356,59 @@
                             <div class="col-12">
                                 <form action="${pageContext.request.contextPath}/manage-account" method="post">
                                     <input type="hidden" name="action" value="update">
-                                    <input type="hidden" name="id" value="${user.userId}">
-                                    <div>
+                                    <input type="hidden" name="userId" value="${user.userId}">
+                                    <div class="form-group">
                                         <label for="avatar">Avatar</label>
-                                        <div class="ttr-user-avatar-profile" id="avatar"><img alt=""
+                                        <div class="ttr-user-avatar-profile " id="avatar"><img alt=""
                                                                                               src="assets/images/testimonials/pic3.jpg"
                                                                                               style="border-radius: 50%"
                                                                                               width="100" height="100">
                                         </div>
+                                    </div >
+                                    <div class="form-group">
+                                        <label for="firstName">Fist Name</label>
+                                        <input  class="form-control"  type="text"  id="firstName" name="firstName"
+                                               value="${user.getFirstName()}" >
                                     </div>
-                                    <div>
-                                        <label for="fullName">Full Name</label>
-                                        <input  class="form-control"  type="text"  id="fullName" name="fullName"
-                                               value="${user.getFirstName()} ${user.getLastName()}" required>
+                                    <div class="form-group">
+                                        <label for="lastName">Last Name</label>
+                                        <input  class="form-control"  type="text"  id="lastName" name="lastName"
+                                                value="${user.getLastName()}" >
                                     </div>
-                                    <div>
+                                    <div class="form-group">
                                         <label for="gender">Gender</label>
                                         <select id="gender" name="gender" class="form-control" >
                                             <option value="true" ${user.gender ? 'selected' : ''}>Male</option>
                                             <option value="false" ${!user.gender ? 'selected' : ''}>Female</option>
                                         </select>
                                     </div>
-                                    <div>
+                                    <div class="form-group">
                                         <label for="email">Email</label>
                                         <input class="form-control"  type="email" id="email" name="email"
-                                               value="${user.email}" required>
+                                               value="${user.email}" >
                                     </div>
-                                    <div>
-                                        <label for="mobile">Mobile</label>
-                                        <input class="form-control"  type="text"  id="mobile" name="mobile"
-                                               value="${user.phoneNumber}" required>
+                                    <div class="form-group">
+                                        <label for="phone">Phone Number</label>
+                                        <input class="form-control"  type="text"  id="phone" name="phone"
+                                               value="${user.phoneNumber}">
                                     </div>
                                     <div class="form-group">
                                         <label for="role">Role</label>
                                         <select class="form-control" id="role" name="role">
-                                            <option value="Expert" ${user.role.roldId == 2 ? 'selected' : ''}>Student</option>
-                                            <option value="Marketing" ${user.role.roleId == 3 ? 'selected' : ''}>Teacher</option>
-                                            <option value="Sales" ${user.role.roleId == 4 ? 'selected' : ''}>Teacher</option>
-                                            <option value="Customer" ${user.role.roleId == 5 ? 'selected' : ''}>Teacher</option>
+                                            <option value="2" ${user.role.getRoleId() == 2 ? 'selected' : ''}>Expert</option>
+                                            <option value="3" ${user.role.getRoleId() == 3 ? 'selected' : ''}>Marketing</option>
+                                            <option value="4" ${user.role.getRoleId() == 4 ? 'selected' : ''}>Sales</option>
+                                            <option value="5" ${user.role.getRoleId() == 5 ? 'selected' : ''}>Customer</option>
                                         </select>
                                     </div>
-<%--                                    <div>--%>
-<%--                                        <label for="role">Role</label>--%>
-<%--                                        ><select class="form-control" id="role" name="role">--%>
-<%--                                        <option value="Student">Student</option>--%>
-<%--                                        <option value="Teacher">Teacher</option>--%>
-<%--                                    </select--%>
-<%--                                    </div>--%>
-
-                                    <div>
+                                    <div class="form-group">
                                         <label for="status">Status</label>
-                                        <select id="status" name="status">
-                                            <option value="true" ${user.isActive ? 'selected' : ''}>Active</option>
-                                            <option value="false" ${!user.isActive ? 'selected' : ''}>Inactive</option>
+                                        <select class="form-control"  id="status" name="status">
+                                            <option value="true" ${user.isStatus() ? 'selected' : ''}>Active</option>
+                                            <option value="false" ${!user.isStatus() ? 'selected' : ''}>Inactive</option>
                                         </select>
                                     </div>
-                                    <button class="button-3d" type="submit" >Update Account</button>
+                                    <button class="btn" type="submit" >Update Account</button>
                                 </form>
                             </div>
                         </div>
@@ -425,6 +422,34 @@
 <div class="ttr-overlay"></div>
 <!-- External JavaScripts -->
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
-
+<script>
+    // Toast message display
+    var toastMessage = "${sessionScope.toastMessage}";
+    var toastType = "${sessionScope.toastType}";
+    if (toastMessage) {
+        iziToast.show({
+            title: toastType === 'success' ? 'Success' : 'Error',
+            message: toastMessage,
+            position: 'topRight',
+            color: toastType === 'success' ? 'green' : 'red',
+            timeout: 5000,
+            onClosing: function () {
+                // Remove toast attributes from the session after displaying
+                fetch('${pageContext.request.contextPath}/remove-toast', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                }).then(response => {
+                    if (!response.ok) {
+                        console.error('Failed to remove toast attributes');
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    }
+</script>
 </body>
 </html>

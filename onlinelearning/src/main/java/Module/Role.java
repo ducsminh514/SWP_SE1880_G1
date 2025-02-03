@@ -10,11 +10,26 @@ public class Role {
     }
     public Role(int roleId) {
        switch(roleId){
-           case 1: roleName = "Admin";
-           case 2: roleName = "Expert";
-           case 3: roleName = "Marketing";
-           case 4: roleName = "Sales";
-           case 5: roleName = "Customer";
+           case 1:
+               this.roleId = 1;
+               roleName = "Admin";
+           break;
+           case 2:
+               this.roleId = 2;
+               roleName = "Expert";
+           break;
+           case 3:
+               this.roleId = 3;
+               roleName = "Marketing";
+           break;
+           case 4:
+               this.roleId = 4;
+               roleName = "Sales";
+           break;
+           case 5:
+               this.roleId = 4;
+               roleName = "Customer";
+               break;
        }
     }
 

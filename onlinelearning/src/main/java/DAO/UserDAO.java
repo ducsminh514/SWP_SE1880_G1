@@ -26,43 +26,32 @@ public class UserDAO extends DBContext implements GenericDAO<User> {
 
     @Override
     public boolean update(User user) {
-        String sql = "\n" +
-                "UPDATE [dbo].[Users]\n" +
-                "   SET [Username] =?\n" +
-                "      ,[FirstName] = ?\n" +
-                "      ,[LastName] = ?\n" +
-                "      ,[Password] =?\n" +
-                "      ,[Email] = ?\n" +
-                "      ,[PhoneNumber] =?\n" +
-                "      ,[CreatedDate] = ?\n" +
-                "      ,[Avatar] =?\n" +
-                "      ,[Gender] = ?\n" +
-                "      ,[Age] = ?\n" +
-                "      ,[RoleID] = ?\n" +
-                "      ,[Status] = ?\n" +
-                " WHERE UserID = ?";
+
+        String sql = "UPDATE Users SET "
+                + "FirstName = ?, "
+                + "LastName = ?, "
+                + "Gender = ?, "
+                + "Email = ?, "
+                + "PhoneNumber = ?, "
+                + "RoleID = ?, "
+                + "Status = ? "
+                + "WHERE UserID = ?";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
-            //st.setString(1, account.getUsername());
-            st.setString(1, user.getUserName());
-            st.setString(2, user.getFirstName());
-            st.setString(3, user.getLastName());
-            st.setString(4, user.getPassword());
-            st.setString(5, user.getEmail());
-            st.setString(6, user.getPhoneNumber());
-            st.setObject(7,user.getCreateDate());
-            st.setObject(8,user.getAvatar());
-            st.setObject(9,user.isGender());
-            st.setObject(10,user.getAge());
-            st.setObject(11,user.getRole().getRoleId());
-            st.setObject(12,user.isStatus());
-            st.setInt(13,user.getUserId());
+
+            st.setString(1, user.getFirstName());
+            st.setString(2, user.getLastName());
+            st.setBoolean(3, user.isGender());
+            st.setString(4, user.getEmail());
+            st.setString(5, user.getPhoneNumber());
+            st.setInt(6, user.getRole().getRoleId());
+            st.setBoolean(7, user.isStatus());
+            st.setInt(8, user.getUserId());
 
             int affectedRows = st.executeUpdate();
-
             return affectedRows > 0;
         } catch (SQLException ex) {
-            System.out.println("Error updating user account: " + ex.getMessage());
+            System.out.println("err when update from dao: " + ex.getMessage());
             return false;
         }
     }
@@ -74,6 +63,7 @@ public class UserDAO extends DBContext implements GenericDAO<User> {
 
     @Override
     public int insert(User user) {
+
         String sql = "INSERT INTO [dbo].[Users]\n" +
                 "           ([Username]\n" +
                 "           ,[FirstName]\n" +
@@ -191,17 +181,12 @@ public class UserDAO extends DBContext implements GenericDAO<User> {
 
     public User findById(int id) {
         String sql = "SELECT * FROM Users WHERE UserID = ?";
-        try{
-            PreparedStatement st = connection.prepareStatement(sql);
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, id);
-            try{
-                ResultSet rs = st.executeQuery();
-                User user = getFromResultSet(rs);
-                if(user != null) {
-                    return user;
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return getFromResultSet(rs);
                 }
-            } catch (SQLException e) {
-                System.out.println("User not exist: " + e.getMessage());
             }
         } catch (SQLException e) {
             System.out.println("Error finding user: " + e.getMessage());

@@ -24,4 +24,6 @@
 <script src="${pageContext.request.contextPath}/admin/assets/vendors/chart/chart.min.js"></script>
 <script src="${pageContext.request.contextPath}/admin/assets/js/admin.js"></script>
 <script src='${pageContext.request.contextPath}/assets/vendors/switcher/switcher.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+
 

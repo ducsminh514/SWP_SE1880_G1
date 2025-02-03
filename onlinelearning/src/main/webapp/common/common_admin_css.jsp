@@ -29,3 +29,4 @@
 <!-- FAVICONS ICON ============================================= -->
 <link rel="icon" href="..${pageContext.request.contextPath}/error-404.jsp" type="image/x-icon"/>
 <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.png"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
