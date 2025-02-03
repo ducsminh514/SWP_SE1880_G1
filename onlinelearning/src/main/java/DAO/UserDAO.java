@@ -139,7 +139,7 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
         return null;
     }
 
-    public void insert1(User c) {
+    public void insertUser1(User c) {
         String sql = "INSERT INTO [dbo].[Users]\n"
                 + "           ([Username]\n"
                 + "           ,[FirstName]\n"

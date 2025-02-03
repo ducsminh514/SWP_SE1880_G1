@@ -85,7 +85,7 @@ public class RegisterServlet extends HttpServlet {
             boolean a= false;
             String avatar= null;
             User newUser = new User(name, firstName, lastName, password, email, phoneNumber, gender,avatar,age , userRole,a);
-            userDAO.insert1(newUser);
+            userDAO.insertUser1(newUser);
 
             sendVerificationEmail(email);
 
