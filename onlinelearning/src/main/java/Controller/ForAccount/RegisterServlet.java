@@ -83,8 +83,9 @@ public class RegisterServlet extends HttpServlet {
 
             Role userRole = new Role(2, "User");
             boolean a= false;
-            User newUser = new User(name, firstName, lastName, password, email, phoneNumber, age, userRole,a);
-            userDAO.insert(newUser);
+            String avatar= null;
+            User newUser = new User(name, firstName, lastName, password, email, phoneNumber, gender,avatar,age , userRole,a);
+            userDAO.insert1(newUser);
 
             sendVerificationEmail(email);
 
