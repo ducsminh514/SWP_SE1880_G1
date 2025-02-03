@@ -2,12 +2,15 @@ package Controller.ForGuest;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import DAO.CourseDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import Module.Course ;
 @WebServlet(name="home", urlPatterns={"/home"})
 public class Home extends HttpServlet {
 
@@ -30,7 +33,12 @@ public class Home extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        CourseDAO cDAO = new CourseDAO();
+        ArrayList<Course> listCourse= cDAO.getAll();
+        System.out.println(listCourse.size());
+        request.setAttribute("listCourse",listCourse);
+        System.out.println("listCourse attribute set: " + request.getAttribute("listCourse"));
+        request.getRequestDispatcher("index.jsp").forward(request,response);
     }
 
     @Override
