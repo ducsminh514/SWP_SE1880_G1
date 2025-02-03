@@ -184,7 +184,7 @@
 								<ul class="sub-menu">
 									<li><a href="admin/index.html">Dashboard</a></li>
 									<li><a href="admin/add-listing.jsp">Add Listing</a></li>
-									<li><a href="admin/index.JSP">Dashboard</a></li>
+									<li><a href="admin/index.jsp">Dashboard</a></li>
 									<li><a href="admin/add-listing.html">Add Listing</a></li>
 									<li><a href="admin/bookmark.html">Bookmark</a></li>
 									<li><a href="admin/courses.html">Courses</a></li>
