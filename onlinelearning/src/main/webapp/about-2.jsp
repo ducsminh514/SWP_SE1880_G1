@@ -182,7 +182,7 @@
 							</li>
 							<li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
-									<li><a href="admin/index.html">Dashboard</a></li>
+									<li><a href="admin/index.jsp">Dashboard</a></li>
 									<li><a href="admin/add-listing.html">Add Listing</a></li>
 									<li><a href="admin/bookmark.html">Bookmark</a></li>
 									<li><a href="admin/courses.html">Courses</a></li>

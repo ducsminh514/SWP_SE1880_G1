@@ -11,6 +11,8 @@ public class User {
     private String email ;
     private String phoneNumber ;
     private Date createDate ;
+    private boolean gender ;
+    private String avatar ;
     private int age ;
     private Role role ;
     private boolean status ;
