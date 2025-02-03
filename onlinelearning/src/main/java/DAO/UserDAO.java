@@ -7,6 +7,9 @@ import dal.DBContext;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.sql.DriverManager.getConnection;
+
 public class UserDAO extends DBContext implements GenericDAO<User> {
     @Override
     public List<User> findAll() {
@@ -120,7 +123,8 @@ public class UserDAO extends DBContext implements GenericDAO<User> {
         } catch (SQLException ex) {
             System.out.println("Error inserting user: " + ex.getMessage());
             return -1; // Return -1 to indicate failure
-        }    }
+        }
+    }
 
     @Override
     public User getFromResultSet(ResultSet rs) throws SQLException {
@@ -148,7 +152,7 @@ public class UserDAO extends DBContext implements GenericDAO<User> {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setObject(1, 1);
-            st.setObject(2, (page-1)*pageSize);
+            st.setObject(2, (page - 1) * pageSize);
             st.setObject(3, pageSize);
 
             try (ResultSet rs = st.executeQuery()) {
@@ -164,7 +168,7 @@ public class UserDAO extends DBContext implements GenericDAO<User> {
 
     public int getTotalNonAdminAccount() {
         String sql = "SELECT COUNT(*) FROM Users WHERE RoleID != ?";
-        try{
+        try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, 1);
             try (ResultSet rs = st.executeQuery()) {
@@ -194,10 +198,17 @@ public class UserDAO extends DBContext implements GenericDAO<User> {
         return null;
     }
 
+    public boolean deactiveAccount(int id) {
+        String sql = "UPDATE Users SET Status = 0 WHERE UserID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            int affectedRow = st.executeUpdate();
+            return affectedRow > 0;
 
-    public static void main(String[] args) {
-        UserDAO dao = new UserDAO();
-        List<User> users = dao.findAll();
-        System.out.println(users);
+        } catch (SQLException e) {
+            System.out.println("Error deactivating user: " + e.getMessage());
+        }
+        return false;
     }
 }

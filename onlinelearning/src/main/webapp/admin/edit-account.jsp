@@ -304,7 +304,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="add-listing.jsp" class="ttr-material-button">
+                    <a href="add-listing.html" class="ttr-material-button">
                         <span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
                         <span class="ttr-label">Add listing</span>
                     </a>
@@ -324,6 +324,12 @@
                             <a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Teacher Profile</span></a>
                         </li>
                     </ul>
+                </li>
+                <li>
+                    <a href="${pageContext.request.contextPath}/manage-account" class="ttr-material-button">
+                        <span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
+                        <span class="ttr-label">Manage account</span>
+                    </a>
                 </li>
                 <li class="ttr-seperate"></li>
             </ul>
