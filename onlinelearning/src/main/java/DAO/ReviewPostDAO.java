@@ -21,6 +21,7 @@ public class ReviewPostDAO extends DBContext {
             if (rs.next()) {
                 rating = rs.getFloat(1);
             }
+            System.out.println(rating);
         } catch (SQLException e) {
             System.out.println(e);
         }

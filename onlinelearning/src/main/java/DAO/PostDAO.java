@@ -32,7 +32,6 @@ public class PostDAO extends DBContext {
                 p.setPostFile(rs.getString("PostFile"));
                 p.setMarketing(mDAO.getByID(rs.getInt("MarketingID")));
                 listPost.add(p);
-                System.out.println(p.getPostId()) ;
             }
             return listPost;
         } catch (SQLException e) {
@@ -49,6 +48,16 @@ public class PostDAO extends DBContext {
             }
         }
         return null;
+   }
+
+   public ArrayList<Post> getByCategory(int categoryBlogId){
+        ArrayList<Post> listByCate = new ArrayList<>();
+        for(Post p : getAll()){
+            if(p.getCategoryBlog().getCategoryBlogId() == categoryBlogId){
+                listByCate.add(p) ;
+            }
+        }
+        return listByCate;
    }
 
     public ArrayList<Post> getAllByPage(int start) {

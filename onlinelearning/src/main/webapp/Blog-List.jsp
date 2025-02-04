@@ -1,6 +1,8 @@
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 	<!-- META ============================================= -->
@@ -74,6 +76,16 @@
 			</div>
 		</div>
 		<!-- Breadcrumb row END -->
+
+        <form class="col-2" action="listPost" id="statusForm">
+            <select class="form-select form-select-sm" aria-label="Small select example" name="arrange" onchange="document.getElementById('statusForm').submit();">
+                <option selected>Arrange</option>
+                <option value="rating">Highest Rating</option>
+                <option value="date-soon">Earliest Date</option>
+                <option value="date-late">Latest Date</option>
+            </select>
+        </form>
+
         <div class="content-block">
 			<div class="section-area section-sp1">
 				<div class="container">
@@ -82,6 +94,7 @@
 						<div class="col-lg-8 col-xl-8 col-md-7">
 							<!-- blog grid -->
 							<div id="masonry" class="ttr-blog-grid-3 row">
+							<c:forEach items ="${requestScope.mapRating}" var="post">
 								<div class="post action-card col-xl-6 col-lg-6 col-md-12 col-xs-12 m-b40">
 									<div class="recent-news">
 										<div class="action-box">
@@ -89,10 +102,10 @@
 										</div>
 										<div class="info-bx">
 											<ul class="media-post">
-												<li><a href="#"><i class="fa fa-calendar"></i>Jan 02 2019</a></li>
+												<li><a href="#"><i class="fa fa-calendar"></i>${post.key.updateDate}</a></li>
 												<li><a href="#"><i class="fa fa-user"></i>By William</a></li>
 											</ul>
-											<h5 class="post-title"><a href="blog-details.html">This Story Behind Education Will Haunt You Forever.</a></h5>
+											<h5 class="post-title"><a href="blog-details.html">${post.key.title}</a></h5>
 											<p>Knowing that, you’ve optimised your pages countless amount of times, written tons.</p>
 											<div class="post-extra">
 												<a href="#" class="btn-link">READ MORE</a>
@@ -101,36 +114,19 @@
 										</div>
 									</div>
 								</div>
-								<div class="post action-card col-xl-6 col-lg-6 col-md-12 col-xs-12 m-b40">
-									<div class="recent-news">
-										<div class="action-box">
-											<img src="assets/images/blog/latest-blog/pic3.jpg" alt="">
-										</div>
-										<div class="info-bx">
-											<ul class="media-post">
-												<li><a href="#"><i class="fa fa-calendar"></i>March 21 2019</a></li>
-												<li><a href="#"><i class="fa fa-user"></i>By Thomas</a></li>
-											</ul>
-											<h5 class="post-title"><a href="blog-details.html">Eliminate Your Fears And Doubts About Education.</a></h5>
-											<p>When I needed to start from scratch and figure out how things work. Getting people.</p>
-											<div class="post-extra">
-												<a href="#" class="btn-link">READ MORE</a>
-												<a href="#" class="comments-bx"><i class="fa fa-comments-o"></i>28 Comment</a>
-											</div>
-										</div>
-									</div>
-								</div>
+                           </c:forEach>
 							</div>
 							<!-- blog grid END -->
-							<!-- Pagination -->
+
+
 							<div class="pagination-bx rounded-sm gray clearfix">
-								<ul class="pagination">
-									<li class="previous"><a href="#"><i class="ti-arrow-left"></i> Prev</a></li>
-									<li class="active"><a href="#">1</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li class="next"><a href="#">Next <i class="ti-arrow-right"></i></a></li>
-								</ul>
+								 <div class="pagination-bx rounded-sm gray clearfix">
+                                     <c:forEach begin="1" end="${requestScope.pageNum}" var="i">
+                                         <li class="page-item <c:if test='${i == requestScope.currentPage}'>active</c:if>">
+                                             <a class="page-link m-lg-1" href="home?page=${i}">${i}</a>
+                                         </li>
+                                     </c:forEach>
+                                 </div>
 							</div>
 							<!-- Pagination END -->
 						</div>
@@ -144,7 +140,7 @@
 								<div class="widget">
 									<h6 class="widget-title">Search</h6>
 									<div class="search-bx style-1">
-										<form role="search" method="post">
+										<form action="listPost" name ="search">
 											<div class="input-group">
 												<input name="text" class="form-control" placeholder="Enter your keywords..." type="text">
 												<span class="input-group-btn">
@@ -195,55 +191,13 @@
 										</div>
 									</div>
 								</div>
-								<div class="widget widget-newslatter">
-									<h6 class="widget-title">Newsletter</h6>
-									<div class="news-box">
-										<p>Enter your e-mail and subscribe to our newsletter.</p>
-										<form class="subscription-form" action="http://educhamp.themetrades.com/demo/assets/script/mailchamp.php" method="post">
-											<div class="ajax-message"></div>
-											<div class="input-group">
-												<input name="dzEmail" required="required" type="email" class="form-control" placeholder="Your Email Address"/>
-												<button name="submit" value="Submit" type="submit" class="btn black radius-no">
-													<i class="fa fa-paper-plane-o"></i>
-												</button>
-											</div>
-										</form>
-									</div>
-								</div>
-								<div class="widget widget_gallery gallery-grid-4">
-									<h6 class="widget-title">Our Gallery</h6>
-									<ul>
-										<li><div><a href="#"><img src="assets/images/gallery/pic2.jpg" alt=""></a></div></li>
-										<li><div><a href="#"><img src="assets/images/gallery/pic1.jpg" alt=""></a></div></li>
-										<li><div><a href="#"><img src="assets/images/gallery/pic5.jpg" alt=""></a></div></li>
-										<li><div><a href="#"><img src="assets/images/gallery/pic7.jpg" alt=""></a></div></li>
-										<li><div><a href="#"><img src="assets/images/gallery/pic8.jpg" alt=""></a></div></li>
-										<li><div><a href="#"><img src="assets/images/gallery/pic9.jpg" alt=""></a></div></li>
-										<li><div><a href="#"><img src="assets/images/gallery/pic3.jpg" alt=""></a></div></li>
-										<li><div><a href="#"><img src="assets/images/gallery/pic4.jpg" alt=""></a></div></li>
-									</ul>
-								</div>
+                                <c:set value="${requestScope.listCategoryBlog}" var="listCategoryBlog" />
 								<div class="widget widget_tag_cloud">
-									<h6 class="widget-title">Tags</h6>
-									<div class="tagcloud"> 
-										<a href="#">Design</a> 
-										<a href="#">User interface</a> 
-										<a href="#">SEO</a> 
-										<a href="#">WordPress</a> 
-										<a href="#">Development</a> 
-										<a href="#">Joomla</a> 
-										<a href="#">Design</a> 
-										<a href="#">User interface</a> 
-										<a href="#">SEO</a> 
-										<a href="#">WordPress</a> 
-										<a href="#">Development</a> 
-										<a href="#">Joomla</a> 
-										<a href="#">Design</a> 
-										<a href="#">User interface</a> 
-										<a href="#">SEO</a> 
-										<a href="#">WordPress</a> 
-										<a href="#">Development</a> 
-										<a href="#">Joomla</a> 
+									<h6 class="widget-title">Category Blog</h6>
+									<div class="tagcloud">
+									<c:forEach items="${listCategoryBlog}" var="cateBlog">
+										<a href="listPost?cate=${cateBlog.categoryBlogId}">${cateBlog.categoryBlogName}</a>
+								    </c:forEach>
 									</div>
 								</div>
 							</aside>
