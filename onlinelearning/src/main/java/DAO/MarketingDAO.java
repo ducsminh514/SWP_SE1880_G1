@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import Module.Marketing ;
 public class MarketingDAO extends DBContext {
     public ArrayList<Marketing> getAll() {
-        String sql = "select * from Experts";
+        String sql = "select * from Marketing";
         ArrayList<Marketing> listMarketing = new ArrayList<>();
         UserDAO uDAO = new UserDAO();
         try {

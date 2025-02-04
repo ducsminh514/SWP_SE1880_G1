@@ -164,7 +164,7 @@
 							<li><a href="javascript:;">Blog <i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									<li><a href="blog-classic-grid.jsp">Blog Classic</a></li>
-									<li><a href="blog-classic-sidebar.jsp">Blog Classic Sidebar</a></li>
+									<li><a href="Blog-List.jsp">Blog List</a></li>
 									<li><a href="blog-list-sidebar.jsp">Blog List Sidebar</a></li>
 									<li><a href="blog-standard-sidebar.jsp">Blog Standard Sidebar</a></li>
 									<li><a href="blog-details.jsp">Blog Details</a></li>

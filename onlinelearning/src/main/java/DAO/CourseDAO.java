@@ -70,4 +70,14 @@ public class CourseDAO extends DBContext {
         }
         return listCoursePage;
     }
+
+    public Course getById (int courseID){
+        ArrayList<Course> list = getAll();
+        for(Course c: list){
+            if(c.getCourseId() == courseID){
+                return c;
+            }
+        }
+        return null;
+    }
 }

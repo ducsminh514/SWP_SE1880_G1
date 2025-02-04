@@ -53,16 +53,17 @@ public class ReviewPostDAO extends DBContext {
         return listPostReview;
     }
 
-    public HashMap<Integer, Float> mapRating() {
-        HashMap<Integer,Float> map = new HashMap<>();
+    public HashMap<Post, Float> mapRating() {
+        HashMap<Post,Float> map = new HashMap<>();
         ArrayList<Float>  listRating = new ArrayList<>() ;
         PostDAO pDAO = new PostDAO();
         ArrayList<Post> listPost = pDAO.getAll() ;
         for(Post p: listPost){
-            map.put(p.getPostId(),getRatingOfPost(p.getPostId()));
+            map.put(pDAO.getById(p.getPostId()),getRatingOfPost(p.getPostId()));
         }
         return map ;
     }
 }
+
 
 

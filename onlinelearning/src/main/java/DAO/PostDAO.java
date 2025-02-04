@@ -11,7 +11,7 @@ import Module.Post;
 
 public class PostDAO extends DBContext {
     public ArrayList<Post> getAll() {
-        String sql = "select * from Courses";
+        String sql = "select * from Posts";
         ArrayList<Post> listPost = new ArrayList<>();
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -32,6 +32,7 @@ public class PostDAO extends DBContext {
                 p.setPostFile(rs.getString("PostFile"));
                 p.setMarketing(mDAO.getByID(rs.getInt("MarketingID")));
                 listPost.add(p);
+                System.out.println(p.getPostId()) ;
             }
             return listPost;
         } catch (SQLException e) {
