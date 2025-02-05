@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.*;
 
+import DAO.CategoryBlogDAO;
 import DAO.PostDAO;
 import DAO.ReviewPostDAO;
 import Module.Post;
@@ -13,7 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import Module.CategoryBlog ;
 @WebServlet(name = "listPost", urlPatterns = {"/listPost"})
 public class ListPost extends HttpServlet {
 
@@ -41,19 +42,21 @@ public class ListPost extends HttpServlet {
         ArrayList<Post> listPost = pDAO.getAll();
         ArrayList<Post> list = new ArrayList<>() ;
         String arrange = request.getParameter("arrange") ;
-        System.out.println(arrange);
         String Page = request.getParameter("page");
         String search = request.getParameter("search") ;
+        System.out.println(search);
         String category = request.getParameter("cate") ;
         if( search!= null){
+            System.out.println(search);
              for(Post p: listPost){
                  if(p.getTitle().contains(search) || p.getContent().contains(search)){
                      list.add(p);
                  }
              }
         }else if(category != null){
+            System.out.println(category);
              try{
-                 int cateId = Integer.parseInt("category");
+                 int cateId = Integer.parseInt(category);
                  list = pDAO.getByCategory(cateId);
              }catch(NumberFormatException e){
                  System.out.println(e);
@@ -73,7 +76,7 @@ public class ListPost extends HttpServlet {
                Collections.sort(list, new Comparator<Post>() {
                    @Override
                    public int compare(Post p1, Post p2) {
-                       return Float.compare(rpDAO.getRatingOfPost(p1.getPostId()), rpDAO.getRatingOfPost(p2.getPostId()));
+                       return Float.compare(rpDAO.getRatingOfPost(p2.getPostId()), rpDAO.getRatingOfPost(p1.getPostId()));
                    }
                });
            }else if(arrange.equalsIgnoreCase("date-soon")){
@@ -125,7 +128,13 @@ public class ListPost extends HttpServlet {
         for(Post p : listFinal){
             mapRating.put(p,rpDAO.getRatingOfPost(p.getPostId())) ;
         }
+        CategoryBlogDAO cbDAO = new CategoryBlogDAO();
+        ArrayList<CategoryBlog> listCate = cbDAO.getAll() ;
+        request.setAttribute("listCategoryBlog",listCate);
         request.setAttribute("mapRating",mapRating);
+        ArrayList<Post> listLatest = pDAO.ArrangeByDate();
+        System.out.println(listLatest.size());
+        request.setAttribute("recentPost",listLatest);
         request.getRequestDispatcher("Blog-List.jsp").forward(request,response);
     }
 

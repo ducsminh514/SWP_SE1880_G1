@@ -58,7 +58,7 @@
 
     <body id="bg">
         <div class="page-wraper">
-            <div id="container-xxl"></div>
+            <div id="container-xxl">
             <!-- Header Top ==== -->
             <%@include file="header.jsp" %>
             <!-- Header Top END ==== -->
@@ -80,7 +80,7 @@
                                             <button class="btn" type="submit">Search</button>
                                         </div>
                                     </div>
-                                </form>
+                                </form>a
                             </div>
                         </div>
                         <div class="mw800 m-auto">
@@ -116,128 +116,161 @@
                 </div>
                 <!-- Main Slider -->
             </div>
+
+
             <div class="row">
-                <div class="col-9 border-end">
-                         <div class="content-block">
+                <div class="col-lg-8 col-xl-8 col-md-7">
+                    <div class="content-block">
 
-                                         <!-- Popular Courses -->
-                                         <c:set value="${requestScope.listCourse}" var="listCourse" />
+                        <!-- Popular Courses -->
+                        <div class="section-area section-sp2 popular-courses-bx">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12 heading-bx left">
+                                        <h2 class="title-head">Popular <span>Courses</span></h2>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="courses-carousel owl-carousel owl-btn-1 col-12 p-lr0">
+                                        <c:forEach items="${requestScope.mapRatingCourse}" var="cou">
+                                            <div class="item">
+                                                <div class="cours-bx">
+                                                    <div class="action-box">
+                                                        <img src="${cou.key.thumbnail}" alt="">
+                                                        <a href="#" class="btn">Read More</a>
+                                                    </div>
+                                                    <div class="info-bx text-center">
+                                                        <h5><a href="#">${cou.key.courseName}</a></h5>
+                                                    </div>
+                                                    <div class="cours-more-info">
+                                                        <div class="review">
+                                                            <span>3 Review</span>
+                                                            <ul class="cours-star">
+                                                                <li class="active"><i class="fa fa-star"></i></li>
+                                                                <li class="active"><i class="fa fa-star"></i></li>
+                                                                <li class="active"><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                            </ul>
+                                                            <span> ${cou.value}</span>
+                                                        </div>
+                                                        <div class="price">
+                                                            <del>$${cou.key.price}</del>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Popular Courses END -->
 
-                                         <c:if test="${empty listCourse}">
-                                             <p>No courses available</p>
-                                         </c:if>
-                                         <c:if test="${not empty listCourse}">
-                                             <p>Found courses!</p>
-                                         </c:if>
-                                         <div class="section-area section-sp2 popular-courses-bx">
-                                             <div class="container">
-                                                 <div class="row">
-                                                     <div class="col-md-12 heading-bx left">
-                                                         <h2 class="title-head">Popular <span>Courses</span></h2>
-                                                         <p>It is a long established fact that a reader will be distracted by the
-                                                             readable content of a page</p>
-                                                     </div>
-                                                 </div>
-                                                 <div class="row">
-                                                     <div class="courses-carousel owl-carousel owl-btn-1 col-12 p-lr0">
-                                                         <c:forEach items="${listCourse}" var="cou">
-                                                             <div class="item">
-                                                                 <div class="cours-bx">
-                                                                     <div class="action-box">
-                                                                         <img src="${cou.thumbnail}" alt="">
-                                                                         <a href="#" class="btn">Read More</a>
-                                                                     </div>
-                                                                     <div class="info-bx text-center">
-                                                                         <h5><a href="#">${cou.courseName}</a></h5>
-                                                                     </div>
-                                                                     <div class="cours-more-info">
-                                                                         <div class="review">
-                                                                             <span>3 Review</span>
-                                                                             <ul class="cours-star">
-                                                                                 <li class="active"><i class="fa fa-star"></i></li>
-                                                                                 <li class="active"><i class="fa fa-star"></i></li>
-                                                                                 <li class="active"><i class="fa fa-star"></i></li>
-                                                                                 <li><i class="fa fa-star"></i></li>
-                                                                                 <li><i class="fa fa-star"></i></li>
-                                                                             </ul>
-                                                                         </div>
-                                                                         <div class="price">
-                                                                             <del>$${cou.price}</del>
-                                                                         </div>
-                                                                     </div>
-                                                                 </div>
-                                                             </div>
-                                                         </c:forEach>
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                         <!-- Popular Courses END -->
+                        <div class="section-area section-sp2">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12 heading-bx left text-center">
+                                        <h2 class="title-head text-uppercase">Hot <span>Blogs</span></h2>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <c:forEach items="${requestScope.mapRatingPost}" var="post">
+                                        <div class="col-lg-4 col-md-6 col-sm-6 mb-3">
+                                            <div class="recent-news d-flex flex-column shadow rounded overflow-hidden"
+                                                 style="height: 220px; font-size: 14px; padding: 8px;">
 
+                                                <!-- Ảnh bài viết -->
+                                                <div class="action-box" style="height: 140px; overflow: hidden; border-radius: 8px;">
+                                                    <img src="assets/images/blog/latest-blog/pic1.jpg" class="img-fluid w-100"
+                                                         style="height: 100%; object-fit: cover;" alt="Blog Image">
+                                                </div>
 
-                                         <div class="section-area section-sp2">
-                                             <div class="container">
-                                                 <div class="row">
-                                                     <div class="col-md-12 heading-bx left">
-                                                         <h2 class="title-head text-uppercase">what people <span>say</span></h2>
-                                                         <p>It is a long established fact that a reader will be distracted by the
-                                                             readable content of a page</p>
-                                                     </div>
-                                                 </div>
-                                                 <div class="testimonial-carousel owl-carousel owl-btn-1 col-12 p-lr0">
-                                                     <c:forEach items="${requestScope.listPost}" var="post">
-                                                         <div class="item">
-                                                             <div class="testimonial-bx">
-                                                                 <div class="testimonial-thumb">
-                                                                     <img src="assets/images/testimonials/pic2.jpg" alt="">
-                                                                 </div>
-                                                                 <div class="testimonial-info">
-                                                                     <h5 class="name">${post.title}</h5>
-                                                                     <p>-Art Director</p>
-                                                                 </div>
-                                                                 <div class="testimonial-content">
-                                                                     <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                                                                         industry. Lorem Ipsum has been the industry's standard dummy
-                                                                         text ever since the 1500s, when an unknown printer took a galley
-                                                                         of type...</p>
-                                                                 </div>
-                                                             </div>
-                                                         </div>
-                                                     </c:forEach>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                         <!-- Testimonials END ==== -->
-                                     </div>
-                                     <!-- contact area END -->
-                                     <!-- Content END-->
+                                                <!-- Thông tin bài viết -->
+                                                <div class="info-bx flex-grow-1 d-flex flex-column px-2 py-1">
+                                                    <h6 class="post-title mb-1 text-truncate" style="max-height: 40px; font-size: 14px;">
+                                                        <a href="blog-details.html" class="text-dark">${post.key.title}</a>
+                                                    </h6>
+                                                    <div class="post-extra mt-auto d-flex justify-content-between align-items-center">
+                                                        <a href="#" class="text-muted"><i class="fa fa-calendar"></i> ${post.key.updateDate}</a>
+                                                        <span class="comments-bx text-primary font-weight-bold">${post.value}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </div>
 
+                            </div>
+                            <div class="text-center mt-4">
+                                <a href="listPost" class="btn btn-primary px-4 py-2"
+                                   style="border-radius: 8px; font-size: 16px; font-weight: 600; transition: 0.3s;">
+                                    View More Blogs
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <!-- Testimonials END ==== -->
+                    </div>
+                    <!-- contact area END -->
+                    <!-- Content END-->
                 </div>
-                <div class="col-3">
+
+                <!-- Side bar-->
+                <div class="col-lg-3 col-xl-3 col-md-4 sticky-top">
+                    <aside class="side-bar sticky-top">
+
+                        <!-- Recent Posts Widget -->
+                        <div class="widget recent-posts-entry">
+                            <h6 class="widget-title">Recent Posts</h6>
+                            <div class="widget-post-bx">
+                                <c:forEach var="recentPost" items="${requestScope.recentPost}">
+                                    <div class="widget-post clearfix">
+                                        <div class="ttr-post-media">
+                                            <img src="assets/images/blog/recent-blog/${recentPost.thumbnail}" width="200" height="143" alt="">
+                                        </div>
+                                        <div class="ttr-post-info">
+                                            <div class="ttr-post-header">
+                                                <h6 class="post-title">
+                                                    <a href="blog-details.html">${recentPost.title}</a>
+                                                </h6>
+                                            </div>
+                                            <ul class="media-post">
+                                                <li><a href="#"><i class="fa fa-calendar"></i> ${recentPost.updateDate}</a></li>
+                                                <li><a href="#"><i class="fa fa-comments-o"></i> Comments</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </aside>
                 </div>
             </div>
 
             <!-- Footer ==== -->
             <%@include file="Footer.jsp" %>
-        <!-- Footer END ==== -->
-        <button class="back-to-top fa fa-chevron-up"></button>
-    </div>
-<!-- External JavaScripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/vendors/bootstrap/js/popper.min.js"></script>
-<script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
-<script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
-<script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
-<script src="assets/vendors/counter/waypoints-min.js"></script>
-<script src="assets/vendors/counter/counterup.min.js"></script>
-<script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
-<script src="assets/vendors/masonry/masonry.js"></script>
-<script src="assets/vendors/masonry/filter.js"></script>
-<script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
-<script src="assets/js/functions.js"></script>
-<script src="assets/js/contact.js"></script>
-<script src='assets/vendors/switcher/switcher.js'></script>
-</body>
-
+            <!-- Footer END ==== -->
+            <button class="back-to-top fa fa-chevron-up"></button>
+            </div>
+        </div>
+        <!-- External JavaScripts -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
+        <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
+        <script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
+        <script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
+        <script src="assets/vendors/counter/waypoints-min.js"></script>
+        <script src="assets/vendors/counter/counterup.min.js"></script>
+        <script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
+        <script src="assets/vendors/masonry/masonry.js"></script>
+        <script src="assets/vendors/masonry/filter.js"></script>
+        <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
+        <script src="assets/js/functions.js"></script>
+        <script src="assets/js/contact.js"></script>
+        <script src='assets/vendors/switcher/switcher.js'></script>
+    </body>
 </html>
+

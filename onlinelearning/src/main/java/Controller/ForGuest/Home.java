@@ -2,11 +2,11 @@ package Controller.ForGuest;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 import DAO.CourseDAO;
 import DAO.PostDAO;
+import DAO.ReviewCourseDAO;
 import DAO.ReviewPostDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -38,17 +38,32 @@ public class Home extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         CourseDAO cDAO = new CourseDAO();
+        ReviewCourseDAO rcDAO = new ReviewCourseDAO();
         ArrayList<Course> listCourse= cDAO.getAll();
-        System.out.println(listCourse.size());
-        request.setAttribute("listCourse",listCourse);
-        System.out.println("listCourse attribute set: " + request.getAttribute("listCourse"));
+        LinkedHashMap<Course,Float> mapRatingCourse = new LinkedHashMap<>();
+        for(Course c : listCourse){
+            mapRatingCourse.put(c , rcDAO.getRatingOfCourse(c.getCourseId())) ;
+        }
+        request.setAttribute("mapRatingCourse",mapRatingCourse);
         PostDAO pDAO  = new PostDAO();
         ReviewPostDAO rpDAO = new ReviewPostDAO();
-        ArrayList<Post> listPost = pDAO.getAll() ;
-        HashMap<Post,Float> mapRatingPost = rpDAO.mapRating();
-        System.out.println(listPost.size()) ;
-        request.setAttribute("listPost",listPost);
+        ArrayList<Post> listPostArrange = pDAO.ArrangeByDate() ;
+        ArrayList<Post> listHotPost = pDAO.getAll();
+        Collections.sort(listHotPost, new Comparator<Post>() {
+            @Override
+            public int compare(Post p1, Post p2) {
+                return Float.compare(rpDAO.getRatingOfPost(p2.getPostId()), rpDAO.getRatingOfPost(p1.getPostId()));
+            }
+        });
+
+        LinkedHashMap<Post,Float> mapRatingPost = new LinkedHashMap<>() ;
+        for(Post p : listHotPost) {
+            mapRatingPost.put(p, rpDAO.getRatingOfPost(p.getPostId()));
+        }
+        request.setAttribute("listPost",listPostArrange);
         request.setAttribute("mapRatingPost",mapRatingPost);
+        ArrayList<Post> listRecentPost = pDAO.ArrangeByDate();
+        request.setAttribute("recentPost",listRecentPost);
         request.getRequestDispatcher("index.jsp").forward(request,response);
     }
 

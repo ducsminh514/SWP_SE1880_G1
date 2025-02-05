@@ -1925,6 +1925,7 @@ button.back-to-top {
 .recent-news{
 	box-shadow: 0 5px 10px 0 rgba(0,0,0,.1);
 	background: #fff;
+	height:100px;
 }
 .recent-news.blog-lg{
 	box-shadow: none;
@@ -1935,14 +1936,15 @@ button.back-to-top {
 }
 .blog-post .post-title,
 .recent-news .post-title{
-	font-size: 24px;
+	font-size: 25px;
 	margin-top: 0px;
 	margin-bottom: 6px;
 	font-family: roboto;
-	line-height: 34px;
+	line-height: 25px;
+	height:100px ;
 }
 .recent-news .info-bx{
-	padding: 20px;	
+	padding: 15px;
     border: 1px solid #EEEEEE;
 }
 .comments-bx{
