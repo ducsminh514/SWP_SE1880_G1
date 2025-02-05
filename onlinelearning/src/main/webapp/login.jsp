@@ -61,7 +61,7 @@
 				<div class="heading-bx left">
 					<h2 class="title-head">Login to your <span>Account</span></h2>
 					<p>Don't have an account? <a href="register.jsp">Create one here</a></p>
-				</div>	
+				</div>
 				<form class="contact-bx" method="post" action="login">
 					<div class="row placeani">
 						<div class="col-lg-12">
@@ -74,7 +74,7 @@
 						</div>
 						<div class="col-lg-12">
 							<div class="form-group">
-								<div class="input-group"> 
+								<div class="input-group">
 									<label>Your Password</label>
 									<input name="password" type="password" class="form-control" required="">
 								</div>
