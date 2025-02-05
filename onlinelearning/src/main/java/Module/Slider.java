@@ -14,11 +14,12 @@ public class Slider {
     private Date updateDate ;
     private boolean status ;
     private String backLink ;
+    private String content ;
 
     public Slider() {
     }
 
-    public Slider(int slideId, String slideUrl, Marketing marketing, String title, String image, String description, boolean isShow, Date createDate, Date updateDate, boolean status, String backLink) {
+    public Slider(int slideId, String slideUrl, Marketing marketing, String title, String image, String description, boolean isShow, Date createDate, Date updateDate, boolean status, String backLink, String content) {
         this.slideId = slideId;
         this.slideUrl = slideUrl;
         this.marketing = marketing;
@@ -30,6 +31,7 @@ public class Slider {
         this.updateDate = updateDate;
         this.status = status;
         this.backLink = backLink;
+        this.content = content;
     }
 
     public int getSlideId() {
@@ -118,5 +120,13 @@ public class Slider {
 
     public void setBackLink(String backLink) {
         this.backLink = backLink;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
