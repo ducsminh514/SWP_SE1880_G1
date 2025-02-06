@@ -211,4 +211,114 @@ public class UserDAO extends DBContext implements GenericDAO<User> {
         }
         return false;
     }
+
+    public List<User> findUserByFilter(String gender, String status, String role, String search, int page, int pageSize) {
+        List<User> users = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM Users WHERE RoleID != 1"); // Admin RoleID = 1
+        List<Object> params = new ArrayList<>();
+
+        // Kiểm tra và thêm điều kiện role
+        if (role != null && !role.isEmpty()) {
+            sql.append(" AND RoleID = ?");
+            params.add(Integer.parseInt(role));
+        }
+
+        // Kiểm tra và thêm điều kiện gender
+        if (gender != null && !gender.isEmpty()) {
+            sql.append(" AND Gender = ?");
+            params.add(Integer.parseInt(gender)); // Chuyển string sang int vì Gender là bit
+        }
+
+        // Kiểm tra và thêm điều kiện status
+        if (status != null && !status.isEmpty()) {
+            sql.append(" AND Status = ?");
+            params.add(Boolean.parseBoolean(status)); // Chuyển string sang boolean
+        }
+
+        // Kiểm tra và thêm điều kiện search
+        if (search != null && !search.isEmpty()) {
+            sql.append(" AND (FirstName LIKE ? OR LastName LIKE ? OR Email LIKE ?)");
+            String searchPattern = "%" + search + "%";
+            params.add(searchPattern);
+            params.add(searchPattern);
+            params.add(searchPattern);
+        }
+
+        // Thêm phần phân trang
+        sql.append(" ORDER BY UserID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+        params.add((page - 1) * pageSize);
+        params.add(pageSize);
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql.toString());
+            // Set parameters
+            for (int i = 0; i < params.size(); i++) {
+                st.setObject(i + 1, params.get(i));
+            }
+
+            System.out.println("Executing SQL: " + sql.toString()); // Debug
+            System.out.println("Parameters: " + params); // Debug
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                users.add(getFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error finding user: " + e.getMessage());
+            e.printStackTrace(); // In stack trace để debug
+        }
+        return users;
+    }
+
+    public int getTotalUserByFiler(String gender, String status, String role, String search) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM Users WHERE RoleID != 1");
+        List<Object> params = new ArrayList<>();
+
+        // Kiểm tra và thêm điều kiện role
+        if (role != null && !role.isEmpty()) {
+            sql.append(" AND RoleID = ?");
+            params.add(Integer.parseInt(role));
+        }
+
+        // Kiểm tra và thêm điều kiện gender
+        if (gender != null && !gender.isEmpty()) {
+            sql.append(" AND Gender = ?");
+            params.add(Integer.parseInt(gender));
+        }
+
+        // Kiểm tra và thêm điều kiện status
+        if (status != null && !status.isEmpty()) {
+            sql.append(" AND Status = ?");
+            params.add(Boolean.parseBoolean(status));
+        }
+
+        // Kiểm tra và thêm điều kiện search
+        if (search != null && !search.isEmpty()) {
+            sql.append(" AND (FirstName LIKE ? OR LastName LIKE ? OR Email LIKE ?)");
+            String searchPattern = "%" + search + "%";
+            params.add(searchPattern);
+            params.add(searchPattern);
+            params.add(searchPattern);
+        }
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql.toString());
+            // Set parameters
+            for (int i = 0; i < params.size(); i++) {
+                st.setObject(i + 1, params.get(i));
+            }
+
+            System.out.println("Count SQL: " + sql.toString()); // Debug
+            System.out.println("Count Parameters: " + params); // Debug
+
+            ResultSet rs = st.executeQuery(); // Sử dụng executeQuery thay vì execute
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error counting users: " + e.getMessage());
+            e.printStackTrace(); // In stack trace để debug
+        }
+        return 0;
+    }
 }
