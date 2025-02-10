@@ -7,12 +7,21 @@ public class Enrollment {
     private Course course;
     private Customer customer ;
     private Date enrollDate ;
+    private float processPercentage ;
+    private boolean status ;
+    private String payCode ;
 
-    public Enrollment(int enrollmentId, Course course, Customer customer, Date enrollDate) {
+    public Enrollment() {
+    }
+
+    public Enrollment(int enrollmentId, Course course, Customer customer, Date enrollDate, float processPercentage, boolean status, String payCode) {
         this.enrollmentId = enrollmentId;
         this.course = course;
         this.customer = customer;
         this.enrollDate = enrollDate;
+        this.processPercentage = processPercentage;
+        this.status = status;
+        this.payCode = payCode;
     }
 
     public int getEnrollmentId() {
@@ -45,5 +54,29 @@ public class Enrollment {
 
     public void setEnrollDate(Date enrollDate) {
         this.enrollDate = enrollDate;
+    }
+
+    public float getProcessPercentage() {
+        return processPercentage;
+    }
+
+    public void setProcessPercentage(float processPercentage) {
+        this.processPercentage = processPercentage;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getPayCode() {
+        return payCode;
+    }
+
+    public void setPayCode(String payCode) {
+        this.payCode = payCode;
     }
 }

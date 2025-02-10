@@ -53,6 +53,16 @@ public class User {
         this.status = status;
     }
 
+    public User(String firstName, String lastName, String email, String phoneNumber, String gender, int age, int userId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.age = age;
+        this.userId = userId;
+    }
+
     public int getUserId() {
         return userId;
     }

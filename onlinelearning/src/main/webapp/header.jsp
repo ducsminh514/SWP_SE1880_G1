@@ -68,10 +68,17 @@
 						</ul>
 					</div>
 					<div class="topbar-right">
+					 <c:if test="${sessionScope.account==null}">
 						<ul>
 							<li><a href="login.jsp">Login</a></li>
-							<li><a href="register.html">Register</a></li>
+							<li><a href="register.jsp">Register</a></li>
 						</ul>
+					</c:if>
+					<c:if test="${sessionScope.account!=null}">
+					<a href="logout" class="btn btn-color right-side">Sign out</a>
+					<a href="profile?id=${sessionScope.account.userId}" class="btn btn-color right-side">profile</a>
+					<a href="ChangePassword.jsp" class="btn btn-color right-side"> ChangePassword</a>
+					 </c:if>
 					</div>
 				</div>
 			</div>
@@ -124,7 +131,6 @@
 									<li><a href="about-2.jsp">About 2</a></li>
 									<li><a href="faq-1.jsp">FAQ's 1</a></li>
 									<li><a href="contact-1.jsp">Contact Us 1</a></li>
-									<li><a href="profile.html">Profile</a></li>
 								</ul>
 							</li>
 							<li class="add-mega-menu"><a href="javascript:;">Our Courses <i class="fa fa-chevron-down"></i></a>

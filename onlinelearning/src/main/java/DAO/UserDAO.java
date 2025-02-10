@@ -387,4 +387,38 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
         }
         return null;
     }
+
+    public boolean updateUser(User user) {
+        String sql = "\n" +
+                "UPDATE [dbo].[Users]\n" +
+                "      Set[FirstName] = ?\n" +
+                "      ,[LastName] = ?\n" +
+                "      ,[Email] = ?\n" +
+                "      ,[PhoneNumber] =?\n" +
+                "      ,[Gender] = ?\n" +
+                "      ,[Age] = ?\n" +
+                " WHERE UserID = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            //st.setString(1, account.getUsername());
+            st.setString(1, user.getFirstName());
+            st.setString(2, user.getLastName());
+            st.setString(3, user.getEmail());
+            st.setString(4, user.getPhoneNumber());
+            st.setObject(5,user.getGender());
+            st.setObject(6,user.getAge());
+            st.setInt(7,user.getUserId());
+
+            int rowsUpdated =st.executeUpdate();
+            System.out.println("update user");
+            return rowsUpdated > 0;
+        } catch (SQLException ex) {
+            System.out.println("Error updating user account: " + ex.getMessage());
+            return false;
+        }
+    }
+        public static void main(String[] args) {
+        User u = new User("duy1","duy1","duynguyenthe195@gmail.com","0825239239","male",22,2);
+        UserDAO ud= new UserDAO();
+        ud.updateUser(u);
+    }
 }

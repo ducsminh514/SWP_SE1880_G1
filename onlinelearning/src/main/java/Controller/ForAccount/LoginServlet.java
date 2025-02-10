@@ -58,7 +58,6 @@ public class LoginServlet  extends HttpServlet {
                     cookie.setMaxAge(60 * 60 * 24 * 7);
                     response.addCookie(cookie);
                 } else {
-                    // Xóa Cookie nếu không chọn "Remember Me"
                     Cookie cookie = new Cookie("rememberUser", "");
                     cookie.setMaxAge(0);
                     response.addCookie(cookie);
