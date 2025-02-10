@@ -1,20 +1,19 @@
 package Module;
 
 public class Setting {
-    private Integer settingId;
+    private int settingId;
     private String type;
     private String value;
-    private Integer order;
+    private int order;
     private boolean status;
     private String createdAt;
     private String updatedAt;
     private String description;
 
     public Setting() {
-
     }
 
-    public Setting(Integer settingId, String type, String value, Integer order, boolean status, String createdAt, String updatedAt, String description) {
+    public Setting(int settingId, String type, String value, int order, boolean status, String createdAt, String updatedAt, String description) {
         this.settingId = settingId;
         this.type = type;
         this.value = value;
@@ -25,11 +24,11 @@ public class Setting {
         this.description = description;
     }
 
-    public Integer getSettingId() {
+    public int getSettingId() {
         return settingId;
     }
 
-    public void setSettingId(Integer settingId) {
+    public void setSettingId(int settingId) {
         this.settingId = settingId;
     }
 
@@ -49,11 +48,11 @@ public class Setting {
         this.value = value;
     }
 
-    public Integer getOrder() {
+    public int getOrder() {
         return order;
     }
 
-    public void setOrder(Integer order) {
+    public void setOrder(int order) {
         this.order = order;
     }
 

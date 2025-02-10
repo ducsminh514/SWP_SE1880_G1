@@ -6,7 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
+
+<html>
 <head>
 
     <!-- META ============================================= -->
@@ -340,6 +343,19 @@
 </div>
 <!-- Left sidebar menu end -->
 
+<c:url value="/manage-setting" var="paginationUrl">
+    <c:param name="action" value="list"/>
+    <c:if test="${not empty param.type}">
+        <c:param name="type" value="${param.type}"/>
+    </c:if>
+    <c:if test="${not empty param.status}">
+        <c:param name="status" value="${param.status}"/>
+    </c:if>
+    <c:if test="${not empty param.search}">
+        <c:param name="search" value="${param.search}"/>
+    </c:if>
+</c:url>
+
 
 <!--Main container start -->
 <main class="ttr-wrapper">
@@ -360,31 +376,37 @@
                     </div>
                     <div class="widget-body ">
                         <div class="widget-inner ">
-                            <form action="${pageContext.request.contextPath}/manage-account" method="GET"
-                                  class="mb-4" class="cours-search">
+                            <form action="${pageContext.request.contextPath}/manage-setting" method="GET"
+                                  class="mb-4">
                                 <div class="row mb-3" style="justify-content: space-between">
                                     <div class="col-md-3">
                                         <select class="form-select" id="typeFilter" name="type">
                                             <option value="">All type</option>
-                                            <option value="system" >System</option>
-                                            <option value="user">User</option>
-                                            <option value="payment">Payment</option>
+                                            <option value="system" ${param.type == "system" ? "selected" : ""} >System
+                                            </option>
+                                            <option value="user" ${param.type == "user" ? "selected" : ""} >User
+                                            </option>
+                                            <option value="payment" ${param.type == "payment" ? "selected" : ""}>
+                                                Payment
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="col-md-3">
                                         <select class="form-select" id="statusFilter" name="status">
                                             <option value="">All Status</option>
-                                            <option value="true" >
+                                            <option value="true" ${param.status=='true' ? 'selected' : '' }>
                                                 Active
                                             </option>
-                                            <option value="false" >Non-active
+                                            <option value="false" ${param.status=='false' ? 'selected' : ''
+                                                    }>Non-active
                                             </option>
                                         </select>
                                     </div>
+
                                     <div class="col-md-3">
                                         <input type="text" class="form-control" id="searchFilter"
                                                name="search" placeholder="Search by name"
-                                               value="">
+                                               value="${param.search}">
                                     </div>
                                     <div class="col-md-1">
                                         <button type="submit"
@@ -410,63 +432,72 @@
                                     <th style="text-align: center;">Action</th>
                                 </tr>
                                 </thead>
-
+                                <c:forEach items="${settingList}" var="setting">
                                     <tr>
                                         <td>
-                                            <p>id</p>
+                                            <p>${setting.settingId}</p>
                                         </td>
                                         <td>
-                                            <p>full nam</p>
+                                            <p>${setting.type}</p>
                                         </td>
                                         <td>
-                                            <p>a</p>
+                                            <p>${setting.value}</p>
+                                        </td>
+
+                                        <td>
+                                            <p>${setting.order}</p>
                                         </td>
                                         <td>
-                                            <p>b</p>
-                                        </td>
-                                        <td>
-                                        <span >
-                                               active</span>
+                                             <span <c:if test="${setting.isStatus()}">
+                                                 class="btn green radius-xl outline"
+                                             </c:if>
+                                        <c:if test="${!setting.isStatus()}">
+                                            class="btn red radius-xl outline"
+                                        </c:if>>
+                                                 ${setting.status? 'Active' : 'Non-active'}
+                                            </span>
                                         </td>
                                         <td>
                                             <div style="text-align: center;">
                                                 <a class="btn button-sm green radius-xl"
-                                                   href=""
+                                                   href="${pageContext.request.contextPath}/manage-setting?action=edit&settingID=${setting.getSettingId()}"
                                                    title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
                                                 <a class="btn button-sm red radius-xl" href="#"
-                                                   onclick="" title="deactive"><i
+                                                   onclick="confirmDeactive(${setting.getSettingId()})"
+                                                   title="deactive"><i
                                                         class="fa-solid fa-trash"></i></a>
                                             </div>
                                         </td>
                                     </tr>
+                                </c:forEach>
                             </table>
                         </div>
                     </div>
-<%--                    <div class="pagination-bx rounded-sm gray clearfix">--%>
-<%--                        <ul class="pagination" style="justify-content: center;">--%>
-<%--                            <c:if test="${currentPage > 1}">--%>
-<%--                                <li class="previous">--%>
-<%--                                    <a href="${paginationUrl}&page=${currentPage - 1}">--%>
-<%--                                        <i class="ti-arrow-left"></i> Prev--%>
-<%--                                    </a>--%>
-<%--                                </li>--%>
-<%--                            </c:if>--%>
+                    <div class="pagination-bx rounded-sm gray clearfix">
+                        <ul class="pagination" style="justify-content: center;">
+                            <c:if test="${currentPage > 1}">
+                                <li class="previous">
+                                    <a href="${paginationUrl}&page=${currentPage - 1}">
+                                        <i class="ti-arrow-left"></i> Prev
+                                    </a>
+                                </li>
+                            </c:if>
 
-<%--                            <c:forEach begin="1" end="${totalPage}" var="i">--%>
-<%--                                <li class="${currentPage == i ? 'active' : ''}">--%>
-<%--                                    <a href="${paginationUrl}&page=${i}">${i}</a>--%>
-<%--                                </li>--%>
-<%--                            </c:forEach>--%>
+                            <c:forEach begin="1" end="${totalPage}" var="i">
+                                <li class="${currentPage == i ? 'active' : ''}">
+                                    <a href="${paginationUrl}&page=${i}">${i}</a>
+                                </li>
+                            </c:forEach>
 
-<%--                            <c:if test="${currentPage < totalPage}">--%>
-<%--                                <li class="next">--%>
-<%--                                    <a href="${paginationUrl}&page=${currentPage + 1}">--%>
-<%--                                        Next <i class="ti-arrow-right"></i>--%>
-<%--                                    </a>--%>
-<%--                                </li>--%>
-<%--                            </c:if>--%>
-<%--                        </ul>--%>
-<%--                    </div>--%>
+                            <c:if test="${currentPage < totalPage}">
+                                <li class="next">
+                                    <a href="${paginationUrl}&page=${currentPage + 1}">
+                                        Next <i class="ti-arrow-right"></i>
+                                    </a>
+                                </li>
+                            </c:if>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <!-- Your Profile Views Chart END-->
@@ -479,9 +510,9 @@
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
 
 <script>
-    function confirmDeactive(userId) {
-        if (confirm('Are you sure you want to deactivate this user?')) {
-            window.location.href = '${pageContext.request.contextPath}/manage-account?action=deactive&userId=' + userId;
+    function confirmDeactive(settingId) {
+        if (confirm('Are you sure you want to deactivate this setting?')) {
+            window.location.href = '${pageContext.request.contextPath}/manage-setting?action=deactive&settingId=' + settingId;
         }
     }
 </script>
