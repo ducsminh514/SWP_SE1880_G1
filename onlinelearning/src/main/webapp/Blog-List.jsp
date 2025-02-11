@@ -70,7 +70,7 @@
                 <div class="breadcrumb-row">
                     <div class="container">
                         <ul class="list-inline">
-                            <li><a href="#">Home</a></li>
+                            <li><a href="home">Home</a></li>
                             <li>Blog Classic Sidebar</li>
                         </ul>
                     </div>
@@ -108,7 +108,6 @@
                                                         <h5 class="post-title">
                                                             <a href="blog-details.html">${post.key.title}</a>
                                                         </h5>
-                                                        <p>Knowing that, you’ve optimised your pages countless amount of times, written tons.</p>
                                                         <div class="post-extra mt-auto d-flex justify-content-between">
                                                             <a href="#" class="btn-link">READ MORE</a>
                                                             <a href="#" class="comments-bx">
@@ -127,7 +126,7 @@
                                         <ul class="pagination justify-content-center">
                                             <c:forEach begin="1" end="${requestScope.pageNum}" var="i">
                                                 <li class="page-item ${i == requestScope.currentPage ? 'active' : ''}">
-                                                    <a class="page-link m-lg-1" href="home?page=${i}">${i}</a>
+                                                    <a class="page-link m-lg-1" href="listPost?page=${i}">${i}</a>
                                                 </li>
                                             </c:forEach>
                                         </ul>

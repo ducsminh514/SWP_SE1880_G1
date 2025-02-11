@@ -39,7 +39,9 @@ public class Home extends HttpServlet {
     throws ServletException, IOException {
         CourseDAO cDAO = new CourseDAO();
         ReviewCourseDAO rcDAO = new ReviewCourseDAO();
+        // lay ra all course
         ArrayList<Course> listCourse= cDAO.getAll();
+        // gan moi course voi rating trung binh cua no
         LinkedHashMap<Course,Float> mapRatingCourse = new LinkedHashMap<>();
         for(Course c : listCourse){
             mapRatingCourse.put(c , rcDAO.getRatingOfCourse(c.getCourseId())) ;
@@ -48,6 +50,7 @@ public class Home extends HttpServlet {
         PostDAO pDAO  = new PostDAO();
         ReviewPostDAO rpDAO = new ReviewPostDAO();
         ArrayList<Post> listPostArrange = pDAO.ArrangeByDate() ;
+        // lay all post dau tien
         ArrayList<Post> listHotPost = pDAO.getAll();
         Collections.sort(listHotPost, new Comparator<Post>() {
             @Override
@@ -57,9 +60,11 @@ public class Home extends HttpServlet {
         });
 
         LinkedHashMap<Post,Float> mapRatingPost = new LinkedHashMap<>() ;
-        for(Post p : listHotPost) {
+        for(int i=0 ;i<6;i++){
+            Post p = listHotPost.get(i) ;
             mapRatingPost.put(p, rpDAO.getRatingOfPost(p.getPostId()));
         }
+
         request.setAttribute("listPost",listPostArrange);
         request.setAttribute("mapRatingPost",mapRatingPost);
         ArrayList<Post> listRecentPost = pDAO.ArrangeByDate();

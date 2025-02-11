@@ -3,7 +3,6 @@
 <%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <!-- META ============================================= -->
         <meta charset="utf-8">
@@ -44,6 +43,7 @@
 
         <!-- SHORTCODES ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/shortcodes/shortcodes.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
         <!-- STYLESHEETS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
@@ -121,7 +121,6 @@
             <div class="row">
                 <div class="col-lg-8 col-xl-8 col-md-7">
                     <div class="content-block">
-
                         <!-- Popular Courses -->
                         <div class="section-area section-sp2 popular-courses-bx">
                             <div class="container">
@@ -136,7 +135,7 @@
                                             <div class="item">
                                                 <div class="cours-bx">
                                                     <div class="action-box">
-                                                        <img src="${cou.key.thumbnail}" alt="">
+                                                        <img src="assets\images\courses\pic1.jpg" alt="">
                                                         <a href="#" class="btn">Read More</a>
                                                     </div>
                                                     <div class="info-bx text-center">
@@ -144,14 +143,6 @@
                                                     </div>
                                                     <div class="cours-more-info">
                                                         <div class="review">
-                                                            <span>3 Review</span>
-                                                            <ul class="cours-star">
-                                                                <li class="active"><i class="fa fa-star"></i></li>
-                                                                <li class="active"><i class="fa fa-star"></i></li>
-                                                                <li class="active"><i class="fa fa-star"></i></li>
-                                                                <li><i class="fa fa-star"></i></li>
-                                                                <li><i class="fa fa-star"></i></li>
-                                                            </ul>
                                                             <span> ${cou.value}</span>
                                                         </div>
                                                         <div class="price">
@@ -166,6 +157,29 @@
                             </div>
                         </div>
                         <!-- Popular Courses END -->
+<script>
+    $(document).ready(function(){
+        $(".courses-carousel").owlCarousel({
+            loop: true,          // Lặp vô hạn
+            margin: 5,          // Khoảng cách giữa các item
+            nav: true,           // Hiện nút điều hướng
+            dots: true,          // Hiện chấm tròn điều hướng
+            autoplay: true,      // Tự động chạy
+            autoplayTimeout: 5000, // Thời gian chuyển slide (ms)
+            responsive: {
+                0: {
+                    items: 1  // Khi màn hình nhỏ hơn 576px, hiển thị 1 item
+                },
+                576: {
+                    items: 2  // Khi màn hình từ 576px đến 992px, hiển thị 2 item
+                },
+                992: {
+                    items: 3  // Khi màn hình lớn hơn 992px, hiển thị 3 item
+                }
+            }
+        });
+    });
+</script>
 
                         <div class="section-area section-sp2">
                             <div class="container">

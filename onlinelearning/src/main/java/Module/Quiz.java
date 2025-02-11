@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Quiz {
     private int quizId ;
+    // quizType neu la quiz le thi la false neu khong thi la true
     private boolean quizType;
     private String quizName ;
     private int time ;

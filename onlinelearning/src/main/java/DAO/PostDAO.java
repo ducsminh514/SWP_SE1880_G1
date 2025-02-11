@@ -94,12 +94,13 @@ public class PostDAO extends DBContext {
 
     public ArrayList<Post> getAllByPage(int start) {
         ArrayList<Post> listPost = new ArrayList<>();
-        String sql = "SELECT * FROM Post \n"
+        String sql = "SELECT * FROM Posts \n"
                 + "ORDER BY PostID\n"
-                + "OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY;";
+                + "OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY;";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1,start);
             ResultSet rs = pre.executeQuery();
             MarketingDAO mDAO = new MarketingDAO();
             CategoryBlogDAO cDAO = new CategoryBlogDAO();

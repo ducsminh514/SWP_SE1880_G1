@@ -44,17 +44,14 @@ public class ListPost extends HttpServlet {
         String arrange = request.getParameter("arrange") ;
         String Page = request.getParameter("page");
         String search = request.getParameter("search") ;
-        System.out.println(search);
         String category = request.getParameter("cate") ;
         if( search!= null){
-            System.out.println(search);
              for(Post p: listPost){
                  if(p.getTitle().contains(search) || p.getContent().contains(search)){
                      list.add(p);
                  }
              }
         }else if(category != null){
-            System.out.println(category);
              try{
                  int cateId = Integer.parseInt(category);
                  list = pDAO.getByCategory(cateId);
@@ -114,7 +111,7 @@ public class ListPost extends HttpServlet {
             request.setAttribute("currentPage", 1);
         }else{
             try{
-                page = Integer.parseInt("Page") ;
+                page = Integer.parseInt(Page) ;
                 for(int i=page*6-6 ; i< page*6 ;i++){
                     listFinal.add(list.get(i)) ;
                 }
@@ -133,7 +130,6 @@ public class ListPost extends HttpServlet {
         request.setAttribute("listCategoryBlog",listCate);
         request.setAttribute("mapRating",mapRating);
         ArrayList<Post> listLatest = pDAO.ArrangeByDate();
-        System.out.println(listLatest.size());
         request.setAttribute("recentPost",listLatest);
         request.getRequestDispatcher("Blog-List.jsp").forward(request,response);
     }
