@@ -39,14 +39,17 @@ public class CourseDAO extends DBContext {
         return listCourse;
     }
 
-    public ArrayList<Course> getAllByPage(int start) {
+
+    public ArrayList<Course> getAllByPage(int start,int numCourse) {
         ArrayList<Course> listCoursePage = new ArrayList<>();
-        String sql = "SELECT * FROM Courses \n"
-                + "ORDER BY CourseID\n"
-                + "OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY;";
+        String sql = "SELECT * FROM Courses \n" +
+                "ORDER BY CreatedDate DESC\n" +
+                "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1,start);
+            pre.setInt(2,numCourse);
             ResultSet rs = pre.executeQuery();
             CourseTypeDAO ctDAO = new CourseTypeDAO();
             ExpertDAO eDAO = new ExpertDAO() ;

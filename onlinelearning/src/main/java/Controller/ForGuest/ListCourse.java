@@ -3,7 +3,10 @@ package Controller.ForGuest;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
+import DAO.ReviewCourseDAO;
+import Module.ReviewCourse ;
 import DAO.CourseDAO;
 import Module.Course ;
 import jakarta.servlet.ServletException;
@@ -36,18 +39,45 @@ public class ListCourse extends HttpServlet {
     throws ServletException, IOException {
         CourseDAO cDAO = new CourseDAO();
         ArrayList<Course> listCourse= new ArrayList<>() ;
+        String numCourse = request.getParameter("numCourse");
         String pageCourse = request.getParameter("page");
-        if (pageCourse == null) {
-            listCourse = cDAO.getAllByPage(1);
+        if (numCourse == null) {
+            if (pageCourse == null) {
+                listCourse = cDAO.getAllByPage(1, 5);
+            } else {
+                int pageNumCourse = 0;
+                try {
+                    pageNumCourse = Integer.parseInt(pageCourse);
+                    listCourse = cDAO.getAllByPage(5 * pageNumCourse - 5, 5);
+                } catch (NumberFormatException e) {
+                    System.out.println(e);
+                }
+            }
         } else {
-            int pageNumCourse = 0;
-            try {
-                pageNumCourse = Integer.parseInt(pageCourse);
-                listCourse = cDAO.getAllByPage(5 * pageNumCourse - 5);
-            } catch (NumberFormatException e) {
+            try{
+                int numC = Integer.parseInt(numCourse);
+                if (pageCourse == null) {
+                    listCourse = cDAO.getAllByPage(1, numC);
+                } else {
+                    int pageNumCourse = 0;
+                    try {
+                        pageNumCourse = Integer.parseInt(pageCourse);
+                        listCourse = cDAO.getAllByPage(numC * pageNumCourse - numC, numC);
+                    } catch (NumberFormatException e) {
+                        System.out.println(e);
+                    }
+                }
+            }catch(NumberFormatException e) {
                 System.out.println(e);
             }
         }
+        ReviewCourseDAO rcDAO = new ReviewCourseDAO();
+        LinkedHashMap<Course,Float> mapRatingCourse = new LinkedHashMap<>();
+        for(Course c: listCourse){
+            mapRatingCourse.put(c, rcDAO.getRatingOfCourse(c.getCourseId())) ;
+        }
+
+        request.setAttribute("mapRatingCourse",mapRatingCourse);
     }
 
     @Override

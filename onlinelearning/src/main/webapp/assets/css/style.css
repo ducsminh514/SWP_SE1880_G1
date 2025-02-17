@@ -1925,7 +1925,6 @@ button.back-to-top {
 .recent-news{
 	box-shadow: 0 5px 10px 0 rgba(0,0,0,.1);
 	background: #fff;
-	height:100px;
 }
 .recent-news.blog-lg{
 	box-shadow: none;
@@ -1934,6 +1933,7 @@ button.back-to-top {
 	border:0;
 	padding: 20px 0 0 0;
 }
+
 .blog-post .post-title,
 .recent-news .post-title{
 	font-size: 25px;
@@ -2065,44 +2065,51 @@ button.back-to-top {
 .cours-more-info .price h5{
 	margin-bottom:0;
 }
-.courses-carousel{
-	margin-top:-15px;
+.courses-carousel .owl-nav .owl-prev::before,
+.courses-carousel .owl-nav .owl-next::before,
+.recent-news-carousel .owl-nav .owl-prev::before,
+.recent-news-carousel .owl-nav .owl-next::before,
+.testimonial-carousel .owl-nav .owl-prev::before,
+.testimonial-carousel .owl-nav .owl-next::before {
+    font-family: "Font Awesome 6 Free"; /* Chắc chắn dùng FontAwesome */
+    font-weight: 900;
+    font-size: 18px; /* Điều chỉnh kích thước icon */
+    color: white;
 }
-.courses-carousel .item{
-	padding:15px;
+.courses-carousel .item {
+    display: flex;
+    align-items: stretch; /* Kéo dài các item để có chiều cao bằng nhau */
 }
-.courses-carousel .owl-nav{
-	position: absolute;
-    top: -70px;
-    right: 10px;
+
+.cours-bx {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Đảm bảo tất cả các item có chiều cao bằng nhau */
 }
-.testimonial-carousel .owl-nav{
-	position: absolute;
-    top: -80px;
-    right: -5px;
+
+.action-box img {
+    width: 100%; /* Đảm bảo hình ảnh co giãn theo thẻ cha */
+    object-fit: cover; /* Cắt ảnh để phù hợp với kích thước */
 }
-.recent-news-carousel .owl-nav{
-	position: absolute;
-    top: -80px;
-    right: -5px;
+
+.info-bx, .cours-more-info {
+    flex-grow: 1;
+    height: 60px;/* Phần nội dung sẽ mở rộng để các item có chiều cao bằng nhau */
 }
-.courses-carousel .owl-nav .owl-next,
-.courses-carousel .owl-nav .owl-prev,
-.recent-news-carousel .owl-nav .owl-next,
-.recent-news-carousel .owl-nav .owl-prev,
-.testimonial-carousel .owl-nav .owl-next,
-.testimonial-carousel .owl-nav .owl-prev{
-	background-color:var(--primary);
-	margin: 0 5px !important;
+
+
+.courses-carousel .owl-nav .owl-prev::before,
+.recent-news-carousel .owl-nav .owl-prev::before,
+.testimonial-carousel .owl-nav .owl-prev::before {
+    content: "\f104"; /* Mã Unicode của FontAwesome (mũi tên trái) */
 }
-.courses-carousel .owl-nav .owl-next:hover,
-.courses-carousel .owl-nav .owl-prev:hover,
-.recent-news-carousel .owl-nav .owl-next:hover,
-.recent-news-carousel .owl-nav .owl-prev:hover,
-.testimonial-carousel .owl-nav .owl-next:hover,
-.testimonial-carousel .owl-nav .owl-prev:hover{
-	background-color:var(--sc-primary);
+
+.courses-carousel .owl-nav .owl-next::before,
+.recent-news-carousel .owl-nav .owl-next::before,
+.testimonial-carousel .owl-nav .owl-next::before {
+    content: "\f105"; /* Mã Unicode của FontAwesome (mũi tên phải) */
 }
+
 /* Online Cours */
 .online-cours h2{
 	font-size:45px;

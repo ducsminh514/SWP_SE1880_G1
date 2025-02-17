@@ -92,15 +92,44 @@ public class PostDAO extends DBContext {
         return listByCate;
    }
 
-    public ArrayList<Post> getAllByPage(int start) {
+    public ArrayList<Post> getAllByPage(int start,String search , int categoryID , String arrange ) {
         ArrayList<Post> listPost = new ArrayList<>();
-        String sql = "SELECT * FROM Posts \n"
-                + "ORDER BY PostID\n"
-                + "OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY;";
-
+        String sql = "SELECT * FROM Posts where 1=1" ;
+        if(search != null && !search.isEmpty()){
+            sql += " AND (Title LIKE ? OR Content LIKE ?)" ;
+        }
+        if(categoryID>0){
+            sql += " AND CategoryBlogID = ?" ;
+        }
+        if (arrange != null && !arrange.isEmpty()) {
+            if (arrange.equalsIgnoreCase("rating")) {
+                sql += " ORDER BY (SELECT AVG(Rating) FROM PostReview WHERE PostReview.PostID = Posts.PostID) DESC ";
+            } else if (arrange.equalsIgnoreCase("date-soon")) {
+                sql += " ORDER BY UpdateDate ASC ";
+            } else if (arrange.equalsIgnoreCase("date-late")) {
+                sql += " ORDER BY UpdateDate DESC ";
+            } else {
+                sql += " ORDER BY UpdateDate DESC ";
+            }
+        } else {
+            sql += " ORDER BY UpdateDate DESC ";
+        }
+        if(start>=0){
+            sql += " OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY;";
+        }
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1,start);
+            int index =1 ;
+            if (search != null && !search.isEmpty()) {
+                pre.setString(index++, "%" + search + "%");
+                pre.setString(index++, "%" + search + "%");
+            }
+            if (categoryID > 0) {
+                pre.setInt(index++, categoryID);
+            }
+            if(start>=0){
+                pre.setInt(index, start);
+            }
             ResultSet rs = pre.executeQuery();
             MarketingDAO mDAO = new MarketingDAO();
             CategoryBlogDAO cDAO = new CategoryBlogDAO();
@@ -121,9 +150,8 @@ public class PostDAO extends DBContext {
             }
             return listPost;
         } catch (SQLException e) {
-            System.out.println("ngu");
+            System.out.println(e);
         }
         return listPost;
     }
-
 }

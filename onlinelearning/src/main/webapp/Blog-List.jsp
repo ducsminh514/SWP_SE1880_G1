@@ -48,7 +48,41 @@
         <!-- STYLESHEETS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+        <style>
+        /* Tăng độ mượt cho card */
+        .card {
+            transition: all 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
 
+        /* Hiệu ứng overlay cho ảnh */
+        .action-box {
+            overflow: hidden;
+        }
+        .action-box img {
+            transition: transform 0.3s ease-in-out;
+        }
+        .action-box:hover img {
+            transform: scale(1.1);
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .action-box:hover .overlay {
+            opacity: 1;
+        }
+
+        </style>
     </head>
     <body id="bg">
         <div class="page-wraper">
@@ -78,6 +112,10 @@
                 <!-- Breadcrumb row END -->
 
                 <form class="col-2" action="listPost" id="statusForm">
+                    <!-- Truyền giá trị cate và search -->
+                    <input type="hidden" name="cate" value="${requestScope.cate}">
+                    <input type="hidden" name="search" value="${requestScope.search}">
+
                     <select class="form-select form-select-sm" aria-label="Small select example" name="arrange" onchange="document.getElementById('statusForm').submit();">
                         <option selected>Arrange</option>
                         <option value="rating">Highest Rating</option>
@@ -86,6 +124,7 @@
                     </select>
                 </form>
 
+
                 <div class="content-block">
                     <div class="section-area section-sp1">
                         <div class="container">
@@ -93,25 +132,45 @@
                                 <!-- Left part start -->
                                 <div class="col-lg-8 col-xl-8 col-md-7">
                                     <!-- Blog Grid -->
-                                    <div id="masonry" class="ttr-blog-grid-3 row">
+                                    <div id="masonry" class="row row-cols-1 row-cols-md-2 g-4">
                                         <c:forEach items="${requestScope.mapRating}" var="post">
-                                            <div class="col-md-6 col-lg-6 mb-4">
-                                                <div class="recent-news d-flex flex-column h-100">
-                                                    <div class="action-box">
-                                                        <img src="assets/images/blog/latest-blog/pic1.jpg" alt="Blog Image">
+                                            <div class="col">
+                                                <div class="card h-100 shadow-sm border-0">
+                                                    <!-- Ảnh bài viết -->
+                                                    <div class="action-box position-relative">
+                                                        <img src="assets/images/blog/latest-blog/pic1.jpg" class="card-img-top img-fluid rounded-top" alt="Blog Image">
+                                                        <div class="overlay"></div>
                                                     </div>
-                                                    <div class="info-bx flex-grow-1 d-flex flex-column">
-                                                        <ul class="media-post">
-                                                            <li><a href="#"><i class="fa fa-calendar"></i> ${post.key.updateDate}</a></li>
-                                                            <li><a href="#"><i class="fa fa-user"></i> ${post.key.marketing.user.userName}</a></li>
+
+                                                    <!-- Nội dung bài viết -->
+                                                    <div class="card-body d-flex flex-column">
+                                                        <!-- Thông tin bài viết -->
+                                                        <ul class="list-inline text-muted small mb-2">
+                                                            <li class="list-inline-item">
+                                                                <i class="fa fa-calendar"></i> ${post.key.updateDate}
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <i class="fa fa-user"></i> ${post.key.marketing.user.userName}
+                                                            </li>
                                                         </ul>
-                                                        <h5 class="post-title">
-                                                            <a href="blog-details.html">${post.key.title}</a>
+
+                                                        <!-- Tiêu đề bài viết -->
+                                                        <h5 class="card-title">
+                                                            <a href="blog-details.html" class="text-dark text-decoration-none">${post.key.title}</a>
                                                         </h5>
-                                                        <div class="post-extra mt-auto d-flex justify-content-between">
-                                                            <a href="#" class="btn-link">READ MORE</a>
-                                                            <a href="#" class="comments-bx">
-                                                                 ${post.value}
+
+                                                        <!-- Rating -->
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="text-warning me-2">
+                                                                <i class="fa fa-star"></i> ${post.value}
+                                                            </span>
+                                                        </div>
+
+                                                        <!-- Nút điều hướng -->
+                                                        <div class="mt-auto d-flex justify-content-between">
+                                                            <a href="#" class="btn btn-outline-primary btn-sm">READ MORE</a>
+                                                            <a href="#" class="comments-bx text-muted">
+                                                                <i class="fa fa-comments"></i> ${post.value}
                                                             </a>
                                                         </div>
                                                     </div>
@@ -119,6 +178,7 @@
                                             </div>
                                         </c:forEach>
                                     </div>
+
                                     <!-- Blog Grid END -->
 
                                     <!-- Pagination -->
@@ -126,7 +186,7 @@
                                         <ul class="pagination justify-content-center">
                                             <c:forEach begin="1" end="${requestScope.pageNum}" var="i">
                                                 <li class="page-item ${i == requestScope.currentPage ? 'active' : ''}">
-                                                    <a class="page-link m-lg-1" href="listPost?page=${i}">${i}</a>
+                                                    <a class="page-link m-lg-1" href="listPost?page=${i}&arrange=${requestScope.arrange}&cate=${requestScope.cate}&search=${requestScope.search}">${i}</a>
                                                 </li>
                                             </c:forEach>
                                         </ul>
