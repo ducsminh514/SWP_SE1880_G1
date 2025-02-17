@@ -16,6 +16,12 @@ public class Customer {
         this.levelOfEnglish = levelOfEnglish;
     }
 
+    public Customer(String socialRole, String levelOfEnglish, User user) {
+        this.socialRole = socialRole;
+        this.levelOfEnglish = levelOfEnglish;
+        this.user = user;
+    }
+
     public int getCustomerId() {
         return customerId;
     }

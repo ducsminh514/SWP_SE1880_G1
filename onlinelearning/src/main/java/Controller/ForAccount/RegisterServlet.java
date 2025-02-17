@@ -6,6 +6,8 @@ import java.util.Properties;
 import java.util.regex.Pattern;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import DAO.CustomerDAO;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -16,6 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import Module.User;
 import Module.Role;
+import Module.Customer;
 import DAO.UserDAO;
 
 @WebServlet(name = "RegisterServlet", urlPatterns = {"/register"})
@@ -86,7 +89,11 @@ public class RegisterServlet extends HttpServlet {
             String avatar= null;
             User newUser = new User(name, firstName, lastName, password, email, phoneNumber, gender,avatar,age , userRole,a);
             userDAO.insertUser1(newUser);
-
+            CustomerDAO cu = new CustomerDAO();
+            int b =userDAO.GetIDByUserName(name);
+            User newUser1= new User(b);
+            Customer newCustomer=new Customer("Student","Beginner",newUser1);
+            cu.insertUser1(newCustomer);
             sendVerificationEmail(email);
 
             request.setAttribute("notication", "Registration successful! Please check your email for verification.");

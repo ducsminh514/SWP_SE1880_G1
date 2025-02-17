@@ -415,9 +415,28 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
             return false;
         }
     }
-        public static void main(String[] args) {
-        User u = new User("duy1","duy1","duynguyenthe195@gmail.com","0825239239","male",22,2);
-        UserDAO ud= new UserDAO();
-        ud.updateUser(u);
+//        public static void main(String[] args) {
+//
+//        UserDAO ud= new UserDAO();
+//        String a = "customer02";
+//        ud.GetIDByUserName(a);
+//        System.out.println(ud.GetIDByUserName(a));
+//    }
+
+    public int GetIDByUserName(String name){
+        int userID = -1;
+        String sql = "SELECT UserID FROM Users WHERE Username = ?";
+        try{
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1,name);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                userID = rs.getInt("UserID");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error finding user: " + e.getMessage());
+        }
+        return userID;
     }
+
 }
