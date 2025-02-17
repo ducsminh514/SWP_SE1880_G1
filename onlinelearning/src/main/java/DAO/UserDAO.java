@@ -144,7 +144,6 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
                 + "           ([Username]\n"
                 + "           ,[FirstName]\n"
                 + "           ,[LastName]\n"
-                + "           ,[Fullname]\n"
                 + "           ,[Password]\n"
                 + "           ,[Email]\n"
                 + "           ,[PhoneNumber]\n"
@@ -153,21 +152,21 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
                 + "           ,[Age]\n"
                 + "           ,[RoleID]\n"
                 + "           ,[Status])\n"
-                + " Values(?,?,?,?,?,?,?,?,?,?,?,?)";
+                + " Values(?,?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, c.getUserName());
             st.setString(2, c.getFirstName());
             st.setString(3, c.getLastName());
-            st.setString(4,c.getFirstName()+c.getLastName());
-            st.setString(5, c.getPassword());
-            st.setString(6, c.getEmail());
-            st.setString(7, c.getPhoneNumber());
-            st.setString(8, c.getGender());
-            st.setString(9, c.getAvatar());
-            st.setInt(10, c.getAge());
-            st.setInt(11,c.getRole().getRoleId());
-            st.setObject(12,c.getStatus());
+
+            st.setString(4, c.getPassword());
+            st.setString(5, c.getEmail());
+            st.setString(6, c.getPhoneNumber());
+            st.setString(7, c.getGender());
+            st.setString(8, c.getAvatar());
+            st.setInt(9, c.getAge());
+            st.setInt(10,c.getRole().getRoleId());
+            st.setObject(11,c.getStatus());
             st.executeUpdate();
 
         } catch (SQLException e) {

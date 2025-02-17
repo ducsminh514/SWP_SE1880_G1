@@ -47,7 +47,35 @@
 	<!-- STYLESHEETS ============================================= -->
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
-	
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+     function removeDiacritics(str) {
+                // Chuyển đổi các ký tự có dấu thành không dấu
+                return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            }
+        function generateUsername() {
+            let firstName = document.querySelector('input[name="firstName"]').value.trim();
+            let lastName = document.querySelector('input[name="lastName"]').value.trim();
+            let nameField = document.querySelector('input[name="name"]');
+
+            firstName = removeDiacritics(firstName).replace(/\s+/g, '');
+                        lastName = removeDiacritics(lastName).replace(/\s+/g, '');
+
+                        // Kiểm tra và tạo username theo format lastName + firstName + 4 số random
+                        if (firstName && lastName && !nameField.dataset.edited) {
+                            let randomNumber = Math.floor(1000 + Math.random() * 9000); // 4 số ngẫu nhiên
+                            nameField.value = lastName.toLowerCase() + firstName.toLowerCase() + randomNumber;
+                        }
+        }
+
+        document.querySelector('input[name="firstName"]').addEventListener('input', generateUsername);
+        document.querySelector('input[name="lastName"]').addEventListener('input', generateUsername);
+        document.querySelector('input[name="name"]').addEventListener('input', function() {
+            this.dataset.edited = true;
+        });
+    });
+</script>
 </head>
 <body id="bg">
 <div class="page-wraper">
@@ -64,28 +92,31 @@
 				</div>	
 				<form class="contact-bx" method="post" action= "register">
 					<div class="row placeani">
-						<div class="col-lg-12">
-							<div class="form-group">
-								<div class="input-group">
-									<label>Your Name</label>
-									<input name="name" type="text" required="" class="form-control">
-								</div>
-							</div>
-						</div>
+
                         <div class="col-lg-12">
-							<div class="form-group">
-								<div class="input-group">
-									<label>Your First Name</label>
-									<input name="firstName" type="text" required="" class="form-control">
-								</div>
-							</div>
-                            <div class="form-group">
-								<div class="input-group">
-									<label>Your Last Name</label>
-									<input name="lastName" type="text" required="" class="form-control">
-								</div>
-							</div>
+							<div class="form-group row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                    <label>Your First Name</label>
+                                    <input name="firstName" type="text" required class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                    <label>Your Last Name</label>
+                                    <input name="lastName" type="text" required class="form-control">
+                                    </div>
+                                </div>
+                            </div>
 						</div>
+						<div class="col-lg-12">
+                        	<div class="form-group">
+                        		<div class="input-group">
+                        			<label>Username </label>
+                        			<input name="name" type="text" required="" class="form-control">
+                        		</div>
+                        	</div>
+                        </div>
                         <div class="col-lg-12">
 							<div class="form-group">
 								<div class="input-group">
@@ -150,8 +181,7 @@
 						<div class="col-lg-12 m-b30">
 							<button name="submit" type="submit" value="Submit" class="btn button-md">Sign Up</button>
 						</div>
-                        <h5 style="color: red">${requestScope.error}</h5>
-                        <h5 style="color: green">${requestScope.notication}</h5>
+
 					</div>
 				</form>
 			</div>
