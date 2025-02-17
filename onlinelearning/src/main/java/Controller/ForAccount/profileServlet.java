@@ -2,7 +2,12 @@ package Controller.ForAccount;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
+import DAO.CourseDAO;
+import Module.Enrollment;
+import DAO.CustomerDAO;
+import DAO.EnrollmentDAO;
 import DAO.UserDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import Module.User;
+import Module.Course;
 import jakarta.servlet.http.HttpSession;
 
 @WebServlet(name = "profileServlet", urlPatterns = {"/profile"})
@@ -35,6 +41,9 @@ public class profileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UserDAO ud= new UserDAO();
+        CustomerDAO cd= new CustomerDAO();
+        CourseDAO cod= new CourseDAO();
+        EnrollmentDAO ed = new EnrollmentDAO();
         String id_raw = request.getParameter("id");
         //System.out.println(id_raw+ "hehehe");
         int id;
@@ -42,6 +51,12 @@ public class profileServlet extends HttpServlet {
             id = Integer.parseInt(id_raw);
             User user = ud.getUserByID(id);
             request.setAttribute("user", user);
+            int cuID=cd.GetIDCustomerByID(id);
+            List<Enrollment> enrollList= ed.getAllEnrollmentsByCustomerID(cuID);
+            request.setAttribute("enrollList",enrollList );
+            List<Integer> courseIds = ed.getAllCourseIDsByCustomerID(cuID);
+            List<Course> courses = cod.getCoursesByCourseIds(courseIds);
+            request.setAttribute("courses",courses );
             request.getRequestDispatcher("profile.jsp").forward(request, response);
         } catch (ServletException | IOException | NumberFormatException e) {
             System.out.println(e);

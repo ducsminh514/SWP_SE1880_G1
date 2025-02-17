@@ -30,6 +30,15 @@ public class Course {
         this.expert = expert;
     }
 
+    public Course(int courseId, CourseType courseType, String courseName, String description, String title, String thumbnail) {
+        this.courseId = courseId;
+        this.courseType = courseType;
+        this.courseName = courseName;
+        this.description = description;
+        this.title = title;
+        this.thumbnail = thumbnail;
+    }
+
     public int getCourseId() {
         return courseId;
     }

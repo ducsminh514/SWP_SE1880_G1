@@ -77,4 +77,36 @@ public void insertUser1(Customer c) {
         System.out.println(e);
     }
 }
+    public Customer getCustomerById(int customerId) {
+        Customer customer = null;
+        String sql = "SELECT * FROM Customers WHERE CustomerID = ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, customerId);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                customer = new Customer();
+
+                customer.setCustomerId(rs.getInt("CustomerID"));
+                customer.setSocialRole(rs.getString("SocialRole"));
+                customer.setLevelOfEnglish(rs.getString("LevelOfEnglish"));
+
+                // Lấy thông tin User từ bảng Users
+                int userId = rs.getInt("UserID");
+                UserDAO ud = new UserDAO();
+                User user = ud.getUserByID(userId);
+                customer.setUser(user);
+            }
+
+            rs.close();  // Đóng ResultSet
+            st.close();  // Đóng PreparedStatement
+        } catch (SQLException e) {
+            System.err.println("Error retrieving customer: " + e);
+        }
+
+        return customer;  // Trả về đối tượng Customer hoặc null nếu không tìm thấy
+    }
+
 }
