@@ -2,47 +2,54 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Danh sách câu hỏi</title>
+    <title>Thêm câu hỏi</title>
     <style>
-        table { border-collapse: collapse; width: 80%; }
-        table, th, td { border: 1px solid black; }
-        th, td { padding: 8px; text-align: left; }
-        .btn { text-decoration: none; background-color: #4CAF50; color: white; padding: 6px 12px; border-radius: 4px; }
+        .option-input { margin-bottom: 5px; }
     </style>
 </head>
 <body>
-<h2>Danh sách câu hỏi</h2>
-<!-- Nút Add New Question -->
-<a href="${pageContext.request.contextPath}/manage-question?action=add" class="btn">Add New Question</a>
-<br/><br/>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Câu hỏi</th>
-        <th>Loại</th>
-        <th>Đáp án</th>
-        <th>Action</th>
-    </tr>
-    <c:forEach var="question" items="${questions}">
-        <tr>
-            <td>${question.id}</td>
-            <td>${question.questionText}</td>
-            <td>${question.questionType}</td>
-            <td>${question.correctAnswer}</td>
-            <td>
-                <a href="${pageContext.request.contextPath}/manage-question?action=edit&id=${question.id}" title="Edit">edit</a>
-                <a href="#"
-                   onclick="confirmDeactive(${question.id})" title="deactive">delete</a>
-            </td>
-        </tr>
-    </c:forEach>
-</table>
-<script>
-    function confirmDeactive(id) {
-        if (confirm('Are you sure you want to deactivate this question?')) {
-            window.location.href = '${pageContext.request.contextPath}/manage-question?action=deactive&id=' + id;
-        }
+<h2>Thêm câu hỏi trắc nghiệm</h2>
+<form action="${pageContext.request.contextPath}/manage-question" method="post">
+    <!-- Các thông tin của câu hỏi -->
+    <div>
+        <label for="questionText">Câu hỏi:</label>
+        <input type="text" id="questionText" name="questionText" required>
+    </div>
+    <div>
+        <label for="questionType">Loại câu hỏi:</label>
+        <!-- Ở đây gắn giá trị multiple cho câu hỏi trắc nghiệm -->
+        <select id="questionType" name="questionType">
+            <option value="multiple">Multiple Choice</option>
+            <option value="single">Single Choice</option>
+        </select>
+    </div>
+    <br/>
+
+    <!-- Container cho các option -->
+    <div id="optionContainer">
+        <label>Options:</label><br/>
+        <input type="text" class="option-input" name="options" placeholder="Nhập option" required>
+    </div>
+    <button type="button" onclick="addOption()">Add Option</button>
+    <br/><br/>
+
+    <!-- Nút submit -->
+    <button type="submit">Gửi câu hỏi</button>
+</form>
+
+<script type="text/javascript">
+    function addOption() {
+        // Tạo một input mới
+        var input = document.createElement("input");
+        input.type = "text";
+        input.name = "options"; // tên giống nhau sẽ chuyển về dạng mảng phía servlet
+        input.placeholder = "Nhập option";
+        input.className = "option-input";
+
+        // Thêm input vào container
+        document.getElementById("optionContainer").appendChild(input);
     }
 </script>
 </body>
 </html>
+
