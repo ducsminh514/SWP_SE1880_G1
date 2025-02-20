@@ -48,7 +48,31 @@
 	<!-- STYLESHEETS ============================================= -->
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
-	
+	<style>
+            .popup-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: none;
+                justify-content: center;
+                align-items: center;
+            }
+            .popup-content {
+                background: #f8f1e7;
+                padding: 20px;
+                border-radius: 10px;
+                width: 400px;
+            }
+            .filter-btn-container {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
+        </style>
+
     <jsp:include page="header.jsp" />
     <!-- header END ==== -->
     <!-- Content -->
@@ -85,9 +109,7 @@
 								<div class="profile-info">
 									<h4>${user.lastName}</h4>
 									<span>${user.email}</span>
-									 <c:forEach items="${requestScope.enrollList}" var="c">
-                                                                <span >$${c.enrollmentId}</span>
-                                                                                    </c:forEach>
+
 								</div>
 
 								<div class="profile-tabnav">
@@ -106,64 +128,96 @@
 								</div>
 							</div>
 						</div>
+						<c:set var="coursesPerPage" value="${param.coursesPerPage ne null ? param.coursesPerPage : 4}" />
+                        <c:set var="totalCourses" value="${fn:length(requestScope.courses)}" />
+                        <c:set var="totalPages" value="${(totalCourses/coursesPerPage) + (totalCourses%coursesPerPage > 0 ? 1 : 0)}" />
+                        <c:set var="currentPage" value="${param.page ne null ? param.page : 1}" />
+
+                        <%-- Tính toán vị trí bắt đầu và kết thúc cho mỗi trang --%>
+                        <c:set var="startIndex" value="${(currentPage - 1) * coursesPerPage}" />
+                        <c:set var="endIndex" value="${startIndex + coursesPerPage}" />
+                        <c:set var="endIndex" value="${endIndex > totalCourses ? totalCourses : endIndex}" />
 						<div class="col-lg-9 col-md-8 col-sm-12 m-b30">
 							<div class="profile-content-bx">
 								<div class="tab-content">
-									<div class="tab-pane active" id="courses">
-										<div class="profile-head">
-											<h3>My Courses</h3>
-											<div class="feature-filters style1 ml-auto">
-												<ul class="filters" data-toggle="buttons">
-													<li data-filter="" class="btn active">
-														<input type="radio">
-														<a href="#"><span>all</span></a>
-													</li>
-													<li data-filter="publish" class="btn">
-														<input type="radio">
-														<a href="#"><span>Publish</span></a> 
-													</li>
-													<li data-filter="pending" class="btn">
-														<input type="radio">
-														<a href="#"><span>Pending</span></a> 
-													</li>
-												</ul>
-											</div>
-										</div>
-										<div class="courses-filter">
-											<div class="clearfix">
-												<ul id="masonry" class="ttr-gallery-listing magnific-image row">
-													<li class="action-card col-xl-4 col-lg-6 col-md-12 col-sm-6 publish">
-														<div class="cours-bx">
-															<div class="action-box">
-																<img src="assets/images/courses/pic1.jpg" alt="">
-																<a href="#" class="btn">Read More</a>
-															</div>
-															<div class="info-bx text-center">
-																<h5><a href="#">Introduction EduChamp – LMS plugin</a></h5>
-																<span>Programming</span>
-															</div>
-															<div class="cours-more-info">
-																<div class="review">
-																	<span>3 Review</span>
-																	<ul class="cours-star">
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																	</ul>
-																</div>
-																<div class="price">
-																	<del>$190</del>
-																	<h5>$120</h5>
-																</div>
-															</div>
-														</div>
-													</li>
-												</ul>
-											</div>
-										</div>
-									</div>
+									                                   <div class="tab-pane active" id="courses">
+                                                                            <div class="profile-head">
+                                                                                <h3>My Courses</h3>
+                                                                                <div class="feature-filters style1 ml-auto">
+                                                                                <button class="btn btn-primary" id="filter-btn">Filter</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="courses-filter">
+                                                                                <div class="clearfix">
+                                                                                    <ul id="masonry" class="ttr-gallery-listing magnific-image row">
+                                                                                        <c:forEach items="${requestScope.courses}" var="c">
+                                                                                            <li class="action-card col-xl-4 col-lg-6 col-md-12 col-sm-6 publish"
+                                                                                                    >
+                                                                                                <div class="cours-bx">
+                                                                                                    <div class="action-box">
+                                                                                                        <img src="assets/images/courses/pic3.jpg" alt="">
+                                                                                                        <a href="#" class="btn">Read More</a>
+                                                                                                    </div>
+                                                                                                    <div class="info-bx text-center">
+                                                                                                        <h5><a href="#">${c.courseType.courseTypeName}</a></h5>
+                                                                                                        <span>${c.description}</span>
+                                                                                                    </div>
+                                                                                                    <div class="cours-more-info">
+                                                                                                        <div class="review">
+                                                                                                            <c:forEach var="i" items="${requestScope.enrollList}">
+                                                                                                                <c:if test="${c.courseId == i.course.courseId}">
+                                                                                                                <span>Enroll Date</span>
+                                                                                                                <h5>${i.enrollDate}</h5>
+                                                                                                                </c:if>
+                                                                                                            </c:forEach>
+                                                                                                        </div>
+                                                                                                        <div class="price">
+                                                                                                            <c:forEach var="i" items="${requestScope.enrollList}">
+                                                                                                                <c:if test="${c.courseId == i.course.courseId}">
+                                                                                                                 <span>Progress</span>
+                                                                                                                 <h5>${i.processPercentage}</h5>
+                                                                                                                </c:if>
+                                                                                                            </c:forEach>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </li>
+                                                                                        </c:forEach>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                         <div class="popup-overlay" id="popup">
+                                                                                <div class="popup-content">
+                                                                                    <h5>Display Properties</h5>
+                                                                                    <form>
+                                                                                        <div class="form-check">
+                                                                                         <input class="form-check-input" type="checkbox" name="display" id="courseTypeName">
+                                                                                         <label class="form-check-label" for="courseTypeName">Course Type Name</label>
+                                                                                         </div>
+                                                                                         <div class="form-check">
+                                                                                         <input class="form-check-input" type="checkbox" name="display" id="description">
+                                                                                         <label class="form-check-label" for="description">Description</label>
+                                                                                         </div>
+                                                                                          <div class="form-check">
+                                                                                          <input class="form-check-input" type="checkbox" name="display" id="enrollDate">
+                                                                                          <label class="form-check-label" for="enrollDate">Enroll Date</label>
+                                                                                          </div>
+                                                                                          <div class="form-check">
+                                                                                          <input class="form-check-input" type="checkbox" name="display" id="processPercentage">
+                                                                                          <label class="form-check-label" for="processPercentage">processPercentage</label>
+                                                                                          </div>
+                                                                                        <hr>
+
+                                                                                        <label for="courses-per-page">Number of Courses per Page</label>
+                                                                                        <input type="number" class="form-control" id="courses-per-page" min="1" max="100" value="4">
+                                                                                        <div class="mt-3 text-end">
+                                                                                            <button type="button" class="btn btn-secondary" id="close-btn">Close</button>
+                                                                                            <button type="submit" class="btn btn-primary">Apply</button>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
 									<div class="tab-pane" id="quiz-results">
 										<div class="profile-head">
 											<h3>Quiz Results</h3>
@@ -277,6 +331,85 @@
    <jsp:include page="footer.jsp" />
     <button class="back-to-top fa fa-chevron-up" ></button>
 </div>
+ <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          const filterBtn = document.getElementById("filter-btn");
+          const popup = document.getElementById("popup");
+          const closeBtn = document.getElementById("close-btn");
+          const form = popup.querySelector("form");
+          const coursesList = document.querySelectorAll("#masonry .action-card");
+          const coursesPerPageInput = document.getElementById("courses-per-page");
+          const paginationContainer = document.createElement("div");
+          paginationContainer.className = "pagination";
+          document.querySelector(".courses-filter").appendChild(paginationContainer);
+
+          let coursesPerPage = parseInt(coursesPerPageInput.value);
+          let currentPage = 1;
+
+          filterBtn.addEventListener("click", function () {
+              popup.style.display = "block";
+          });
+
+          closeBtn.addEventListener("click", function () {
+              popup.style.display = "none";
+          });
+
+          form.addEventListener("change", function () {
+              const showCourseType = document.getElementById("courseTypeName").checked;
+              const showDescription = document.getElementById("description").checked;
+              const showEnrollDate = document.getElementById("enrollDate").checked;
+              const showProcessPercentage = document.getElementById("processPercentage").checked;
+
+              coursesList.forEach(course => {
+                  course.querySelector(".info-bx h5").style.display = showCourseType ? "block" : "none";
+                  course.querySelector(".info-bx span").style.display = showDescription ? "block" : "none";
+                  course.querySelector(".review h5").style.display = showEnrollDate ? "block" : "none";
+                  course.querySelector(".price h5").style.display = showProcessPercentage ? "block" : "none";
+              });
+          });
+
+          form.addEventListener("submit", function (e) {
+              e.preventDefault();
+              coursesPerPage = parseInt(coursesPerPageInput.value);
+              currentPage = 1;
+              updatePagination();
+              popup.style.display = "none";
+          });
+
+          function updatePagination() {
+              const totalCourses = coursesList.length;
+              const totalPages = Math.ceil(totalCourses / coursesPerPage);
+              paginationContainer.innerHTML = "";
+
+              for (let i = 1; i <= totalPages; i++) {
+                  const pageBtn = document.createElement("button");
+                  pageBtn.textContent = i;
+                  pageBtn.className = "page-btn";
+                  if (i === currentPage) pageBtn.classList.add("active");
+                  pageBtn.addEventListener("click", function () {
+                      currentPage = i;
+                      updateCourseVisibility();
+                      updatePagination();
+                  });
+                  paginationContainer.appendChild(pageBtn);
+              }
+
+              updateCourseVisibility();
+          }
+
+          function updateCourseVisibility() {
+              coursesList.forEach((course, index) => {
+                  const start = (currentPage - 1) * coursesPerPage;
+                  const end = start + coursesPerPage;
+                  course.style.display = index >= start && index < end ? "block" : "none";
+              });
+          }
+
+          updatePagination();
+      });
+
+    </script>
+
 <!-- External JavaScripts -->
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
