@@ -49,6 +49,10 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 	<style>
+	.action-card {
+        opacity: 1;
+        transition: opacity 0.5s ease-in-out;
+    }
             .popup-overlay {
                 position: fixed;
                 top: 0;
@@ -160,7 +164,9 @@
                                                                                                     </div>
                                                                                                     <div class="info-bx text-center">
                                                                                                         <h5><a href="#">${c.courseType.courseTypeName}</a></h5>
+                                                                                                        <h6>${c.title}</h6>
                                                                                                         <span>${c.description}</span>
+
                                                                                                     </div>
                                                                                                     <div class="cours-more-info">
                                                                                                         <div class="review">
@@ -196,6 +202,10 @@
                                                                                          <label class="form-check-label" for="courseTypeName">Course Type Name</label>
                                                                                          </div>
                                                                                          <div class="form-check">
+                                                                                         <input class="form-check-input" type="checkbox" name="display" id="title">
+                                                                                         <label class="form-check-label" for="title">title</label>
+                                                                                         </div>
+                                                                                         <div class="form-check">
                                                                                          <input class="form-check-input" type="checkbox" name="display" id="description">
                                                                                          <label class="form-check-label" for="description">Description</label>
                                                                                          </div>
@@ -207,6 +217,22 @@
                                                                                           <input class="form-check-input" type="checkbox" name="display" id="processPercentage">
                                                                                           <label class="form-check-label" for="processPercentage">processPercentage</label>
                                                                                           </div>
+                                                                                        <hr>
+                                                                                        <h5>Display Progress</h5>
+                                                                                       <div class="form-check">
+                                                                                           <input class="form-check-input" type="checkbox" name="progress" id="pending">
+                                                                                           <label class="form-check-label" for="pending">Pending</label>
+                                                                                       </div>
+                                                                                       <div class="form-check">
+                                                                                           <input class="form-check-input" type="checkbox" name="progress" id="done">
+                                                                                           <label class="form-check-label" for="done">Done</label>
+                                                                                       </div>
+                                                                                       <div class="form-check">
+                                                                                           <input class="form-check-input" type="checkbox" name="progress" id="not-yet">
+                                                                                           <label class="form-check-label" for="not-yet">Not Yet</label>
+                                                                                       </div>
+
+
                                                                                         <hr>
 
                                                                                         <label for="courses-per-page">Number of Courses per Page</label>
@@ -333,81 +359,112 @@
     <button class="back-to-top fa fa-chevron-up" ></button>
 </div>
  <script>
-      document.addEventListener("DOMContentLoaded", function () {
-          const filterBtn = document.getElementById("filter-btn");
-          const popup = document.getElementById("popup");
-          const closeBtn = document.getElementById("close-btn");
-          const form = popup.querySelector("form");
-          const coursesList = document.querySelectorAll("#masonry .action-card");
-          const coursesPerPageInput = document.getElementById("courses-per-page");
-          const paginationContainer = document.createElement("div");
-          paginationContainer.className = "pagination";
-          document.querySelector(".courses-filter").appendChild(paginationContainer);
+     document.addEventListener("DOMContentLoaded", function () {
+         const filterBtn = document.getElementById("filter-btn");
+         const popup = document.getElementById("popup");
+         const closeBtn = document.getElementById("close-btn");
+         const form = popup.querySelector("form");
+         const coursesList = document.querySelectorAll("#masonry .action-card");
+         const coursesPerPageInput = document.getElementById("courses-per-page");
+         const paginationContainer = document.createElement("div");
+         paginationContainer.className = "pagination";
+         document.querySelector(".courses-filter").appendChild(paginationContainer);
 
-          let coursesPerPage = parseInt(coursesPerPageInput.value);
-          let currentPage = 1;
+         let coursesPerPage = parseInt(coursesPerPageInput.value);
+         let currentPage = 1;
 
-          filterBtn.addEventListener("click", function () {
-              popup.style.display = "block";
-          });
+         filterBtn.addEventListener("click", function () {
+             popup.style.display = "block";
+         });
 
-          closeBtn.addEventListener("click", function () {
-              popup.style.display = "none";
-          });
+         closeBtn.addEventListener("click", function () {
+             popup.style.display = "none";
+         });
 
-          form.addEventListener("change", function () {
-              const showCourseType = document.getElementById("courseTypeName").checked;
-              const showDescription = document.getElementById("description").checked;
-              const showEnrollDate = document.getElementById("enrollDate").checked;
-              const showProcessPercentage = document.getElementById("processPercentage").checked;
+         form.addEventListener("change", function () {
+             const showCourseType = document.getElementById("courseTypeName").checked;
+             const showDescription = document.getElementById("description").checked;
+             const showEnrollDate = document.getElementById("enrollDate").checked;
+             const showProcessPercentage = document.getElementById("processPercentage").checked;
+             const showTitle = document.getElementById("title").checked;
+             const showPending = document.getElementById("pending").checked;
+             const showDone = document.getElementById("done").checked;
+             const showNotYet = document.getElementById("not-yet").checked;
 
-              coursesList.forEach(course => {
-                  course.querySelector(".info-bx h5").style.display = showCourseType ? "block" : "none";
-                  course.querySelector(".info-bx span").style.display = showDescription ? "block" : "none";
-                  course.querySelector(".review h5").style.display = showEnrollDate ? "block" : "none";
-                  course.querySelector(".price h5").style.display = showProcessPercentage ? "block" : "none";
-              });
-          });
+             coursesList.forEach(course => {
+                 const progressElement = course.querySelector(".price h5");
+                 const progressText = progressElement.textContent.trim(); // Assuming progress is stored as text like 'Done', 'Pending', etc.
 
-          form.addEventListener("submit", function (e) {
-              e.preventDefault();
-              coursesPerPage = parseInt(coursesPerPageInput.value);
-              currentPage = 1;
-              updatePagination();
-              popup.style.display = "none";
-          });
+                 let showCourse = false;
 
-          function updatePagination() {
-              const totalCourses = coursesList.length;
-              const totalPages = Math.ceil(totalCourses / coursesPerPage);
-              paginationContainer.innerHTML = "";
+                 // Apply progress filter
+                 if (showPending && progressText === "Pending") {
+                     showCourse = true;
+                 }
+                 if (showDone && progressText === "Done") {
+                     showCourse = true;
+                 }
+                 if (showNotYet && progressText === "Not yet") {
+                     showCourse = true;
+                 }
 
-              for (let i = 1; i <= totalPages; i++) {
-                  const pageBtn = document.createElement("button");
-                  pageBtn.textContent = i;
-                  pageBtn.className = "page-btn";
-                  if (i === currentPage) pageBtn.classList.add("active");
-                  pageBtn.addEventListener("click", function () {
-                      currentPage = i;
-                      updateCourseVisibility();
-                      updatePagination();
-                  });
-                  paginationContainer.appendChild(pageBtn);
-              }
+                 // Control display of other course information
+                 course.querySelector(".info-bx h5").style.display = showCourseType ? "block" : "none";
+                 course.querySelector(".info-bx span").style.display = showDescription ? "block" : "none";
+                 course.querySelector(".review h5").style.display = showEnrollDate ? "block" : "none";
+                 course.querySelector(".price h5").style.display = showProcessPercentage ? "block" : "none";
+                 course.querySelector(".info-bx h6").style.display = showTitle ? "block" : "none";
 
-              updateCourseVisibility();
-          }
+                 // Show or hide course based on progress filter
+                 course.style.display = showCourse ? "block" : "none";
+             });
+         });
 
-          function updateCourseVisibility() {
-              coursesList.forEach((course, index) => {
-                  const start = (currentPage - 1) * coursesPerPage;
-                  const end = start + coursesPerPage;
-                  course.style.display = index >= start && index < end ? "block" : "none";
-              });
-          }
+         form.addEventListener("submit", function (e) {
+             e.preventDefault();
+             coursesPerPage = parseInt(coursesPerPageInput.value);
+             currentPage = 1;
+             updatePagination();
+             popup.style.display = "none";
+         });
 
-          updatePagination();
-      });
+         function updatePagination() {
+             const totalCourses = coursesList.length;
+             const totalPages = Math.ceil(totalCourses / coursesPerPage);
+             paginationContainer.innerHTML = "";
+
+             for (let i = 1; i <= totalPages; i++) {
+                 const pageBtn = document.createElement("button");
+                 pageBtn.textContent = i;
+                 pageBtn.className = "page-btn";
+                 if (i === currentPage) pageBtn.classList.add("active");
+                 pageBtn.addEventListener("click", function () {
+                     currentPage = i;
+                     updateCourseVisibility();
+                     updatePagination();
+                 });
+                 paginationContainer.appendChild(pageBtn);
+             }
+
+             updateCourseVisibility();
+         }
+
+         function updateCourseVisibility() {
+             // Smooth transition effect
+             document.querySelectorAll(".action-card").forEach(card => {
+                 card.style.transition = "opacity 0.5s ease-in-out";
+             });
+
+             coursesList.forEach((course, index) => {
+                 const start = (currentPage - 1) * coursesPerPage;
+                 const end = start + coursesPerPage;
+                 course.style.display = index >= start && index < end ? "block" : "none";
+                 course.style.opacity = index >= start && index < end ? 1 : 0;
+             });
+         }
+
+         updatePagination();
+     });
 
     </script>
 
