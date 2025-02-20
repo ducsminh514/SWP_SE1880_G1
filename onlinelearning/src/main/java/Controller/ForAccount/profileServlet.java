@@ -73,25 +73,28 @@ public class profileServlet extends HttpServlet {
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phoneNumber");
-        String age_raw = request.getParameter("age");
+        String userName = request.getParameter("userName");
         String gender = request.getParameter("gender");
 
-        int id, age;
+        int id;
 
         try {
             id = Integer.parseInt(id_raw);
-            age = Integer.parseInt(age_raw);
+            if (phoneNumber.length() >= 9 && phoneNumber.length() <= 12) {
+                User user = new User(userName, firstName, lastName, email, phoneNumber, gender, id);
+                boolean updated = ud.updateUser(user);
 
-            User user = new User( firstName, lastName, email, phoneNumber,gender, age, id);
-            boolean updated = ud.updateUser(user);
-
-            if (updated) {
-                request.setAttribute("message", "Cập nhật hồ sơ thành công!");
-            } else {
-                request.setAttribute("error", "Cập nhật thất bại!");
+                if (updated) {
+                    request.setAttribute("message", "Cập nhật hồ sơ thành công!");
+                } else {
+                    request.setAttribute("error", "Cập nhật thất bại!");
+                }
+                request.setAttribute("user", user);
+                request.getRequestDispatcher("profile.jsp").forward(request, response);
+            }else {
+                request.setAttribute("error", "Phone number must be 9 to 12 characters long.");
+                request.getRequestDispatcher("profile.jsp").forward(request, response);
             }
-            request.setAttribute("user", user);
-            request.getRequestDispatcher("profile.jsp").forward(request, response);
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Dữ liệu không hợp lệ!");
             request.getRequestDispatcher("profile.jsp").forward(request, response);

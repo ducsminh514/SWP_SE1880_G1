@@ -44,13 +44,13 @@ public class ChangePasswordServlet extends HttpServlet {
         String passWord = request.getParameter("pass");
         String pass = request.getParameter("npass");
         String re_pass = request.getParameter("cfpass");
-//        String passwordPattern = "^(?=.*[A-Z])(?=.*[\\W_]).{6,}$";
-//        boolean isValidPassword = Pattern.matches(passwordPattern, passWord);
-//                if (!isValidPassword) {
-//            request.setAttribute("error", "Password must contain at least 1 uppercase letter and 1 special character.");
-//            request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
-//            return;
-//        }
+        String passwordPattern = "^(?=.*[A-Z])(?=.*[\\W_]).{12,}$";
+        boolean isValidPassword = Pattern.matches(passwordPattern, passWord);
+                if (!isValidPassword) {
+            request.setAttribute("error", "Password must contain at least 1 uppercase letter and 1 special character.");
+            request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
+            return;
+        }
         UserDAO ud= new UserDAO();
         HttpSession session = request.getSession();
         if (!(re_pass.equals(pass))) {

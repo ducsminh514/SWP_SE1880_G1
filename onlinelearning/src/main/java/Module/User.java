@@ -63,6 +63,16 @@ public class User {
         this.userId = userId;
     }
 
+    public User(String userName, String firstName, String lastName, String email, String phoneNumber, String gender,int userId) {
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.userId = userId;
+    }
+
     public User(int userId) {
         this.userId = userId;
     }

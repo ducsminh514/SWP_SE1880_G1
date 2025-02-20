@@ -390,21 +390,21 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
     public boolean updateUser(User user) {
         String sql = "\n" +
                 "UPDATE [dbo].[Users]\n" +
-                "      Set[FirstName] = ?\n" +
+                "      Set[Username] = ?\n" +
+                "      ,[FirstName] = ?\n" +
                 "      ,[LastName] = ?\n" +
                 "      ,[Email] = ?\n" +
                 "      ,[PhoneNumber] =?\n" +
                 "      ,[Gender] = ?\n" +
-                "      ,[Age] = ?\n" +
                 " WHERE UserID = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             //st.setString(1, account.getUsername());
-            st.setString(1, user.getFirstName());
-            st.setString(2, user.getLastName());
-            st.setString(3, user.getEmail());
-            st.setString(4, user.getPhoneNumber());
-            st.setObject(5,user.getGender());
-            st.setObject(6,user.getAge());
+            st.setString(1, user.getUserName());
+            st.setString(2, user.getFirstName());
+            st.setString(3, user.getLastName());
+            st.setString(4, user.getEmail());
+            st.setString(5, user.getPhoneNumber());
+            st.setObject(6,user.getGender());
             st.setInt(7,user.getUserId());
 
             int rowsUpdated =st.executeUpdate();

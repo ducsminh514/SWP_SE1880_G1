@@ -256,6 +256,12 @@
                                             <form class="edit-profile" action="profile" method="post">
                                              <c:set value="${requestScope.user}" var="a" />
 											<div class="">
+											    <div class="form-group row">
+                                                    <label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">User Name</label>
+                                                	<div class="col-12 col-sm-9 col-md-9 col-lg-7">
+                                                		<input class="form-control" type="text" value="${a.userName}"name="username">
+                                                	</div>
+                                                </div>
 
 
 												<div class="form-group row">
@@ -274,7 +280,7 @@
 												<div class="form-group row">
 													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Email</label>
 													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value="${a.email}"name="email">
+														<input class="form-control" type="text" value="${a.email}"name="email" readonly>
 													</div>
 												</div>
 												<div class="form-group row">
@@ -283,12 +289,7 @@
 														<input class="form-control" type="text" value="${a.phoneNumber}"name="phoneNumber">
 													</div>
 												</div>
-												<div class="form-group row">
-													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Age</label>
-													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value="${a.age}"name="age">
-													</div>
-												</div>
+
 												
 												<div class="seperator"></div>
 
