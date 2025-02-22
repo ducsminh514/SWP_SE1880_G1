@@ -11,6 +11,30 @@ import java.util.List;
 
 public class SettingDAO extends DBContext implements GenericDAO<Setting> {
 
+    public Setting getSettingById(String settingId) {
+        Setting setting  = new Setting();
+        String sql = "\n" +
+                "SELECT [settingID]\n" +
+                "      ,[type]\n" +
+                "      ,[value]\n" +
+                "      ,[order]\n" +
+                "      ,[status]\n" +
+                "      ,[createdAt]\n" +
+                "      ,[updatedAt]\n" +
+                "      ,[description]\n" +
+                "  FROM [dbo].[Setting] where settingID = ?\n";
+        try(PreparedStatement st = connection.prepareStatement(sql)){
+            st.setString(1, settingId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+               setting = getFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return setting;
+    }
+
     public List<Setting> findSettingWithFilter(String typeFilter, String statusFilter, String searchFilter, int page, int pageSize) {
         List<Setting> settingList = new ArrayList<Setting>();
         StringBuilder sql = new StringBuilder("Select * From Setting Where 1=1");

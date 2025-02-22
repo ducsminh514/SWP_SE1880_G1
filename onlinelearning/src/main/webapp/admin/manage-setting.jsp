@@ -460,7 +460,7 @@
                                         <td>
                                             <div style="text-align: center;">
                                                 <a class="btn button-sm green radius-xl"
-                                                   href="${pageContext.request.contextPath}/manage-setting?action=edit&settingID=${setting.getSettingId()}"
+                                                   href="${pageContext.request.contextPath}/manage-setting?action=edit&settingId=${setting.getSettingId()}"
                                                    title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
                                                 <a class="btn button-sm red radius-xl" href="#"
                                                    onclick="confirmDeactive(${setting.getSettingId()})"
