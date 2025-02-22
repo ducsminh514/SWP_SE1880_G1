@@ -75,6 +75,46 @@
                 top: 10px;
                 right: 10px;
             }
+            .btn-change-avatar {
+                display: block;
+                margin: 10px auto; /* Căn giữa theo chiều ngang */
+                background-color: #ff9800;
+                color: white;
+                border: none;
+                padding: 5px 10px;
+                cursor: pointer;
+                font-size: 14px;
+                border-radius: 5px;
+            }
+
+            .btn-change-avatar:hover {
+                background-color: #e68900;
+            }
+            #avatar-upload-form {
+                display: none; /* Ẩn mặc định */
+                text-align: center;
+                margin-top: 10px;
+            }
+
+            #avatar-upload-form input[type="file"] {
+                display: block;
+                margin: 5px auto;
+            }
+
+            #avatar-upload-form button {
+                background-color: #28a745;
+                color: white;
+                border: none;
+                padding: 5px 10px;
+                cursor: pointer;
+                font-size: 14px;
+                border-radius: 5px;
+            }
+
+            #avatar-upload-form button:hover {
+                background-color: #218838;
+            }
+
         </style>
 
     <jsp:include page="header.jsp" />
@@ -89,6 +129,12 @@
 				 </div>
             </div>
         </div>
+        <%
+            String id = request.getParameter("id");
+            if (id == null) {
+                id = (String) session.getAttribute("id");
+            }
+        %>
 		<!-- Breadcrumb row -->
 		<div class="breadcrumb-row">
 			<div class="container">
@@ -108,8 +154,10 @@
 						<div class="col-lg-3 col-md-4 col-sm-12 m-b30">
 							<div class="profile-bx text-center">
 								<div class="user-profile-thumb">
-									<img src="assets/images/profile/pic1.jpg" alt=""/>
+									<img src="${user.avatar}" alt=""/>
 								</div>
+                                <button class="btn-change-avatar" onclick="openAvatarUpload()">Change</button>
+
 								<div class="profile-info">
 									<h4>${user.lastName}</h4>
 									<span>${user.email}</span>
@@ -285,7 +333,9 @@
 											    <div class="form-group row">
                                                     <label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">User Name</label>
                                                 	<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-                                                		<input class="form-control" type="text" value="${a.userName}"name="username">
+                                                	<input type="hidden" name="id" value="${a.userId}">
+                                                	<input type="hidden" name="id" value="<%= id %>">
+                                                		<input class="form-control" type="text" value="${a.userName}"name="userName">
                                                 	</div>
                                                 </div>
 
@@ -358,7 +408,13 @@
    <jsp:include page="footer.jsp" />
     <button class="back-to-top fa fa-chevron-up" ></button>
 </div>
+<script>
+    function openAvatarUpload() {
+        document.getElementById("avatar-upload-form").style.display = "block";
+    }
+</script>
  <script>
+
      document.addEventListener("DOMContentLoaded", function () {
          const filterBtn = document.getElementById("filter-btn");
          const popup = document.getElementById("popup");

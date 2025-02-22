@@ -62,7 +62,9 @@
 						</div>
 
 						<div class="pt-btn-join">
+						<c:if test="${sessionScope.account==null}">
 							<a href="register.jsp" class="btn ">Join Now</a>
+							 </c:if>
 						</div>
 					</div>
 				</div>

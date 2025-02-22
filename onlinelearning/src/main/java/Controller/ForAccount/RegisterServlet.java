@@ -86,7 +86,7 @@ public class RegisterServlet extends HttpServlet {
 
             Role userRole = new Role(2, "User");
             boolean a= false;
-            String avatar= null;
+            String avatar="https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg";
             User newUser = new User(name, firstName, lastName, password, email, phoneNumber, gender,avatar,age , userRole,a);
             userDAO.insertUser1(newUser);
             CustomerDAO cu = new CustomerDAO();

@@ -47,8 +47,18 @@ public class profileServlet extends HttpServlet {
         String id_raw = request.getParameter("id");
         //System.out.println(id_raw+ "hehehe");
         int id;
+        if (id_raw == null) {
+            id_raw = (String) request.getSession().getAttribute("id");
+        }
+
+        if (id_raw == null) {
+            request.setAttribute("error", "Không tìm thấy ID người dùng!");
+            request.getRequestDispatcher("profile.jsp").forward(request, response);
+            return;
+        }
         try {
             id = Integer.parseInt(id_raw);
+            request.getSession().setAttribute("id", id);
             User user = ud.getUserByID(id);
             request.setAttribute("user", user);
             int cuID=cd.GetIDCustomerByID(id);
@@ -80,6 +90,7 @@ public class profileServlet extends HttpServlet {
 
         try {
             id = Integer.parseInt(id_raw);
+            System.out.println("Received ID: " + id_raw);
             if (phoneNumber.length() >= 9 && phoneNumber.length() <= 12) {
                 User user = new User(userName, firstName, lastName, email, phoneNumber, gender, id);
                 boolean updated = ud.updateUser(user);
@@ -90,19 +101,16 @@ public class profileServlet extends HttpServlet {
                     request.setAttribute("error", "Cập nhật thất bại!");
                 }
                 request.setAttribute("user", user);
-                request.getRequestDispatcher("profile.jsp").forward(request, response);
-            }else {
+            } else {
                 request.setAttribute("error", "Phone number must be 9 to 12 characters long.");
-                request.getRequestDispatcher("profile.jsp").forward(request, response);
             }
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Dữ liệu không hợp lệ!");
-            request.getRequestDispatcher("profile.jsp").forward(request, response);
         }
+
+        response.sendRedirect("profile?id=" + id_raw);
     }
-    private boolean isValidEmail(String email) {
-        return email != null && !email.isEmpty() ;
-    }
+
     @Override
     public String getServletInfo() {
         return "Short description";

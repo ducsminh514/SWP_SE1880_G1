@@ -390,7 +390,7 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
     public boolean updateUser(User user) {
         String sql = "\n" +
                 "UPDATE [dbo].[Users]\n" +
-                "      Set[Username] = ?\n" +
+                "      Set[UserName] = ?\n" +
                 "      ,[FirstName] = ?\n" +
                 "      ,[LastName] = ?\n" +
                 "      ,[Email] = ?\n" +
@@ -398,7 +398,7 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
                 "      ,[Gender] = ?\n" +
                 " WHERE UserID = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
-            //st.setString(1, account.getUsername());
+
             st.setString(1, user.getUserName());
             st.setString(2, user.getFirstName());
             st.setString(3, user.getLastName());
@@ -415,12 +415,13 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
             return false;
         }
     }
+
 //        public static void main(String[] args) {
 //
 //        UserDAO ud= new UserDAO();
-//        String a = "customer02";
-//        ud.GetIDByUserName(a);
-//        System.out.println(ud.GetIDByUserName(a));
+//            //String userName, String firstName, String lastName, String email, String phoneNumber, String gender,int userId
+//        User a= new User("duy","duy","duy","duynguyenthe195@gmail.com","123123123","male",1);
+//        ud.updateUser(a);
 //    }
 
     public int GetIDByUserName(String name){
