@@ -396,6 +396,7 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
                 "      ,[Email] = ?\n" +
                 "      ,[PhoneNumber] =?\n" +
                 "      ,[Gender] = ?\n" +
+                "      ,[Avatar] = ?\n" +
                 " WHERE UserID = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
 
@@ -405,7 +406,8 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
             st.setString(4, user.getEmail());
             st.setString(5, user.getPhoneNumber());
             st.setObject(6,user.getGender());
-            st.setInt(7,user.getUserId());
+            st.setString(7, user.getAvatar());
+            st.setInt(8,user.getUserId());
 
             int rowsUpdated =st.executeUpdate();
             System.out.println("update user");
@@ -420,7 +422,7 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
 //
 //        UserDAO ud= new UserDAO();
 //            //String userName, String firstName, String lastName, String email, String phoneNumber, String gender,int userId
-//        User a= new User("duy","duy","duy","duynguyenthe195@gmail.com","123123123","male",1);
+//        User a= new User("customer01","Doe","Doe","john.doe@example.com","0901234567","male","https://moc247.com/wp-content/uploads/2023/12/loa-mat-voi-101-hinh-anh-avatar-meo-cute-dang-yeu-dep-mat_2.jpg",3);
 //        ud.updateUser(a);
 //    }
 

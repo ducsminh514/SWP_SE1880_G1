@@ -90,29 +90,7 @@
             .btn-change-avatar:hover {
                 background-color: #e68900;
             }
-            #avatar-upload-form {
-                display: none; /* Ẩn mặc định */
-                text-align: center;
-                margin-top: 10px;
-            }
 
-            #avatar-upload-form input[type="file"] {
-                display: block;
-                margin: 5px auto;
-            }
-
-            #avatar-upload-form button {
-                background-color: #28a745;
-                color: white;
-                border: none;
-                padding: 5px 10px;
-                cursor: pointer;
-                font-size: 14px;
-                border-radius: 5px;
-            }
-
-            #avatar-upload-form button:hover {
-                background-color: #218838;
             }
 
         </style>
@@ -156,7 +134,7 @@
 								<div class="user-profile-thumb">
 									<img src="${user.avatar}" alt=""/>
 								</div>
-                                <button class="btn-change-avatar" onclick="openAvatarUpload()">Change</button>
+
 
 								<div class="profile-info">
 									<h4>${user.lastName}</h4>
@@ -375,6 +353,12 @@
 														<input class="form-control" type="text" value="${a.gender}"name="gender">
 													</div>
 												</div>
+												<div class="form-group row">
+                                                	<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Avatar</label>
+                                                	<div class="col-12 col-sm-9 col-md-9 col-lg-7">
+                                                	<input class="form-control" type="text" value="${a.avatar}"name="avatar">
+                                                	</div>
+                                                	</div>
 											</div>
 											<div class="">
 												<div class="">
@@ -408,11 +392,7 @@
    <jsp:include page="footer.jsp" />
     <button class="back-to-top fa fa-chevron-up" ></button>
 </div>
-<script>
-    function openAvatarUpload() {
-        document.getElementById("avatar-upload-form").style.display = "block";
-    }
-</script>
+
  <script>
 
      document.addEventListener("DOMContentLoaded", function () {
