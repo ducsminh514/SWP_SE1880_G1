@@ -164,7 +164,7 @@ textarea.form-control {
 .bootstrap-select .dropdown-toggle:active,
 .bootstrap-select .dropdown-toggle:focus,
 .bootstrap-select .dropdown-toggle:hover {
-    background-color: #fff !important;
+    background-color: rgba(157, 250, 250, 0.93) !important;
     border: 1px solid #e9e9e9 !important;
     box-shadow: none !important;
     outline: 0px !important;

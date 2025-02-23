@@ -47,7 +47,7 @@ public class LoginServlet  extends HttpServlet {
             if (a.getUserName().equalsIgnoreCase("admin")) {
                 HttpSession session = request.getSession();
                 session.setAttribute("account", a);
-                response.sendRedirect("admin");
+                response.sendRedirect("manage-account");
             }
             if(a.getStatus()==true) {//a.getStatus()==1
                 HttpSession session = request.getSession();

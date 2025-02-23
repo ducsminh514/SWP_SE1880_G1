@@ -5,6 +5,7 @@
   Time: 2:11 PM
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page isELIgnored="false" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <script src="${pageContext.request.contextPath}/admin/assets/js/html5shiv.min.js"></script>
 <script src="${pageContext.request.contextPath}/admin/assets/js/respond.min.js"></script>
@@ -29,3 +30,4 @@
 <!-- FAVICONS ICON ============================================= -->
 <link rel="icon" href="..${pageContext.request.contextPath}/error-404.jsp" type="image/x-icon"/>
 <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.png"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">

@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%@ page isELIgnored="false" %>
 <script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/vendors/bootstrap/js/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/vendors/bootstrap/js/bootstrap.min.js"></script>
@@ -24,4 +24,6 @@
 <script src="${pageContext.request.contextPath}/admin/assets/vendors/chart/chart.min.js"></script>
 <script src="${pageContext.request.contextPath}/admin/assets/js/admin.js"></script>
 <script src='${pageContext.request.contextPath}/assets/vendors/switcher/switcher.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+
 
