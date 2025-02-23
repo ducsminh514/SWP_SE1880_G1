@@ -52,7 +52,7 @@ public class profileServlet extends HttpServlet {
         }
 
         if (id_raw == null) {
-            request.setAttribute("error", "Không tìm thấy ID người dùng!");
+            request.setAttribute("error", "User ID not found!");
             request.getRequestDispatcher("profile.jsp").forward(request, response);
             return;
         }
@@ -96,9 +96,9 @@ public class profileServlet extends HttpServlet {
                 boolean updated = ud.updateUser(user);
 
                 if (updated) {
-                    request.setAttribute("message", "Cập nhật hồ sơ thành công!");
+                    request.setAttribute("message", "Profile updated successfully!");
                 } else {
-                    request.setAttribute("error", "Cập nhật thất bại!");
+                    request.setAttribute("error", "Update failed!");
                 }
                 request.setAttribute("user", user);
             } else {
