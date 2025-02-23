@@ -3,9 +3,7 @@ package DAO;
 import Module.Setting;
 import dal.DBContext;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,6 +102,37 @@ public class SettingDAO extends DBContext implements GenericDAO<Setting> {
 
     @Override
     public int insert(Setting setting) {
+        String sql = "INSERT INTO [dbo].[Setting]\n" +
+                "           ([type]\n" +
+                "           ,[value]\n" +
+                "           ,[order]\n" +
+                "           ,[status]\n" +
+                "           ,[createdAt]\n" +
+                "           ,[updatedAt]\n" +
+                "           ,[description])\n" +
+                "     VALUES\n" +
+                "           (?,?,?,?,?,?,?)";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            st.setObject(1, setting.getType());
+            st.setObject(2, setting.getValue());
+            st.setObject(3, setting.getOrder());
+            st.setObject(4, setting.isStatus());
+            st.setTimestamp(5, Timestamp.valueOf(setting.getCreatedAt()));
+            st.setTimestamp(6, Timestamp.valueOf(setting.getUpdatedAt()));
+            st.setObject(7, setting.getDescription());
+
+            int affectedRows = st.executeUpdate();
+            if (affectedRows > 0) {
+                ResultSet rs = st.getGeneratedKeys();
+                if (rs.next()) { // Lấy khóa tự tăng sau khi insert thành công
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
         return 0;
     }
 
