@@ -109,11 +109,48 @@ public class SettingDAO extends DBContext implements GenericDAO<Setting> {
 
     @Override
     public boolean delete(Setting setting) {
+        String sql = "UPDATE [Setting] SET status = 0 WHERE settingID = ?";
+        try{
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setObject(1,setting.getSettingId());
+            int rowEffect = st.executeUpdate();
+            if(rowEffect > 0){
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Deactive Fail: " + e.getMessage());
+        }
         return false;
     }
 
     @Override
     public boolean update(Setting setting) {
+        String sql  = "UPDATE [dbo].[Setting]\n" +
+                "   SET [type] = ?\n" +
+                "      ,[value] = ?\n" +
+                "      ,[order] =?\n" +
+                "      ,[status] = ?\n" +
+                "      ,[createdAt] = ?\n" +
+                "      ,[updatedAt] = ?\n" +
+                "      ,[description] = ?\n" +
+                " WHERE settingID = ?";
+        try( PreparedStatement st = connection.prepareStatement(sql)){
+            st.setObject(1,setting.getType());
+            st.setObject(2,setting.getValue());
+            st.setObject(3,setting.getOrder());
+            st.setObject(4,setting.isStatus());
+            st.setObject(5,setting.getCreatedAt());
+            st.setObject(6,setting.getUpdatedAt());
+            st.setObject(7,setting.getDescription());
+            st.setObject(8,setting.getSettingId());
+            int affectedRows = st.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating new setting failed, no rows affected.");
+            }
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
         return false;
     }
 

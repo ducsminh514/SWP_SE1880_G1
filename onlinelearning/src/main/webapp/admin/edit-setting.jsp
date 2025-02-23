@@ -353,52 +353,78 @@
             <div class="col-lg-12 m-b30">
                 <div class="widget-box">
                     <div class="wc-title">
-                        <h4>Edit Setting</h4>
+                        <h4>Setting List</h4>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                            <a href="${pageContext.request.contextPath}/manage-setting" class="btn btn-primary">Back</a>
+                            <form action="${pageContext.request.contextPath}/manage-setting" method="get">
+                                <input type="hidden" name="action" value="add">
+                                <input type="submit" class="btn" value="Add new Setting" onclick="this.closest('form').submit();">
+                            </form>
+                        </div>
                     </div>
                     <div class="widget-inner">
                         <div class="row">
                             <div class="col-12">
                                 <form action="${pageContext.request.contextPath}/manage-setting" method="post">
                                     <input type="hidden" name="action" value="update">
-                                    <input type="hidden" name="settingId" value="">
+                                    <input type="hidden" name="settingId" value="${setting.settingId}">
 
                                     <div class="form-group">
                                         <label for="type">Type</label>
                                         <select id="type" name="type" class="form-control">
-                                            <option value="user">user</option>
-                                            <option value="system">system</option>
-                                            <option value="payment">payment</option>
+                                            <option value="user" ${setting.type == "user" ? "selected" : ""}>user</option>
+                                            <option value="system"  ${setting.type == "system" ? "selected" : ""}>system</option>
+                                            <option value="payment"  ${setting.type == "payment" ? "selected" : ""}>payment</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="value">value</label>
                                         <input class="form-control" type="text" id="value" name="value"
-                                               value="">
+                                               value="${setting.value}">
                                     </div>
-
                                     <div class="form-group">
                                         <label for="order">Order</label>
                                         <input class="form-control" type="text" id="order" name="order"
-                                               value="">
+                                               value="${setting.order}">
                                     </div>
                                     <div class="form-group">
                                         <label for="status">Status</label>
                                         <select class="form-control" id="status" name="status">
-                                            <option value="true" ${user.isStatus() ? 'selected' : ''}>Active</option>
-                                            <option value="false" ${!user.isStatus() ? 'selected' : ''}>Inactive
+                                            <option value="true" ${setting.status ? 'selected' : ''}>Active</option>
+                                            <option value="false" ${!setting.status  ? 'selected' : ''}>Inactive
                                             </option>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="description">Description</label>
                                         <input class="form-control" type="text" id="description" name="description"
-                                               value="">
+                                               value="${setting.description}">
                                     </div>
-                                    <div style="display:flex;justify-content: space-evenly;">
-                                        <button class="btn" type="submit">Update Setting</button>
-                                        <button class="btn" type="submit">Add new Setting</button>
+<%--                                    <div class="form-group">--%>
+<%--                                        <label for="createdAt">Create Time</label>--%>
+<%--                                        <input class="form-control" type="text" id="createdAt" name="createdAt"--%>
+<%--                                               value="${setting.createdAt}">--%>
+<%--                                    </div>--%>
+<%--                                    <div class="form-group">--%>
+<%--                                        <label for="updatedAt">Update Time</label>--%>
+<%--                                        <input class="form-control" type="text" id="updatedAt" name="updatedAt"--%>
+<%--                                               value="${setting.updatedAt}">--%>
+<%--                                    </div>--%>
+                                    <div class="form-group">
+                                        <label for="createAt">Create At:</label>
+                                        <!-- Nếu yourEntity đã có giá trị cho createAt thì hiển thị, nếu không người dùng tự nhập -->
+                                        <input class="form-control" type="datetime-local" id="createAt" name="createAt" value="${setting.createdAt}" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="updateAt">Update At:</label>
+                                        <!-- updateAt luôn hiển thị thời gian hiện tại được set từ backend qua attribute currentTime -->
+                                        <input class="form-control" type="datetime-local" id="updateAt" name="updateAt" value="${currentTime}" readonly />
                                     </div>
 
+                                    <div style="display:flex;justify-content: space-evenly;">
+                                        <button class="btn" type="submit">Update Setting</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -410,7 +436,36 @@
     </div>
 </main>
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
-
+// set toast message from session
+<script>
+    // Toast message display
+    var toastMessage = "${sessionScope.toastMessage}";
+    var toastType = "${sessionScope.toastType}";
+    if (toastMessage) {
+        iziToast.show({
+            title: toastType === 'success' ? 'Success' : 'Error',
+            message: toastMessage,
+            position: 'topRight',
+            color: toastType === 'success' ? 'green' : 'red',
+            timeout: 5000,
+            onClosing: function () {
+                // Remove toast attributes from the session after displaying
+                fetch('${pageContext.request.contextPath}/remove-toast', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                }).then(response => {
+                    if (!response.ok) {
+                        console.error('Failed to remove toast attributes');
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    }
+</script>
 </body>
 
 </html>

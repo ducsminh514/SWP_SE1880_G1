@@ -363,7 +363,7 @@
 <main class="ttr-wrapper">
     <div class="container-fluid">
         <div class="db-breadcrumb">
-            <h4 class="breadcrumb-title">Manage Settingancawpapwffa</h4>
+            <h4 class="breadcrumb-title">Manage Setting</h4>
             <ul class="db-breadcrumb-list">
                 <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
                 <li>Manage Setting</li>
@@ -381,7 +381,7 @@
                             <form action="${pageContext.request.contextPath}/manage-setting" method="GET"
                                   class="mb-4">
                                 <div class="row mb-3" style="justify-content: space-between">
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <select class="form-select" id="typeFilter" name="type">
                                             <option value="">All type</option>
                                             <option value="system" ${param.type == "system" ? "selected" : ""} >System
@@ -393,7 +393,7 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <select class="form-select" id="statusFilter" name="status">
                                             <option value="">All Status</option>
                                             <option value="true" ${param.status=='true' ? 'selected' : '' }>
@@ -405,16 +405,14 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <input type="text" class="form-control" id="searchFilter"
                                                name="search" placeholder="Search by name"
                                                value="${param.search}">
                                     </div>
-                                    <div class="col-md-1">
-                                        <button type="submit"
-                                                style="width: 60%; background-color: #ffcc41 ;border-radius: 50%; display: flex; align-items: center; text-align: center"
-                                                class="form-control text-light">
-                                            <i class="fa fa-search mr-4"></i>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn-search form-control text-light btn">
+                                            <i class="fa fa-search"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -456,18 +454,18 @@
                                         <c:if test="${!setting.isStatus()}">
                                             class="btn red radius-xl outline"
                                         </c:if>>
-                                                 ${setting.status? 'Active' : 'Non-active'}
-                                            </span>
+                                                     ${setting.status? 'Active' : 'Non-active'}
+                                             </span>
                                         </td>
                                         <td>
                                             <div style="text-align: center;">
                                                 <a class="btn button-sm green radius-xl"
                                                    href="${pageContext.request.contextPath}/manage-setting?action=edit&settingId=${setting.getSettingId()}"
                                                    title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                <a class="btn button-sm red radius-xl" href="#"
-                                                   onclick="confirmDeactive(${setting.getSettingId()})"
-                                                   title="deactive"><i
-                                                        class="fa-solid fa-trash"></i></a>
+                                                <i class="fa-solid fa-trash btn button-sm red radius-xl" data-toggle="modal"
+                                                   data-target="#delete-product-modal"
+                                                   onclick="deleteSettingModel(${setting.settingId});"
+                                                   title="deactive"></i>
                                             </div>
                                         </td>
                                     </tr>
@@ -510,6 +508,7 @@
 
 <!-- External JavaScripts -->
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
+<jsp:include page="../admin/deleteSetting.jsp"></jsp:include>
 
 <script>
     function confirmDeactive(settingId) {
