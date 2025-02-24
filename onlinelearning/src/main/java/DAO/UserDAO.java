@@ -44,7 +44,7 @@ public class UserDAO extends DBContext implements GenericDAO<User> {
 
             st.setString(1, user.getFirstName());
             st.setString(2, user.getLastName());
-            st.setBoolean(3, user.isGender());
+            st.setObject(3, user.getGender());
             st.setString(4, user.getEmail());
             st.setString(5, user.getPhoneNumber());
             st.setInt(6, user.getRole().getRoleId());
@@ -102,7 +102,7 @@ public class UserDAO extends DBContext implements GenericDAO<User> {
             st.setString(5, user.getEmail());
             st.setString(6, user.getPhoneNumber());
             st.setObject(7, user.getCreateDate());
-            st.setObject(8, user.isGender());
+            st.setObject(8, user.getGender());
             st.setObject(9, user.getAvatar());
             st.setObject(10, user.getAge());
             st.setInt(11, user.getRole().getRoleId());
@@ -128,6 +128,8 @@ public class UserDAO extends DBContext implements GenericDAO<User> {
 
     @Override
     public User getFromResultSet(ResultSet rs) throws SQLException {
+        RoleDAO roleDAO = new RoleDAO();
+        Role role = roleDAO.getByRoleID(rs.getInt("RoleID"));
         User user = new User();
         user.setUserId(rs.getInt("UserID"));
         user.setUserName(rs.getString("Username"));
@@ -137,11 +139,10 @@ public class UserDAO extends DBContext implements GenericDAO<User> {
         user.setEmail(rs.getString("Email"));
         user.setPhoneNumber(rs.getString("PhoneNumber"));
         user.setCreateDate(rs.getDate("CreatedDate"));
-        user.setGender(rs.getBoolean("Gender"));
+        user.setGender(rs.getString("Gender"));
         user.setAvatar(rs.getString("Avatar"));
         user.setAge(rs.getInt("Age"));
-        int roleID = rs.getInt("RoleID");
-        user.setRole(new Role(roleID));
+        user.setRole(role);
         user.setStatus(rs.getBoolean("Status"));
         return user;
     }
@@ -226,7 +227,7 @@ public class UserDAO extends DBContext implements GenericDAO<User> {
         // Kiểm tra và thêm điều kiện gender
         if (gender != null && !gender.isEmpty()) {
             sql.append(" AND Gender = ?");
-            params.add(Integer.parseInt(gender)); // Chuyển string sang int vì Gender là bit
+            params.add(gender);
         }
 
         // Kiểm tra và thêm điều kiện status
@@ -283,7 +284,7 @@ public class UserDAO extends DBContext implements GenericDAO<User> {
         // Kiểm tra và thêm điều kiện gender
         if (gender != null && !gender.isEmpty()) {
             sql.append(" AND Gender = ?");
-            params.add(Integer.parseInt(gender));
+            params.add(gender);
         }
 
         // Kiểm tra và thêm điều kiện status
@@ -311,14 +312,23 @@ public class UserDAO extends DBContext implements GenericDAO<User> {
             System.out.println("Count SQL: " + sql.toString()); // Debug
             System.out.println("Count Parameters: " + params); // Debug
 
-            ResultSet rs = st.executeQuery(); // Sử dụng executeQuery thay vì execute
+            ResultSet rs = st.executeQuery(); 
             if (rs.next()) {
                 return rs.getInt(1);
             }
         } catch (SQLException e) {
             System.out.println("Error counting users: " + e.getMessage());
-            e.printStackTrace(); // In stack trace để debug
+            e.printStackTrace();
         }
         return 0;
+    }
+
+    public static void main(String[] args) {
+        UserDAO userDAO = new UserDAO();
+        List<User> users = userDAO.findAllNonAdminAccounts(1, 10);
+        for (User user : users) {
+            System.out.println(user.toString());
+        }
+        System.out.println("Total: " + userDAO.getTotalNonAdminAccount());
     }
 }

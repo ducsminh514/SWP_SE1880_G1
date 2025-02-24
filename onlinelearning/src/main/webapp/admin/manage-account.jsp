@@ -87,8 +87,8 @@
                                     <div class="col-md-2">
                                         <select class="form-select" id="genderFilter" name="gender">
                                             <option value="">Gender</option>
-                                            <option value="1" ${param.gender=='1' ? 'selected' : '' }>Male</option>
-                                            <option value="0" ${param.gender=='0' ? 'selected' : '' }>Female</option>
+                                            <option value="Male" ${param.gender=='Male' ? 'selected' : '' }>Male</option>
+                                            <option value="Female" ${param.gender=='Female' ? 'selected' : '' }>Female</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2">
@@ -149,7 +149,7 @@
                                             <p>${acc.getFirstName()} ${acc.getLastName()}</p>
                                         </td>
                                         <td>
-                                            <p>${acc.isGender() ? "Male" : "Female"}</p>
+                                            <p>${acc.gender}</p>
                                         </td>
                                         <td>
                                             <p>${acc.getEmail()}</p>

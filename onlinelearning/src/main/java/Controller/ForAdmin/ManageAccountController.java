@@ -22,7 +22,6 @@ public class ManageAccountController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        System.out.println(action);
         if (action == null || action.equals("list")) {
             searchByFilter(request, response);
         } else {
@@ -118,7 +117,7 @@ public class ManageAccountController extends HttpServlet {
         User user = userDAO.findById(userId);
 
         int role = Integer.parseInt(request.getParameter("role"));
-        boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
+        String gender = request.getParameter("gender");
         boolean status = Boolean.parseBoolean(request.getParameter("status"));
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");

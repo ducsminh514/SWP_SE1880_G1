@@ -3,12 +3,15 @@ package Module;
 import java.util.Date;
 
 public class Subject {
-    private int subjectId ;
-    private Course course ;
-    private String subjectName ;
-    private String description ;
-    private int orderNo ;
-    private Date createDate ;
+    private int subjectId;
+    private Course course;
+    private String subjectName;
+    private String description;
+    private int orderNo;
+    private Date createDate;
+
+    public Subject() {
+    }
 
     public Subject(int subjectId, Course course, String subjectName, String description, int orderNo, Date createDate) {
         this.subjectId = subjectId;
@@ -66,6 +69,4 @@ public class Subject {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
-
 }
-

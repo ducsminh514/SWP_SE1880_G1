@@ -203,8 +203,9 @@
                                     <div class="form-group">
                                         <label for="gender">Gender</label>
                                         <select id="gender" name="gender" class="form-control" >
-                                            <option value="true" ${user.gender ? 'selected' : ''}>Male</option>
-                                            <option value="false" ${!user.gender ? 'selected' : ''}>Female</option>
+                                            <option value="Male" ${user.gender eq "Male" ? "selected" : ""}>Male</option>
+                                            <option value="Female" ${user.gender eq "Female" ? "selected" : ""}>Female</option>
+
                                         </select>
                                     </div>
                                     <div class="form-group">
