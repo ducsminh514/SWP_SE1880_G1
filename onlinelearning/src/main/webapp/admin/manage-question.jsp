@@ -47,54 +47,30 @@
 <!-- Left sidebar menu start -->
 <jsp:include page="../common/common_admin_sidebar_menu.jsp"></jsp:include>
 <!-- Left sidebar menu end -->
-
 <c:url value="/manage-question" var="paginationUrl">
     <c:param name="action" value="list"/>
-
     <c:if test="${not empty param.subject}">
         <c:param name="subject" value="${param.subject}"/>
     </c:if>
-
     <c:if test="${not empty param.level}">
         <c:param name="level" value="${param.level}"/>
     </c:if>
-
     <c:if test="${not empty param.status}">
         <c:param name="status" value="${param.status}"/>
     </c:if>
-
     <c:if test="${not empty param.search}">
         <c:param name="search" value="${param.search}"/>
     </c:if>
-
-    <!-- Thêm các lựa chọn optionChoice vào URL -->
-    <c:if test="${not empty listColum}">
-        <c:forEach items="${listColum}" var="colum">
-            <c:if test="${colum == 'idChoice'}">
-                <c:param name="optionChoice" value="idChoice"/>
-            </c:if>
-            <c:if test="${colum == 'subjectChoice'}">
-                <c:param name="optionChoice" value="subjectChoice"/>
-            </c:if>
-            <c:if test="${colum == 'levelChoice'}">
-                <c:param name="optionChoice" value="levelChoice"/>
-            </c:if>
-            <c:if test="${colum == 'statusChoice'}">
-                <c:param name="optionChoice" value="statusChoice"/>
-            </c:if>
-            <c:if test="${colum == 'contentChoice'}">
-                <c:param name="optionChoice" value="contentChoice"/>
-            </c:if>
-            <c:if test="${colum == 'typeChoice'}">
-                <c:param name="optionChoice" value="typeChoice"/>
-            </c:if>
+    <c:if test="${not empty param.pageSize}">
+        <c:param name="pageSize" value="${param.pageSize}"/>
+    </c:if>
+    <c:if test="${not empty param.optionChoice}">
+        <c:forEach items="${param.optionChoice}" var="colum">
+            <c:param name="optionChoice" value="${colum}"/>
         </c:forEach>
     </c:if>
-    <!-- Thêm tham số pageSize vào URL -->
-    <c:if test="${not empty param.pageSize}">
-        <c:param name="NumberQuestionPerPage" value="${param.pageSize}"/>
-    </c:if>
 </c:url>
+
 
 <!--Main container start -->
 <main class="ttr-wrapper">
@@ -122,20 +98,20 @@
                                         <select class="form-control" id="subjectFilter" name="subject">
                                             <option value="">Subject</option>
                                             <c:forEach items="${courseTypes}" var="type">
-                                                <option value="${type.courseTypeId}">${type.courseTypeName}</option>
+                                                <option value="${type.courseTypeId}" ${param.subject == type.courseTypeId ? "selected":"" }>${type.courseTypeName}</option>
                                             </c:forEach>
                                         </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="form-select" id="levelFilter" name="level">
+                                        <select class="form-control" id="levelFilter" name="level">
                                             <option value="">Level</option>
-                                            <option value="1">Easy</option>
-                                            <option value="2">Medium</option>
-                                            <option value="3">Hard</option>
+                                            <option value="1"  ${param.level == 1 ? "selected":"" }>Easy</option>
+                                            <option value="2"  ${param.level == 2 ? "selected":"" }>Medium</option>
+                                            <option value="3"  ${param.level == 3 ? "selected":"" }>Hard</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="form-select" id="statusFilter" name="status">
+                                        <select class="form-control" id="statusFilter" name="status">
                                             <option value="">All Status</option>
                                             <option value="true" ${param.status=='true' ? 'selected' : '' }>
                                                 Active

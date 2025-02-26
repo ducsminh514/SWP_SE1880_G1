@@ -1,15 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: PC
-  Date: 2/24/2025
-  Time: 11:13 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!-- Modal -->
-
-
 <div class="modal fade" id="settingModal" tabindex="-1" role="dialog" aria-labelledby="settingModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -20,51 +9,143 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="settingInPage" action="${pageContext.request.contextPath}/manage-question" method="get">
-                    <div class="form-group">
-                        <label for="NumberQuestionPerPage">Enter number of question:</label>
-                        <input type="text" class="form-control" id="NumberQuestionPerPage" name="NumberQuestionPerPage">
-                        <div id="nameError" class="error"></div>
-                    </div>
-                    <div class="form-group">
-                    <label>Enter the columns you want to show:</label>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="optionChoice" value="idChoice"> ID
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="optionChoice" value="contentChoice"> Content
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="optionChoice" value="subjectChoice"> Subject
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="optionChoice" value="levelChoice"> Level
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="optionChoice" value="typeChoice"> Type
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="optionChoice" value="statusChoice"> Status
-                        </label>
-                    </div>
-                </div>
+                <form id="settingInPage" action="${paginationUrl}" method="get">
+                    <!-- Giữ lại các tham số filter đã chọn -->
+                    <input type="hidden" name="action" value="list"/>
+                    <c:if test="${not empty param.subject}">
+                        <input type="hidden" name="subject" value="${param.subject}"/>
+                    </c:if>
+                    <c:if test="${not empty param.level}">
+                        <input type="hidden" name="level" value="${param.level}"/>
+                    </c:if>
+                    <c:if test="${not empty param.status}">
+                        <input type="hidden" name="status" value="${param.status}"/>
+                    </c:if>
+                    <c:if test="${not empty param.search}">
+                        <input type="hidden" name="search" value="${param.search}"/>
+                    </c:if>
+                    <c:if test="${not empty currentPage}">
+                        <input type="hidden" name="page" value="${currentPage}"/>
+                    </c:if>
 
+                    <div class="form-group">
+                        <label>Enter the columns you want to show:</label>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="optionChoice" value="idChoice"
+                                    <% 
+                                        String[] choices = request.getParameterValues("optionChoice");
+                                        if (choices != null) {
+                                            for (String choice : choices) {
+                                                if ("idChoice".equals(choice)) {
+                                                    out.print("checked");
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    %>> ID
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="optionChoice" value="contentChoice"
+                                    <% 
+                                        if (choices == null) {
+                                            choices = request.getParameterValues("optionChoice");
+                                        }
+                                        if (choices != null) {
+                                            for (String choice : choices) {
+                                                if ("contentChoice".equals(choice)) {
+                                                    out.print("checked");
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    %>> Content
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="optionChoice" value="subjectChoice"
+                                    <% 
+                                        if (choices == null) {
+                                            choices = request.getParameterValues("optionChoice");
+                                        }
+                                        if (choices != null) {
+                                            for (String choice : choices) {
+                                                if ("subjectChoice".equals(choice)) {
+                                                    out.print("checked");
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    %>> Subject
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="optionChoice" value="levelChoice"
+                                    <% 
+                                        if (choices == null) {
+                                            choices = request.getParameterValues("optionChoice");
+                                        }
+                                        if (choices != null) {
+                                            for (String choice : choices) {
+                                                if ("levelChoice".equals(choice)) {
+                                                    out.print("checked");
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    %>
+                                > Level
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="optionChoice" value="typeChoice"
+                                    <% 
+                                        if (choices == null) {
+                                            choices = request.getParameterValues("optionChoice");
+                                        }
+                                        if (choices != null) {
+                                            for (String choice : choices) {
+                                                if ("typeChoice".equals(choice)) {
+                                                    out.print("checked");
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    %>> Type
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="optionChoice" value="statusChoice"
+                                    <% 
+                                        if (choices == null) {
+                                            choices = request.getParameterValues("optionChoice");
+                                        }
+                                        if (choices != null) {
+                                            for (String choice : choices) {
+                                                if ("statusChoice".equals(choice)) {
+                                                    out.print("checked");
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    %>> Status
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pageSize">Enter number of questions:</label>
+                        <input type="text" class="form-control" id="pageSize" name="pageSize" value="${param.pageSize}">
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <!-- Nút submit sẽ submit form thông qua thuộc tính form -->
                 <button type="submit" class="btn btn-primary" form="settingInPage">Submit</button>
             </div>
         </div>
