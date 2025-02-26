@@ -8,15 +8,17 @@ public class Subject {
     private String subjectName ;
     private String description ;
     private int orderNo ;
+    private int ownerID;
     private Date createDate ;
 
-    public Subject(int subjectId, Course course, String subjectName, String description, int orderNo, Date createDate) {
+    public Subject(int subjectId, Course course, String subjectName, String description, int orderNo, Date createDate, int ownerID) {
         this.subjectId = subjectId;
         this.course = course;
         this.subjectName = subjectName;
         this.description = description;
         this.orderNo = orderNo;
         this.createDate = createDate;
+        this.ownerID  =ownerID
     }
 
     public int getSubjectId() {
@@ -67,5 +69,12 @@ public class Subject {
         this.createDate = createDate;
     }
 
+    public int getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
+    }
 }
 

@@ -11,6 +11,7 @@ package dal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 public class DBContext {
 
@@ -27,6 +28,29 @@ public class DBContext {
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println(ex);
         }
+    }
+    public ResultSet getData(String sql) {
+        ResultSet rs = null;
+        try {
+            Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            rs = state.executeQuery(sql);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return rs;
+    }
+
+    public int getTotalRecord(String sql) {
+        int countPage = 0;
+        ResultSet rs = this.getData(sql);
+        try {
+            while (rs.next()) {
+                countPage++;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return countPage;
     }
 
     public static void main(String[] args) {
