@@ -87,7 +87,8 @@ public class profileServlet extends HttpServlet {
         String gender = request.getParameter("gender");
         String avatar =request.getParameter("avatar");
         int id;
-
+        request.getSession().removeAttribute("message");
+        request.getSession().removeAttribute("error");
         try {
             id = Integer.parseInt(id_raw);
             System.out.println("Received ID: " + id_raw);
@@ -96,16 +97,16 @@ public class profileServlet extends HttpServlet {
                 boolean updated = ud.updateUser(user);
 
                 if (updated) {
-                    request.setAttribute("message", "Profile updated successfully!");
+                    request.getSession().setAttribute("message", "Profile updated successfully!");
                 } else {
-                    request.setAttribute("error", "Update failed!");
+                    request.getSession().setAttribute("error", "Update failed!");
                 }
-                request.setAttribute("user", user);
+                request.getSession().setAttribute("user", user);
             } else {
-                request.setAttribute("error", "Phone number must be 9 to 12 characters long.");
+                request.getSession().setAttribute("error", "Phone number must be 9 to 12 characters long.");
             }
         } catch (NumberFormatException e) {
-            request.setAttribute("error", "Invalid data!");
+            request.getSession().setAttribute("error", "Invalid data!");
         }
 
         response.sendRedirect("profile?id=" + id_raw);

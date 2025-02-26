@@ -46,17 +46,20 @@ public class ChangePasswordServlet extends HttpServlet {
         String re_pass = request.getParameter("cfpass");
         String passwordPattern = "^(?=.*[A-Z])(?=.*[\\W_]).{12,}$";
         boolean isValidPassword = Pattern.matches(passwordPattern, passWord);
-                if (!isValidPassword) {
-            request.setAttribute("error", "Password must contain at least 1 uppercase letter and 1 special character.");
+
+        if (!isValidPassword) {
+            request.setAttribute("error", "Password must contain at least 1 uppercase letter and 1 special character, and must be at least 12 characters long.");
+            request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
+            return;
+        }
+
+        if (!pass.equals(re_pass)) {
+            request.setAttribute("error", "The new password and confirm password do not match.");
             request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
             return;
         }
         UserDAO ud= new UserDAO();
         HttpSession session = request.getSession();
-        if (!(re_pass.equals(pass))) {
-            session.setAttribute("error", "Your pass is not match");
-            request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
-        }
         if (session == null) {
             response.sendRedirect("login");
         } else {

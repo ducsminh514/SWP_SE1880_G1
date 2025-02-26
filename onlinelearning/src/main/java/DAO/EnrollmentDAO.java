@@ -86,15 +86,15 @@ public class EnrollmentDAO extends DBContext {
 
         return enrollments;
     }
-    public static void main(String[] args) {
-        EnrollmentDAO ed= new EnrollmentDAO();
-        int a = 2;
-        List<Integer> courseIds = ed.getAllCourseIDsByCustomerID(a);
-
-        // In ra danh sách CourseIDs cho CustomerID = 4
-        System.out.println("Course IDs for CustomerID " + a + ": ");
-        for (Integer courseId : courseIds) {
-            System.out.println(courseId);
-        }
-    }
+//    public static void main(String[] args) {
+//        EnrollmentDAO ed= new EnrollmentDAO();
+//        int a = 2;
+//        List<Integer> courseIds = ed.getAllCourseIDsByCustomerID(a);
+//
+//        // In ra danh sách CourseIDs cho CustomerID = 4
+//        System.out.println("Course IDs for CustomerID " + a + ": ");
+//        for (Integer courseId : courseIds) {
+//            System.out.println(courseId);
+//        }
+//    }
 }

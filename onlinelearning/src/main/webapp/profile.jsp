@@ -371,6 +371,8 @@
 															<button type="submit" class="btn">Save changes</button>
 															<button type="reset" class="btn-secondry">Cancel</button>
 														</div>
+														<h5 style="color: green">${sessionScope.message}</h5>
+                                                        <h5 style="color: red">${sessionScope.error}</h5>
 													</div>
 
 												</div>
