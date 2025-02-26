@@ -3,18 +3,26 @@ package Module;
 import java.sql.Date;
 import java.util.List;
 import Module.CourseType;
+import Module.QuestionType;
 public class Question {
     private int questionId;
     private String content;
     private int level;
     private CourseType courseType;
     private int mark;
-    private int questionType;
+    private QuestionType questionType;
     private boolean status;
     private Date createTime;
     private Date updateTime;
 
-    public Question(int questionId, String content, int level, CourseType courseType, int mark, int questionType, boolean status, Date createTime, Date updateTime) {
+    public Question(int questionId) {
+        this.questionId = questionId;
+    }
+
+    public Question() {
+    }
+
+    public Question(int questionId, String content, int level, CourseType courseType, int mark,QuestionType questionType, boolean status, Date createTime, Date updateTime) {
         this.questionId = questionId;
         this.content = content;
         this.level = level;
@@ -25,11 +33,6 @@ public class Question {
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
-
-    public Question(int id) {
-        this.questionId = id;
-    }
-    public Question() {}
 
     public int getQuestionId() {
         return questionId;
@@ -71,11 +74,11 @@ public class Question {
         this.mark = mark;
     }
 
-    public int getQuestionType() {
+    public QuestionType getQuestionType() {
         return questionType;
     }
 
-    public void setQuestionType(int questionType) {
+    public void setQuestionType(QuestionType questionType) {
         this.questionType = questionType;
     }
 
@@ -101,20 +104,5 @@ public class Question {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "Question{" +
-                "questionId=" + questionId +
-                ", content='" + content + '\'' +
-                ", level=" + level +
-                ", courseType=" + courseType +
-                ", mark=" + mark +
-                ", questionType=" + questionType +
-                ", status=" + status +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
     }
 }

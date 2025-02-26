@@ -79,20 +79,22 @@
                     <div class="wc-title">
                         <h4>Manage account</h4>
                     </div>
-                    <div class="widget-body ">
+                    <div class="widget-box">
                         <div class="widget-inner ">
                             <form action="${pageContext.request.contextPath}/manage-account" method="GET"
                                   class="mb-4" class="cours-search">
                                 <div class="row mb-3" style="justify-content: flex-end">
                                     <div class="col-md-2">
-                                        <select class="form-select" id="genderFilter" name="gender">
+                                        <select class="" id="genderFilter" name="gender">
                                             <option value="">Gender</option>
-                                            <option value="Male" ${param.gender=='Male' ? 'selected' : '' }>Male</option>
-                                            <option value="Female" ${param.gender=='Female' ? 'selected' : '' }>Female</option>
+                                            <option value="Male" ${param.gender=='Male' ? 'selected' : '' }>Male
+                                            </option>
+                                            <option value="Female" ${param.gender=='Female' ? 'selected' : '' }>Female
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="form-select" id="roleFilter" name="role">
+                                        <select class="" id="roleFilter" name="role">
                                             <option value="">All Roles</option>
                                             <option value="2" ${param.role=='2' ? 'selected' : '' }>Expert</option>
                                             <option value="3" ${param.role=='3' ? 'selected' : '' }>Marketing</option>
@@ -101,7 +103,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="form-select" id="statusFilter" name="status">
+                                        <select class="" id="statusFilter" name="status">
                                             <option value="">All Status</option>
                                             <option value="true" ${param.status=='true' ? 'selected' : '' }>
                                                 Active
@@ -117,16 +119,16 @@
                                                value="${param.search}">
                                     </div>
                                     <div class="col-md-2">
-                                            <button type="submit" class="btn-search form-control text-light btn">
-                                                <i class="fa fa-search"></i>
-                                            </button>
+                                        <button type="submit" class="btn-search form-control text-light ">
+                                            <i class="fa fa-search"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </form>
                         </div>
 
-                        <div class="widget-inner ">
-                            <table class="manage-acc-css table table-borderless ">
+                        <div class="widget-inner">
+                            <table class="table table-striped table-bordered table-hover table-responsive-xl">
                                 <!-- ... table header ... -->
                                 <thead>
                                 <tr>
@@ -161,27 +163,33 @@
                                             <p>${acc.getRole().getRoleName()}</p>
                                         </td>
                                         <td>
-                                        <span <c:if test="${acc.isStatus()}">
-                                            class="btn green radius-xl outline"
-                                        </c:if>
-                                        <c:if test="${!acc.isStatus()}">
-                                            class="btn red radius-xl outline"
-                                        </c:if>>
-                                                ${acc.isStatus() ? 'Active' : 'Non-active'}</span>
+                                            <span
+                                                    <c:if test="${acc.isStatus()}">
+                                                        class="btn green radius-xl outline"
+                                                    </c:if>
+                                                <c:if test="${!acc.isStatus()}">
+                                                    class="btn red radius-xl outline"
+                                                </c:if>>
+                                                    ${acc.isStatus() ? 'Active' : 'Non-active'}
+                                            </span>
                                         </td>
                                         <td>
-                                            <div style="text-align: center;">
+                                            <div style="text-align: center; display: flex;">
                                                 <a class="btn button-sm green radius-xl"
                                                    href="${pageContext.request.contextPath}/manage-account?action=edit&userId=${acc.getUserId()}"
-                                                   title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                   title="Edit">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </a>
                                                 <a class="btn button-sm red radius-xl" href="#"
-                                                   onclick="confirmDeactive(${acc.getUserId()})" title="deactive"><i
-                                                        class="fa-solid fa-trash"></i></a>
+                                                   onclick="confirmDeactive(${acc.getUserId()})" title="deactive">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>
                                 </c:forEach>
                             </table>
+
                         </div>
                     </div>
 

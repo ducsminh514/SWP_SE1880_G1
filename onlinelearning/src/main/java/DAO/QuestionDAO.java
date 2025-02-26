@@ -4,7 +4,7 @@ import dal.DBContext;
 import Module.Question;
 import org.apache.http.protocol.RequestTargetHost;
 import Module.CourseType;
-
+import Module.QuestionType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -92,7 +92,6 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         }
         return questions;
     }
-
     public int getTotalQuestionByFilter(String search, String subject, String level, String status) {
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM Questions WHERE 1=1");
         List<Object> params = new ArrayList<>();
@@ -128,20 +127,13 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         return 0;
     }
 
-
-//[Id] [int] IDENTITY(1,1) NOT NULL,
-//	[Content] [nvarchar](max) NULL,
-//            [Level] [int] NULL,
-//            [SubjectId] [int] NULL,
-//            [Mark] [int] NULL,
-//            [QuestionTypeId] [int] NULL,
-//            [IsActive] [bit] NOT NULL,
-//	[CreatedAt] [datetime] NOT NULL,
-//	[UpdatedAt] [datetime] NOT NULL,
-
     public Question getFromResultSet(ResultSet resultSet) throws SQLException {
         CourseTypeDAO courseTypeDao = new CourseTypeDAO();
         CourseType ct = courseTypeDao.getByID(resultSet.getInt("SubjectId"));
+
+        QuestionTypeDAO questionTypeDao = new QuestionTypeDAO();
+        QuestionType qt = questionTypeDao.getQuestionTypeById(resultSet.getInt("QuestionTypeId"));
+
         Question question = new Question();
         question.setQuestionId(resultSet.getInt("Id"));
         question.setContent(resultSet.getString("Content"));
@@ -149,7 +141,7 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         question.setCourseType(ct);
         question.setMark(resultSet.getInt("Mark"));
         question.setStatus(resultSet.getBoolean("IsActive"));
-        question.setQuestionType(resultSet.getInt("QuestionTypeId"));
+        question.setQuestionType(qt);
         question.setCreateTime(resultSet.getDate("CreatedAt"));
         question.setUpdateTime(resultSet.getDate("UpdatedAt"));
         return question;

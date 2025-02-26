@@ -49,20 +49,52 @@
 <!-- Left sidebar menu end -->
 
 <c:url value="/manage-question" var="paginationUrl">
+    <c:param name="action" value="list"/>
+
     <c:if test="${not empty param.subject}">
         <c:param name="subject" value="${param.subject}"/>
     </c:if>
+
     <c:if test="${not empty param.level}">
         <c:param name="level" value="${param.level}"/>
     </c:if>
+
     <c:if test="${not empty param.status}">
         <c:param name="status" value="${param.status}"/>
     </c:if>
+
     <c:if test="${not empty param.search}">
         <c:param name="search" value="${param.search}"/>
     </c:if>
-</c:url>
 
+    <!-- Thêm các lựa chọn optionChoice vào URL -->
+    <c:if test="${not empty listColum}">
+        <c:forEach items="${listColum}" var="colum">
+            <c:if test="${colum == 'idChoice'}">
+                <c:param name="optionChoice" value="idChoice"/>
+            </c:if>
+            <c:if test="${colum == 'subjectChoice'}">
+                <c:param name="optionChoice" value="subjectChoice"/>
+            </c:if>
+            <c:if test="${colum == 'levelChoice'}">
+                <c:param name="optionChoice" value="levelChoice"/>
+            </c:if>
+            <c:if test="${colum == 'statusChoice'}">
+                <c:param name="optionChoice" value="statusChoice"/>
+            </c:if>
+            <c:if test="${colum == 'contentChoice'}">
+                <c:param name="optionChoice" value="contentChoice"/>
+            </c:if>
+            <c:if test="${colum == 'typeChoice'}">
+                <c:param name="optionChoice" value="typeChoice"/>
+            </c:if>
+        </c:forEach>
+    </c:if>
+    <!-- Thêm tham số pageSize vào URL -->
+    <c:if test="${not empty param.pageSize}">
+        <c:param name="NumberQuestionPerPage" value="${param.pageSize}"/>
+    </c:if>
+</c:url>
 
 <!--Main container start -->
 <main class="ttr-wrapper">
@@ -87,14 +119,16 @@
                                   class="mb-4" class="cours-search">
                                 <div class="row mb-3" style="justify-content: flex-end">
                                     <div class="col-md-2">
-                                        <select class="form-select" id="subjectFilter" name="subject">
+                                        <select class="form-control" id="subjectFilter" name="subject">
+                                            <option value="">Subject</option>
                                             <c:forEach items="${courseTypes}" var="type">
-                                                <option value="${type.courseTypeName}">${type.courseTypeName}</option>
+                                                <option value="${type.courseTypeId}">${type.courseTypeName}</option>
                                             </c:forEach>
                                         </select>
                                     </div>
                                     <div class="col-md-2">
                                         <select class="form-select" id="levelFilter" name="level">
+                                            <option value="">Level</option>
                                             <option value="1">Easy</option>
                                             <option value="2">Medium</option>
                                             <option value="3">Hard</option>
@@ -111,7 +145,7 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <input type="text" class="form-control" id="searchFilter"
                                                name="search" placeholder="Search by name"
                                                value="${param.search}">
@@ -121,71 +155,108 @@
                                             <i class="fa fa-search"></i>
                                         </button>
                                     </div>
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#settingModal">
+                                            Setting
+                                        </button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
 
                         <div class="widget-inner ">
-                            <table class="manage-acc-css table table-borderless ">
+                            <table class="table table-striped table-bordered table-hover table-responsive-xl">
                                 <!-- ... table header ... -->
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Content</th>
-                                    <th>Subject</th>
-                                    <th>Level</th>
-                                    <th>Type</th>
-                                    <th>Status</th>
-                                    <th style="text-align: center;">Action</th>
+                                    <c:if test="${not empty listColum && listColum.contains('idChoice')}">
+                                        <th>ID</th>
+                                    </c:if>
+                                    <c:if test="${not empty listColum && listColum.contains('contentChoice')}">
+                                        <th>Content</th>
+                                    </c:if>
+                                    <c:if test="${not empty listColum && listColum.contains('subjectChoice')}">
+                                        <th>Subject</th>
+                                    </c:if>
+                                    <c:if test="${not empty listColum && listColum.contains('levelChoice')}">
+                                        <th>Level</th>
+                                    </c:if>
+                                    <c:if test="${not empty listColum && listColum.contains('typeChoice')}">
+                                        <th>Type</th>
+                                    </c:if>
+                                    <c:if test="${not empty listColum && listColum.contains('statusChoice')}">
+                                        <th>Status</th>
+                                    </c:if>
+                                    <c:if test="${not empty listColum && listColum.contains('actionChoice')}">
+                                        <th style="text-align: center;">Action</th>
+                                    </c:if>
                                 </tr>
                                 </thead>
                                 <c:forEach items="${questionList}" var="question">
                                     <tr>
-                                        <td>
-                                            <p>${question.questionId}</p>
-                                        </td>
-                                        <td>
-                                            <p>${question.content}</p>
-                                        </td>
-                                        <td>
-                                            <p>${question.courseType.courseTypeName}</p>
-                                        </td>
-                                        <td>
-                                            <c:if test="${question.level == 1}">
-                                                <p>Easy</p>
-                                            </c:if>
-                                            <c:if test="${question.level == 2}">
-                                                <p>Medium</p>
-                                            </c:if>
-                                            <c:if test="${question.level == 3}">
-                                            <p>Hard</p>
-                                            </c:if>
-
-                                        </td>
-                                        <td>
-                                            <p>${question.questionType}</p>
-                                        </td>
-                                        <td>
-                                            <span <c:if
-                                                    test="${question.status}">
-                                                class="btn green radius-xl outline"
-                                            </c:if>
+                                        <c:if test="${not empty listColum && listColum.contains('idChoice')}">
+                                            <td>
+                                                <p>${question.questionId}</p>
+                                            </td>
+                                        </c:if>
+                                        <c:if test="${not empty listColum && listColum.contains('contentChoice')}">
+                                            <td>
+                                                <p>${question.content}</p>
+                                            </td>
+                                        </c:if>
+                                        <c:if test="${not empty listColum && listColum.contains('subjectChoice')}">
+                                            <td>
+                                                <p>${question.courseType.courseTypeName}</p>
+                                            </td>
+                                        </c:if>
+                                        <c:if test="${not empty listColum && listColum.contains('levelChoice')}">
+                                            <td>
+                                                <c:if test="${question.level == 1}">
+                                                    <p>Easy</p>
+                                                </c:if>
+                                                <c:if test="${question.level == 2}">
+                                                    <p>Medium</p>
+                                                </c:if>
+                                                <c:if test="${question.level == 3}">
+                                                    <p>Hard</p>
+                                                </c:if>
+                                            </td>
+                                        </c:if>
+                                        <c:if test="${not empty listColum && listColum.contains('typeChoice')}">
+                                            <td>
+                                                <p>${question.questionType.questionTypeName}</p>
+                                            </td>
+                                        </c:if>
+                                        <c:if test="${not empty listColum && listColum.contains('statusChoice')}">
+                                            <td>
+                                            <span
+                                                    <c:if
+                                                            test="${question.status}">
+                                                        class="btn green radius-xl outline"
+                                                    </c:if>
                                             <c:if test="${!question.status}">
                                                 class="btn red radius-xl outline"
                                             </c:if>>
-                                             ${question.status}</span>
-                                        </td>
-                                        <td>
-                                            <div style="text-align: center;">
-                                                <a class="btn button-sm blue radius-xl" > <i class="fa-solid fa-eye"></i></a>
-                                                <a class="btn button-sm green radius-xl"
-                                                   href="${pageContext.request.contextPath}/manage-question?action=edit&questionId=${question.questionId}"
-                                                   title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                <a class="btn button-sm red radius-xl" href="#"
-                                                   onclick="confirmDeactive(${question.questionId})" title="deactive"><i
-                                                        class="fa-solid fa-trash"></i></a>
-                                            </div>
-                                        </td>
+                                                    ${question.status}
+                                            </span>
+                                            </td>
+                                        </c:if>
+                                        <c:if test="${not empty listColum && listColum.contains('actionChoice')}">
+                                            <td>
+                                                <div style="text-align: center; display: flex; justify-content: center; align-items: center;">
+                                                    <a class="btn button-sm blue radius-xl"> <i
+                                                            class="fa-solid fa-eye"></i></a>
+                                                    <a class="btn button-sm green radius-xl"
+                                                       href="${pageContext.request.contextPath}/manage-question?action=edit&questionId=${question.questionId}"
+                                                       title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                    <a class="btn button-sm red radius-xl" href="#"
+                                                       onclick="confirmDeactive(${question.questionId})"
+                                                       title="deactive"><i
+                                                            class="fa-solid fa-trash"></i></a>
+                                                </div>
+                                            </td>
+                                        </c:if>
                                     </tr>
                                 </c:forEach>
 
@@ -195,8 +266,6 @@
 
                     <div class="pagination-bx rounded-sm gray clearfix">
                         <ul class="pagination" style="justify-content: center;">
-
-
                             <c:if test="${currentPage > 1}">
                                 <li class="previous">
                                     <a href="${paginationUrl}&page=${currentPage - 1}">
@@ -205,11 +274,13 @@
                                 </li>
                             </c:if>
 
+
                             <c:forEach begin="1" end="${totalPage}" var="i">
                                 <li class="${currentPage == i ? 'active' : ''}">
                                     <a href="${paginationUrl}&page=${i}">${i}</a>
                                 </li>
                             </c:forEach>
+
 
                             <c:if test="${currentPage < totalPage}">
                                 <li class="next">
@@ -228,6 +299,8 @@
 </main>
 <div class="ttr-overlay"></div>
 <!-- External JavaScripts -->
+<jsp:include page="../admin/setting-in-page.jsp"></jsp:include>
+
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
 
 

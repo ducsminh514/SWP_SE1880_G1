@@ -215,7 +215,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="phone">Phone Number</label>
-                                        <input class="form-control"  type="text"  id="phone" name="phone"
+                                        <input class="form-control"  type="text"  id="phone" name="phone" pattern="\d{10}" title="Số điện thoại phải chứa đúng 10 chữ số" required
                                                value="${user.phoneNumber}">
                                     </div>
                                     <div class="form-group">

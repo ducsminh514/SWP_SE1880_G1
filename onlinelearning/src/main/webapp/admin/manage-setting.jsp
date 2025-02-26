@@ -420,7 +420,7 @@
                         </div>
 
                         <div class="widget-inner ">
-                            <table class="manage-acc-css table table-borderless ">
+                            <table class="table table-striped table-bordered table-hover table-responsive-xl">
                                 <!-- ... table header ... -->
                                 <thead>
                                 <tr>
@@ -458,14 +458,17 @@
                                              </span>
                                         </td>
                                         <td>
-                                            <div style="text-align: center;">
+                                            <div style="text-align: center; display: flex; justify-content: center; align-items: center;">
                                                 <a class="btn button-sm green radius-xl"
                                                    href="${pageContext.request.contextPath}/manage-setting?action=edit&settingId=${setting.getSettingId()}"
                                                    title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                <i class="fa-solid fa-trash btn button-sm red radius-xl" data-toggle="modal"
-                                                   data-target="#delete-product-modal"
-                                                   onclick="deleteSettingModel(${setting.settingId});"
-                                                   title="deactive"></i>
+                                                <span class="btn button-sm red radius-xl" data-toggle="modal"
+                                                      data-target="#delete-product-modal"
+                                                      onclick="deleteSettingModel(${setting.settingId});"
+                                                      title="deactive">
+                                                     <i class="fa-solid fa-trash"></i>
+                                                </span>
+
                                             </div>
                                         </td>
                                     </tr>

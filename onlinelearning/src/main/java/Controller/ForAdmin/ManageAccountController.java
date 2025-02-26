@@ -32,6 +32,8 @@ public class ManageAccountController extends HttpServlet {
                 case "deactive":
                     deactiveAccount(request, response);
                     break;
+                default:
+                    searchByFilter(request, response);
             }
         }
     }
@@ -153,6 +155,7 @@ public class ManageAccountController extends HttpServlet {
         String search = request.getParameter("search");
         String role = request.getParameter("role");
 
+
         int page = 1;
         int pageSize = 3;
         String pageStr = request.getParameter("page");
@@ -183,9 +186,7 @@ public class ManageAccountController extends HttpServlet {
         request.setAttribute("userList", userList);
 
         request.getRequestDispatcher("/admin/manage-account.jsp").forward(request, response);
-
     }
-
     private void setToastMessage(HttpServletRequest request, String message, String type) {
         request.getSession().setAttribute("toastMessage", message);
         request.getSession().setAttribute("toastType", type);

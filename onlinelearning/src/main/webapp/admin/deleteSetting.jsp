@@ -24,10 +24,12 @@
             <div class="modal-footer">
                 <form action="${pageContext.request.contextPath}/manage-setting?action=deactive" method="POST">
                     <div class="form-group d-none">
-                        <input type="text" class="form-control" id="idDeleteInput" name="id" value="${setting.settingId})">
+                        <input type="text" class="form-control" id="idDeleteInput" name="id" value="${setting.settingId}">
                     </div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" >Không</button>
-                    <button type="submit" class="btn btn-danger">Có</button>
+                    <div class="form-group" style="display: flex; gap: 10px; width: 100%;">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="min-width: 50px">No</button>
+                        <button type="submit" class="btn btn-danger" style="min-width: 50px">Yes</button>
+                    </div>
                 </form>
             </div>
         </div>
