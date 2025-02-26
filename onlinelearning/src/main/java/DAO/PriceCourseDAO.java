@@ -6,23 +6,32 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import Module.Course ;
 import Module.PriceCourse ;
 public class PriceCourseDAO extends DBContext {
    public int lowestSalePrice (int courseId){
-       String sql ="SELECT PriceID\n" +
-               "FROM PriceCourse\n" +
-               "WHERE CourseID = ?\n" +
-               "AND SalePrice = (SELECT MIN(SalePrice) FROM PriceCourse WHERE CourseID = ?);\n";
+       String sql ="DECLARE @CourseID INT;\n" +
+               "SET @CourseID = ?;  -- Gán giá trị của CourseID vào biến\n" +
+               "\n" +
+               "SELECT p.PriceID\n" +
+               "FROM PriceCourse p\n" +
+               "JOIN (\n" +
+               "    SELECT CourseID, MIN(SalePrice) AS MinSalePrice\n" +
+               "    FROM PriceCourse\n" +
+               "    GROUP BY CourseID\n" +
+               ") min_price \n" +
+               "ON p.CourseID = min_price.CourseID\n" +
+               "WHERE p.CourseID = @CourseID AND p.SalePrice = min_price.MinSalePrice;\n";
         int priceId =0;
        try{
            PreparedStatement pre = connection.prepareStatement(sql) ;
            pre.setInt(1,courseId);
-           pre.setInt(2,courseId);
            ResultSet rs = pre.executeQuery();
            if(rs.next()){
                priceId = rs.getInt(1);
            }
-           System.out.println(priceId);
        }catch(SQLException e){
            System.out.println(e) ;
        }

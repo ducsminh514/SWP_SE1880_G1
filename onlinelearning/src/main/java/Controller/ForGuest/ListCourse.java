@@ -87,7 +87,7 @@ public class ListCourse extends HttpServlet {
             pageNum += 1;
         }
         request.setAttribute("pageNum", pageNum);
-        // cbuyen ve courseDetail
+        // chuyen ve courseDetail
         ArrayList<CourseDetailDTO> listFinal = new ArrayList<>();
         for(Course c: listCourse){
             CourseDetailDTO cd = new CourseDetailDTO();
@@ -99,11 +99,26 @@ public class ListCourse extends HttpServlet {
             listFinal.add(cd) ;
         }
         request.setAttribute("listCourse",listFinal);
+        ArrayList<CourseDetailDTO> listRecentDTO = new ArrayList<>();
+        ArrayList<Course> listRecent = cDAO.getCourse(null,0,"date-late",0,3) ;
+        for(Course c: listRecent){
+            CourseDetailDTO cd = new CourseDetailDTO();
+            cd.setCourse(cDAO.getById(c.getCourseId()));
+            cd.setOriginalPrice(pcDAO.getById(pcDAO.lowestSalePrice(c.getCourseId())).getPrice());
+            cd.setRating(rvDAO.getRatingOfCourse(c.getCourseId()));
+            cd.setTotalEnrollment(emDAO.totalEnrollment(c.getCourseId()));
+            cd.setLowestSalePrice(pcDAO.getById(pcDAO.lowestSalePrice(c.getCourseId())).getSalePrice());
+            listRecentDTO.add(cd) ;
+        }
+        request.setAttribute("listRecent",listRecentDTO);
         CourseTypeDAO ctDAO = new CourseTypeDAO();
         ArrayList<CourseType> listCourseType = ctDAO.getAll();
         request.setAttribute("listCourseType",listCourseType);
         ArrayList<Course> listRatingCourse = cDAO.getCourse(null,0,"rating",0,6) ;
         request.setAttribute("listRatingCourse",listRatingCourse);
+        request.setAttribute("search", search);
+        request.setAttribute("cate", category);
+        request.setAttribute("arrange",arrange);
         request.getRequestDispatcher("ListCourse.jsp").forward(request,response);
     }
 

@@ -91,7 +91,7 @@ public class CourseDAO extends DBContext {
             sql += " AND CourseName LIKE ?" ;
         }
         if(categoryID >0){
-            sql += " AND CategoryBlogID = ?" ;
+            sql += " AND course_typeId = ?" ;
         }
         if (arrange != null && !arrange.isEmpty()) {
             if (arrange.equalsIgnoreCase("rating")) {

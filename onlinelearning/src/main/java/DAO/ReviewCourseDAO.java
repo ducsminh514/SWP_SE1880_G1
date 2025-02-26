@@ -12,7 +12,13 @@ import Module.Course;
 
 public class ReviewCourseDAO extends DBContext {
     public float getRatingOfCourse(int courseId) {
-        String sql = "SELECT AVG(Rating) FROM ReviewCourse WHERE CourseID = ?";
+        String sql = "DECLARE @CourseID INT;\n" +
+                "SET @CourseID = ?;  -- Gán giá trị của CourseID vào biến\n" +
+                "\n" +
+                "SELECT AVG(Rating)\n" +
+                "FROM ReviewCourse\n" +
+                "WHERE CourseID = @CourseID\n" +
+                "GROUP BY CourseID;\n";
         float rating = 0;
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
