@@ -16,7 +16,7 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
-import models.Courses;
+import Module.Subject;
 
 /**
  *
@@ -48,7 +48,7 @@ public class UpdateCourse extends HttpServlet {
         request.setAttribute("rsCourse", rsCourse);
         request.setAttribute("subject", subject);
         request.setAttribute("subjectId", subjectId);
-        request.getRequestDispatcher("/update.jsp").forward(request, response);
+        request.getRequestDispatcher("/updateSubject.jsp").forward(request, response);
     }
 
     /**
@@ -93,7 +93,7 @@ public class UpdateCourse extends HttpServlet {
             request.setAttribute("rsCourse", rsCourse);
             request.setAttribute("subject", subject);
             request.setAttribute("subjectId", subjectId);
-            request.getRequestDispatcher("/update.jsp").forward(request, response);
+            request.getRequestDispatcher("/updateSubject.jsp").forward(request, response);
         }
     }
 
