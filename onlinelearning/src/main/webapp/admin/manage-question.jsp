@@ -221,13 +221,16 @@
                                         </c:if>
                                         <c:if test="${not empty listColum && listColum.contains('actionChoice')}">
                                             <td>
-                                                <div  style="text-align: center; display: flex; justify-content: space-evenly; align-items: center;">
-                                                    <a class="btn button-sm blue radius-xl" style="display: flex; align-items: center"> <i
+                                                <div style="text-align: center; display: flex; justify-content: space-evenly; align-items: center;">
+                                                    <a class="btn button-sm blue radius-xl"
+                                                       style="display: flex; align-items: center"> <i
                                                             class="fa-solid fa-eye"></i></a>
-                                                    <a class="btn button-sm green radius-xl " style="display: flex; align-items: center"
+                                                    <a class="btn button-sm green radius-xl "
+                                                       style="display: flex; align-items: center"
                                                        href="${pageContext.request.contextPath}/manage-question?action=edit&questionId=${question.questionId}"
                                                        title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                    <a  style="display: flex; align-items: center" class="btn button-sm red radius-xl" href="#"
+                                                    <a style="display: flex; align-items: center"
+                                                       class="btn button-sm red radius-xl" href="#"
                                                        onclick="confirmDeactive(${question.questionId})"
                                                        title="deactive"><i
                                                             class="fa-solid fa-trash"></i></a>
@@ -275,12 +278,13 @@
     </div>
 </main>
 <div class="ttr-overlay"></div>
-<div style="padding-top: 80px;" >
-    <jsp:include page="../footer.jsp"></jsp:include>
-</div>
+
 <!-- External JavaScripts -->
 <jsp:include page="../admin/setting-in-page.jsp"></jsp:include>
 
+<footer>
+    <jsp:include page="../footer.jsp"></jsp:include>
+</footer>
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
 
 

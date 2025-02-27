@@ -152,7 +152,7 @@
                                         </td>
                                         <td>
                                             <p>${acc.getFirstName()} ${acc.getLastName()}</p>
-                                        </td
+                                        </td>
                                         <td>
                                             <p>${acc.gender}</p>
                                         </td>
