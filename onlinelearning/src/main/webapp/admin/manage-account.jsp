@@ -47,6 +47,7 @@
 <jsp:include page="../common/common_admin_sidebar_menu.jsp"></jsp:include>
 <!-- Left sidebar menu end -->
 
+
 <c:url value="/manage-account" var="paginationUrl">
     <c:param name="action" value="list"/>
     <c:if test="${not empty param.role}">
@@ -62,6 +63,8 @@
         <c:param name="search" value="${param.search}"/>
     </c:if>
 </c:url>
+
+
 <!--Main container start -->
 <main class="ttr-wrapper">
     <div class="container-fluid">
@@ -149,7 +152,7 @@
                                         </td>
                                         <td>
                                             <p>${acc.getFirstName()} ${acc.getLastName()}</p>
-                                        </td>
+                                        </td
                                         <td>
                                             <p>${acc.gender}</p>
                                         </td>
@@ -174,13 +177,13 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <div style="text-align: center; display: flex;">
-                                                <a class="btn button-sm green radius-xl"
+                                            <div style="text-align: center; display: flex; justify-content: space-evenly; align-items: center;">
+                                                <a class="btn button-sm green radius-xl" style="display: flex; align-items: center"
                                                    href="${pageContext.request.contextPath}/manage-account?action=edit&userId=${acc.getUserId()}"
                                                    title="Edit">
                                                     <i class="fa-solid fa-pen-to-square"></i>
                                                 </a>
-                                                <a class="btn button-sm red radius-xl" href="#"
+                                                <a class="btn button-sm red radius-xl" href="#" style="display: flex; align-items: center"
                                                    onclick="confirmDeactive(${acc.getUserId()})" title="deactive">
                                                     <i class="fa-solid fa-trash"></i>
                                                 </a>
@@ -189,7 +192,6 @@
                                     </tr>
                                 </c:forEach>
                             </table>
-
                         </div>
                     </div>
 

@@ -33,6 +33,7 @@ public class ManageQuestionController extends HttpServlet {
         if (action == null || action.equals("list")) {
             searchByFilter(request, response);
         } else {
+
         }
     }
 
@@ -60,8 +61,9 @@ public class ManageQuestionController extends HttpServlet {
         String subject = request.getParameter("subject");
         String level = request.getParameter("level");
         String status = request.getParameter("status");
-        String pageSizeStr = request.getParameter("NumberQuestionPerPage");
+        String pageSizeStr = request.getParameter("pageSize");
         String[] optionChoice = request.getParameterValues("optionChoice");
+
 
 
         int page = 1;
@@ -117,9 +119,12 @@ public class ManageQuestionController extends HttpServlet {
                     case "typeChoice":
                         listColum.add("typeChoice");
                         break;
+                    case "actionChoice":
+                        listColum.add("actionChoice");
+                        break;
                 }
             }
-        }else{
+        } else {
             listColum.add("idChoice");
             listColum.add("contentChoice");
             listColum.add("subjectChoice");

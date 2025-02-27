@@ -47,6 +47,7 @@
 <!-- Left sidebar menu start -->
 <jsp:include page="../common/common_admin_sidebar_menu.jsp"></jsp:include>
 <!-- Left sidebar menu end -->
+
 <c:url value="/manage-question" var="paginationUrl">
     <c:param name="action" value="list"/>
     <c:if test="${not empty param.subject}">
@@ -64,8 +65,8 @@
     <c:if test="${not empty param.pageSize}">
         <c:param name="pageSize" value="${param.pageSize}"/>
     </c:if>
-    <c:if test="${not empty param.optionChoice}">
-        <c:forEach items="${param.optionChoice}" var="colum">
+    <c:if test="${not empty paramValues.optionChoice}">
+        <c:forEach items="${paramValues.optionChoice}" var="colum">
             <c:param name="optionChoice" value="${colum}"/>
         </c:forEach>
     </c:if>
@@ -91,7 +92,7 @@
                     </div>
                     <div class="widget-body ">
                         <div class="widget-inner ">
-                            <form action="${pageContext.request.contextPath}/manage-question" method="GET"
+                            <form action="${paginationUrl}" method="GET"
                                   class="mb-4" class="cours-search">
                                 <div class="row mb-3" style="justify-content: flex-end">
                                     <div class="col-md-2">
@@ -220,13 +221,13 @@
                                         </c:if>
                                         <c:if test="${not empty listColum && listColum.contains('actionChoice')}">
                                             <td>
-                                                <div style="text-align: center; display: flex; justify-content: center; align-items: center;">
-                                                    <a class="btn button-sm blue radius-xl"> <i
+                                                <div  style="text-align: center; display: flex; justify-content: space-evenly; align-items: center;">
+                                                    <a class="btn button-sm blue radius-xl" style="display: flex; align-items: center"> <i
                                                             class="fa-solid fa-eye"></i></a>
-                                                    <a class="btn button-sm green radius-xl"
+                                                    <a class="btn button-sm green radius-xl " style="display: flex; align-items: center"
                                                        href="${pageContext.request.contextPath}/manage-question?action=edit&questionId=${question.questionId}"
                                                        title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                    <a class="btn button-sm red radius-xl" href="#"
+                                                    <a  style="display: flex; align-items: center" class="btn button-sm red radius-xl" href="#"
                                                        onclick="confirmDeactive(${question.questionId})"
                                                        title="deactive"><i
                                                             class="fa-solid fa-trash"></i></a>

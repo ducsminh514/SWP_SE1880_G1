@@ -458,14 +458,14 @@
                                              </span>
                                         </td>
                                         <td>
-                                            <div style="text-align: center; display: flex; justify-content: center; align-items: center;">
-                                                <a class="btn button-sm green radius-xl"
+                                            <div  style="text-align: center; display: flex; justify-content: space-evenly; align-items: center;">
+                                                <a class="btn button-sm green radius-xl" style="display: flex; align-items: center"
                                                    href="${pageContext.request.contextPath}/manage-setting?action=edit&settingId=${setting.getSettingId()}"
                                                    title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
                                                 <span class="btn button-sm red radius-xl" data-toggle="modal"
                                                       data-target="#delete-product-modal"
                                                       onclick="deleteSettingModel(${setting.settingId});"
-                                                      title="deactive">
+                                                      title="deactive" style="display: flex; align-items: center">
                                                      <i class="fa-solid fa-trash"></i>
                                                 </span>
 

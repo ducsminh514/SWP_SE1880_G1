@@ -10,7 +10,6 @@
             </div>
             <div class="modal-body">
                 <form id="settingInPage" action="${paginationUrl}" method="get">
-                    <!-- Giữ lại các tham số filter đã chọn -->
                     <input type="hidden" name="action" value="list"/>
                     <c:if test="${not empty param.subject}">
                         <input type="hidden" name="subject" value="${param.subject}"/>
@@ -27,7 +26,10 @@
                     <c:if test="${not empty currentPage}">
                         <input type="hidden" name="page" value="${currentPage}"/>
                     </c:if>
-
+                    <div class="form-group">
+                        <label for="pageSize">Enter number of questions:</label>
+                        <input type="text" class="form-control" id="pageSize" name="pageSize" value="${param.pageSize}">
+                    </div>
                     <div class="form-group">
                         <label>Enter the columns you want to show:</label>
                         <div class="checkbox">
@@ -137,11 +139,26 @@
                                     %>> Status
                             </label>
                         </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="optionChoice" value="actionChoice"
+                                    <%
+                                        if (choices == null) {
+                                            choices = request.getParameterValues("actionChoice");
+                                        }
+                                        if (choices != null) {
+                                            for (String choice : choices) {
+                                                if ("actionChoice".equals(choice)) {
+                                                    out.print("checked");
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    %>> Action
+                            </label>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="pageSize">Enter number of questions:</label>
-                        <input type="text" class="form-control" id="pageSize" name="pageSize" value="${param.pageSize}">
-                    </div>
+
                 </form>
             </div>
             <div class="modal-footer">
