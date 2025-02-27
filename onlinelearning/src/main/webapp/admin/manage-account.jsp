@@ -178,12 +178,14 @@
                                         </td>
                                         <td>
                                             <div style="text-align: center; display: flex; justify-content: space-evenly; align-items: center;">
-                                                <a class="btn button-sm green radius-xl" style="display: flex; align-items: center"
+                                                <a class="btn button-sm green radius-xl"
+                                                   style="display: flex; align-items: center"
                                                    href="${pageContext.request.contextPath}/manage-account?action=edit&userId=${acc.getUserId()}"
                                                    title="Edit">
                                                     <i class="fa-solid fa-pen-to-square"></i>
                                                 </a>
-                                                <a class="btn button-sm red radius-xl" href="#" style="display: flex; align-items: center"
+                                                <a class="btn button-sm red radius-xl" href="#"
+                                                   style="display: flex; align-items: center"
                                                    onclick="confirmDeactive(${acc.getUserId()})" title="deactive">
                                                     <i class="fa-solid fa-trash"></i>
                                                 </a>
@@ -227,7 +229,9 @@
     </div>
 </main>
 <div class="ttr-overlay"></div>
-
+<div style="padding-top: 80px;" >
+    <jsp:include page="../footer.jsp"></jsp:include>
+</div>
 <!-- External JavaScripts -->
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
 

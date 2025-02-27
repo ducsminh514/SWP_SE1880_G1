@@ -407,6 +407,9 @@
         </div>
     </div>
 </main>
+<div style="padding-top: 80px;" >
+    <jsp:include page="../footer.jsp"></jsp:include>
+</div>
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
 // set toast message from session
 <script>

@@ -246,6 +246,9 @@
     </div>
 </main>
 <div class="ttr-overlay"></div>
+<div style="padding-top: 80px;" >
+    <jsp:include page="../footer.jsp"></jsp:include>
+</div>
 <!-- External JavaScripts -->
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
 <script>
@@ -278,4 +281,5 @@
     }
 </script>
 </body>
+
 </html>

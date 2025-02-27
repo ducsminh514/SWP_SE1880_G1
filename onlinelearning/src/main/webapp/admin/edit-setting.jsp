@@ -355,8 +355,8 @@
                     <div class="wc-title">
                         <h4>Setting List</h4>
 
-                        <div class="btn-container">
-                            <a href="${pageContext.request.contextPath}/manage-setting" class="btn btn-secondary">Back</a>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <a href="${pageContext.request.contextPath}/manage-setting" class="btn btn-search">Back</a>
                             <form action="${pageContext.request.contextPath}/manage-setting" method="get">
                                 <input type="hidden" name="action" value="add">
                                 <input type="submit" class="btn btn-secondary" value="Add new Setting">
@@ -401,24 +401,12 @@
                                         <input class="form-control" type="text" id="description" name="description"
                                                value="${setting.description}">
                                     </div>
-<%--                                    <div class="form-group">--%>
-<%--                                        <label for="createdAt">Create Time</label>--%>
-<%--                                        <input class="form-control" type="text" id="createdAt" name="createdAt"--%>
-<%--                                               value="${setting.createdAt}">--%>
-<%--                                    </div>--%>
-<%--                                    <div class="form-group">--%>
-<%--                                        <label for="updatedAt">Update Time</label>--%>
-<%--                                        <input class="form-control" type="text" id="updatedAt" name="updatedAt"--%>
-<%--                                               value="${setting.updatedAt}">--%>
-<%--                                    </div>--%>
                                     <div class="form-group">
                                         <label for="createAt">Create At:</label>
-                                        <!-- Nếu yourEntity đã có giá trị cho createAt thì hiển thị, nếu không người dùng tự nhập -->
                                         <input class="form-control" type="datetime-local" id="createAt" name="createAt" value="${setting.createdAt}" />
                                     </div>
                                     <div class="form-group">
                                         <label for="updateAt">Update At:</label>
-                                        <!-- updateAt luôn hiển thị thời gian hiện tại được set từ backend qua attribute currentTime -->
                                         <input class="form-control" type="datetime-local" id="updateAt" name="updateAt" value="${currentTime}" readonly />
                                     </div>
 
@@ -435,6 +423,9 @@
         </div>
     </div>
 </main>
+<div style="padding-top: 80px;" >
+    <jsp:include page="../footer.jsp"></jsp:include>
+</div>
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
 // set toast message from session
 <script>
