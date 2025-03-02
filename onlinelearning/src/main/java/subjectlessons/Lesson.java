@@ -10,15 +10,15 @@ package subjectlessons;
  */
 public class Lesson {
     private int lessonID;
-    private int packageID;
+    private int subjectID;
     private String lessonName;
     private boolean status;
 
     public Lesson() {}
 
-    public Lesson(int lessonID, int packageID, String lessonName, boolean status) {
+    public Lesson(int lessonID, int subjectID, String lessonName, boolean status) {
         this.lessonID = lessonID;
-        this.packageID = packageID;
+        this.subjectID = subjectID;
         this.lessonName = lessonName;
         this.status = status;
     }
@@ -26,14 +26,14 @@ public class Lesson {
     public int getLessonID() { return lessonID; }
     public void setLessonID(int lessonID) { this.lessonID = lessonID; }
 
-    public int getPackageID() {
-        return packageID;
+    public int getSubjectID() {
+        return subjectID;
     }
 
-    public void setPackageID(int packageID) {
-        this.packageID = packageID;
+    public void setSubjectID(int subjectID) {
+        this.subjectID = subjectID;
     }
-    
+
     
     public String getLessonName() { return lessonName; }
     public void setLessonName(String lessonName) { this.lessonName = lessonName; }

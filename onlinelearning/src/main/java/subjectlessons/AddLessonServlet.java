@@ -11,24 +11,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.sql.Timestamp;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "LessonListServlet", urlPatterns = {"/lesson-list"})
-public class LessonListServlet extends HttpServlet {
+@WebServlet(name = "AddLessonServlet", urlPatterns = {"/addLesson"})
+public class AddLessonServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private final String ACTIVE_STATUS = "1";
+    private final String INACTIVE_STATUS = "2";
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -37,52 +31,55 @@ public class LessonListServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LessonListServlet</title>");
+            out.println("<title>Servlet AddLessonServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LessonListServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddLessonServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LessonDAO lessonDAO = new LessonDAO();
-        try {
-            String subjectIDRaw = request.getParameter("subjectID");
-            int subjectID = Integer.parseInt(subjectIDRaw);
-            int countSubject = lessonDAO.countSubjectById(subjectID);
-            if(countSubject == 0){
-                response.setStatus(404);
-                return;
-            }
-            List<Lesson> lessons = lessonDAO.getLessonsBySubject(subjectID);
-            request.setAttribute("lessons", lessons);
-            request.setAttribute("subjectID", subjectID);
-            request.getRequestDispatcher("subjectlesson.jsp").forward(request, response);
-        } catch (Exception e) {
-            response.setStatus(404);
-        }
-    }
-
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    private static final long serialVersionUID = 1L;
+    
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            int lessonId = Integer.parseInt(request.getParameter("lessonId"));
             int subjectID = Integer.parseInt(request.getParameter("subjectID"));
-            String newStatus = request.getParameter("status");
+            String lessonName = request.getParameter("lessonName");
+            String content = request.getParameter("content");
+            int duration = Integer.parseInt(request.getParameter("duration"));
+            int orderNo = Integer.parseInt(request.getParameter("orderNo"));
+            boolean statusLesson = request.getParameter("statusLesson").equals(ACTIVE_STATUS);
+            String videoUrl = request.getParameter("videoUrl");
+            Timestamp createdDate = new Timestamp(System.currentTimeMillis());
+            
+            AddLesssonDTO newLesson = new AddLesssonDTO(subjectID, lessonName, content, duration, orderNo, statusLesson, videoUrl, createdDate);
             LessonDAO lessonDAO = new LessonDAO();
-            boolean success = lessonDAO.updateLessonStatus(lessonId, newStatus);
-            response.sendRedirect("lesson-list?subjectID="+subjectID);
+            boolean isInserted = lessonDAO.insertLesson(newLesson);
+            
+            if (isInserted) {
+                response.sendRedirect("lesson-list?subjectID="+subjectID);
+            } else {
+                response.sendError(500);
+            }
         } catch (Exception e) {
-            response.setStatus(404);
+            e.printStackTrace();
+            response.sendError(500);
         }
     }
 
