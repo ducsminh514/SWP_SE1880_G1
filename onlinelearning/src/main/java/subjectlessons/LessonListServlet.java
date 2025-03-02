@@ -49,10 +49,16 @@ public class LessonListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LessonDAO lessonDAO = new LessonDAO();
         try {
-            String packageIDRaw = request.getParameter("packageID");
-            int packageID = Integer.parseInt(packageIDRaw);
-            List<Lesson> lessons = lessonDAO.getLessonsByPackage(packageID);
+            String subjectIDRaw = request.getParameter("subjectID");
+            int subjectID = Integer.parseInt(subjectIDRaw);
+            int countSubject = lessonDAO.countSubjectById(subjectID);
+            if(countSubject == 0){
+                response.setStatus(404);
+                return;
+            }
+            List<Lesson> lessons = lessonDAO.getLessonsBySubject(subjectID);
             request.setAttribute("lessons", lessons);
+            request.setAttribute("subjectID", subjectID);
             request.getRequestDispatcher("subjectlesson.jsp").forward(request, response);
         } catch (Exception e) {
             response.setStatus(404);
@@ -70,11 +76,11 @@ public class LessonListServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             int lessonId = Integer.parseInt(request.getParameter("lessonId"));
-            int packageID = Integer.parseInt(request.getParameter("packageID"));
+            int subjectID = Integer.parseInt(request.getParameter("subjectID"));
             String newStatus = request.getParameter("status");
             LessonDAO lessonDAO = new LessonDAO();
             boolean success = lessonDAO.updateLessonStatus(lessonId, newStatus);
-            response.sendRedirect("lesson-list?packageID="+packageID);
+            response.sendRedirect("lesson-list?subjectID="+subjectID);
         } catch (Exception e) {
             response.setStatus(404);
         }
