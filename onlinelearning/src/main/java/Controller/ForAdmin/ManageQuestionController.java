@@ -147,6 +147,4 @@ public class ManageQuestionController extends HttpServlet {
         request.setAttribute("pageSize", pageSize);
         request.getRequestDispatcher("/admin/manage-question.jsp").forward(request, response);
     }
-
-
 }

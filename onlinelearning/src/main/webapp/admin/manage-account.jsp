@@ -36,7 +36,7 @@
     <!-- All PLUGINS CSS ============================================= -->
     <jsp:include page="../common/common_admin_css.jsp"></jsp:include>
 
-
+    <!-- Bootstrap Select CSS -->
 </head>
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
@@ -64,7 +64,6 @@
     </c:if>
 </c:url>
 
-
 <!--Main container start -->
 <main class="ttr-wrapper">
     <div class="container-fluid">
@@ -85,15 +84,13 @@
                     <div class="widget-box">
                         <div class="widget-inner ">
                             <form action="${pageContext.request.contextPath}/manage-account" method="GET"
-                                  class="mb-4" class="cours-search">
+                                  class="mb-4" class="">
                                 <div class="row mb-3" style="justify-content: flex-end">
                                     <div class="col-md-2">
-                                        <select class="" id="genderFilter" name="gender">
+                                        <select class="form-control" id="genderFilter" name="gender">
                                             <option value="">Gender</option>
-                                            <option value="Male" ${param.gender=='Male' ? 'selected' : '' }>Male
-                                            </option>
-                                            <option value="Female" ${param.gender=='Female' ? 'selected' : '' }>Female
-                                            </option>
+                                            <option value="Male" ${param.gender=='Male' ? 'selected' : '' }>Male</option>
+                                            <option value="Female" ${param.gender=='Female' ? 'selected' : '' }>Female</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2">
@@ -235,13 +232,30 @@
 <!-- External JavaScripts -->
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
 
-<script>
-    function confirmDeactive(userId) {
-        if (confirm('Are you sure you want to deactivate this user?')) {
-            window.location.href = '${pageContext.request.contextPath}/manage-account?action=deactive&userId=' + userId;
-        }
-    }
-</script>
+
+<%--<script>--%>
+<%--    function confirmDeactive(userId) {--%>
+<%--        if (confirm('Are you sure you want to deactivate this user?')) {--%>
+<%--            window.location.href = '${pageContext.request.contextPath}/manage-account?action=deactive&userId=' + userId;--%>
+<%--        }--%>
+<%--    }--%>
+
+<%--    $(document).ready(function() {--%>
+<%--        // Khởi tạo selectpicker--%>
+<%--        $('.selectpicker').selectpicker({--%>
+<%--            style: 'btn-default',--%>
+<%--            size: 4--%>
+<%--        });--%>
+<%--        --%>
+<%--        // Đảm bảo rằng selectpicker được refresh sau khi trang đã tải xong--%>
+<%--        setTimeout(function() {--%>
+<%--            $('.selectpicker').selectpicker('refresh');--%>
+<%--        }, 100);--%>
+<%--    });--%>
+<%--</script>--%>
+
+<!-- Thêm vào phần cuối trang, trước thẻ </body> -->
+
 </body>
 
 </html>
