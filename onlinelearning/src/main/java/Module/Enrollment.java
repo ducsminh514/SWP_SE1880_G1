@@ -7,14 +7,14 @@ public class Enrollment {
     private Course course;
     private Customer customer ;
     private Date enrollDate ;
-    private float processPercentage ;
+    private String processPercentage ;
     private boolean status ;
     private String payCode ;
 
     public Enrollment() {
     }
 
-    public Enrollment(int enrollmentId, Course course, Customer customer, Date enrollDate, float processPercentage, boolean status, String payCode) {
+    public Enrollment(int enrollmentId, Course course, Customer customer, Date enrollDate, String processPercentage, boolean status, String payCode) {
         this.enrollmentId = enrollmentId;
         this.course = course;
         this.customer = customer;
@@ -56,11 +56,11 @@ public class Enrollment {
         this.enrollDate = enrollDate;
     }
 
-    public float getProcessPercentage() {
+    public String getProcessPercentage() {
         return processPercentage;
     }
 
-    public void setProcessPercentage(float processPercentage) {
+    public void setProcessPercentage(String processPercentage) {
         this.processPercentage = processPercentage;
     }
 

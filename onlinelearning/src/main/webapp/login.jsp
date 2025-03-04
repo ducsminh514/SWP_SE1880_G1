@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
 <head>
 
 	<!-- META ============================================= -->
@@ -53,38 +53,51 @@
 <div class="page-wraper">
 	<div id="loading-icon-bx"></div>
 	<div class="account-form">
-		<div class="account-head" style="background-image:url(assets/images/background/bg2.jpg);">
+		<div class="account-head" style="background-image:url(assets/images/background/bg-3.jpg);">
 			<a href="index.jsp"><img src="assets/images/logo-white-2.png" alt=""></a>
 		</div>
 		<div class="account-form-inner">
 			<div class="account-container">
 				<div class="heading-bx left">
 					<h2 class="title-head">Login to your <span>Account</span></h2>
-					<p>Don't have an account? <a href="register.html">Create one here</a></p>
-				</div>	
-				<form class="contact-bx">
+					<p>Don't have an account? <a href="register.jsp">Create one here</a></p>
+				</div>
+				<form class="contact-bx" method="post" action="login">
 					<div class="row placeani">
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="input-group">
 									<label>Your Name</label>
-									<input name="dzName" type="text" required="" class="form-control">
+									<input name="user" type="text" required="" class="form-control">
 								</div>
 							</div>
 						</div>
 						<div class="col-lg-12">
 							<div class="form-group">
-								<div class="input-group"> 
+								<div class="input-group">
 									<label>Your Password</label>
-									<input name="dzEmail" type="password" class="form-control" required="">
+									<input name="password" type="password" class="form-control" required="">
 								</div>
 							</div>
 						</div>
+                            <h5 style="color: red">${requestScope.error}</h5>
+
 						<div class="col-lg-12">
 							<div class="form-group form-forget">
 								<div class="custom-control custom-checkbox">
 									<input type="checkbox" class="custom-control-input" id="customControlAutosizing">
-									<label class="custom-control-label" for="customControlAutosizing">Remember me</label>
+									<input type="checkbox" name="rememberMe"> Remember Me<br>
+									<%
+                                            String savedUsername = "";
+                                            Cookie[] cookies = request.getCookies();
+                                            if (cookies != null) {
+                                                for (Cookie cookie : cookies) {
+                                                    if ("rememberUser".equals(cookie.getName())) {
+                                                        savedUsername = cookie.getValue();
+                                                    }
+                                                }
+                                            }
+                                        %>
 								</div>
 								<a href="forget-password.jsp" class="ml-auto">Forgot Password?</a>
 							</div>
@@ -92,13 +105,7 @@
 						<div class="col-lg-12 m-b30">
 							<button name="submit" type="submit" value="Submit" class="btn button-md">Login</button>
 						</div>
-						<div class="col-lg-12">
-							<h6>Login with Social media</h6>
-							<div class="d-flex">
-								<a class="btn flex-fill m-r5 facebook" href="#"><i class="fa fa-facebook"></i>Facebook</a>
-								<a class="btn flex-fill m-l5 google-plus" href="#"><i class="fa fa-google-plus"></i>Google Plus</a>
-							</div>
-						</div>
+
 					</div>
 				</form>
 			</div>
@@ -122,5 +129,6 @@
 <script src="assets/js/contact.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
 </body>
+
 
 </html>

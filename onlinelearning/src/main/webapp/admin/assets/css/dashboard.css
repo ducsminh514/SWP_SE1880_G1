@@ -267,6 +267,10 @@
 	border-radius:100%;
 	overflow: hidden;
 }
+.ttr-user-avatar-profile{
+	display: flex;
+	justify-content: center;
+}
 .ttr-search-bar{
 	position: absolute;
 	width: 100%;

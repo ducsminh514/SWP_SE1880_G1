@@ -1933,18 +1933,16 @@ button.back-to-top {
 	border:0;
 	padding: 20px 0 0 0;
 }
-
 .blog-post .post-title,
 .recent-news .post-title{
-	font-size: 25px;
+	font-size: 24px;
 	margin-top: 0px;
 	margin-bottom: 6px;
 	font-family: roboto;
-	line-height: 25px;
-	height:100px ;
+	line-height: 34px;
 }
 .recent-news .info-bx{
-	padding: 15px;
+	padding: 20px;
     border: 1px solid #EEEEEE;
 }
 .comments-bx{
@@ -2001,34 +1999,25 @@ button.back-to-top {
 	color:#242424;
 }
 /* Popular Courses */
-.cours-bx .info-bx {
-    padding: 15px;
+.cours-bx .info-bx{
+	padding:15px;
+	font-size: 13px;
+	    min-height: 120px; /* Điều chỉnh theo nhu cầu */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+}
+.course-author {
     display: flex;
-    flex-direction: column;
-    align-items: center; /* Căn giữa theo chiều ngang */
-    flex-grow: 1; /* Cho phép mở rộng linh hoạt */
-}
-
-.cours-bx .info-bx h5 {
-    margin-bottom: 5px;
-    font-size: 14px; /* Tăng kích thước chữ cho dễ đọc */
-    max-height: 40px; /* Giới hạn chiều cao */
-    overflow: hidden;
-    text-overflow: ellipsis; /* Thêm dấu "..." nếu tràn */
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* Giới hạn tối đa 2 dòng */
-    -webkit-box-orient: vertical;
-    text-align: center; /* Căn giữa courseName */
-}
-
-.cours-bx .info-bx .course-author {
-    font-size: 12px;
-    color: #777;
-    margin-top: 5px;
-    display: flex; /* Sử dụng flex để hiển thị ngang */
-    justify-content: center; /* Căn giữa */
+    justify-content: center;
     align-items: center;
-    gap: 5px; /* Khoảng cách giữa firstName và lastName */
+    flex-wrap: wrap; /* Đảm bảo nếu tên dài thì xuống dòng */
+    gap: 5px; /* Tạo khoảng cách giữa các chữ */
+    text-align: center;
+    width: 100%; /* Đảm bảo không bị lệch */
+    font-size: 14px;
+    color: #555;
 }
 
 .cours-bx .action-box .btn{
@@ -2045,26 +2034,41 @@ button.back-to-top {
 .cours-bx:hover .action-box .btn{
 	left: 0;
 }
-.cours-bx {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 350px; /* Chiều cao tối thiểu cố định */
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 0 25px 0 rgba(29, 25, 0, 0.25);
-    border-radius: 4px;
+.cours-bx{
+	box-shadow:0 0 25px 0 rgba(29,25,0,0.25);
+	border-radius: 4px;
     overflow: hidden;
-    transition: all 0.3s ease;
+    display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Đảm bảo các phần đều nhau */
+        height: 100%;
 }
-
-.cours-more-info .review,
-.cours-more-info .price {
-    width: 50%;
-    padding: 5px 15px;
-    transition: opacity 0.3s ease;
-    min-height: 50px; /* Đảm bảo chiều cao tối thiểu */
+.cours-more-info{
+	border-top: 1px solid #e6e6e6;
+	display: flex;
+	margin: 0;
+	 justify-content: space-between;
+        align-items: center;
+        padding: 10px;
 }
-
+.cours-star{
+	margin:0;
+	padding:0;
+}
+.cours-star li{
+	display: inline-block;
+	list-style:none;
+	color:#d1d1d1;
+	font-size:13px;
+}
+.cours-star li.active{
+	color:var(--primary);
+}
+.cours-more-info .price,
+.cours-more-info .review{
+	width:50%;
+	padding:5px 15px;
+}
 .cours-more-info .review span{
 	font-size:12px;
 	color:#3c3c3c;
@@ -2076,50 +2080,53 @@ button.back-to-top {
 }
 .cours-more-info .review{
 	border-right: 1px solid #e6e6e6;
+	display:flex;
+	flex-direction:column ;
 }
-
 .cours-more-info .price {
 	text-align:right;
 }
 .cours-more-info .price h5{
 	margin-bottom:0;
 }
-
-.courses-carousel .owl-nav .owl-prev::before,
-.courses-carousel .owl-nav .owl-next::before,
-.recent-news-carousel .owl-nav .owl-prev::before,
-.recent-news-carousel .owl-nav .owl-next::before,
-.testimonial-carousel .owl-nav .owl-prev::before,
-.testimonial-carousel .owl-nav .owl-next::before {
-    font-family: "Font Awesome 6 Free"; /* Chắc chắn dùng FontAwesome */
-    font-weight: 900;
-    font-size: 18px; /* Điều chỉnh kích thước icon */
-    color: white;
+.courses-carousel{
+	margin-top:-15px;
 }
-.courses-carousel .item {
-    display: flex;
-    align-items: stretch; /* Kéo dài các item để có chiều cao bằng nhau */
+.courses-carousel .item{
+	padding:15px;
 }
-
-
-.action-box img {
-    width: 100%; /* Đảm bảo hình ảnh co giãn theo thẻ cha */
-    object-fit: cover; /* Cắt ảnh để phù hợp với kích thước */
+.courses-carousel .owl-nav{
+	position: absolute;
+    top: -70px;
+    right: 10px;
 }
-
-
-.courses-carousel .owl-nav .owl-prev::before,
-.recent-news-carousel .owl-nav .owl-prev::before,
-.testimonial-carousel .owl-nav .owl-prev::before {
-    content: "\f104"; /* Mã Unicode của FontAwesome (mũi tên trái) */
+.testimonial-carousel .owl-nav{
+	position: absolute;
+    top: -80px;
+    right: -5px;
 }
-
-.courses-carousel .owl-nav .owl-next::before,
-.recent-news-carousel .owl-nav .owl-next::before,
-.testimonial-carousel .owl-nav .owl-next::before {
-    content: "\f105"; /* Mã Unicode của FontAwesome (mũi tên phải) */
+.recent-news-carousel .owl-nav{
+	position: absolute;
+    top: -80px;
+    right: -5px;
 }
-
+.courses-carousel .owl-nav .owl-next,
+.courses-carousel .owl-nav .owl-prev,
+.recent-news-carousel .owl-nav .owl-next,
+.recent-news-carousel .owl-nav .owl-prev,
+.testimonial-carousel .owl-nav .owl-next,
+.testimonial-carousel .owl-nav .owl-prev{
+	background-color:var(--primary);
+	margin: 0 5px !important;
+}
+.courses-carousel .owl-nav .owl-next:hover,
+.courses-carousel .owl-nav .owl-prev:hover,
+.recent-news-carousel .owl-nav .owl-next:hover,
+.recent-news-carousel .owl-nav .owl-prev:hover,
+.testimonial-carousel .owl-nav .owl-next:hover,
+.testimonial-carousel .owl-nav .owl-prev:hover{
+	background-color:var(--sc-primary);
+}
 /* Online Cours */
 .online-cours h2{
 	font-size:45px;

@@ -13,17 +13,12 @@ import Module.PriceCourse ;
 public class PriceCourseDAO extends DBContext {
    public int lowestSalePrice (int courseId){
        String sql ="DECLARE @CourseID INT;\n" +
-               "SET @CourseID = ?;  -- Gán giá trị của CourseID vào biến\n" +
+               "SET @CourseID = ?;  \n" +
                "\n" +
-               "SELECT p.PriceID\n" +
-               "FROM PriceCourse p\n" +
-               "JOIN (\n" +
-               "    SELECT CourseID, MIN(SalePrice) AS MinSalePrice\n" +
-               "    FROM PriceCourse\n" +
-               "    GROUP BY CourseID\n" +
-               ") min_price \n" +
-               "ON p.CourseID = min_price.CourseID\n" +
-               "WHERE p.CourseID = @CourseID AND p.SalePrice = min_price.MinSalePrice;\n";
+               "SELECT PriceID\n" +
+               "FROM PriceCourse\n" +
+               "WHERE CourseID = @CourseID\n" +
+               "AND SalePrice = (SELECT MIN(SalePrice) FROM PriceCourse WHERE CourseID = @CourseID);\n";
         int priceId =0;
        try{
            PreparedStatement pre = connection.prepareStatement(sql) ;

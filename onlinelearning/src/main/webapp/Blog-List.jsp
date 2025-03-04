@@ -259,7 +259,7 @@
             <!-- Left & right section END -->
             <!-- Content END-->
             <!-- Footer ==== -->
-            <%@include file="Footer.jsp" %>
+            <%@include file="footer.jsp" %>
             <!-- Footer END ==== -->
             <!-- scroll top button -->
             <button class="back-to-top fa fa-chevron-up" ></button>

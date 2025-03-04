@@ -30,10 +30,10 @@
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!--[if lt IE 9]>
-<script src="assets/js/html5shiv.min.js"></script>
-<script src="assets/js/respond.min.js"></script>
-<![endif]-->
+        <!--[if lt IE 9]-->
+        <script src="assets/js/html5shiv.min.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
 
         <!-- All PLUGINS CSS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/assets.css">
@@ -47,6 +47,24 @@
         <!-- STYLESHEETS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+        <!-- All PLUGINS CSS ============================================= -->
+        <link rel="stylesheet" type="text/css" href="assets/css/assets.css">
+
+        <!-- TYPOGRAPHY ============================================= -->
+        <link rel="stylesheet" type="text/css" href="assets/css/typography.css">
+
+        <!-- SHORTCODES ============================================= -->
+        <link rel="stylesheet" type="text/css" href="assets/css/shortcodes/shortcodes.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+        <!-- STYLESHEETS ============================================= -->
+        <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+        <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+
+        <!-- REVOLUTION SLIDER CSS ============================================= -->
+        <link rel="stylesheet" type="text/css" href="assets/vendors/revolution/css/layers.css">
+        <link rel="stylesheet" type="text/css" href="assets/vendors/revolution/css/settings.css">
+        <link rel="stylesheet" type="text/css" href="assets/vendors/revolution/css/navigation.css">
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -189,18 +207,44 @@
                 margin: 0;
             }
 
-            /* Đảm bảo phần tử hoạt động tốt trên các kích thước màn hình khác nhau */
-            @media (max-width: 768px) {
-                .cours-more-info {
-                    flex-direction: column;
-                    gap: 15px;
-                }
-
-                .cours-more-info .review,
-                .cours-more-info .price {
-                    width: 100%; /* Chiếm toàn bộ chiều rộng */
-                }
+            /* Cải thiện kiểu cho dropdown */
+            .form-select {
+                border: 1px solid #ccc;
+                border-radius: 8px; /* Góc bo tròn */
+                padding: 8px 16px; /* Khoảng cách cho các phần tử trong dropdown */
+                font-size: 16px; /* Tăng kích thước chữ */
+                background-color: #fff; /* Màu nền */
+                transition: all 0.3s ease; /* Thêm hiệu ứng khi hover hoặc focus */
             }
+
+            /* Thêm hiệu ứng hover */
+            .form-select:hover, .form-select:focus {
+                border-color: #007bff; /* Đổi màu viền khi hover */
+                background-color: #f0f8ff; /* Thay đổi màu nền khi hover */
+                outline: none; /* Xóa viền khi chọn */
+            }
+
+            /* Style cho button submit (nếu cần thiết) */
+            .form-select-sm {
+                font-size: 14px; /* Giảm kích thước font */
+            }
+
+            /* Tăng hiệu quả của các option */
+            .form-select option {
+                padding: 10px;
+            }
+
+            /* Thêm khoảng cách cho form */
+            #statusForm {
+                display: inline-block; /* Đảm bảo form không chiếm toàn bộ chiều rộng */
+                margin-right: 10px; /* Khoảng cách giữa các phần tử */
+                background-color: #f9f9f9; /* Thêm màu nền nhẹ cho form */
+                border-radius: 8px; /* Bo góc form */
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ cho form */
+            }
+
+
+
         </style>
     </head>
 
@@ -401,15 +445,175 @@
             <!-- Content -->
 
 
-
             <div class="page-content bg-white">
                 <!-- inner page banner -->
-                <div class="page-banner ovbl-dark"
-                     style="background-image:url(assets/images/banner/banner3.jpg);">
-                    <div class="container">
-                        <div class="page-banner-entry">
-                            <h1 class="text-white">Our Courses</h1>
-                        </div>
+                <div class="rev-slider">
+                    <div id="rev_slider_486_1_wrapper" class="rev_slider_wrapper fullwidthbanner-container" data-alias="news-gallery36" data-source="gallery" style="margin:0px auto;background-color:#ffffff;padding:0px;margin-top:0px;margin-bottom:0px;">
+                        <!-- START REVOLUTION SLIDER 5.3.0.2 fullwidth mode -->
+                        <div id="rev_slider_486_1" class="rev_slider fullwidthabanner" style="display:none;" data-version="5.3.0.2">
+                            <ul>	<!-- SLIDE  -->
+                                <c:forEach items="${requestScope.listSlider}" var ="slide">
+                                    <li data-index="rs-${slide.slideId}"
+                                        data-transition="parallaxvertical"
+                                        data-slotamount="default"
+                                        data-hideafterloop="0"
+                                        data-hideslideonmobile="off"
+                                        data-easein="default"
+                                        data-easeout="default"
+                                        data-masterspeed="default"
+                                        data-thumb="error-404.html"
+                                        data-rotate="0"
+                                        data-fstransition="fade"
+                                        data-fsmasterspeed="1500"
+                                        data-fsslotamount="7"
+                                        data-saveperformance="off"
+                                        data-title="A STUDY ON HAPPINESS"
+                                        data-param1="" data-param2=""
+                                        data-param3="" data-param4=""
+                                        data-param5="" data-param6=""
+                                        data-param7="" data-param8=""
+                                        data-param9="" data-param10=""
+                                        data-description="Science says that Women are generally happier">
+                                        <!-- MAIN IMAGE -->
+                                        <img src="${slide.image}" alt=""
+                                             data-bgposition="center center"
+                                             data-bgfit="cover"
+                                             data-bgrepeat="no-repeat"
+                                             data-bgparallax="10"
+                                             class="rev-slidebg"
+                                             data-no-retina />
+
+                                        <!-- LAYER NR. 1 -->
+                                        <div class="tp-caption tp-shape tp-shapewrapper "
+                                             id="slide-${slide.slideId}-layer-1"
+                                             data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
+                                             data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']"
+                                             data-width="full"
+                                             data-height="full"
+                                             data-whitespace="nowrap"
+                                             data-type="shape"
+                                             data-basealign="slide"
+                                             data-responsive_offset="off"
+                                             data-responsive="off"
+                                             data-frames='[{"from":"opacity:0;","speed":1,"to":"o:1;","delay":0,"ease":"Power4.easeOut"},{"delay":"wait","speed":1,"to":"opacity:0;","ease":"Power4.easeOut"}]'
+                                             data-textAlign="['left','left','left','left']"
+                                             data-paddingtop="[0,0,0,0]"
+                                             data-paddingright="[0,0,0,0]"
+                                             data-paddingbottom="[0,0,0,0]"
+                                             data-paddingleft="[0,0,0,0]"
+                                             style="z-index: 5;background-color:rgba(2, 0, 11, 0.80);border-color:rgba(0, 0, 0, 0);border-width:0px;">
+                                        </div>
+                                        <!-- LAYER NR. 2 -->
+                                        <div class="tp-caption Newspaper-Title   tp-resizeme"
+                                             id="slide-${slide.slideId}-layer-2"
+                                             data-x="['center','center','center','center']"
+                                             data-hoffset="['0','0','0','0']"
+                                             data-y="['top','top','top','top']"
+                                             data-voffset="['250','250','250','240']"
+                                             data-fontsize="['50','50','50','30']"
+                                             data-lineheight="['55','55','55','35']"
+                                             data-width="full"
+                                             data-height="none"
+                                             data-whitespace="normal"
+                                             data-type="text"
+                                             data-responsive_offset="on"
+                                             data-frames='[{"from":"y:[-100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;","mask":"x:0px;y:0px;s:inherit;e:inherit;","speed":1500,"to":"o:1;","delay":1000,"ease":"Power3.easeInOut"},{"delay":"wait","speed":1000,"to":"auto:auto;","mask":"x:0;y:0;s:inherit;e:inherit;","ease":"Power3.easeInOut"}]'
+                                             data-textAlign="['center','center','center','center']"
+                                             data-paddingtop="[0,0,0,0]"
+                                             data-paddingright="[0,0,0,0]"
+                                             data-paddingbottom="[10,10,10,10]"
+                                             data-paddingleft="[0,0,0,0]"
+                                             style="z-index: 6; font-family:rubik; font-weight:700; text-align:center; white-space: normal;">
+                                            ${slide.title}
+                                        </div>
+
+                                        <!-- LAYER NR. 3 -->
+                                        <div class="tp-caption Newspaper-Subtitle   tp-resizeme"
+                                             id="slide-${slide.slideId}-layer-3"
+                                             data-x="['center','center','center','center']"
+                                             data-hoffset="['0','0','0','0']"
+                                             data-y="['top','top','top','top']"
+                                             data-voffset="['210','210','210','210']"
+                                             data-width="none"
+                                             data-height="none"
+                                             data-whitespace="nowrap"
+                                             data-type="text"
+                                             data-responsive_offset="on"
+                                             data-frames='[{"from":"y:[-100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;","mask":"x:0px;y:0px;s:inherit;e:inherit;","speed":1500,"to":"o:1;","delay":1000,"ease":"Power3.easeInOut"},{"delay":"wait","speed":1000,"to":"auto:auto;","mask":"x:0;y:0;s:inherit;e:inherit;","ease":"Power3.easeInOut"}]'
+                                             data-textAlign="['left','left','left','left']"
+                                             data-paddingtop="[0,0,0,0]"
+                                             data-paddingright="[0,0,0,0]"
+                                             data-paddingbottom="[0,0,0,0]"
+                                             data-paddingleft="[0,0,0,0]"
+                                             style="z-index: 7; white-space: nowrap; color:#fff; font-family:rubik; font-size:18px; font-weight:400;">
+                                            ${slide.content}
+                                        </div>
+
+                                        <!-- LAYER NR. 3 -->
+                                        <div class="tp-caption Newspaper-Subtitle   tp-resizeme"
+                                             id="slide-${slide.slideId}-layer-4"
+                                             data-x="['center','center','center','center']"
+                                             data-hoffset="['0','0','0','0']"
+                                             data-y="['top','top','top','top']"
+                                             data-voffset="['320','320','320','290']"
+                                             data-width="['800','800','700','420']"
+                                             data-height="['100','100','100','120']"
+                                             data-whitespace="unset"
+                                             data-type="text"
+                                             data-responsive_offset="on"
+                                             data-frames='[{"from":"y:[-100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;","mask":"x:0px;y:0px;s:inherit;e:inherit;","speed":1500,"to":"o:1;","delay":1000,"ease":"Power3.easeInOut"},{"delay":"wait","speed":1000,"to":"auto:auto;","mask":"x:0;y:0;s:inherit;e:inherit;","ease":"Power3.easeInOut"}]'
+                                             data-textAlign="['center','center','center','center']"
+                                             data-paddingtop="[0,0,0,0]"
+                                             data-paddingright="[0,0,0,0]"
+                                             data-paddingbottom="[0,0,0,0]"
+                                             data-paddingleft="[0,0,0,0]"
+                                             style="z-index: 7; text-transform:capitalize; white-space: unset; color:#fff; font-family:rubik; font-size:18px; line-height:28px; font-weight:400;">
+                                            ${slide.description}
+                                        </div>
+                                        <!-- LAYER NR. 4 -->
+                                        <div class="tp-caption Newspaper-Button rev-btn "
+                                             id="slide-${slide.slideId}-layer-5"
+                                             data-x="['center','center','center','center']"
+                                             data-hoffset="['90','80','75','90']"
+                                             data-y="['top','top','top','top']"
+                                             data-voffset="['400','400','400','420']"
+                                             data-width="none"
+                                             data-height="none"
+                                             data-whitespace="nowrap"
+                                             data-type="button"
+                                             data-responsive_offset="on"
+                                             data-responsive="off"
+                                             data-frames='[{"from":"y:[-100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;","mask":"x:0px;y:0px;","speed":1500,"to":"o:1;","delay":1000,"ease":"Power3.easeInOut"},{"delay":"wait","speed":1000,"to":"auto:auto;","mask":"x:0;y:0;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"300","ease":"Power1.easeInOut","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgba(0, 0, 0, 1.00);bg:rgba(255, 255, 255, 1.00);bc:rgba(255, 255, 255, 1.00);bw:1px 1px 1px 1px;"}]'
+                                             data-textAlign="['center','center','center','center']"
+                                             data-paddingtop="[12,12,12,12]"
+                                             data-paddingright="[30,35,35,15]"
+                                             data-paddingbottom="[12,12,12,12]"
+                                             data-paddingleft="[30,35,35,15]"
+                                             style="z-index: 8; white-space: nowrap; outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer; background-color:var(--primary) !important; border:0; border-radius:30px; margin-right:5px;">READ MORE </div>
+                                        <div class="tp-caption Newspaper-Button rev-btn"
+                                             id="slide-${slide.slideId}-layer-6"
+                                             data-x="['center','center','center','center']"
+                                             data-hoffset="['-90','-80','-75','-90']"
+                                             data-y="['top','top','top','top']"
+                                             data-voffset="['400','400','400','420']"
+                                             data-width="none"
+                                             data-height="none"
+                                             data-whitespace="nowrap"
+                                             data-type="button"
+                                             data-responsive_offset="on"
+                                             data-responsive="off"
+                                             data-frames='[{"from":"y:[-100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;","mask":"x:0px;y:0px;","speed":1500,"to":"o:1;","delay":1000,"ease":"Power3.easeInOut"},{"delay":"wait","speed":1000,"to":"auto:auto;","mask":"x:0;y:0;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"300","ease":"Power1.easeInOut","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgba(0, 0, 0, 1.00);bg:rgba(255, 255, 255, 1.00);bc:rgba(255, 255, 255, 1.00);bw:1px 1px 1px 1px;"}]'
+                                             data-textAlign="['center','center','center','center']"
+                                             data-paddingtop="[12,12,12,12]"
+                                             data-paddingright="[30,35,35,15]"
+                                             data-paddingbottom="[12,12,12,12]"
+                                             data-paddingleft="[30,35,35,15]"
+                                             style="z-index: 8; white-space: nowrap; outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer; border-radius:30px;">CONTACT US</div>
+                                    </li>
+                                </c:forEach>
+                                <!-- SLIDE  -->
+                            </ul>
+                        </div><!-- END REVOLUTION SLIDER -->
                     </div>
                 </div>
                 <!-- Breadcrumb row -->
@@ -433,8 +637,8 @@
                                     <form action="listCourse">
                                         <div class="widget courses-search-bx ">
                                             <div class="form-group">
+                                                <h4> Search course  </h4>
                                                 <div class="input-group">
-                                                    <label>Search Courses</label>
                                                     <input name="search" type="text" required
                                                            class="form-control">
                                                 </div>
@@ -443,7 +647,7 @@
                                     </form>
 
                                     <div class="widget widget_archive">
-                                        <h5 class="widget-title style-1">All Courses</h5>
+                                        <h5 class="widget-title style-1">Category Course</h5>
                                         <ul>
                                             <c:forEach items="${requestScope.listCourseType}" var="courseType">
                                                 <li class="active">
@@ -470,7 +674,7 @@
                                                         <div class="ttr-post-meta">
                                                             <ul>
                                                                 <li class="price">
-                                                                    <del>${recent.originalPrice}</del>
+                                                                    <del>${recent.originalPrice}</del><br>
                                                                     <h5>${recent.lowestSalePrice}</h5>
                                                                 </li>
                                                                 <li class="review">${recent.rating}</li>
@@ -488,10 +692,10 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <form class="col-2" action="listCourse" id="statusForm">
-                                                <!-- Truyền giá trị cate và search -->
-                                                <input type="hidden" name="cate" value="${requestScope.cate}">
                                                 <input type="hidden" name="search" value="${requestScope.search}">
-
+                                                <input type="hidden" name="page" value="${requestScope.currentPage}">
+                                                                                                <input type="hidden" name="cate" value="${requestScope.cate}">
+                                                                                                                                                <input type="hidden" name="numberOfCourse" value="${requestScope.numberOfCourse}">
                                                 <select class="form-select form-select-sm" aria-label="Small select example" name="arrange" onchange="document.getElementById('statusForm').submit();">
                                                     <option selected>Arrange</option>
                                                     <option value="rating">Highest Rating</option>
@@ -500,7 +704,8 @@
                                                 </select>
                                             </form>
                                         </div>
-                                        <div class ="col-6">
+
+                                        <div class ="col-6 text-end">
                                             <!-- The Popup -->
                                             <button class="open-popup-btn" onclick="openPopup()">Open Popup</button>
                                             <div class="popup" id="popup">
@@ -548,11 +753,11 @@
                                                 <div class="cours-bx"  data-course-id="${courseDetail.course.courseId}">
                                                     <div class="action-box">
                                                         <img src="assets/images/courses/pic9.jpg" alt="">
-                                                        <a href="#" class="btn">Read More</a>
+                                                        <a href="#" class="btn">Regist</a>
                                                     </div>
                                                     <div class="info-bx text-center">
                                                         <h5><a href="#">${courseDetail.course.courseName}</a></h5>
-                                                        <span class="course-author col-12 col-sm-6 col-md-2" id="author-${courseDetail.course.courseId}">
+                                                        <span class="course-author " id="author-${courseDetail.course.courseId}">
                                                             ${courseDetail.course.expert.user.firstName} ${courseDetail.course.expert.user.lastName}
                                                         </span>
                                                     </div>
@@ -560,8 +765,8 @@
                                                     <div class="cours-more-info">
                                                         <!-- Review section -->
                                                         <div class="review" id="review-${courseDetail.course.courseId}" >
-                                                            <span>${courseDetail.totalEnrollment}</span>
-                                                            <span>${courseDetail.rating}</span>
+                                                            <span>${courseDetail.totalEnrollment} enrollment</span>
+                                                            <span>${courseDetail.rating} rating</span>
                                                         </div>
 
                                                         <!--  Price section -->
@@ -678,7 +883,7 @@
                                                 <li
                                                     class="page-item ${i == requestScope.currentPage ? 'active' : ''}">
                                                     <a class="page-link m-lg-1"
-                                                       href="listCourse?page=${i}&arrange=${requestScope.arrange}&cate=${requestScope.cate}&search=${requestScope.search}">${i}</a>
+                                                       href="listCourse?page=${i}&arrange=${requestScope.arrange}&cate=${requestScope.cate}&search=${requestScope.search}&numberOfCourse=${requestScope.numberOfCourse}">${i}</a>
                                                 </li>
                                             </c:forEach>
                                         </ul>
@@ -841,6 +1046,106 @@
         <script src="assets/js/functions.js"></script>
         <script src="assets/js/contact.js"></script>
         <script src='assets/vendors/switcher/switcher.js'></script>
+        <!-- Revolution JavaScripts Files -->
+        <script src="assets/vendors/revolution/js/jquery.themepunch.tools.min.js"></script>
+        <script src="assets/vendors/revolution/js/jquery.themepunch.revolution.min.js"></script>
+        <!-- Slider revolution 5.0 Extensions  (Load Extensions only on Local File Systems !  The following part can be removed on Server for On Demand Loading) -->
+        <script src="assets/vendors/revolution/js/extensions/revolution.extension.actions.min.js"></script>
+        <script src="assets/vendors/revolution/js/extensions/revolution.extension.carousel.min.js"></script>
+        <script src="assets/vendors/revolution/js/extensions/revolution.extension.kenburn.min.js"></script>
+        <script src="assets/vendors/revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
+        <script src="assets/vendors/revolution/js/extensions/revolution.extension.migration.min.js"></script>
+        <script src="assets/vendors/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
+        <script src="assets/vendors/revolution/js/extensions/revolution.extension.parallax.min.js"></script>
+        <script src="assets/vendors/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
+        <script src="assets/vendors/revolution/js/extensions/revolution.extension.video.min.js"></script>
+        <script>
+                                        jQuery(document).ready(function () {
+                                            var ttrevapi;
+                                            var tpj = jQuery;
+                                            if (tpj("#rev_slider_486_1").revolution == undefined) {
+                                                revslider_showDoubleJqueryError("#rev_slider_486_1");
+                                            } else {
+                                                ttrevapi = tpj("#rev_slider_486_1").show().revolution({
+                                                    sliderType: "standard",
+                                                    jsFileLocation: "assets/vendors/revolution/js/",
+                                                    sliderLayout: "fullwidth",
+                                                    dottedOverlay: "none",
+                                                    delay: 9000,
+                                                    navigation: {
+                                                        keyboardNavigation: "on",
+                                                        keyboard_direction: "horizontal",
+                                                        mouseScrollNavigation: "off",
+                                                        mouseScrollReverse: "default",
+                                                        onHoverStop: "on",
+                                                        touch: {
+                                                            touchenabled: "on",
+                                                            swipe_threshold: 75,
+                                                            swipe_min_touches: 1,
+                                                            swipe_direction: "horizontal",
+                                                            drag_block_vertical: false
+                                                        }
+                                                        ,
+                                                        arrows: {
+                                                            style: "uranus",
+                                                            enable: true,
+                                                            hide_onmobile: false,
+                                                            hide_onleave: false,
+                                                            tmp: '',
+                                                            left: {
+                                                                h_align: "left",
+                                                                v_align: "center",
+                                                                h_offset: 10,
+                                                                v_offset: 0
+                                                            },
+                                                            right: {
+                                                                h_align: "right",
+                                                                v_align: "center",
+                                                                h_offset: 10,
+                                                                v_offset: 0
+                                                            }
+                                                        },
+
+                                                    },
+                                                    viewPort: {
+                                                        enable: true,
+                                                        outof: "pause",
+                                                        visible_area: "80%",
+                                                        presize: false
+                                                    },
+                                                    responsiveLevels: [1240, 1024, 778, 480],
+                                                    visibilityLevels: [1240, 1024, 778, 480],
+                                                    gridwidth: [1240, 1024, 778, 480],
+                                                    gridheight: [768, 600, 600, 600],
+                                                    lazyType: "none",
+                                                    parallax: {
+                                                        type: "scroll",
+                                                        origo: "enterpoint",
+                                                        speed: 400,
+                                                        levels: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 46, 47, 48, 49, 50, 55],
+                                                        type: "scroll",
+                                                    },
+                                                    shadow: 0,
+                                                    spinner: "off",
+                                                    stopLoop: "off",
+                                                    stopAfterLoops: -1,
+                                                    stopAtSlide: -1,
+                                                    shuffle: "off",
+                                                    autoHeight: "off",
+                                                    hideThumbsOnMobile: "off",
+                                                    hideSliderAtLimit: 0,
+                                                    hideCaptionAtLimit: 0,
+                                                    hideAllCaptionAtLilmit: 0,
+                                                    debugMode: false,
+                                                    fallbacks: {
+                                                        simplifyAll: "off",
+                                                        nextSlideOnWindowFocus: "off",
+                                                        disableFocusListener: false
+                                                    }
+                                                });
+                                            }
+                                        });
+        </script>
     </body>
 
 </html>

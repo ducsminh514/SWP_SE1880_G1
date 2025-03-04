@@ -2,8 +2,7 @@ package Controller.ForGuest;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 import DAO.*;
 import DTO.CourseDetailDTO;
@@ -14,7 +13,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import Module.CourseType ;
-
+import Module.Slider ;
+import Module.PriceCourse ;
 @WebServlet(name="ListCourse", urlPatterns={"/listCourse"})
 public class ListCourse extends HttpServlet {
 
@@ -43,6 +43,7 @@ public class ListCourse extends HttpServlet {
         PriceCourseDAO pcDAO = new PriceCourseDAO();
         EnrollmentDAO emDAO = new EnrollmentDAO();
         ReviewCourseDAO rvDAO = new ReviewCourseDAO();
+        SliderDAO sDAO = new SliderDAO() ;
         CourseDetailDTO courseDetail = new CourseDetailDTO();
         String arrange = request.getParameter("arrange");
         String Page = request.getParameter("page");
@@ -90,35 +91,43 @@ public class ListCourse extends HttpServlet {
         // chuyen ve courseDetail
         ArrayList<CourseDetailDTO> listFinal = new ArrayList<>();
         for(Course c: listCourse){
+            PriceCourse p = pcDAO.getById(pcDAO.lowestSalePrice(c.getCourseId())) ;
             CourseDetailDTO cd = new CourseDetailDTO();
-            cd.setCourse(cDAO.getById(c.getCourseId()));
-            cd.setOriginalPrice(pcDAO.getById(pcDAO.lowestSalePrice(c.getCourseId())).getPrice());
+            cd.setCourse(c);
+            cd.setOriginalPrice(p.getPrice());
             cd.setRating(rvDAO.getRatingOfCourse(c.getCourseId()));
             cd.setTotalEnrollment(emDAO.totalEnrollment(c.getCourseId()));
-            cd.setLowestSalePrice(pcDAO.getById(pcDAO.lowestSalePrice(c.getCourseId())).getSalePrice());
+            cd.setLowestSalePrice(p.getSalePrice());
             listFinal.add(cd) ;
         }
         request.setAttribute("listCourse",listFinal);
-        ArrayList<CourseDetailDTO> listRecentDTO = new ArrayList<>();
-        ArrayList<Course> listRecent = cDAO.getCourse(null,0,"date-late",0,3) ;
-        for(Course c: listRecent){
-            CourseDetailDTO cd = new CourseDetailDTO();
-            cd.setCourse(cDAO.getById(c.getCourseId()));
-            cd.setOriginalPrice(pcDAO.getById(pcDAO.lowestSalePrice(c.getCourseId())).getPrice());
-            cd.setRating(rvDAO.getRatingOfCourse(c.getCourseId()));
-            cd.setTotalEnrollment(emDAO.totalEnrollment(c.getCourseId()));
-            cd.setLowestSalePrice(pcDAO.getById(pcDAO.lowestSalePrice(c.getCourseId())).getSalePrice());
-            listRecentDTO.add(cd) ;
+        ArrayList<CourseDetailDTO> listRecentDTO = listFinal;
+        Collections.sort(listRecentDTO, new Comparator<CourseDetailDTO>() {
+            @Override
+            public int compare(CourseDetailDTO cd1, CourseDetailDTO cd2) {
+                return cd2.getCourse().getCreateDate().compareTo(cd1.getCourse().getCreateDate());
+            }
+        });
+        ArrayList<CourseDetailDTO> listRecent = new ArrayList<>();
+        if(listRecentDTO.size()<3){
+            listRecent = listRecentDTO;
+        }else{
+            for(int i=0 ;i<3 ;i++){
+                listRecent.add(listRecentDTO.get(i)) ;
+            }
         }
-        request.setAttribute("listRecent",listRecentDTO);
+        request.setAttribute("listRecent",listRecent);
         CourseTypeDAO ctDAO = new CourseTypeDAO();
         ArrayList<CourseType> listCourseType = ctDAO.getAll();
         request.setAttribute("listCourseType",listCourseType);
         ArrayList<Course> listRatingCourse = cDAO.getCourse(null,0,"rating",0,6) ;
         request.setAttribute("listRatingCourse",listRatingCourse);
+        ArrayList<Slider> listSlider = sDAO.getAll();
+        request.setAttribute("listSlider",listSlider);
         request.setAttribute("search", search);
         request.setAttribute("cate", category);
         request.setAttribute("arrange",arrange);
+        request.setAttribute("numberOfCourse",numCoursePage);
         request.getRequestDispatcher("ListCourse.jsp").forward(request,response);
     }
 

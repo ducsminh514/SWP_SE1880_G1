@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en">
 	<!-- META ============================================= -->
@@ -67,10 +68,18 @@
 						</ul>
 					</div>
 					<div class="topbar-right">
+					 <c:if test="${sessionScope.account==null}">
 						<ul>
 							<li><a href="login.jsp">Login</a></li>
-							<li><a href="register.html">Register</a></li>
+							<li><a href="register.jsp">Register</a></li>
 						</ul>
+					</c:if>
+					<c:if test="${sessionScope.account!=null}">
+					<a href="logout" class="btn btn-color right-side">Sign out</a>
+					<a href="profile?id=${sessionScope.account.userId}" class="btn btn-color right-side">profile</a>
+					<a href="ChangePassword.jsp" class="btn btn-color right-side"> ChangePassword</a>
+                 	<a href="manage-account" class="btn btn-color right-side"> Dashboard</a>
+					 </c:if>
 					</div>
 				</div>
 			</div>
@@ -88,9 +97,6 @@
                     <div class="secondary-menu">
                         <div class="secondary-inner">
                             <ul>
-								<li><a href="javascript:;" class="btn-link"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="javascript:;" class="btn-link"><i class="fa fa-google-plus"></i></a></li>
-								<li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li>
 								<!-- Search Button ==== -->
 								<li class="search-btn"><button id="quik-search-btn" type="button" class="btn-link"><i class="fa fa-search"></i></button></li>
 							</ul>
@@ -116,34 +122,16 @@
                             <li class="active"><a href="index.jsp">Home</a></li>
 							<li><a href="javascript:;">Pages <i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
-									<li><a href="javascript:;">About<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="about-1.jsp">About 1</a></li>
-											<li><a href="about-2.jsp">About 2</a></li>
-										</ul>
-									</li>
+
 									<li><a href="javascript:;">Event<i class="fa fa-angle-right"></i></a>
 										<ul class="sub-menu">
 											<li><a href="event.jsp">Event</a></li>
 											<li><a href="events-details.jsp">Events Details</a></li>
 										</ul>
 									</li>
-									<li><a href="javascript:;">FAQ's<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="faq-1.jsp">FAQ's 1</a></li>
-											<li><a href="faq-2.jsp">FAQ's 2</a></li>
-										</ul>
-									</li>
-									<li><a href="javascript:;">Contact Us<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="contact-1.jsp">Contact Us 1</a></li>
-											<li><a href="contact-2.jsp">Contact Us 2</a></li>
-										</ul>
-									</li>
-									<li><a href="portfolio.html">Portfolio</a></li>
-									<li><a href="profile.html">Profile</a></li>
-									<li><a href="membership.html">Membership</a></li>
-									<li><a href="error-404.jsp">404 Page</a></li>
+									<li><a href="about-2.jsp">About 2</a></li>
+									<li><a href="faq-1.jsp">FAQ's 1</a></li>
+									<li><a href="contact-1.jsp">Contact Us 1</a></li>
 								</ul>
 							</li>
 							<li class="add-mega-menu"><a href="javascript:;">Our Courses <i class="fa fa-chevron-down"></i></a>
@@ -153,9 +141,6 @@
 										<ul>
 											<li><a href="courses.jsp">Courses </a></li>
 											<li><a href="courses-details.jsp">Courses Details</a></li>
-											<li><a href="profile.html">Instructor Profile</a></li>
-											<li><a href="event.jsp">Upcoming Event</a></li>
-											<li><a href="membership.html">Membership</a></li>
 										</ul>
 									</li>
 
@@ -164,36 +149,13 @@
 							<li><a href="javascript:;">Blog <i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									<li><a href="blog-classic-grid.jsp">Blog Classic</a></li>
-									<li><a href="Blog-List.jsp">Blog List</a></li>
+									<li><a href="blog-classic-sidebar.jsp">Blog Classic Sidebar</a></li>
 									<li><a href="blog-list-sidebar.jsp">Blog List Sidebar</a></li>
 									<li><a href="blog-standard-sidebar.jsp">Blog Standard Sidebar</a></li>
 									<li><a href="blog-details.jsp">Blog Details</a></li>
 								</ul>
 							</li>
-							<li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
-								<ul class="sub-menu">
-									<li><a href="admin/index.html">Dashboard</a></li>
-									<li><a href="admin/add-listing.html">Add Listing</a></li>
-									<li><a href="admin/bookmark.html">Bookmark</a></li>
-									<li><a href="admin/courses.html">Courses</a></li>
-									<li><a href="admin/review.html">Review</a></li>
-									<li><a href="admin/teacher-profile.html">Teacher Profile</a></li>
-									<li><a href="admin/user-profile.html">User Profile</a></li>
-									<li><a href="javascript:;">Calendar<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="admin/basic-calendar.html">Basic Calendar</a></li>
-											<li><a href="admin/list-view-calendar.html">List View Calendar</a></li>
-										</ul>
-									</li>
-									<li><a href="javascript:;">Mailbox<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="admin/mailbox.html">Mailbox</a></li>
-											<li><a href="admin/mailbox-compose.html">Compose</a></li>
-											<li><a href="admin/mailbox-read.html">Mail Read</a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
+
 						</ul>
 						<div class="nav-social-link">
 							<a href="javascript:;"><i class="fa fa-facebook"></i></a>

@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
-import DAO.CourseDAO;
-import DAO.PostDAO;
-import DAO.ReviewCourseDAO;
-import DAO.ReviewPostDAO;
+import DAO.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import Module.Course ;
 import Module.Post ;
+import Module.Slider ;
 @WebServlet(name="home", urlPatterns={"/home"})
 public class Home extends HttpServlet {
 
@@ -39,6 +37,7 @@ public class Home extends HttpServlet {
     throws ServletException, IOException {
         CourseDAO cDAO = new CourseDAO();
         ReviewCourseDAO rcDAO = new ReviewCourseDAO();
+        SliderDAO sDAO = new SliderDAO();
         // lay ra all course
         ArrayList<Course> listCourse= cDAO.getAll();
         // gan moi course voi rating trung binh cua no
@@ -69,6 +68,8 @@ public class Home extends HttpServlet {
         request.setAttribute("mapRatingPost",mapRatingPost);
         ArrayList<Post> listRecentPost = pDAO.ArrangeByDate();
         request.setAttribute("recentPost",listRecentPost);
+        ArrayList<Slider> listSlider = sDAO.getAll();
+        request.setAttribute("listSlider",listSlider);
         request.getRequestDispatcher("index.jsp").forward(request,response);
     }
 

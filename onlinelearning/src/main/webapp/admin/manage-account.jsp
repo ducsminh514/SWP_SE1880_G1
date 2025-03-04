@@ -27,7 +27,6 @@
     <meta property="og:image" content=""/>
     <meta name="format-detection" content="telephone=no">
 
-
     <!-- PAGE TITLE HERE ============================================= -->
     <title>EduChamp : Education HTML Template </title>
 
@@ -85,15 +84,13 @@
                     <div class="widget-box">
                         <div class="widget-inner ">
                             <form action="${pageContext.request.contextPath}/manage-account" method="GET"
-                                  class="mb-4" class="cours-search">
+                                  class="mb-4" class="">
                                 <div class="row mb-3" style="justify-content: flex-end">
                                     <div class="col-md-2">
-                                        <select class="" id="genderFilter" name="gender">
+                                        <select class="form-control" id="genderFilter" name="gender">
                                             <option value="">Gender</option>
-                                            <option value="Male" ${param.gender=='Male' ? 'selected' : '' }>Male
-                                            </option>
-                                            <option value="Female" ${param.gender=='Female' ? 'selected' : '' }>Female
-                                            </option>
+                                            <option value="Male" ${param.gender=='Male' ? 'selected' : '' }>Male</option>
+                                            <option value="Female" ${param.gender=='Female' ? 'selected' : '' }>Female</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2">
@@ -163,24 +160,24 @@
                                             <p>${acc.getPhoneNumber()}</p>
                                         </td>
                                         <td>
-                                            <p>${acc.getRole().getRoleName()}</p>
+                                            <p>${acc.role.roleName}</p>
                                         </td>
                                         <td>
                                             <span
-                                                    <c:if test="${acc.isStatus()}">
+                                                    <c:if test="${acc.status}">
                                                         class="btn green radius-xl outline"
                                                     </c:if>
-                                                <c:if test="${!acc.isStatus()}">
+                                                <c:if test="${!acc.status}">
                                                     class="btn red radius-xl outline"
                                                 </c:if>>
-                                                    ${acc.isStatus() ? 'Active' : 'Non-active'}
+                                                    ${acc.status ? 'Active' : 'Non-active'}
                                             </span>
                                         </td>
                                         <td>
                                             <div style="text-align: center; display: flex; justify-content: space-evenly; align-items: center;">
                                                 <a class="btn button-sm green radius-xl"
                                                    style="display: flex; align-items: center"
-                                                   href="${pageContext.request.contextPath}/manage-account?action=edit&userId=${acc.getUserId()}"
+                                                   href="manage-account?action=edit&userId=${acc.userId}"
                                                    title="Edit">
                                                     <i class="fa-solid fa-pen-to-square"></i>
                                                 </a>
@@ -229,9 +226,7 @@
     </div>
 </main>
 <div class="ttr-overlay"></div>
-<div style="padding-top: 80px;" >
-    <jsp:include page="footer.jsp"></jsp:include>
-</div>
+
 <!-- External JavaScripts -->
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
 
