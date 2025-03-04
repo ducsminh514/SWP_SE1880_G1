@@ -119,7 +119,7 @@
 						</div>
 
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="index.jsp">Home</a></li>
+                            <li class="active"><a href="home">Home</a></li>
 							<li><a href="javascript:;">Pages <i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 

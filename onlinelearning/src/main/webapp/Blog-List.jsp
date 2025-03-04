@@ -156,7 +156,7 @@
 
                                                         <!-- Tiêu đề bài viết -->
                                                         <h5 class="card-title">
-                                                            <a href="blog-details.html" class="text-dark text-decoration-none">${post.key.title}</a>
+                                                            <a href="postDetail?postId=${post.key.postId}" class="text-dark text-decoration-none">${post.key.title}</a>
                                                         </h5>
 
                                                         <!-- Rating -->

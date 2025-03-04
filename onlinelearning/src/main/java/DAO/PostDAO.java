@@ -92,7 +92,7 @@ public class PostDAO extends DBContext {
         return listByCate;
    }
 
-    public ArrayList<Post> getAllByPage(int start,String search , int categoryID , String arrange ) {
+    public ArrayList<Post> getAllByPage(int start,String search , int categoryID , String arrange , int numberPost ) {
         ArrayList<Post> listPost = new ArrayList<>();
         String sql = "SELECT * FROM Posts where 1=1" ;
         if(search != null && !search.isEmpty()){
@@ -115,7 +115,7 @@ public class PostDAO extends DBContext {
             sql += " ORDER BY UpdateDate DESC ";
         }
         if(start>=0){
-            sql += " OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY;";
+            sql += " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
         }
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -128,8 +128,10 @@ public class PostDAO extends DBContext {
                 pre.setInt(index++, categoryID);
             }
             if(start>=0){
-                pre.setInt(index, start);
+                pre.setInt(index++, start);
+                pre.setInt(index, numberPost);
             }
+
             ResultSet rs = pre.executeQuery();
             MarketingDAO mDAO = new MarketingDAO();
             CategoryBlogDAO cDAO = new CategoryBlogDAO();
@@ -150,7 +152,7 @@ public class PostDAO extends DBContext {
             }
             return listPost;
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("ngu");
         }
         return listPost;
     }

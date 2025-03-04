@@ -6,19 +6,17 @@ public class ReviewPost {
     private Post post ;
     private Customer customer ;
     private float rating ;
-    private String comment ;
     private Date reviewDate ;
     private boolean status ;
 
     public ReviewPost() {
     }
 
-    public ReviewPost(int reviewPostId, Post post, Customer customer, float rating, String comment, Date reviewDate, boolean status) {
+    public ReviewPost(int reviewPostId, Post post,Customer customer, float rating, Date reviewDate, boolean status) {
         this.reviewPostId = reviewPostId;
         this.post = post;
         this.customer = customer;
         this.rating = rating;
-        this.comment = comment;
         this.reviewDate = reviewDate;
         this.status = status;
     }
@@ -53,14 +51,6 @@ public class ReviewPost {
 
     public void setRating(float rating) {
         this.rating = rating;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     public Date getReviewDate() {

@@ -54,19 +54,20 @@ public class ListPost extends HttpServlet {
         ArrayList<Post> listPost = new ArrayList<>();
         int page = 0 ;
         if(Page == null || Page.isEmpty()){
-            listPost = pDAO.getAllByPage(0, search, cateID, arrange);
+            listPost = pDAO.getAllByPage(0, search, cateID, arrange,6);
             request.setAttribute("currentPage", 1);
         }else{
             try{
                 page = Integer.parseInt(Page) ;
-                listPost = pDAO.getAllByPage(6 * page - 6, search, cateID, arrange);
+                listPost = pDAO.getAllByPage(6 * page - 6, search, cateID, arrange,6);
             }catch(NumberFormatException e){
                  System.out.println(e);
             }
             request.setAttribute("currentPage", page);
         }
-        int pageNum = pDAO.getAllByPage(-1,search, cateID, arrange).size() / 6;
-        if (pDAO.getAllByPage(-1,search, cateID, arrange).size()  % 6 != 0) {
+        int sizePage = pDAO.getAllByPage(-1,search, cateID, arrange,6).size() ;
+        int pageNum = sizePage/ 6;
+        if (sizePage % 6 != 0) {
             pageNum += 1;
         }
         request.setAttribute("pageNum",pageNum);

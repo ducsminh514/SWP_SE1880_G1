@@ -40,7 +40,6 @@ public class ReviewPostDAO extends DBContext {
                 ReviewPost r = new ReviewPost() ;
                 r.setPost(pDAO.getById(rs.getInt("PostID")));
                 r.setReviewPostId(rs.getInt("PostReviewID"));
-                r.setComment(rs.getString("Comment"));
                 r.setStatus(rs.getBoolean("Status"));
                 r.setReviewDate(rs.getDate("ReviewDate"));
                 r.setCustomer(cDAO.getByID(rs.getInt("CustomerID")));
