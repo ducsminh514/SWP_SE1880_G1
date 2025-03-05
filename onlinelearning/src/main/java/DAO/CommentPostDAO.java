@@ -77,30 +77,22 @@ public class CommentPostDAO extends DBContext {
         return null;
     }
 
-    public ArrayList<CommentPost> listAll(int commentId) {
-        String sql = "SELECT * FROM CommentPost";
-        ArrayList<CommentPost> listComment = new ArrayList<>();
-        try {
-            PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1, commentId);
-            ResultSet rs = pre.executeQuery();
-            PostDAO pDAO = new PostDAO();
-            UserDAO uDAO = new UserDAO();
-            while (rs.next()) {
-                CommentPost c = new CommentPost();
-                c.setPost(pDAO.getById(rs.getInt("PostID")));
-                c.setContent(rs.getString("Content"));
-                c.setParentId(commentId);
-                c.setUser(uDAO.getByID(rs.getInt("UserID")));
-                c.setCommentPostId(rs.getInt("CommentPostID"));
-                c.setCreateDate(rs.getDate("CreateDate"));
-                listComment.add(c);
+
+
+    public int countAll(){
+        String sql ="Select Count(*) from CommentPost";
+        int cnt =0;
+        try{
+            PreparedStatement pre = connection.prepareStatement(sql) ;
+            ResultSet rs= pre.executeQuery();
+            if(rs.next()){
+                cnt = rs.getInt(1);
             }
-            return listComment;
-        } catch (SQLException e) {
+            return cnt ;
+        }catch(SQLException e ){
             System.out.println(e);
         }
-        return null;
+        return cnt;
     }
 
     public ArrayList<CommentPost> getCommentsByPostID(int postID) {
@@ -147,5 +139,26 @@ public class CommentPostDAO extends DBContext {
             System.out.println(e);
         }
         return commentList;
+    }
+
+
+    public void insert(int parentId,int postId,int userId , String content ){
+        String sql ="INSERT INTO [dbo].[CommentPost]\n" +
+                "           ([ParentID]\n" +
+                "           ,[PostID]\n" +
+                "           ,[UserID]\n" +
+                "           ,[Content])\n" +
+                "     VALUES\n" +
+                "           (?,?,?,?)";
+        try{
+            PreparedStatement pre = connection.prepareStatement(sql) ;
+            pre.setInt(1,parentId);
+            pre.setInt(2,postId);
+            pre.setInt(3,userId);
+            pre.setString(4,content);
+            pre.executeUpdate();
+        }catch (SQLException e){
+            System.out.println(e);
+        }
     }
 }

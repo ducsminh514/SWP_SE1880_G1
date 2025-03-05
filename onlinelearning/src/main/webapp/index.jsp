@@ -251,7 +251,7 @@
                                             <div class="feature-box-sm radius bg-white">
                                                 <i class="fa fa-bank text-primary"></i>
                                             </div>
-                                            <h4><a href="#">Learn Course Online</a></h4>
+                                            <h4><a href="listCourse">Learn Course Online</a></h4>
                                             <a href="#" class="btn radius-xl">View More</a>
                                         </div>
                                     </div>
@@ -265,8 +265,8 @@
                                             <div class="feature-box-sm radius bg-white">
                                                 <i class="fa fa-book text-primary"></i>
                                             </div>
-                                            <h4><a href="#">Read Blogs</a></h4>
-                                            <a href="#" class="btn radius-xl">View More</a>
+                                            <h4><a href="listPost">Read Blogs</a></h4>
+                                            <a href="listPost" class="btn radius-xl">View More</a>
                                         </div>
                                     </div>
                                 </div>

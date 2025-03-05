@@ -46,7 +46,31 @@
     <!-- STYLESHEETS ============================================= -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+    <style>
+        .reply-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
 
+        .reply-box textarea {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .reply-box .submit-reply {
+            background: red;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+    </style>
 </head>
 <body id="bg">
     <div class="page-wraper">
@@ -134,7 +158,7 @@
                                 </div>
                                 <div class="clear" id="comment-list">
                                     <div class="comments-area" id="comments">
-                                        <h2 class="comments-title">8 Comments</h2>
+                                        <h2 class="comments-title">${requestScope.cntAll} Comments</h2>
                                         <div class="clearfix m-b20">
                                             <!-- comment list END -->
                                             <ol class="comment-list">
@@ -144,16 +168,42 @@
                                                             <div class="comment-author vcard"> <img  class="avatar photo" src="assets/images/testimonials/pic1.jpg" alt=""> <cite class="fn">John Doe</cite> <span class="says">says:</span> </div>
                                                             <div class="comment-meta"> <a href="#">${parent.createDate}</a> </div>
                                                             <p>${parent.content} </p>
-                                                            <div class="reply"> <a href="#" class="comment-reply-link">Reply</a> </div>
-                                                        </div>
-                                                         <c:if test="${not empty parent.children}">
-                                                             <c:set var="childComments" value="${parent.children}" scope="page"/>
-                                                             <jsp:include page="comment-recursive.jsp"/>
-                                                         </c:if>
-                                                        <!-- list END -->
+                                                            <div class="reply">
+                                                                <a href="#" class="comment-reply-link" onclick="toggleReplyBox(event, this)">Reply</a>
+                                                            </div>
+                                                            <form action="addCommentPost">
+                                                                <div class="reply-box" style="display: none; margin-top: 10px; margin-bottom : 10px">
+                                                                    <textarea placeholder="Nhập nội dung bình luận" rows="3" name="content"></textarea>
+                                                                    <button type="submit" class="submit-reply">Gửi</button>
+                                                                </div>
+                                                            </form>
+                                                            <c:if test="${not empty parent.children}">
+                                                                <c:set var="childComments" value="${parent.children}" scope="request"/>
+                                                                <jsp:include page="comment-recursive.jsp"/>
+                                                            </c:if>
+                                                            <!-- list END -->
                                                     </li>
                                                 </c:forEach>
                                             </ol>
+                                            <script>
+                                                function toggleReplyBox(event, element) {
+                                                    event.preventDefault(); // Chặn hành vi mặc định của thẻ <a>
+
+                                                    // Tìm phần tử cha gần nhất có class .comment
+                                                    let commentContainer = element.closest('.comment');
+
+                                                    // Tìm phần tử .reply-box bên trong comment đó
+                                                    let replyBox = commentContainer.querySelector('.reply-box');
+
+                                                    // Hiển thị hoặc ẩn phần nhập comment
+                                                    if (replyBox.style.display === "none") {
+                                                        replyBox.style.display = "block";
+                                                    } else {
+                                                        replyBox.style.display = "none";
+                                                    }
+                                                }
+
+                                            </script>
                                             <!-- comment list END -->
                                             <!-- Form -->
                                             <div class="comment-respond" id="respond">

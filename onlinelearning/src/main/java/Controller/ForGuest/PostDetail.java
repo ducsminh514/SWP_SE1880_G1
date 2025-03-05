@@ -65,8 +65,9 @@ public class PostDetail extends HttpServlet {
         request.setAttribute("listCategory",listCategory);
         CommentPostDAO cpDAO = new CommentPostDAO() ;
         ArrayList<CommentPost> listComment = cpDAO.getCommentsByPostID(postId) ;
-        System.out.println(listComment.get(0).getChildren().size());
         request.setAttribute("listComment", listComment);
+        int countAll = cpDAO.countAll() ;
+        request.setAttribute("cntAll",countAll);
         request.getRequestDispatcher("Blog-Detail.jsp").forward(request,response);
     }
 
