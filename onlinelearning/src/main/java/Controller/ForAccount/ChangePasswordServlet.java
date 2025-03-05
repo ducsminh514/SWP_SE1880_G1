@@ -45,7 +45,7 @@ public class ChangePasswordServlet extends HttpServlet {
         String pass = request.getParameter("npass");
         String re_pass = request.getParameter("cfpass");
         String passwordPattern = "^(?=.*[A-Z])(?=.*[\\W_]).{12,}$";
-        boolean isValidPassword = Pattern.matches(passwordPattern, passWord);
+        boolean isValidPassword = Pattern.matches(passwordPattern, pass);
 
         if (!isValidPassword) {
             request.setAttribute("error", "Password must contain at least 1 uppercase letter and 1 special character, and must be at least 12 characters long.");
@@ -67,7 +67,7 @@ public class ChangePasswordServlet extends HttpServlet {
             response.getWriter().println("UserID:"+user.getUserId());
             if (passWord.equals(user.getPassword())) {
                 ud.changePassword(pass, user.getUserId());
-                session.setAttribute("message", "Change complete");
+                request.setAttribute("message", "Change complete");
                 request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
             } else {
                 session.setAttribute("error", "Your old pass not correct!");

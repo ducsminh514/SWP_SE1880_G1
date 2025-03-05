@@ -21,7 +21,7 @@ public class CustomerDAO extends DBContext {
                 c.setCustomerId(rs.getInt("CustomerID"));
                 c.setSocialRole(rs.getString("SocialRole"));
                 c.setLevelOfEnglish(rs.getString("LevelOfEnglish"));
-                c.setUser(uDAO.getUserByID(rs.getInt("UserID")));
+                c.setUser(uDAO.getByID(rs.getInt("UserID")));
                 listCustomer.add(c) ;
             }
             return listCustomer ;

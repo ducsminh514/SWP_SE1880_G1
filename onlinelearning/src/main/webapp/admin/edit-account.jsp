@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ page isELIgnored="false" %>
 <html>
 
 <head>
@@ -203,8 +203,9 @@
                                     <div class="form-group">
                                         <label for="gender">Gender</label>
                                         <select id="gender" name="gender" class="form-control" >
-                                            <option value="true" ${user.gender ? 'selected' : ''}>Male</option>
-                                            <option value="false" ${!user.gender ? 'selected' : ''}>Female</option>
+                                            <option value="Male" ${user.gender eq "Male" ? "selected" : ""}>Male</option>
+                                            <option value="Female" ${user.gender eq "Female" ? "selected" : ""}>Female</option>
+
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -214,7 +215,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="phone">Phone Number</label>
-                                        <input class="form-control"  type="text"  id="phone" name="phone"
+                                        <input class="form-control"  type="text"  id="phone" name="phone" pattern="\d{10}" title="Số điện thoại phải chứa đúng 10 chữ số" required
                                                value="${user.phoneNumber}">
                                     </div>
                                     <div class="form-group">
@@ -229,8 +230,8 @@
                                     <div class="form-group">
                                         <label for="status">Status</label>
                                         <select class="form-control"  id="status" name="status">
-                                            <option value="true" ${user.isStatus() ? 'selected' : ''}>Active</option>
-                                            <option value="false" ${!user.isStatus() ? 'selected' : ''}>Inactive</option>
+                                            <option value="true" ${user.status ? 'selected' : ''}>Active</option>
+                                            <option value="false" ${!user.status ? 'selected' : ''}>Inactive</option>
                                         </select>
                                     </div>
                                     <button class="btn" type="submit" >Update Account</button>

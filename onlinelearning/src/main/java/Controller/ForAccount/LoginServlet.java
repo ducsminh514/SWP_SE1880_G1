@@ -52,7 +52,14 @@ public class LoginServlet  extends HttpServlet {
             if(a.getStatus()==true) {//a.getStatus()==1
                 HttpSession session = request.getSession();
                 session.setAttribute("account", a);
-                response.sendRedirect("home");
+                String redirectUrl = (String) session.getAttribute("redirectUrl");
+                if (redirectUrl != null) {
+                    response.sendRedirect(redirectUrl); // Chuyển hướng về trang trước đó
+                    session.removeAttribute("redirectUrl");
+                    // Xóa URL sau khi chuyển hướng
+                } else {
+                    response.sendRedirect("home"); // Chuyển hướng về trang chính hoặc mặc định
+                }
                 if ("on".equals(rememberMe)) {
                     Cookie cookie = new Cookie("rememberUser", u);
                     cookie.setMaxAge(60 * 60 * 24 * 7);

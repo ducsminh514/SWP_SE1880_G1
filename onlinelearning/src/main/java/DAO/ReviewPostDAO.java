@@ -21,6 +21,7 @@ public class ReviewPostDAO extends DBContext {
             if (rs.next()) {
                 rating = rs.getFloat(1);
             }
+//            System.out.println(rating);
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -39,7 +40,6 @@ public class ReviewPostDAO extends DBContext {
                 ReviewPost r = new ReviewPost() ;
                 r.setPost(pDAO.getById(rs.getInt("PostID")));
                 r.setReviewPostId(rs.getInt("PostReviewID"));
-                r.setComment(rs.getString("Comment"));
                 r.setStatus(rs.getBoolean("Status"));
                 r.setReviewDate(rs.getDate("ReviewDate"));
                 r.setCustomer(cDAO.getByID(rs.getInt("CustomerID")));
@@ -53,16 +53,18 @@ public class ReviewPostDAO extends DBContext {
         return listPostReview;
     }
 
-    public HashMap<Integer, Float> mapRating() {
-        HashMap<Integer,Float> map = new HashMap<>();
+    public HashMap<Post, Float> mapRating() {
+        HashMap<Post,Float> map = new HashMap<>();
         ArrayList<Float>  listRating = new ArrayList<>() ;
         PostDAO pDAO = new PostDAO();
         ArrayList<Post> listPost = pDAO.getAll() ;
         for(Post p: listPost){
-            map.put(p.getPostId(),getRatingOfPost(p.getPostId()));
+            map.put(pDAO.getById(p.getPostId()),getRatingOfPost(p.getPostId()));
         }
         return map ;
     }
 }
+
+
 
 

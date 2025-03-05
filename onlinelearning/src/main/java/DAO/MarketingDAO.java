@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import Module.Marketing ;
 public class MarketingDAO extends DBContext {
     public ArrayList<Marketing> getAll() {
-        String sql = "select * from Experts";
+        String sql = "select * from Marketing";
         ArrayList<Marketing> listMarketing = new ArrayList<>();
         UserDAO uDAO = new UserDAO();
         try {
@@ -18,7 +18,7 @@ public class MarketingDAO extends DBContext {
             while (rs.next()) {
                 Marketing m = new Marketing();
                 m.setMarketingId(rs.getInt("MarketingID"));
-                m.setUser(uDAO.getUserByID(rs.getInt("UserID")));
+                m.setUser(uDAO.getByID(rs.getInt("UserID")));
                 m.setExperienceYear(rs.getInt("ExperienceYears"));
                 listMarketing.add(m);
             }

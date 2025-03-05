@@ -5,6 +5,7 @@
   Time: 4:16 PM
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page isELIgnored="false" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="modal fade" id="delete-product-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -24,10 +25,12 @@
             <div class="modal-footer">
                 <form action="${pageContext.request.contextPath}/manage-setting?action=deactive" method="POST">
                     <div class="form-group d-none">
-                        <input type="text" class="form-control" id="idDeleteInput" name="id" value="${setting.settingId})">
+                        <input type="text" class="form-control" id="idDeleteInput" name="id" value="${setting.settingId}">
                     </div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" >Không</button>
-                    <button type="submit" class="btn btn-danger">Có</button>
+                    <div class="form-group" style="display: flex; gap: 10px; width: 100%;">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="min-width: 50px">No</button>
+                        <button type="submit" class="btn btn-danger" style="min-width: 50px">Yes</button>
+                    </div>
                 </form>
             </div>
         </div>

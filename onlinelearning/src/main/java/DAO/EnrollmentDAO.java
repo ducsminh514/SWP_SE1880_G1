@@ -11,6 +11,27 @@ import  Module.Enrollment;
 import  Module.Customer;
 import  Module.Course;
 public class EnrollmentDAO extends DBContext {
+    public int totalEnrollment (int courseId){
+        int total =0 ;
+        String sql = "DECLARE @CourseID INT;\n" +
+                "SET @CourseID = ?;\n" +
+                "\n" +
+                "SELECT COUNT(DISTINCT CustomerID) \n" +
+                "FROM Enrollments \n" +
+                "WHERE CourseID = @CourseID;\n";
+        try{
+            PreparedStatement pre = connection.prepareStatement(sql) ;
+            pre.setInt(1,courseId);
+            Enrollment e = new Enrollment();
+            ResultSet rs = pre.executeQuery();
+            if(rs.next()){
+                total = rs.getInt(1);
+            }
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return total;
+    }
     public List<Integer> getAllEnrollmentIDsByCustomerID (int id){
         List <Integer> list = new ArrayList<>();
         String sql = "SELECT EnrollmentID FROM Enrollments where CustomerID= ?";
@@ -86,15 +107,4 @@ public class EnrollmentDAO extends DBContext {
 
         return enrollments;
     }
-//    public static void main(String[] args) {
-//        EnrollmentDAO ed= new EnrollmentDAO();
-//        int a = 2;
-//        List<Integer> courseIds = ed.getAllCourseIDsByCustomerID(a);
-//
-//        // In ra danh sách CourseIDs cho CustomerID = 4
-//        System.out.println("Course IDs for CustomerID " + a + ": ");
-//        for (Integer courseId : courseIds) {
-//            System.out.println(courseId);
-//        }
-//    }
 }

@@ -1,20 +1,37 @@
 package Module;
 
+import java.sql.Date;
+import java.util.List;
+import Module.CourseType;
+import Module.QuestionType;
 public class Question {
-    private int questionId ;
-    private Quiz quiz ;
-    private int orderNo ;
-    private String content ;
-    private String level ;
-    private boolean isMultipleChoice ;
+    private int questionId;
+    private String content;
+    private int level;
+    private CourseType courseType;
+    private int mark;
+    private QuestionType questionType;
+    private boolean status;
+    private Date createTime;
+    private Date updateTime;
 
-    public Question(int questionId, Quiz quiz, int orderNo, String content, String level, boolean isMultipleChoice) {
+    public Question(int questionId) {
         this.questionId = questionId;
-        this.quiz = quiz;
-        this.orderNo = orderNo;
+    }
+
+    public Question() {
+    }
+
+    public Question(int questionId, String content, int level, CourseType courseType, int mark,QuestionType questionType, boolean status, Date createTime, Date updateTime) {
+        this.questionId = questionId;
         this.content = content;
         this.level = level;
-        this.isMultipleChoice = isMultipleChoice;
+        this.courseType = courseType;
+        this.mark = mark;
+        this.questionType = questionType;
+        this.status = status;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
     }
 
     public int getQuestionId() {
@@ -25,22 +42,6 @@ public class Question {
         this.questionId = questionId;
     }
 
-    public Quiz getQuiz() {
-        return quiz;
-    }
-
-    public void setQuiz(Quiz quiz) {
-        this.quiz = quiz;
-    }
-
-    public int getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(int orderNo) {
-        this.orderNo = orderNo;
-    }
-
     public String getContent() {
         return content;
     }
@@ -49,19 +50,59 @@ public class Question {
         this.content = content;
     }
 
-    public String getLevel() {
+    public int getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(int level) {
         this.level = level;
     }
 
-    public boolean isMultipleChoice() {
-        return isMultipleChoice;
+    public CourseType getCourseType() {
+        return courseType;
     }
 
-    public void setMultipleChoice(boolean multipleChoice) {
-        isMultipleChoice = multipleChoice;
+    public void setCourseType(CourseType courseType) {
+        this.courseType = courseType;
+    }
+
+    public int getMark() {
+        return mark;
+    }
+
+    public void setMark(int mark) {
+        this.mark = mark;
+    }
+
+    public QuestionType getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(QuestionType questionType) {
+        this.questionType = questionType;
+    }
+
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

@@ -21,7 +21,7 @@ public class ExpertDAO extends DBContext {
                e.setBio(rs.getString("Bio"));
                e.setExperienceYear(rs.getInt("ExperienceYears"));
                e.setProfileImage(rs.getString("ProfileImage"));
-               e.setUser(uDAO.getUserByID(rs.getInt("UserID")));
+               e.setUser(uDAO.getByID(rs.getInt("UserID")));
                listExpert.add(e);
             }
 

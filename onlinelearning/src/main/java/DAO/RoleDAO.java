@@ -21,19 +21,12 @@ public class RoleDAO extends DBContext {
             if (rs.next()) {
                role.setRoleId(rs.getInt("roleId"));
                role.setRoleName(rs.getString("roleName"));
-               System.out.println("getByRoleID");
             }
-
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("ngu");
         }
         return role;
     }
-//    public static void main(String[] args) {
-//        RoleDAO r= new RoleDAO();
-//        r.getByRoleID(2);
-//    }
-
 
 
 

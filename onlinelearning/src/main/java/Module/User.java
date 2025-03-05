@@ -18,9 +18,7 @@ public class User {
     private boolean status ;
 
 
-
     public User() {
-
     }
 
     public User(int userId, String userName, String firstName, String lastName, String password, String email, String phoneNumber, Date createDate, String gender, String avatar, int age,Role role, boolean status) {

@@ -17,12 +17,10 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ManageAccountController extends HttpServlet {
 
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        System.out.println(action);
         if (action == null || action.equals("list")) {
             searchByFilter(request, response);
         } else {
@@ -33,6 +31,8 @@ public class ManageAccountController extends HttpServlet {
                 case "deactive":
                     deactiveAccount(request, response);
                     break;
+                default:
+                    searchByFilter(request, response);
             }
         }
     }
@@ -61,7 +61,22 @@ public class ManageAccountController extends HttpServlet {
         return "Short description";
     }
 
-
+    private void listAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        UserDAO userDAO = new UserDAO();
+        int page = 1;
+        int pageSize = 3;
+        String pageNum = request.getParameter("page");
+        if (pageNum != null && !pageNum.isEmpty()) {
+            page = Integer.parseInt(pageNum);
+        }
+        List<User> nonAdminAccounts = userDAO.findAllNonAdminAccounts(page, pageSize);
+        int totalUser = userDAO.getTotalNonAdminAccount();
+        int totalPage = (int) Math.ceil((double) totalUser / pageSize);
+        request.setAttribute("nonAdminAccounts", nonAdminAccounts);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPage", totalPage);
+        request.getRequestDispatcher("admin/manage-account.jsp").forward(request, response);
+    }
 
     private void deactiveAccount(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String userId = request.getParameter("userId");
@@ -82,13 +97,14 @@ public class ManageAccountController extends HttpServlet {
 
     private void editAccForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String userId = request.getParameter("userId");
+        System.out.println(userId);
         if (userId != null && !userId.isEmpty()) {
             int id = Integer.parseInt(userId);
             UserDAO userDAO = new UserDAO();
             User user = userDAO.findById(id);
             if (user != null) {
                 request.setAttribute("user", user);
-                request.getRequestDispatcher("/admin/edit-account.jsp").forward(request, response);
+                request.getRequestDispatcher("admin/edit-account.jsp").forward(request, response);
                 return;
             }
             response.sendRedirect(request.getContextPath() + "/manage-account");
@@ -139,16 +155,16 @@ public class ManageAccountController extends HttpServlet {
         String search = request.getParameter("search");
         String role = request.getParameter("role");
 
-
+        int page = 1;
         int pageSize = 3;
         String pageStr = request.getParameter("page");
-        int page = 1;  // Giá trị mặc định
         if (pageStr != null && !pageStr.isEmpty()) {
             try {
                 page = Integer.parseInt(pageStr);
-                if (page < 1) page = 1;  // Đảm bảo trang ít nhất là 1
+                if (page < 1)
+                    page = 1;
             } catch (NumberFormatException e) {
-                page = 1;  // Trở về giá trị mặc định nếu chuyển đổi thất bại
+                page = 1;
             }
         }
 
@@ -163,6 +179,7 @@ public class ManageAccountController extends HttpServlet {
         request.setAttribute("gender", gender);
         request.setAttribute("status", status);
         request.setAttribute("search", search);
+
         request.setAttribute("totalPage", totalPage);
         request.setAttribute("currentPage", page);
         request.setAttribute("userList", userList);

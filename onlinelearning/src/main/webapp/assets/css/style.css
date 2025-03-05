@@ -1942,7 +1942,7 @@ button.back-to-top {
 	line-height: 34px;
 }
 .recent-news .info-bx{
-	padding: 20px;	
+	padding: 20px;
     border: 1px solid #EEEEEE;
 }
 .comments-bx{
@@ -2002,7 +2002,24 @@ button.back-to-top {
 .cours-bx .info-bx{
 	padding:15px;
 	font-size: 13px;
+	    min-height: 120px; /* Điều chỉnh theo nhu cầu */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 }
+.course-author {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; /* Đảm bảo nếu tên dài thì xuống dòng */
+    gap: 5px; /* Tạo khoảng cách giữa các chữ */
+    text-align: center;
+    width: 100%; /* Đảm bảo không bị lệch */
+    font-size: 14px;
+    color: #555;
+}
+
 .cours-bx .action-box .btn{
 	border-radius: 0;
 	position: absolute;
@@ -2021,11 +2038,18 @@ button.back-to-top {
 	box-shadow:0 0 25px 0 rgba(29,25,0,0.25);
 	border-radius: 4px;
     overflow: hidden;
+    display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Đảm bảo các phần đều nhau */
+        height: 100%;
 }
 .cours-more-info{
 	border-top: 1px solid #e6e6e6;
 	display: flex;
 	margin: 0;
+	 justify-content: space-between;
+        align-items: center;
+        padding: 10px;
 }
 .cours-star{
 	margin:0;
@@ -2056,6 +2080,8 @@ button.back-to-top {
 }
 .cours-more-info .review{
 	border-right: 1px solid #e6e6e6;
+	display:flex;
+	flex-direction:column ;
 }
 .cours-more-info .price {
 	text-align:right;

@@ -17,7 +17,6 @@ import Module.Setting;
 @WebServlet(name = "ManageSettingController", urlPatterns = {"/manage-setting"})
 public class ManageSettingController extends HttpServlet {
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -99,9 +98,9 @@ public class ManageSettingController extends HttpServlet {
         request.setAttribute("settingList", settingList);
         request.setAttribute("currentPage", page);
 
-        request.setAttribute("searchFilter", searchFilter);
-        request.setAttribute("typeFilter", typeFilter);
-        request.setAttribute("statusFilter", statusFilter);
+        request.setAttribute("search", searchFilter);
+        request.setAttribute("type", typeFilter);
+        request.setAttribute("status", statusFilter);
 
         request.getRequestDispatcher("/admin/manage-setting.jsp").forward(request, response);
     }
@@ -184,7 +183,7 @@ public class ManageSettingController extends HttpServlet {
         String statusStr = request.getParameter("status");
         // Validate the input
         if (type == null || value == null || description == null || orderStr == null || statusStr == null) {
-            setToastMessage(request, "All fields must be filled in completely!", "error");
+            setToastMessage(request, "Tất cả các trường phải được điền đầy đủ!", "error");
             request.getRequestDispatcher("/admin/add-setting.jsp").forward(request, response);
             return;
         }
@@ -194,7 +193,7 @@ public class ManageSettingController extends HttpServlet {
             order = Integer.parseInt(orderStr);
             status = Boolean.parseBoolean(statusStr);
         } catch (NumberFormatException e) {
-            setToastMessage(request, "Number format error, please check again!", "error");
+            setToastMessage(request, "Lỗi định dạng số, vui lòng kiểm tra lại!", "error");
             request.getRequestDispatcher("/admin/add-setting.jsp").forward(request, response);
             return;
         }
@@ -217,9 +216,9 @@ public class ManageSettingController extends HttpServlet {
         int rs = settingDAO.insert(setting);
 
         if (rs > 0) {
-            setToastMessage(request, "Add setting successfully", "success");
+            setToastMessage(request, "Thêm setting thành công", "success");
         } else {
-            setToastMessage(request, "Add setting failed", "error");
+            setToastMessage(request, "Thêm setting không thành công", "error");
         }
         // Redirect to manage settings page
         response.sendRedirect(request.getContextPath() + "/manage-setting");

@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Quiz {
     private int quizId ;
-    private boolean quizType;
+    private QuizType quizType;
     private String quizName ;
     private int time ;
     private String title ;
@@ -13,10 +13,7 @@ public class Quiz {
     private String level ;
     private float averageMark ;
 
-    public Quiz() {
-    }
-
-    public Quiz(int quizId, boolean quizType, String quizName, int time, String title, Date createDate, Date updateDate, String level, float averageMark) {
+    public Quiz(int quizId, QuizType quizType, String quizName, int time, String title, Date createDate, Date updateDate, String level, float averageMark) {
         this.quizId = quizId;
         this.quizType = quizType;
         this.quizName = quizName;
@@ -36,11 +33,11 @@ public class Quiz {
         this.quizId = quizId;
     }
 
-    public boolean isQuizType() {
+    public QuizType getQuizType() {
         return quizType;
     }
 
-    public void setQuizType(boolean quizType) {
+    public void setQuizType(QuizType quizType) {
         this.quizType = quizType;
     }
 

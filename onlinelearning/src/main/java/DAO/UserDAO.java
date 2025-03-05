@@ -2,22 +2,28 @@ package DAO;
 
 import dal.DBContext;
 import Module.User;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import Module.Role;
-import org.mindrot.jbcrypt.BCrypt;
-public class UserDAO extends DBContext implements GenericDAO<User>{
+import java.util.Properties;
 
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+import org.mindrot.jbcrypt.BCrypt;
+import DAO.RoleDAO;
+public class UserDAO extends DBContext {
 
     public User checkAuthen(String username, String password) {
         String sql = "select * from Users where (Username=? or Email=?) and Password=?";
         if (connection == null) {
             System.out.println("Lỗi: Kết nối cơ sở dữ liệu chưa được khởi tạo!");
+
 
         }else {
             System.out.println("ok");
@@ -31,6 +37,7 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
 
+
                 User u = new User(rs.getInt("userId"), username,rs.getString("firstName"),rs.getString("lastName"),password,rs.getString("email"),rs.getString("phoneNumber"),rs.getDate("CreatedDate"),rs.getString("Gender"),rs.getString("Avatar"),rs.getInt("Age"),ro.getByRoleID(rs.getInt("roleId")),rs.getBoolean("status"));
                 System.out.println(u.getUserId());
                 return u;
@@ -43,13 +50,24 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
         }
         return null;
     }
-//    public static void main(String[] args) {
-//        UserDAO dao = new UserDAO();
-//
-//        String a = "duy";
-//        String b = "123";
-//        dao.checkAuthen(a,b);
-//    }
+
+
+    public List<User> findAll() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM Users";
+        try (
+                PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet rs = statement.executeQuery()) {
+            while (rs.next()) {
+                users.add(getFromResultSet(rs));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return users;
+    }
+
+
 
     public boolean existUserByEmail(String email) {
         String sql = "SELECT * FROM Users WHERE email = ?";
@@ -66,6 +84,7 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
         }
     }
 
+
     public void changePassword(String plainPassword, int id) {
         String sql = "update Users set Password = ? where UserID = ?";
         try {
@@ -75,12 +94,18 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
             st.executeUpdate();
             System.out.println("changePassword");
 
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
+
+
+    public String hashPassword(String plainPassword) {
+        return BCrypt.hashpw(plainPassword, BCrypt.gensalt());
+    }
 
     public int getIdUserByEmail(String email){
         String sql = "select * from Users where email = ?";
@@ -98,27 +123,7 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
         return 0;
     }
 
-    public User getUserByName(String username, String email) {
 
-        String sql = "select*from Users where Username =? or Email =?";
-
-        try {
-            RoleDAO ro= new RoleDAO();
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, username);
-            st.setString(2, email);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                User u = new User(rs.getInt("userId"), username,rs.getString("firstName"),rs.getString("lastName"),rs.getString("password"),rs.getString("email"),rs.getString("phoneNumber"),rs.getDate("CreatedDate"),rs.getString("Gender"),rs.getString("Avatar"),rs.getInt("Age"),ro.getByRoleID(rs.getInt("roleId")),rs.getBoolean("status"));
-                System.out.println(u.getUserId());
-                return u;
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-
-        return null;
-    }
     public User getUserByID(int id) {
 
         String sql = "select*from Users where UserID =?;";
@@ -159,6 +164,7 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
             st.setString(2, c.getFirstName());
             st.setString(3, c.getLastName());
 
+
             st.setString(4, c.getPassword());
             st.setString(5, c.getEmail());
             st.setString(6, c.getPhoneNumber());
@@ -166,14 +172,13 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
             st.setString(8, c.getAvatar());
             st.setInt(9, c.getAge());
             st.setInt(10,c.getRole().getRoleId());
-            st.setObject(11,c.getStatus());
+            st.setBoolean(11,c.getStatus());
             st.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println(e);
         }
     }
-
     public boolean verifyUser(String email) {
         try {
             String sql = "UPDATE Users SET Status = 1 WHERE Email = ?";
@@ -187,22 +192,25 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
         return false;
     }
 
-    public List<User> findAll() {
-        List<User> users = new ArrayList<>();
-        String sql = "SELECT * FROM Users";
-        try (
-                PreparedStatement statement = connection.prepareStatement(sql);
-                ResultSet rs = statement.executeQuery()) {
-            while (rs.next()) {
-                users.add(getFromResultSet(rs));
+    public int GetIDByUserName(String name){
+        int userID = -1;
+        String sql = "SELECT UserID FROM Users WHERE Username = ?";
+        try{
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1,name);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                userID = rs.getInt("UserID");
             }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Error finding user: " + e.getMessage());
         }
-        return users;
+        return userID;
     }
 
-    @Override
+
+
+
     public boolean update(User user) {
         String sql = "\n" +
                 "UPDATE [dbo].[Users]\n" +
@@ -245,13 +253,25 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
         }
     }
 
-    @Override
-    public boolean delete(User user) {
-        return false;
-    }
 
-    @Override
+    public ArrayList<User> getAll(){
+        String sql = " select * from Users ";
+        ArrayList<User> listAllUser= new ArrayList<>();
+        RoleDAO ro = new RoleDAO();
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while(rs.next()){
+                User u = new User(rs.getInt("userId"),rs.getString("userName"),rs.getString("firstName"),rs.getString("lastName"),rs.getString("password"),rs.getString("email"),rs.getString("phoneNumber"),rs.getDate("CreatedDate"),rs.getString("Gender"),rs.getString("Avatar"),rs.getInt("Age"),ro.getByRoleID(rs.getInt("roleId")),rs.getBoolean("status"));
+                listAllUser.add(u);
+            }
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return listAllUser;
+    }
     public int insert(User user) {
+
         String sql = "INSERT INTO [dbo].[Users]\n" +
                 "           ([Username]\n" +
                 "           ,[FirstName]\n" +
@@ -308,10 +328,21 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
         } catch (SQLException ex) {
             System.out.println("Error inserting user: " + ex.getMessage());
             return -1; // Return -1 to indicate failure
-        }    }
+        }
+    }
+    public User getByID(int id){
+        ArrayList<User> listUserByID = getAll();
+        for(User u : listUserByID){
+            if(u.getUserId() == id){
+                return u;
+            }
+        }
+        return null;
+    }
 
-    @Override
     public User getFromResultSet(ResultSet rs) throws SQLException {
+        RoleDAO roleDAO = new RoleDAO();
+        Role role = roleDAO.getByRoleID(rs.getInt("RoleID"));
         User user = new User();
         user.setUserId(rs.getInt("UserID"));
         user.setUserName(rs.getString("Username"));
@@ -325,7 +356,7 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
         user.setAvatar(rs.getString("Avatar"));
         user.setAge(rs.getInt("Age"));
         int roleID = rs.getInt("RoleID");
-        user.setRole(new Role(roleID));
+        user.setRole(role);
         user.setStatus(rs.getBoolean("Status"));
         return user;
     }
@@ -369,14 +400,11 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
 
     public User findById(int id) {
         String sql = "SELECT * FROM Users WHERE UserID = ?";
-        try{
-            PreparedStatement st = connection.prepareStatement(sql);
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, id);
-            try{
-                ResultSet rs = st.executeQuery();
-                User user = getFromResultSet(rs);
-                if(user != null) {
-                    return user;
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return getFromResultSet(rs);
                 }
             } catch (SQLException e) {
                 System.out.println("User not exist: " + e.getMessage());
@@ -387,6 +415,19 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
         return null;
     }
 
+    public boolean deactiveAccount(int id) {
+        String sql = "UPDATE Users SET Status = 0 WHERE UserID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            int affectedRow = st.executeUpdate();
+            return affectedRow > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Error deactivating user: " + e.getMessage());
+        }
+        return false;
+    }
     public boolean updateUser(User user) {
         String sql = "\n" +
                 "UPDATE [dbo].[Users]\n" +
@@ -417,44 +458,6 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
             return false;
         }
     }
-
-//        public static void main(String[] args) {
-//
-//        UserDAO ud= new UserDAO();
-//            //String userName, String firstName, String lastName, String email, String phoneNumber, String gender,int userId
-//        User a= new User("customer01","Doe","Doe","john.doe@example.com","0901234567","male","https://moc247.com/wp-content/uploads/2023/12/loa-mat-voi-101-hinh-anh-avatar-meo-cute-dang-yeu-dep-mat_2.jpg",3);
-//        ud.updateUser(a);
-//    }
-
-    public int GetIDByUserName(String name){
-        int userID = -1;
-        String sql = "SELECT UserID FROM Users WHERE Username = ?";
-        try{
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1,name);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                userID = rs.getInt("UserID");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error finding user: " + e.getMessage());
-        }
-        return userID;
-    }
-    public boolean deactiveAccount(int id) {
-        String sql = "UPDATE Users SET Status = 0 WHERE UserID = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, id);
-            int affectedRow = st.executeUpdate();
-            return affectedRow > 0;
-
-        } catch (SQLException e) {
-            System.out.println("Error deactivating user: " + e.getMessage());
-        }
-        return false;
-    }
-
     public List<User> findUserByFilter(String gender, String status, String role, String search, int page, int pageSize) {
         List<User> users = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM Users WHERE RoleID != 1"); // Admin RoleID = 1
@@ -469,7 +472,7 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
         // Kiểm tra và thêm điều kiện gender
         if (gender != null && !gender.isEmpty()) {
             sql.append(" AND Gender = ?");
-            params.add(Integer.parseInt(gender)); // Chuyển string sang int vì Gender là bit
+            params.add(gender);
         }
 
         // Kiểm tra và thêm điều kiện status
@@ -560,9 +563,34 @@ public class UserDAO extends DBContext implements GenericDAO<User>{
             }
         } catch (SQLException e) {
             System.out.println("Error counting users: " + e.getMessage());
-            e.printStackTrace(); // In stack trace để debug
+            e.printStackTrace();
         }
         return 0;
     }
+
+
+
+    public User getUserByName(String username, String email) {
+
+
+        String sql = "select*from Users where Username =? or Email =?";
+
+        try {
+            RoleDAO ro= new RoleDAO();
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            st.setString(2, email);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                User u = new User(rs.getInt("userId"), username,rs.getString("firstName"),rs.getString("lastName"),rs.getString("password"),rs.getString("email"),rs.getString("phoneNumber"),rs.getDate("CreatedDate"),rs.getString("Gender"),rs.getString("Avatar"),rs.getInt("Age"),ro.getByRoleID(rs.getInt("roleId")),rs.getBoolean("status"));
+                System.out.println(u.getUserId());
+                return u;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
 
 }
