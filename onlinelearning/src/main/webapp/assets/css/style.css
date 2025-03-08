@@ -2579,7 +2579,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#391800', end
 .course-detail-bx{
 	padding:20px;
 	border:1px solid rgba(0,0,0,0.1);
-	position: sticky;
+	/*position: sticky;*/
 	top: 100px;
 }
 .course-price{

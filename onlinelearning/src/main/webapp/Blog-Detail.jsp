@@ -177,11 +177,14 @@
                                                                     <button type="submit" class="submit-reply">Gửi</button>
                                                                 </div>
                                                             </form>
+                                                        </div>
+                                                        <ol class="children">
                                                             <c:if test="${not empty parent.children}">
                                                                 <c:set var="childComments" value="${parent.children}" scope="request"/>
                                                                 <jsp:include page="comment-recursive.jsp"/>
                                                             </c:if>
                                                             <!-- list END -->
+                                                        </ol>
                                                     </li>
                                                 </c:forEach>
                                             </ol>

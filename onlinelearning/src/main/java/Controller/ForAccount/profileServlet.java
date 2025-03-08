@@ -69,7 +69,7 @@ public class profileServlet extends HttpServlet {
             request.setAttribute("courses",courses );
             request.getRequestDispatcher("profile.jsp").forward(request, response);
         } catch (ServletException | IOException | NumberFormatException e) {
-            System.out.println(e);
+            System.out.println("ngu");
         }
     }
 

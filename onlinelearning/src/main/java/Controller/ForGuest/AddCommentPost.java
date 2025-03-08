@@ -48,6 +48,7 @@ public class AddCommentPost extends HttpServlet {
          String content = request.getParameter("content") ;
          CommentPostDAO cpDAO = new CommentPostDAO();
          cpDAO.insert(parentId,postId,userId,content);
+         request.getRequestDispatcher("/postDetail").forward(request,response);
     }
 
     @Override

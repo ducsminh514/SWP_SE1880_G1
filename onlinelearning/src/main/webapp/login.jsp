@@ -130,5 +130,4 @@
 <script src='assets/vendors/switcher/switcher.js'></script>
 </body>
 
-
 </html>
