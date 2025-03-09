@@ -16,7 +16,7 @@
             </div>
             <form action="addCommentPost">
                 <div class="reply-box" style="display: none; margin-top: 10px; margin-bottom : 10px">
-                    <input type="hidden" name="parentId" value="${child.parentId}">
+                    <input type="hidden" name="parentId" value="${child.commentPostId}">
                     <input type="hidden" name="postId" value="${child.post.postId}">
                     <textarea placeholder="Nhập nội dung bình luận" rows="3" name="content"></textarea>
                     <button type="submit" class="submit-reply">Gửi</button>
@@ -26,7 +26,7 @@
         <ol class="children">
             <c:if test="${not empty child.children}">
                 <c:set var="childComments" value="${child.children}" scope="request"/>
-                <jsp:include page="comment-recursive.jsp"/>
+                <jsp:include page="comment-recursive-post.jsp"/>
             </c:if>
         </ol>
     </li>

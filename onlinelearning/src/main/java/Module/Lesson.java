@@ -14,6 +14,9 @@ public class Lesson {
     private Date createDate ;
     private String description ;
 
+    public Lesson() {
+    }
+
     public Lesson(int lessonId, Subject subject, String lessonName, String content, int duration, int orderNo, boolean status, String video_url, Date createDate, String description) {
         this.lessonId = lessonId;
         this.subject = subject;

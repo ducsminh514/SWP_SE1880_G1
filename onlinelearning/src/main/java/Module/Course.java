@@ -13,7 +13,7 @@ public class Course {
     private String thumbnail ;
     private boolean status ;
     private Expert expert ;
-
+    private String level ;
     public Course() {
     }
 
@@ -37,6 +37,15 @@ public class Course {
         this.description = description;
         this.title = title;
         this.thumbnail = thumbnail;
+    }
+
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public int getCourseId() {

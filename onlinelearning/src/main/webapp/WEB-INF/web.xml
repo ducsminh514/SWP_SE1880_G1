@@ -18,6 +18,7 @@
   <filter-mapping>
     <filter-name>FilterLogin</filter-name>
     <url-pattern>/addCommentPost</url-pattern>
+    <url-pattern>/addCommentCourse</url-pattern>
   </filter-mapping>
 
 </web-app>

@@ -61,4 +61,24 @@ public class CommentCourseDAO extends DBContext {
         }
         return commentList;
     }
+
+    public void insert(int parentId,int courseId,int userId , String content ){
+        String sql ="INSERT INTO [dbo].[CommentCourse]\n" +
+                "           ([ParentID]\n" +
+                "           ,[CourseID]\n" +
+                "           ,[UserID]\n" +
+                "           ,[Content])\n" +
+                "     VALUES\n" +
+                "           (?,?,?,?)";
+        try{
+            PreparedStatement pre = connection.prepareStatement(sql) ;
+            pre.setInt(1,parentId);
+            pre.setInt(2,courseId);
+            pre.setInt(3,userId);
+            pre.setString(4,content);
+            pre.executeUpdate();
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+    }
 }

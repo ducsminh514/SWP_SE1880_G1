@@ -3,6 +3,8 @@ package Controller.ForGuest;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import DAO.*;
 import DTO.CourseDetailDTO;
@@ -15,6 +17,8 @@ import Module.Course ;
 import Module.PriceCourse ;
 import Module.CourseType ;
 import Module.CommentCourse ;
+import Module.Lesson ;
+import Module.Subject ;
 @WebServlet(name="CourseDetail", urlPatterns={"/courseDetail"})
 public class CourseDetail extends HttpServlet {
 
@@ -71,6 +75,20 @@ public class CourseDetail extends HttpServlet {
         CommentCourseDAO commentCourseDAO = new CommentCourseDAO() ;
         ArrayList<CommentCourse> listComment = commentCourseDAO.getCommentsByCourseID(courseId) ;
         request.setAttribute("listComment",listComment);
+        SubjectDAO sDAO = new SubjectDAO() ;
+        ArrayList<Subject> listSubject = sDAO.findByCourse(courseId) ;
+        request.setAttribute("listSubject" ,listSubject);
+        int countSubject = listSubject.size();
+        request.setAttribute("cntSubject",countSubject);
+        LessonDAO  lDAO = new LessonDAO() ;
+        Map<Integer, ArrayList<Lesson>> subjectLessonsMap = new HashMap<>();
+        for(Subject s: listSubject) {
+            ArrayList<Lesson> listLesson = lDAO.getBySubject(s.getSubjectId());
+            subjectLessonsMap.put(s.getSubjectId(), listLesson);
+        }
+        request.setAttribute("subjectLessonsMap", subjectLessonsMap);
+        ArrayList<PriceCourse> pricePackage = pcDAO.getByCourse(courseId) ;
+        request.setAttribute("pricePackage",pricePackage);
         request.getRequestDispatcher("CourseDetail.jsp").forward(request,response);
     }
 

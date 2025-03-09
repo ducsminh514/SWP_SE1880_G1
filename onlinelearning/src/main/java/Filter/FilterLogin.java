@@ -114,7 +114,12 @@ public class FilterLogin implements Filter {
         if(user == null){
             String currentUrl = req.getRequestURI();
             session.setAttribute("redirectUrl", currentUrl);
+            session.setAttribute("content",req.getParameter("content"));
+            session.setAttribute("parentId",req.getParameter("parentId"));
+            session.setAttribute("postId",req.getParameter("postId"));
+            session.setAttribute("courseId",req.getParameter("courseId"));
             res.sendRedirect("login.jsp");
+            return; // Dung lai khong cho tiep tuc vào filter
         }
         Throwable problem = null;
         try {
