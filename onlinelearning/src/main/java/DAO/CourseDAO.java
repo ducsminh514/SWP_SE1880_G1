@@ -32,6 +32,7 @@ public class CourseDAO extends DBContext {
                 c.setStatus(rs.getBoolean("status"));
                 c.setCourseType(ctDAO.getByID(rs.getInt("course_typeId")));
                 c.setExpert(eDAO.getByID(rs.getInt("ExpertID")));
+                c.setLevel(rs.getString("SkillLevel"));
                 listCourse.add(c) ;
             }
             return listCourse;
