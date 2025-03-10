@@ -48,6 +48,7 @@
         <!-- STYLESHEETS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
         <style>
             .cours-info-list ul {
                 list-style: none;
@@ -112,6 +113,45 @@
                 border: none;
                 border-radius: 4px;
                 cursor: pointer;
+            }
+            .course-star {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: flex;
+            }
+
+            .course-star li {
+                font-size: 25px;
+                margin-right: 5px;
+                position: relative;
+                color: #ddd; /* Màu ngôi sao chưa tô */
+            }
+
+            .course-star li.full {
+                color: #ff9900; /* Màu vàng cho ngôi sao đầy */
+            }
+
+            .course-star li.half::before {
+                content: '\f005'; /* Unicode của ngôi sao */
+                font-family: "Font Awesome 5 Free";
+                position: absolute;
+                left: 0;
+                top: 0;
+                color: #ff9900; /* Màu vàng cho nửa sao */
+                width: 50%; /* Chỉ hiển thị nửa sao */
+                overflow: hidden;
+            }
+
+            /* Điều chỉnh sao chưa đầy theo định dạng ẩn */
+            .course-star li.empty::before {
+                content: '\f005'; /* Unicode của ngôi sao */
+                font-family: "Font Awesome 5 Free";
+                position: absolute;
+                left: 0;
+                top: 0;
+                color: #ddd; /* Màu xám cho sao trống */
+                width: 100%; /* Chiều rộng đầy đủ cho ngôi sao rỗng */
             }
         </style>
     </head>
@@ -213,7 +253,7 @@
                                                 <h2 class="post-title">${course.course.courseName}</h2>
                                             </div>
                                             <div class="ttr-post-text">
-                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                                <p> ${course.course.title}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -222,23 +262,57 @@
                                             <del>$${course.originalPrice}</del>
                                             <h4 class="price">$${course.lowestSalePrice}</h4>
                                         </div>
-                                        <div class="course-buy-now text-center">
+                                        <div class="course-buy-now text-center" style="margin-bottom: 70px;">
                                             <a href="#" class="btn radius-xl text-uppercase">Buy Now This Courses</a>
                                         </div>
                                         <div class="cours-more-info">
                                             <div class="review">
-                                                <span>3 Review</span>
-                                                <ul class="cours-star">
-                                                    <li class="active"><i class="fa fa-star"></i></li>
-                                                    <li class="active"><i class="fa fa-star"></i></li>
-                                                    <li class="active"><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
+                                                <span>${course.rating} rating</span>
+                                                <ul class="course-star">
+                                                    <!-- Use a <li> for each star, and adjust the width in the JavaScript -->
+                                                    <li class="star" data-star="1"></li>
+                                                    <li class="star" data-star="2"></li>
+                                                    <li class="star" data-star="3"></li>
+                                                    <li class="star" data-star="4"></li>
+                                                    <li class="star" data-star="5"></li>
                                                 </ul>
                                             </div>
+                                            <script>
+                                                function setStarRating(rating) {
+                                                    console.log("Rating value: ", rating); // Log giá trị rating
+
+                                                    const stars = document.querySelectorAll('.course-star .star'); // Chọn tất cả các ngôi sao
+                                                    const fullStars = Math.floor(rating); // Số ngôi sao đầy đủ
+                                                    const decimalPart = rating % 1; // Phần thập phân để xác định nửa sao
+
+                                                    stars.forEach((star, index) => {
+                                                        star.innerHTML = '<i class="fas fa-star"></i>'; // Thêm biểu tượng ngôi sao từ FontAwesome
+                                                        star.classList.remove('full', 'half'); // Xóa các class cũ
+
+                                                        if (index < fullStars) {
+                                                            // Ngôi sao đầy đủ
+                                                            star.classList.add('full');
+                                                        } else if (index === fullStars && decimalPart >= 0.3) {
+                                                            // Nửa sao (tùy chỉnh ngưỡng, ví dụ >= 0.3)
+                                                            star.classList.add('half');
+                                                        } else {
+                                                            // Ngôi sao rỗng (không cần thêm class vì màu mặc định là #ddd)
+                                                            star.classList.add('empty');
+                                                        }
+                                                    });
+                                                }
+
+                                                // Khi DOM được tải, lấy rating và áp dụng
+                                                document.addEventListener("DOMContentLoaded", function () {
+                                                    const rating = parseFloat("${course.rating}"); // Lấy rating từ JSP
+                                                    console.log("Received rating: ", rating); // Log rating nhận được
+                                                    setStarRating(rating); // Gọi hàm để hiển thị ngôi sao
+                                                });
+
+                                            </script>
                                             <div class="price categories">
                                                 <span>Categories</span>
-                                                <h5 class="text-primary">Frontend</h5>
+                                                <h5 class="text-primary">${course.course.courseType.courseTypeName}</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -368,9 +442,7 @@
                 <%@include file="footer.jsp" %>
             </footer>
             <!-- Footer END ==== -->
-            <script>
 
-            </script>
 
             <button class="back-to-top fa fa-chevron-up" ></button>
         </div>

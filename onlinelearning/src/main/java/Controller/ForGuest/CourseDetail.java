@@ -64,7 +64,6 @@ public class CourseDetail extends HttpServlet {
             cd.setCourse(c);
             cd.setOriginalPrice(p.getPrice());
             cd.setRating(rvDAO.getRatingOfCourse(c.getCourseId()));
-            cd.setTotalEnrollment(emDAO.totalEnrollment(c.getCourseId()));
             cd.setLowestSalePrice(p.getSalePrice());
             listRecent.add(cd) ;
         }
