@@ -9,24 +9,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-
     <!-- META ============================================= -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="keywords" content=""/>
     <meta name="author" content=""/>
     <meta name="robots" content=""/>
-
     <!-- DESCRIPTION -->
     <meta name="description" content="EduChamp : Education HTML Template"/>
-
     <!-- OG -->
     <meta property="og:title" content="EduChamp : Education HTML Template"/>
     <meta property="og:description" content="EduChamp : Education HTML Template"/>
     <meta property="og:image" content=""/>
     <meta name="format-detection" content="telephone=no">
-
-
     <!-- PAGE TITLE HERE ============================================= -->
     <title>EduChamp : Education HTML Template </title>
 
@@ -88,7 +83,7 @@
             <div class="col-lg-12 m-b30">
                 <div class="widget-box">
                     <div class="wc-title">
-                        <h4>Manage account</h4>
+                        <h4>Manage Question</h4>
                     </div>
                     <div class="widget-body ">
                         <div class="widget-inner ">

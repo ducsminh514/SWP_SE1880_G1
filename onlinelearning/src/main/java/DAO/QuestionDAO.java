@@ -147,8 +147,8 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         question.setMark(resultSet.getInt("Mark"));
         question.setQuestionType(qt);
         question.setStatus(resultSet.getBoolean("IsActive"));
-        question.setCreateTime(resultSet.getDate("CreatedAt"));
-        question.setUpdateTime(resultSet.getDate("UpdatedAt"));
+        question.setCreateTime(resultSet.getDate("CreateAt"));
+        question.setUpdateTime(resultSet.getDate("UpdateAt"));
         question.setQuestionImage(questionImageList);
         question.setMp3(resultSet.getString("Mp3"));
         return question;

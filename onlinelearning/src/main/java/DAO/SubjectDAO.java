@@ -78,6 +78,7 @@ public class SubjectDAO extends DBContext implements GenericDAO<Subject> {
         Subject subject = new Subject();
         try{
             PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             if(rs.next()){
                 subject = getFromResultSet(rs);
@@ -87,5 +88,12 @@ public class SubjectDAO extends DBContext implements GenericDAO<Subject> {
             System.out.println(e.getMessage());
         }
         return subject;
+    }
+    public static void main(String[] args) {
+        SubjectDAO subjectDAO = new SubjectDAO();
+        List<Subject> subjects = subjectDAO.findAll();
+        for(Subject subject : subjects){
+            System.out.println(subject.getSubjectName());
+        }
     }
 }

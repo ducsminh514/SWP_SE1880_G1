@@ -40,7 +40,7 @@ public class QuestionTypeDAO extends DBContext implements GenericDAO<QuestionTyp
     }
 
     public QuestionType getQuestionTypeById(int id){
-        String sql = "select * from QuestionType where QuestionTypeId=?";
+        String sql = "select * from QuestionType where QuestionTypeId = ?";
         QuestionType questionType = new QuestionType();
 
         try{

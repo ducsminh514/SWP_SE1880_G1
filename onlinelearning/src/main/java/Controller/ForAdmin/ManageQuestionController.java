@@ -88,6 +88,8 @@ public class ManageQuestionController extends HttpServlet {
 
         SubjectDAO subjectDAO = new SubjectDAO();
         List<Subject> subjectList = subjectDAO.findAll();
+
+
         QuestionTypeDAO questionTypeDAO = new QuestionTypeDAO();
         List<QuestionType> questionTypes = questionTypeDAO.findAll();
 
