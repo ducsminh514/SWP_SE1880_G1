@@ -13,11 +13,11 @@
 	<meta name="robots" content="" />
 	
 	<!-- DESCRIPTION -->
-	<meta name="description" content="EduChamp : Education HTML Template" />
+	<meta name="description" content="EduChamp : Education " />
 	
 	<!-- OG -->
-	<meta property="og:title" content="EduChamp : Education HTML Template" />
-	<meta property="og:description" content="EduChamp : Education HTML Template" />
+	<meta property="og:title" content="EduChamp : Education " />
+	<meta property="og:description" content="EduChamp : Education " />
 	<meta property="og:image" content="" />
 	<meta name="format-detection" content="telephone=no">
 	
@@ -26,7 +26,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 	
 	<!-- PAGE TITLE HERE ============================================= -->
-	<title>EduChamp : Education HTML Template </title>
+	<title>EduChamp : Education  </title>
 	
 	<!-- MOBILE SPECIFIC ============================================= -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -147,9 +147,7 @@
 										<li class="nav-item">
 											<a class="nav-link active" data-toggle="tab" href="#courses"><i class="ti-book"></i>Courses</a>
 										</li>
-										<li class="nav-item">
-											<a class="nav-link" data-toggle="tab" href="#quiz-results"><i class="ti-bookmark-alt"></i>Quiz Results </a>
-										</li>
+									
 										<li class="nav-item">
 											<a class="nav-link" data-toggle="tab" href="#edit-profile"><i class="ti-pencil-alt"></i>Edit Profile</a>
 										</li>
@@ -270,37 +268,7 @@
                                                                                     </form>
                                                                                 </div>
                                                                             </div>
-									<div class="tab-pane" id="quiz-results">
-										<div class="profile-head">
-											<h3>Quiz Results</h3>
-										</div>
-										<div class="courses-filter">
-											<div class="row">
-												<div class="col-md-6 col-lg-6">
-													<ul class="course-features">
-														<li><i class="ti-book"></i> <span class="label">Lectures</span> <span class="value">8</span></li>
-														<li><i class="ti-help-alt"></i> <span class="label">Quizzes</span> <span class="value">1</span></li>
-														<li><i class="ti-time"></i> <span class="label">Duration</span> <span class="value">60 hours</span></li>
-														<li><i class="ti-stats-up"></i> <span class="label">Skill level</span> <span class="value">Beginner</span></li>
-														<li><i class="ti-smallcap"></i> <span class="label">Language</span> <span class="value">English</span></li>
-														<li><i class="ti-user"></i> <span class="label">Students</span> <span class="value">32</span></li>
-														<li><i class="ti-check-box"></i> <span class="label">Assessments</span> <span class="value">Yes</span></li>
-													</ul>
-												</div>
-												<div class="col-md-6 col-lg-6">
-													<ul class="course-features">
-														<li><i class="ti-book"></i> <span class="label">Lectures</span> <span class="value">8</span></li>
-														<li><i class="ti-help-alt"></i> <span class="label">Quizzes</span> <span class="value">1</span></li>
-														<li><i class="ti-time"></i> <span class="label">Duration</span> <span class="value">60 hours</span></li>
-														<li><i class="ti-stats-up"></i> <span class="label">Skill level</span> <span class="value">Beginner</span></li>
-														<li><i class="ti-smallcap"></i> <span class="label">Language</span> <span class="value">English</span></li>
-														<li><i class="ti-user"></i> <span class="label">Students</span> <span class="value">32</span></li>
-														<li><i class="ti-check-box"></i> <span class="label">Assessments</span> <span class="value">Yes</span></li>
-													</ul>
-												</div>
-											</div>
-										</div>
-									</div>
+
 									<div class="tab-pane" id="edit-profile">
 										<div class="profile-head">
                             <h3>Profile</h3>

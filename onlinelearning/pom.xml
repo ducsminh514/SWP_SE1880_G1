@@ -15,6 +15,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <build>
     <finalName>onlinelearning</finalName>
       <plugins>

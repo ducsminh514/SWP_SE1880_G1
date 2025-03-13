@@ -3,12 +3,12 @@ package Module;
 import java.util.Date;
 
 public class Subject {
-    private int subjectId ;
-    private Course course ;
-    private String subjectName ;
-    private String description ;
-    private int orderNo ;
-    private Date createDate ;
+    private int subjectId;
+    private Course course;
+    private String subjectName;
+    private String description;
+    private int orderNo;
+    private Date createDate;
 
     public Subject() {
     }

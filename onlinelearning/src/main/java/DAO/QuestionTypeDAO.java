@@ -57,4 +57,5 @@ public class QuestionTypeDAO extends DBContext implements GenericDAO<QuestionTyp
         }
         return null;
     }
+
 }
