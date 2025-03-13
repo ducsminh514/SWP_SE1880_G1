@@ -48,8 +48,7 @@ public class QuestionTypeDAO extends DBContext implements GenericDAO<QuestionTyp
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             if(rs.next()){
-                questionType.setQuestionTypeId(rs.getInt("QuestionTypeId"));
-                questionType.setQuestionTypeName(rs.getString("QuestionTypeName"));
+                questionType = getFromResultSet(rs);
                 return questionType;
             }
         } catch (SQLException e) {

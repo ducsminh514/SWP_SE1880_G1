@@ -3,12 +3,13 @@ package Controller.ForAdmin;
 import DAO.CourseTypeDAO;
 import DAO.QuestionDAO;
 import DAO.QuestionTypeDAO;
+import DAO.SubjectDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import Module.Subject;
 import java.util.List;
 
 import Module.Question;
@@ -64,8 +65,6 @@ public class ManageQuestionController extends HttpServlet {
         String pageSizeStr = request.getParameter("pageSize");
         String[] optionChoice = request.getParameterValues("optionChoice");
 
-
-
         int page = 1;
         int pageSize = 5;
 
@@ -87,8 +86,8 @@ public class ManageQuestionController extends HttpServlet {
             }
         }
 
-        CourseTypeDAO courseTypeDAO = new CourseTypeDAO();
-        List<CourseType> courseTypes = courseTypeDAO.getAll();
+        SubjectDAO subjectDAO = new SubjectDAO();
+        List<Subject> subjectList = subjectDAO.findAll();
         QuestionTypeDAO questionTypeDAO = new QuestionTypeDAO();
         List<QuestionType> questionTypes = questionTypeDAO.findAll();
 
@@ -136,7 +135,7 @@ public class ManageQuestionController extends HttpServlet {
         request.setAttribute("totalPage", totalPage);
         request.setAttribute("currentPage", page);
         request.setAttribute("questionList", questionList);
-        request.setAttribute("courseTypes", courseTypes);
+        request.setAttribute("subjectList", subjectList);
         request.setAttribute("questionTypes", questionTypes);
 
         request.setAttribute("subject", subject);

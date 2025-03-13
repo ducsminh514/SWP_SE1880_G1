@@ -98,8 +98,8 @@
                                     <div class="col-md-2">
                                         <select class="form-control" id="subjectFilter" name="subject">
                                             <option value="">Subject</option>
-                                            <c:forEach items="${courseTypes}" var="type">
-                                                <option value="${type.courseTypeId}" ${param.subject == type.courseTypeId ? "selected":"" }>${type.courseTypeName}</option>
+                                            <c:forEach items="${subjectList}" var="subject">
+                                                <option value="${subject.subjectId}" ${param.subject == subject.subjectId ? "selected":"" }>${subject.subjectName}</option>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -184,7 +184,7 @@
                                         </c:if>
                                         <c:if test="${not empty listColum && listColum.contains('subjectChoice')}">
                                             <td>
-                                                <p>${question.courseType.courseTypeName}</p>
+                                                <p>${question.subject.subjectName}</p>
                                             </td>
                                         </c:if>
                                         <c:if test="${not empty listColum && listColum.contains('levelChoice')}">

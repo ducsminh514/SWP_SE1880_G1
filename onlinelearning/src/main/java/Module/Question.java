@@ -4,34 +4,36 @@ import java.sql.Date;
 import java.util.List;
 import Module.CourseType;
 import Module.QuestionType;
+
+
 public class Question {
     private int questionId;
     private String content;
     private int level;
-    private CourseType courseType;
+    private Subject subject;
     private int mark;
     private QuestionType questionType;
     private boolean status;
     private Date createTime;
     private Date updateTime;
-
-    public Question(int questionId) {
-        this.questionId = questionId;
-    }
+    private List<QuestionImage> questionImage;
+    private String mp3;
 
     public Question() {
     }
 
-    public Question(int questionId, String content, int level, CourseType courseType, int mark,QuestionType questionType, boolean status, Date createTime, Date updateTime) {
+    public Question(int questionId, String content, int level, Subject subject, int mark, QuestionType questionType, boolean status, Date createTime, Date updateTime, List<QuestionImage> questionImage, String mp3) {
         this.questionId = questionId;
         this.content = content;
         this.level = level;
-        this.courseType = courseType;
+        this.subject = subject;
         this.mark = mark;
         this.questionType = questionType;
         this.status = status;
         this.createTime = createTime;
         this.updateTime = updateTime;
+        this.questionImage = questionImage;
+        this.mp3 = mp3;
     }
 
     public int getQuestionId() {
@@ -58,12 +60,12 @@ public class Question {
         this.level = level;
     }
 
-    public CourseType getCourseType() {
-        return courseType;
+    public Subject getSubject() {
+        return subject;
     }
 
-    public void setCourseType(CourseType courseType) {
-        this.courseType = courseType;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 
     public int getMark() {
@@ -104,5 +106,21 @@ public class Question {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<QuestionImage> getQuestionImage() {
+        return questionImage;
+    }
+
+    public void setQuestionImage(List<QuestionImage> questionImage) {
+        this.questionImage = questionImage;
+    }
+
+    public String getMp3() {
+        return mp3;
+    }
+
+    public void setMp3(String mp3) {
+        this.mp3 = mp3;
     }
 }

@@ -13,6 +13,9 @@ public class Course {
     private String thumbnail ;
     private boolean status ;
     private Expert expert ;
+    private String level ;
+    public Course() {
+    }
 
     public Course(int courseId, CourseType courseType, String courseName, String description, Date createDate, float price, String title, String thumbnail, boolean status, Expert expert) {
         this.courseId = courseId;
@@ -25,6 +28,24 @@ public class Course {
         this.thumbnail = thumbnail;
         this.status = status;
         this.expert = expert;
+    }
+
+    public Course(int courseId, CourseType courseType, String courseName, String description, String title, String thumbnail) {
+        this.courseId = courseId;
+        this.courseType = courseType;
+        this.courseName = courseName;
+        this.description = description;
+        this.title = title;
+        this.thumbnail = thumbnail;
+    }
+
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public int getCourseId() {
