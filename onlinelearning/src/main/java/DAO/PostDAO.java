@@ -183,4 +183,23 @@ public class PostDAO extends DBContext {
         return 0 ;
     }
 
+    public void update(int categoryBlogId, int marketingId, String title ,String thumbnail,int postId){
+        String sql ="UPDATE [dbo].[Posts]\n" +
+                "   SET [CategoryBlogID] = ?,\n" +
+                "       [MarketingID] = ?,\n" +
+                "       [Title] = ?,\n" +
+                "       [Thumbnail] = ?\n" +
+                " WHERE [PostID] = ?\n" ;
+        try{
+            PreparedStatement pre = connection.prepareStatement(sql) ;
+            pre.setInt(1,categoryBlogId);
+            pre.setInt(2,marketingId);
+            pre.setString(3,title);
+            pre.setString(4,thumbnail);
+            pre.setInt(5,postId);
+            pre.executeUpdate() ;
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+    }
 }

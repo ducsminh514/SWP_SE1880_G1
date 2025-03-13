@@ -69,6 +69,8 @@ public class AddNewPost extends HttpServlet {
         String thumbnailFileName = null;
         if (thumbnailPart != null && thumbnailPart.getSize() > 0) {
              thumbnailFileName = saveFile(thumbnailPart, request);
+        } else {
+            String existingThumbnail = request.getParameter("existingThumbnail");
         }
         PostDAO pDAO = new PostDAO() ;
         int postId = pDAO.insert(categoryId,1,title,thumbnailFileName);
@@ -86,7 +88,6 @@ public class AddNewPost extends HttpServlet {
         // Get arrays of values instead of trying to access indexed parameters
         String[] contentTypes = request.getParameterValues("contentType[]");
         String[] notes = request.getParameterValues("note[]");
-
         if (contentTypes == null) {
             System.out.println("No content types found");
             return;
@@ -117,6 +118,7 @@ public class AddNewPost extends HttpServlet {
                 String[] contents = request.getParameterValues("content[]");
                 if (contents != null && contents.length > i) {
                     postContent.setContent(contents[i]);
+//                    System.out.println(contents[i]);
                 }
             } else if ("IMAGE".equals(contentType)) {
                 // For files, we might still need to try both naming patterns

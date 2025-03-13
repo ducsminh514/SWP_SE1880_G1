@@ -4,53 +4,189 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Tạo Bài Post Mới</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
         <style>
             body {
-                background-color: #212529;
-                color: white;
+                background-color: #99CCCC;
+                color: #33CCCC;
                 padding: 20px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 30px;
+                background-color: #1e1e1e;
+                border-radius: 10px;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            }
+            h1 {
+                color: #ffffff;
+                border-bottom: 2px solid #3a3a3a;
+                padding-bottom: 15px;
+                margin-bottom: 25px;
+                font-weight: 600;
             }
             .content-container {
-                border: 1px solid #444;
-                border-radius: 5px;
-                padding: 15px;
-                margin-bottom: 15px;
-                background-color: #2a2e32;
+                border: 1px solid #3a3a3a;
+                border-radius: 8px;
+                padding: 20px;
+                margin-bottom: 20px;
+                background-color: #2a2a2a;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+            }
+            .content-container:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
             }
             .content-header {
                 display: flex;
                 align-items: center;
-                margin-bottom: 10px;
+                margin-bottom: 15px;
+                border-bottom: 1px solid #3a3a3a;
+                padding-bottom: 10px;
             }
             .drag-handle {
                 cursor: move;
-                padding: 5px;
-                margin-right: 10px;
+                padding: 5px 10px;
+                margin-right: 15px;
+                background-color: #333;
+                border-radius: 4px;
+                color: #aaa;
+            }
+            .drag-handle:hover {
+                background-color: #444;
+                color: #fff;
             }
             .form-control {
-                background-color: #343a40;
-                color: white;
-                border: 1px solid #495057;
+                background-color: #333;
+                color: #e0e0e0;
+                border: 1px solid #444;
+                border-radius: 5px;
+                padding: 10px 15px;
             }
             .form-control:focus {
-                background-color: #343a40;
-                color: white;
+                background-color: #3a3a3a;
+                color: #ffffff;
+                border-color: #007bff;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            }
+            label {
+                color: #bbb;
+                font-weight: 500;
+                margin-bottom: 8px;
             }
             .btn-dark {
-                background-color: #495057;
-                border-color: #495057;
+                background-color: #3a3a3a;
+                border-color: #3a3a3a;
+                transition: all 0.2s ease;
             }
             .btn-dark:hover {
-                background-color: #5a6268;
-                border-color: #5a6268;
+                background-color: #4a4a4a;
+                border-color: #4a4a4a;
             }
-            .container {
-                max-width: 1200px;
+            .btn-primary {
+                background-color: #0069d9;
+                border-color: #0062cc;
+                padding: 10px 20px;
+                font-weight: 500;
+            }
+            .btn-primary:hover {
+                background-color: #0062cc;
+                border-color: #005cbf;
+            }
+            .btn-danger {
+                background-color: #dc3545;
+                border-color: #dc3545;
+                transition: all 0.2s ease;
+            }
+            .btn-danger:hover {
+                background-color: #c82333;
+                border-color: #bd2130;
             }
             textarea {
                 min-height: 150px;
+                resize: vertical;
+            }
+            .custom-file-label {
+                background-color: #333;
+                color: #aaa;
+                border: 1px solid #444;
+            }
+            .custom-file-label::after {
+                background-color: #444;
+                color: #e0e0e0;
+            }
+            .custom-file-input:focus ~ .custom-file-label {
+                border-color: #007bff;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            }
+            /* Fix for thumbnail preview */
+            #thumbnailPreview {
+                margin-top: 10px;
+                margin-bottom: 20px;
+                max-height: 200px;
+                overflow: hidden;
+                border-radius: 5px;
+                border: 1px solid #444;
+                background-color: #252525;
+                text-align: center;
+            }
+            #thumbnailPreview img {
+                max-height: 180px;
+                object-fit: contain;
+                margin: 10px;
+            }
+            .content-buttons {
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+                border-bottom: 1px solid #3a3a3a;
+            }
+            .content-buttons .btn {
+                margin-right: 10px;
+                padding: 8px 15px;
+                font-weight: 500;
+            }
+            .image-preview, .video-preview {
+                margin-top: 10px;
+                background-color: #252525;
+                border-radius: 5px;
+                padding: 10px;
+                text-align: center;
+                border: 1px solid #444;
+            }
+            .image-preview img, .video-preview video {
+                max-height: 180px;
+                border-radius: 3px;
+            }
+            .form-group {
+                margin-bottom: 20px;
+            }
+            .form-control {
+               height : 40px ;
+            }
+            /* Form submission area */
+            .form-actions {
+                margin-top: 30px;
+                display: flex;
+                justify-content: flex-end;
+                gap: 15px;
+            }
+            .form-actions .btn {
+                padding: 10px 25px;
+                font-weight: 500;
+            }
+            /* Add some cool hover effects */
+            .btn {
+                transition: all 0.3s ease;
+            }
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
         </style>
     </head>
@@ -79,16 +215,16 @@
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="thumbnail" name="thumbnail" accept="image/*">
                         <label class="custom-file-label" for="thumbnail">Chọn tệp</label>
-                        <div id="thumbnailPreview" class="mt-2"></div>
                     </div>
+                    <div id="thumbnailPreview" class="mt-2"></div>
                 </div>
 
                 <div class="form-group">
                     <label>Nội dung bài viết:</label>
-                    <div class="mb-3">
-                        <button type="button" class="btn btn-dark mr-2" id="addText">Thêm văn bản</button>
-                        <button type="button" class="btn btn-dark mr-2" id="addImage">Thêm hình ảnh</button>
-                        <button type="button" class="btn btn-dark" id="addVideo">Thêm video</button>
+                    <div class="content-buttons mb-3">
+                        <button type="button" class="btn btn-dark" id="addText"><i class="fas fa-font mr-2"></i>Thêm văn bản</button>
+                        <button type="button" class="btn btn-dark" id="addImage"><i class="fas fa-image mr-2"></i>Thêm hình ảnh</button>
+                        <button type="button" class="btn btn-dark" id="addVideo"><i class="fas fa-video mr-2"></i>Thêm video</button>
                     </div>
 
                     <div id="contentBlocks" class="mt-3">
@@ -96,8 +232,10 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Đăng bài</button>
-                <a href="javascript:history.back()" class="btn btn-secondary">Hủy</a>
+                <div class="form-actions">
+                    <a href="javascript:history.back()" class="btn btn-secondary"><i class="fas fa-times mr-2"></i>Hủy</a>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane mr-2"></i>Đăng bài</button>
+                </div>
             </form>
         </div>
 
@@ -107,7 +245,7 @@
                 <div class="content-header">
                     <div class="drag-handle">☰</div>
                     <h5>Đoạn văn bản</h5>
-                    <button type="button" class="btn btn-danger btn-sm ml-auto remove-block">Xóa</button>
+                    <button type="button" class="btn btn-danger btn-sm ml-auto remove-block"><i class="fas fa-trash mr-1"></i>Xóa</button>
                 </div>
                 <textarea class="form-control" name="content"></textarea>
                 <input type="hidden" name="contentType" value="TEXT">
@@ -119,7 +257,7 @@
                 <div class="content-header">
                     <div class="drag-handle">☰</div>
                     <h5>Hình ảnh</h5>
-                    <button type="button" class="btn btn-danger btn-sm ml-auto remove-block">Xóa</button>
+                    <button type="button" class="btn btn-danger btn-sm ml-auto remove-block"><i class="fas fa-trash mr-1"></i>Xóa</button>
                 </div>
                 <div class="form-group">
                     <div class="custom-file">
@@ -141,7 +279,7 @@
                 <div class="content-header">
                     <div class="drag-handle">☰</div>
                     <h5>Video</h5>
-                    <button type="button" class="btn btn-danger btn-sm ml-auto remove-block">Xóa</button>
+                    <button type="button" class="btn btn-danger btn-sm ml-auto remove-block"><i class="fas fa-trash mr-1"></i>Xóa</button>
                 </div>
                 <div class="form-group">
                     <div class="custom-file">
@@ -181,7 +319,16 @@
                 $('#addText').click(function () {
                     const template = document.getElementById('textBlockTemplate');
                     const clone = document.importNode(template.content, true);
+                    const index = $('.content-container').length; // Lấy số lượng khối hiện tại
+
+                    // Đổi tên các input trong khối text
+                    clone.querySelector('textarea[name="content"]').name = `content[${index}]`;
+                    clone.querySelector('input[name="contentType"]').name = `contentType[${index}]`;
+
+                    // Thêm khối vào #contentBlocks
                     $('#contentBlocks').append(clone);
+
+                    // Cập nhật thứ tự
                     updateOrderIndices();
                 });
 
@@ -233,7 +380,7 @@
                     if (file) {
                         const reader = new FileReader();
                         reader.onload = function (e) {
-                            $('#thumbnailPreview').html('<img src="' + e.target.result + '" class="img-fluid mt-2" style="max-height: 200px">');
+                            $('#thumbnailPreview').html('<img src="' + e.target.result + '" class="img-fluid" style="max-height: 180px">');
                         }
                         reader.readAsDataURL(file);
                     }
@@ -247,7 +394,7 @@
                     if (file) {
                         const reader = new FileReader();
                         reader.onload = function (e) {
-                            preview.html('<img src="' + e.target.result + '" class="img-fluid mt-2" style="max-height: 200px">');
+                            preview.html('<img src="' + e.target.result + '" class="img-fluid" style="max-height: 180px">');
                         }
                         reader.readAsDataURL(file);
                     }
@@ -261,7 +408,7 @@
                     if (file) {
                         const reader = new FileReader();
                         reader.onload = function (e) {
-                            preview.html('<video controls class="img-fluid mt-2" style="max-height: 200px"><source src="' + e.target.result + '" type="' + file.type + '"></video>');
+                            preview.html('<video controls class="img-fluid" style="max-height: 180px"><source src="' + e.target.result + '" type="' + file.type + '"></video>');
                         }
                         reader.readAsDataURL(file);
                     }

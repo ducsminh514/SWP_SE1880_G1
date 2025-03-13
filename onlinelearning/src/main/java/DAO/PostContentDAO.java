@@ -54,4 +54,25 @@ public class PostContentDAO extends DBContext {
         }
         return contents;
     }
+
+    public void update(PostContent p){
+        String sql ="UPDATE [dbo].[PostContent]\n" +
+                "   SET [PostID] = ?\n" +
+                "      ,[ContentType] =?\n" +
+                "      ,[Content] = ?\n" +
+                "      ,[Note] = ?\n" +
+                "      ,[OrderIndex] = ? \n" +
+                " WHERE ContentId =? ";
+        try{
+            PreparedStatement pre = connection.prepareStatement(sql) ;
+            pre.setInt(1,p.getPost().getPostId());
+            pre.setString(2,p.getContentType());
+            pre.setString(3,p.getContent());
+            pre.setString(4,p.getNote());
+            pre.setInt(5,p.getOrderIndex());
+            pre.executeUpdate();
+        }catch(SQLException e){
+            System.out.println("ngu1");
+        }
+    }
 }
