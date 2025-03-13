@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 
 import DAO.CategoryBlogDAO;
@@ -81,61 +82,88 @@ public class AddNewPost extends HttpServlet {
     private void processContentBlocks(HttpServletRequest request, int postId) throws IOException, ServletException {
         PostDAO pDAO = new PostDAO();
         PostContentDAO pcDAO = new PostContentDAO();
-        int blockCount = getBlockCount(request); // Đếm số khối dựa trên contentType
 
-        for (int i = 0; i < blockCount; i++) {
+        // Get arrays of values instead of trying to access indexed parameters
+        String[] contentTypes = request.getParameterValues("contentType[]");
+        String[] notes = request.getParameterValues("note[]");
+
+        if (contentTypes == null) {
+            System.out.println("No content types found");
+            return;
+        }
+
+        System.out.println("Found " + contentTypes.length + " content blocks to process");
+
+        for (int i = 0; i < contentTypes.length; i++) {
             PostContent postContent = new PostContent();
             postContent.setPost(pDAO.getById(postId));
 
-            // Lấy contentType
-            String contentType = request.getParameter("contentType[" + i + "]");
+            // Set content type
+            String contentType = contentTypes[i];
             if (contentType == null) continue;
             postContent.setContentType(contentType);
 
-            // Lấy orderIndex (giả sử bạn đã xử lý trong updateOrderIndices)
-            postContent.setOrderIndex(i); // Mặc định là i, hoặc lấy từ request nếu có
+            // Set order index
+            postContent.setOrderIndex(i);
 
-            // Lấy note
-            String note = request.getParameter("note[" + i + "]");
-            if (note != null && !note.isEmpty()) {
-                postContent.setNote(note);
+            // Set note if available
+            if (notes != null && notes.length > i && notes[i] != null && !notes[i].isEmpty()) {
+                postContent.setNote(notes[i]);
+                System.out.println("Setting note for index " + i + ": " + notes[i]);
             }
 
-            // Xử lý theo loại nội dung
+            // Process based on content type
             if ("TEXT".equals(contentType)) {
-                String content = request.getParameter("content[" + i + "]");
-                if (content != null) {
-                    postContent.setContent(content);
+                String[] contents = request.getParameterValues("content[]");
+                if (contents != null && contents.length > i) {
+                    postContent.setContent(contents[i]);
                 }
             } else if ("IMAGE".equals(contentType)) {
+                // For files, we might still need to try both naming patterns
                 Part filePart = request.getPart("imageFile[" + i + "]");
+                if (filePart == null || filePart.getSize() == 0) {
+                    // Try alternative naming pattern
+                    filePart = request.getPart("imageFile[]");
+                }
+
                 if (filePart != null && filePart.getSize() > 0) {
                     String fileName = saveFile(filePart, request);
                     postContent.setContent(fileName);
                 } else {
                     System.out.println("No image file found for index " + i);
+                    continue; // Skip this entry if no file
                 }
             } else if ("VIDEO".equals(contentType)) {
                 Part filePart = request.getPart("videoFile[" + i + "]");
+                if (filePart == null || filePart.getSize() == 0) {
+                    // Try alternative naming pattern
+                    filePart = request.getPart("videoFile[]");
+                }
+
                 if (filePart != null && filePart.getSize() > 0) {
                     String fileName = saveFile(filePart, request);
                     postContent.setContent(fileName);
                 } else {
                     System.out.println("No video file found for index " + i);
+                    continue; // Skip this entry if no file
                 }
             }
 
-            // Lưu vào database
+            // Save to database
             pcDAO.insert(postContent);
+            System.out.println("Inserted PostContent with type: " + contentType);
         }
     }
-
     // Đếm số khối dựa trên contentType
     private int getBlockCount(HttpServletRequest request) {
-        int count = 0;
-        while (request.getParameter("contentType[" + count + "]") != null) {
-            count++;
-        }
+//        System.out.println("All parameters: ");
+        request.getParameterMap().forEach((key, values) -> {
+//            System.out.println(key + ": " + Arrays.toString(values));
+        });
+
+        String[] contentTypes = request.getParameterValues("contentType[]");
+        int count = (contentTypes != null) ? contentTypes.length : 0;
+//        System.out.println("Block count: " + count);
         return count;
     }
     private String saveFile(Part part, HttpServletRequest request) throws IOException {
