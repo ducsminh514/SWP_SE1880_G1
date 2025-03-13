@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import Module.Post ;
 import Module.PostContent ;
 public class PostContentDAO extends DBContext {
-    public void insert(int postId , String contentType , String content , String note ,int orderIndex ){
+    public void insert(PostContent p){
         String sql ="INSERT INTO [dbo].[PostContent]\n" +
                 "           ([PostID]\n" +
                 "           ,[ContentType]\n" +
@@ -20,14 +20,14 @@ public class PostContentDAO extends DBContext {
                 "           (?,?,?,?,?)" ;
         try{
             PreparedStatement pre = connection.prepareStatement(sql) ;
-            pre.setInt(1,postId);
-            pre.setString(2,contentType);
-            pre.setString(3,content);
-            pre.setString(4,note);
-            pre.setInt(5,orderIndex);
+            pre.setInt(1,p.getPost().getPostId());
+            pre.setString(2,p.getContentType());
+            pre.setString(3,p.getContent());
+            pre.setString(4,p.getNote());
+            pre.setInt(5,p.getOrderIndex());
             pre.executeUpdate();
         }catch(SQLException e){
-            System.out.println(e);
+            System.out.println("ngu1");
         }
     }
     public ArrayList<PostContent> getByPostId(int postId) {

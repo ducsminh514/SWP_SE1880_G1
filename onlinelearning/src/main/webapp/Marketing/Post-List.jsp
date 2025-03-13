@@ -89,13 +89,15 @@
                         <h4 class="breadcrumb-title">Courses</h4>
                         <ul class="db-breadcrumb-list">
                             <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-                            <li>Post-Detail</li>
+                            <li>Post-List</li>
                         </ul>
                     </div>
                     <div class="row">
                         <!-- Your Profile Views Chart -->
                         <div class="col-lg-12 m-b30">
                             <div class="widget-box">
+                            <button type="button" class="btn btn-primary">
+                            <a href="addNewPost">Add new</a></button>
                                 <div class="wc-title">
                                     <h4>Post-List</h4>
                                 </div>

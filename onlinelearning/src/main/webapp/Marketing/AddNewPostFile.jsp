@@ -123,16 +123,16 @@
             </div>
             <div class="form-group">
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input image-upload" name="imageFile" accept="image/*">
+                    <input type="file" class="custom-file-input image-upload" name="imageFile[INDEX]" accept="image/*">
                     <label class="custom-file-label">Chọn hình ảnh</label>
                 </div>
                 <div class="image-preview mt-2"></div>
             </div>
             <div class="form-group">
                 <label>Mô tả hình ảnh:</label>
-                <input type="text" class="form-control" name="note" placeholder="Nhập mô tả hình ảnh">
+                <input type="text" class="form-control" name="note[INDEX]" placeholder="Nhập mô tả hình ảnh">
             </div>
-            <input type="hidden" name="contentType" value="IMAGE">
+            <input type="hidden" name="contentType[INDEX]" value="IMAGE">
         </div>
     </template>
 
@@ -145,16 +145,16 @@
             </div>
             <div class="form-group">
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input video-upload" name="videoFile" accept="video/*">
+                    <input type="file" class="custom-file-input video-upload" name="videoFile[INDEX]" accept="video/*">
                     <label class="custom-file-label">Chọn video</label>
                 </div>
                 <div class="video-preview mt-2"></div>
             </div>
             <div class="form-group">
                 <label>Mô tả video:</label>
-                <input type="text" class="form-control" name="note" placeholder="Nhập mô tả video">
+                <input type="text" class="form-control" name="note[INDEX]" placeholder="Nhập mô tả video">
             </div>
-            <input type="hidden" name="contentType" value="VIDEO">
+            <input type="hidden" name="contentType[INDEX]" value="VIDEO">
         </div>
     </template>
 
@@ -185,23 +185,31 @@
                 updateOrderIndices();
             });
 
-            // Xử lý thêm khối hình ảnh
-            $('#addImage').click(function() {
-                const template = document.getElementById('imageBlockTemplate');
-                const clone = document.importNode(template.content, true);
-                $('#contentBlocks').append(clone);
-                bsCustomFileInput.init();
-                updateOrderIndices();
-            });
+           $('#addImage').click(function() {
+               const template = document.getElementById('imageBlockTemplate');
+               const clone = document.importNode(template.content, true);
+               const index = $('.content-container').length; // Lấy số lượng khối hiện tại
 
-            // Xử lý thêm khối video
-            $('#addVideo').click(function() {
-                const template = document.getElementById('videoBlockTemplate');
-                const clone = document.importNode(template.content, true);
-                $('#contentBlocks').append(clone);
-                bsCustomFileInput.init();
-                updateOrderIndices();
-            });
+               clone.querySelector('.image-upload').name = `imageFile[${index}]`;
+               clone.querySelector('input[name^="note"]').name = `note[${index}]`;
+               clone.querySelector('input[name^="contentType"]').name = `contentType[${index}]`;
+               $('#contentBlocks').append(clone);
+               bsCustomFileInput.init();
+               updateOrderIndices();
+           });
+
+           $('#addVideo').click(function() {
+               const template = document.getElementById('videoBlockTemplate');
+               const clone = document.importNode(template.content, true);
+               const index = $('.content-container').length;
+
+               clone.querySelector('.video-upload').name = `videoFile[${index}]`;
+               clone.querySelector('input[name^="note"]').name = `note[${index}]`;
+               clone.querySelector('input[name^="contentType"]').name = `contentType[${index}]`;
+               $('#contentBlocks').append(clone);
+               bsCustomFileInput.init();
+               updateOrderIndices();
+           });
 
             // Xử lý xóa khối nội dung
             $(document).on('click', '.remove-block', function() {

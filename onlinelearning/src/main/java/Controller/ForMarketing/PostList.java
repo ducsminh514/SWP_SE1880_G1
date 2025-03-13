@@ -42,7 +42,10 @@ public class PostList extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        PostDAO pDAO = new PostDAO() ;
+        ArrayList<Post> listPost = pDAO.getAll() ;
+        request.setAttribute("listPost",listPost);
+        request.getRequestDispatcher("Marketing/Post-List.jsp").forward(request,response);
     }
 
     @Override
