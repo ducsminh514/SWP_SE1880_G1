@@ -93,6 +93,7 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         }
         return questions;
     }
+
     public int getTotalQuestionByFilter(String search, String subject, String level, String status) {
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM Question WHERE 1=1");
         List<Object> params = new ArrayList<>();
@@ -154,11 +155,38 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         return question;
     }
 
+    public Question GetQuestionById(int id){
+        String sql = "SELECT [QuestionID]\n" +
+                "      ,[Content]\n" +
+                "      ,[Level]\n" +
+                "      ,[SubjectId]\n" +
+                "      ,[Mark]\n" +
+                "      ,[QuestionTypeID]\n" +
+                "      ,[IsActive]\n" +
+                "      ,[CreateAt]\n" +
+                "      ,[UpdateAt]\n" +
+                "      ,[QuestionImageID]\n" +
+                "      ,[Mp3]\n" +
+                "  FROM [dbo].[Question]\n" +
+                "  WHERE QuestionID = ?";
+        Question question = new Question();
+        try{
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                question = getFromResultSet(rs);
+                return question;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
         QuestionDAO questionDAO = new QuestionDAO();
-        List<Question> q = questionDAO.findAll();
-        for (int i = 0; i < q.size(); i++) {
-            System.out.println(q.get(i).toString());
-        }
+        Question question = questionDAO.GetQuestionById(1);
+        System.out.println(question.getContent());
     }
 }

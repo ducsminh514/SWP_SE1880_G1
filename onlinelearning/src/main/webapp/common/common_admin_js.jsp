@@ -12,9 +12,8 @@
 <script src="${pageContext.request.contextPath}/assets/vendors/bootstrap/js/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/vendors/bootstrap/js/bootstrap.min.js"></script>
 
-<!-- Bootstrap Select - Chỉ sử dụng một nguồn -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.2/js/bootstrap-select.min.js"></script>
-<%--<script src="${pageContext.request.contextPath}/assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>--%>
+<!-- Bootstrap Select -->
+<%--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.2/js/bootstrap-select.min.js"></script>--%>
 
 <!-- Các plugin khác -->
 <script src="${pageContext.request.contextPath}/assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
@@ -35,10 +34,10 @@
 <script src="${pageContext.request.contextPath}/admin/assets/js/admin.js"></script>
 <script src='${pageContext.request.contextPath}/assets/vendors/switcher/switcher.js'></script>
 
-<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendors/bootstrap/js/popper.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendors/bootstrap/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.2/js/bootstrap-select.min.js"></script>
+<%--<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>--%>
+<%--<script src="${pageContext.request.contextPath}/assets/vendors/bootstrap/js/popper.min.js"></script>--%>
+<%--<script src="${pageContext.request.contextPath}/assets/vendors/bootstrap/js/bootstrap.min.js"></script>--%>
+<%--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.2/js/bootstrap-select.min.js"></script>--%>
 
 <!-- Khởi tạo Bootstrap Select -->
 <script>

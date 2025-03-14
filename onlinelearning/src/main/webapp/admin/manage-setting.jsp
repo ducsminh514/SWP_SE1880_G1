@@ -283,7 +283,7 @@
                                   class="mb-4">
                                 <div class="row mb-3" style="justify-content: space-between">
                                     <div class="col-md-2">
-                                        <select class="form-select" id="typeFilter" name="type">
+                                        <select class="form-control" id="typeFilter" name="type">
                                             <option value="">All type</option>
                                             <option value="system" ${param.type == "system" ? "selected" : ""} >System
                                             </option>
@@ -295,7 +295,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="form-select" id="statusFilter" name="status">
+                                        <select class="form-control" id="statusFilter" name="status">
                                             <option value="">All Status</option>
                                             <option value="true" ${param.status=='true' ? 'selected' : '' }>
                                                 Active

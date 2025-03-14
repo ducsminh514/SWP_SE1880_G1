@@ -31,7 +31,11 @@
     <!-- All PLUGINS CSS ============================================= -->
     <jsp:include page="../common/common_admin_css.jsp"></jsp:include>
 
-
+    <style>
+        .dropdown-menu open show{
+            max-height: 200px;
+        }
+    </style>
 </head>
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
@@ -90,9 +94,9 @@
                             <form action="${paginationUrl}" method="GET"
                                   class="mb-4" class="cours-search">
                                 <div class="row mb-3" style="justify-content: flex-end">
-                                    <div class="col-md-2">
-                                        <select class="form-control" id="subjectFilter" name="subject">
-                                            <option value="">Subject</option>
+                                    <div class="col-md-2" >
+                                        <select class="form-control" id="subjectFilter" name="subject" style="max-height: 100px; overflow-y: auto;">
+                                            <option value="">All Subjects</option>
                                             <c:forEach items="${subjectList}" var="subject">
                                                 <option value="${subject.subjectId}" ${param.subject == subject.subjectId ? "selected":"" }>${subject.subjectName}</option>
                                             </c:forEach>
@@ -234,7 +238,6 @@
                                         </c:if>
                                     </tr>
                                 </c:forEach>
-
                             </table>
                         </div>
                     </div>
@@ -281,6 +284,8 @@
     <jsp:include page="../footer.jsp"></jsp:include>
 </footer>
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
+
+<!-- Script cuối trang -->
 
 
 </body>

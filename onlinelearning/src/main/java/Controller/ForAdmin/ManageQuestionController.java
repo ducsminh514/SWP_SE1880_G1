@@ -1,9 +1,6 @@
 package Controller.ForAdmin;
 
-import DAO.CourseTypeDAO;
-import DAO.QuestionDAO;
-import DAO.QuestionTypeDAO;
-import DAO.SubjectDAO;
+import DAO.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import Module.Subject;
 import java.util.List;
-
+import Module.QuestionAnswer;
 import Module.Question;
 
 import java.io.IOException;
@@ -34,15 +31,20 @@ public class ManageQuestionController extends HttpServlet {
         if (action == null || action.equals("list")) {
             searchByFilter(request, response);
         } else {
-
+            switch (action) {
+                case "edit" :
+                    ShowEditForm(request,response);
+                    break;
+            }
         }
     }
+
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-
         String action = request.getParameter("action");
         if (action == null || action == "list") {
             searchByFilter(request, response);
@@ -147,5 +149,39 @@ public class ManageQuestionController extends HttpServlet {
         request.setAttribute("listColum", listColum);
         request.setAttribute("pageSize", pageSize);
         request.getRequestDispatcher("/admin/manage-question.jsp").forward(request, response);
+    }
+
+
+    private void ShowEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Nhan tham so
+        String questionIdStr = request.getParameter("questionId");
+        int questionId = 0;
+        try{
+            questionId = Integer.parseInt(questionIdStr);
+        }catch (NumberFormatException e){
+            System.out.println(e.getMessage());
+        }
+        //Lay ra question can edit va cau hoi va hinh anh tuong ung
+        QuestionDAO questionDAO = new QuestionDAO();
+        Question question = questionDAO.GetQuestionById(questionId);
+
+        //Lấy ra questionType
+        QuestionTypeDAO questionTypeDAO = new QuestionTypeDAO();
+        List<QuestionType> questionTypes = questionTypeDAO.findAll();
+
+        //Lay ra subject
+        SubjectDAO subjectDAO = new SubjectDAO();
+        List<Subject> subjectList = subjectDAO.findAll();
+
+        //Lay ra Answer cua question
+        QuestionAnswerDAO questionAnswerDAO = new QuestionAnswerDAO();
+        List<QuestionAnswer> questionAnswers = questionAnswerDAO.getAnswerByQuestionId(questionId);
+        // Set Attribute
+        request.setAttribute("question", question);
+        request.setAttribute("questionTypes", questionTypes);
+        request.setAttribute("subjectList", subjectList);
+        request.setAttribute("questionAnswers", questionAnswers);
+        //day ve JSP
+        request.getRequestDispatcher("/admin/edit-question.jsp").forward(request, response);
     }
 }

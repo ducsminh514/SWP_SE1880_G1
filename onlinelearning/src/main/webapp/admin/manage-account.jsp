@@ -94,7 +94,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="" id="roleFilter" name="role">
+                                        <select class="form-control" id="roleFilter" name="role">
                                             <option value="">All Roles</option>
                                             <option value="2" ${param.role=='2' ? 'selected' : '' }>Expert</option>
                                             <option value="3" ${param.role=='3' ? 'selected' : '' }>Marketing</option>
@@ -103,7 +103,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="" id="statusFilter" name="status">
+                                        <select class="form-control" id="statusFilter" name="status">
                                             <option value="">All Status</option>
                                             <option value="true" ${param.status=='true' ? 'selected' : '' }>
                                                 Active
