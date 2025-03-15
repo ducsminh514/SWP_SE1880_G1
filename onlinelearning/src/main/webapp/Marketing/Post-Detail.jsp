@@ -1,15 +1,12 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page isELIgnored="false" %>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Tạo Bài Post Mới</title>
+        <title>Post Detail</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <style>
             body {
                 background-color: #99CCCC;
@@ -194,19 +191,23 @@
     </head>
     <body>
         <div class="container">
-            <h1 class="mb-4">Tạo Bài Post Mới</h1>
+            <h1 class="mb-4">Chỉnh Sửa Bài Post</h1>
             <c:set value="${requestScope.post}" var="post"/>
             <form id="postForm" action="postDetail" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="postId" value="${post.postId}"> <!-- Giả sử có postId để xác định bài post -->
+
+                <!-- Tiêu đề -->
                 <div class="form-group">
                     <label for="title">Tiêu đề:</label>
                     <input type="text" class="form-control" id="title" name="title" value="${post.title}" required>
                 </div>
 
+                <!-- Danh mục -->
                 <div class="form-group">
                     <label for="category">Danh mục:</label>
                     <select class="form-control" id="category" name="categoryId" required>
                         <option value="${post.categoryBlog.categoryBlogId}" selected>${post.categoryBlog.categoryBlogName}</option>
-                        <c:forEach items="${categories}" var="category">
+                        <c:forEach items="${requestScope.categories}" var="category">
                             <c:if test="${category.categoryBlogId != post.categoryBlog.categoryBlogId}">
                                 <option value="${category.categoryBlogId}">${category.categoryBlogName}</option>
                             </c:if>
@@ -214,6 +215,7 @@
                     </select>
                 </div>
 
+                <!-- Thumbnail -->
                 <div class="form-group">
                     <label for="thumbnail">Ảnh thumbnail:</label>
                     <div class="custom-file">
@@ -225,12 +227,13 @@
                             <img src="${post.thumbnail}" alt="Thumbnail" class="img-fluid" style="max-width: 300px;">
                             <input type="hidden" name="existingThumbnail" value="${post.thumbnail}">
                         </c:if>
-                        <c:if test="${post == null || empty post.thumbnail}">
+                        <c:if test="${empty post.thumbnail}">
                             <p>Chưa có ảnh thumbnail</p>
                         </c:if>
                     </div>
                 </div>
 
+                <!-- Nội dung bài viết -->
                 <div class="form-group">
                     <label>Nội dung bài viết:</label>
                     <div class="content-buttons mb-3">
@@ -240,97 +243,95 @@
                     </div>
 
                     <div id="contentBlocks" class="mt-3">
-                        <!-- Các khối nội dung sẽ được thêm vào đây bằng JavaScript -->
-                        <c:if test="empty ${requestScope.listPostContent}">
-                            <h3> Okeeee</h3>
-                        </c:if>
-                        <c:forEach items="${requestScope.listPostContent}" var="postContent">
+                        <!-- Hiển thị các khối nội dung hiện có -->
+                        <c:forEach items="${requestScope.listPostContent}" var="postContent" varStatus="loop">
                             <c:choose>
                                 <c:when test="${postContent.contentType == 'TEXT'}">
-                                    <div id="textBlockTemplate">
-                                        <div class="content-container" data-type="TEXT">
-                                            <div class="content-header">
-                                                <div class="drag-handle">☰</div>
-                                                <h5>Đoạn văn bản</h5>
-                                                <button type="button" class="btn btn-danger btn-sm ml-auto remove-block"><i class="fas fa-trash mr-1"></i>Xóa</button>
-                                            </div>
-                                            <textarea class="form-control" name="content">${postContent.content}</textarea>
-                                            <input type="hidden" name="contentType" value="TEXT">
+                                    <div class="content-container" data-type="TEXT" data-content-id="${postContent.contentId}">
+                                        <div class="content-header">
+                                            <div class="drag-handle">☰</div>
+                                            <h5>Đoạn văn bản</h5>
+                                            <button type="button" class="btn btn-danger btn-sm ml-auto remove-block"><i class="fas fa-trash mr-1"></i>Xóa</button>
                                         </div>
+                                        <textarea class="form-control" name="content[${loop.index}]">${postContent.content}</textarea>
+                                        <input type="hidden" name="contentType[${loop.index}]" value="TEXT">
+                                        <input type="hidden" name="contentId[${loop.index}]" value="${postContent.contentId}">
+                                        <input type="hidden" name="orderIndex[${loop.index}]" value="${loop.index}">
                                     </div>
                                 </c:when>
                                 <c:when test="${postContent.contentType == 'IMAGE'}">
-                                    <div id="imageBlockTemplate">
-                                        <div class="content-container" data-type="IMAGE">
-                                            <div class="content-header">
-                                                <div class="drag-handle">☰</div>
-                                                <h5>Hình ảnh</h5>
-                                                <button type="button" class="btn btn-danger btn-sm ml-auto remove-block"><i class="fas fa-trash mr-1"></i>Xóa</button>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input image-upload" name="imageFile" accept="image/*">
-                                                    <label class="custom-file-label">Chọn hình ảnh</label>
-                                                </div>
-                                                <div class="image-preview mt-2" data-existing-image="${postContent.content}">
-                                                    <c:if test="${not empty postContent.content}">
-                                                        <img src="${postContent.content}" alt="Image" class="img-fluid" style="max-width: 300px;">
-                                                        <input type="hidden" name="existingImage" value="${postContent.content}">
-                                                    </c:if>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Mô tả hình ảnh:</label>
-                                                <input type="text" class="form-control" name="note" value="${postContent.note}" placeholder="Nhập mô tả hình ảnh">
-                                            </div>
-                                            <input type="hidden" name="contentType" value="IMAGE">
+                                    <div class="content-container" data-type="IMAGE" data-content-id="${postContent.contentId}">
+                                        <div class="content-header">
+                                            <div class="drag-handle">☰</div>
+                                            <h5>Hình ảnh</h5>
+                                            <button type="button" class="btn btn-danger btn-sm ml-auto remove-block"><i class="fas fa-trash mr-1"></i>Xóa</button>
                                         </div>
+                                        <div class="form-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input image-upload" name="imageFile[${loop.index}]" accept="image/*">
+                                                <label class="custom-file-label">Chọn hình ảnh</label>
+                                            </div>
+                                            <div class="image-preview mt-2" data-existing-image="${postContent.content}">
+                                                <c:if test="${not empty postContent.content}">
+                                                    <img src="${postContent.content}" alt="Image" class="img-fluid" style="max-width: 300px;">
+                                                    <input type="hidden" name="existingImage[${loop.index}]" value="${postContent.content}">
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Mô tả hình ảnh:</label>
+                                            <input type="text" class="form-control" name="note[${loop.index}]" value="${postContent.note}" placeholder="Nhập mô tả hình ảnh">
+                                        </div>
+                                        <input type="hidden" name="contentType[${loop.index}]" value="IMAGE">
+                                        <input type="hidden" name="contentId[${loop.index}]" value="${postContent.contentId}">
+                                        <input type="hidden" name="orderIndex[${loop.index}]" value="${loop.index}">
                                     </div>
                                 </c:when>
                                 <c:when test="${postContent.contentType == 'VIDEO'}">
-                                    <div id="videoBlockTemplate">
-                                        <div class="content-container" data-type="VIDEO">
-                                            <div class="content-header">
-                                                <div class="drag-handle">☰</div>
-                                                <h5>Video</h5>
-                                                <button type="button" class="btn btn-danger btn-sm ml-auto remove-block"><i class="fas fa-trash mr-1"></i>Xóa</button>
+                                    <div class="content-container" data-type="VIDEO" data-content-id="${postContent.contentId}">
+                                        <div class="content-header">
+                                            <div class="drag-handle">☰</div>
+                                            <h5>Video</h5>
+                                            <button type="button" class="btn btn-danger btn-sm ml-auto remove-block"><i class="fas fa-trash mr-1"></i>Xóa</button>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input video-upload" name="videoFile[${loop.index}]" accept="video/*">
+                                                <label class="custom-file-label">Chọn video</label>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input video-upload" name="videoFile" accept="video/*">
-                                                    <label class="custom-file-label">Chọn video</label>
-                                                </div>
-                                                <div class="video-preview mt-2" data-existing-video="${postContent.content}">
-                                                    <c:if test="${not empty postContent.content}">
-                                                        <video controls class="img-fluid" style="max-height: 180px">
-                                                            <source src="${postContent.content}" type="video/mp4">
-                                                            Trình duyệt của bạn không hỗ trợ thẻ video.
-                                                        </video>
-                                                        <input type="hidden" name="existingVideo" value="${postContent.content}">
-                                                    </c:if>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Mô tả video:</label>
-                                                    <input type="text" class="form-control" name="note" value="${postContent.note}" placeholder="Nhập mô tả video">
-                                                </div>
-                                                <input type="hidden" name="contentType" value="VIDEO">
+                                            <div class="video-preview mt-2" data-existing-video="${postContent.content}">
+                                                <c:if test="${not empty postContent.content}">
+                                                    <video controls class="img-fluid" style="max-height: 180px">
+                                                        <source src="${postContent.content}" type="video/mp4">
+                                                        Trình duyệt không hỗ trợ video.
+                                                    </video>
+                                                    <input type="hidden" name="existingVideo[${loop.index}]" value="${postContent.content}">
+                                                </c:if>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label>Mô tả video:</label>
+                                            <input type="text" class="form-control" name="note[${loop.index}]" value="${postContent.note}" placeholder="Nhập mô tả video">
+                                        </div>
+                                        <input type="hidden" name="contentType[${loop.index}]" value="VIDEO">
+                                        <input type="hidden" name="contentId[${loop.index}]" value="${postContent.contentId}">
+                                        <input type="hidden" name="orderIndex[${loop.index}]" value="${loop.index}">
                                     </div>
                                 </c:when>
-                            </c:choose >
+                            </c:choose>
                         </c:forEach>
                     </div>
                 </div>
 
+                <!-- Nút hành động -->
                 <div class="form-actions">
                     <a href="javascript:history.back()" class="btn btn-secondary"><i class="fas fa-times mr-2"></i>Hủy</a>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane mr-2"></i>Đăng bài</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane mr-2"></i>Lưu thay đổi</button>
                 </div>
             </form>
         </div>
 
-        <!-- Templates for content blocks -->
+        <!-- Templates -->
         <template id="textBlockTemplate">
             <div class="content-container" data-type="TEXT">
                 <div class="content-header">
@@ -340,6 +341,7 @@
                 </div>
                 <textarea class="form-control" name="content"></textarea>
                 <input type="hidden" name="contentType" value="TEXT">
+                <input type="hidden" name="orderIndex" value="">
             </div>
         </template>
 
@@ -362,6 +364,7 @@
                     <input type="text" class="form-control" name="note" placeholder="Nhập mô tả hình ảnh">
                 </div>
                 <input type="hidden" name="contentType" value="IMAGE">
+                <input type="hidden" name="orderIndex" value="">
             </div>
         </template>
 
@@ -384,78 +387,64 @@
                     <input type="text" class="form-control" name="note" placeholder="Nhập mô tả video">
                 </div>
                 <input type="hidden" name="contentType" value="VIDEO">
+                <input type="hidden" name="orderIndex" value="">
             </div>
         </template>
 
+        <!-- Scripts -->
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.10.2/Sortable.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input@1.3.4/dist/bs-custom-file-input.min.js"></script>
-
         <script>
             $(document).ready(function () {
-                // Khởi tạo custom file input
                 bsCustomFileInput.init();
-
-                // Thêm một khối văn bản mặc định khi tải trang
-                $('#addText').click();
-
-                // Khởi tạo sortable cho các khối nội dung
                 const contentBlocks = document.getElementById('contentBlocks');
                 new Sortable(contentBlocks, {
                     handle: '.drag-handle',
                     animation: 150
                 });
 
-                // Xử lý thêm khối văn bản
+                // Thêm khối văn bản
                 $('#addText').click(function () {
                     const template = document.getElementById('textBlockTemplate');
                     const clone = document.importNode(template.content, true);
-                    const index = $('.content-container').length; // Lấy số lượng khối hiện tại
-
-                    // Đổi tên các input trong khối text
+                    const index = $('.content-container').length;
                     clone.querySelector('textarea[name="content"]').name = `content[${index}]`;
                     clone.querySelector('input[name="contentType"]').name = `contentType[${index}]`;
-
-                    // Thêm khối vào #contentBlocks
+                    clone.querySelector('input[name="orderIndex"]').name = `orderIndex[${index}]`;
                     $('#contentBlocks').append(clone);
-
-                    // Cập nhật thứ tự
                     updateOrderIndices();
                 });
 
+                // Thêm khối hình ảnh
                 $('#addImage').click(function () {
                     const template = document.getElementById('imageBlockTemplate');
                     const clone = document.importNode(template.content, true);
-                    const index = $('.content-container').length; // Lấy số lượng khối hiện tại
-
+                    const index = $('.content-container').length;
                     clone.querySelector('.image-upload').name = `imageFile[${index}]`;
                     clone.querySelector('input[name="note"]').name = `note[${index}]`;
                     clone.querySelector('input[name="contentType"]').name = `contentType[${index}]`;
+                    clone.querySelector('input[name="orderIndex"]').name = `orderIndex[${index}]`;
                     $('#contentBlocks').append(clone);
                     bsCustomFileInput.init();
                     updateOrderIndices();
                 });
 
+                // Thêm khối video
                 $('#addVideo').click(function () {
                     const template = document.getElementById('videoBlockTemplate');
                     const clone = document.importNode(template.content, true);
                     const index = $('.content-container').length;
-
                     clone.querySelector('.video-upload').name = `videoFile[${index}]`;
                     clone.querySelector('input[name="note"]').name = `note[${index}]`;
-                    const contentTypeInput = clone.querySelector('input[name="contentType"]');
-                    if (contentTypeInput) {
-                        contentTypeInput.name = `contentType[${index}]`;
-                        console.log('Changed contentType name to:', contentTypeInput.name);
-                    } else {
-                        console.error('contentType input not found in videoBlockTemplate');
-                    }
+                    clone.querySelector('input[name="contentType"]').name = `contentType[${index}]`;
+                    clone.querySelector('input[name="orderIndex"]').name = `orderIndex[${index}]`;
                     $('#contentBlocks').append(clone);
                     bsCustomFileInput.init();
                     updateOrderIndices();
                 });
 
-                // Xử lý xóa khối nội dung
+                // Xóa khối
                 $(document).on('click', '.remove-block', function () {
                     if ($('.content-container').length > 1) {
                         $(this).closest('.content-container').remove();
@@ -465,116 +454,63 @@
                     }
                 });
 
-                // Xử lý preview ảnh thumbnail
+                // Preview thumbnail
                 $('#thumbnail').change(function () {
                     const file = this.files[0];
                     if (file) {
                         const reader = new FileReader();
                         reader.onload = function (e) {
-                            // Thay thế nội dung của #thumbnailPreview bằng hình ảnh mới
                             $('#thumbnailPreview').html('<img src="' + e.target.result + '" class="img-fluid" style="max-height: 180px;">');
                         };
                         reader.readAsDataURL(file);
-                    } else {
-                        // Nếu không chọn file (hủy chọn), hiển thị lại thumbnail hiện tại (hoặc thông báo mặc định)
-            <c:if test="${post != null && not empty post.thumbnail}">
-                        $('#thumbnailPreview').html('<img src="${post.thumbnail}" alt="Thumbnail" class="img-fluid" style="max-height: 180px;"><input type="hidden" name="existingThumbnail" value="${post.thumbnail}">');
-            </c:if>
-            <c:if test="${post == null || empty post.thumbnail}">
-                        $('#thumbnailPreview').html('<p>Chưa có ảnh thumbnail</p>');
-            </c:if>
                     }
                 });
 
-                // Xử lý preview ảnh
+                // Preview ảnh
                 $(document).on('change', '.image-upload', function () {
                     const file = this.files[0];
                     const preview = $(this).closest('.form-group').find('.image-preview');
-
                     if (file) {
                         const reader = new FileReader();
                         reader.onload = function (e) {
                             preview.html('<img src="' + e.target.result + '" class="img-fluid" style="max-height: 180px">');
                         };
                         reader.readAsDataURL(file);
-                    } else {
-                        // Nếu không có file được chọn (hoặc hủy chọn), kiểm tra xem có ảnh hiện tại không
-                        const existingImagePath = preview.data('existing-image');
-                        if (existingImagePath) {
-                            preview.html('<img src="' + existingImagePath + '" class="img-fluid" style="max-height: 180px"><input type="hidden" name="existingImage" value="' + existingImagePath + '">');
-                        } else {
-                            preview.html('<p>Chưa có ảnh</p>');
-                        }
                     }
                 });
 
-                // Xử lý preview video
+                // Preview video
                 $(document).on('change', '.video-upload', function () {
                     const file = this.files[0];
                     const preview = $(this).closest('.form-group').find('.video-preview');
-                    const fileLabel = $(this).next('.custom-file-label');
-
                     if (file) {
-                        // Update the file label with the filename
-                        fileLabel.text(file.name);
-
                         const reader = new FileReader();
                         reader.onload = function (e) {
                             preview.html('<video controls class="img-fluid" style="max-height: 180px"><source src="' + e.target.result + '" type="video/mp4"></video>');
                         };
                         reader.readAsDataURL(file);
-                    } else {
-                        // Nếu không có file được chọn (hoặc hủy chọn), kiểm tra xem có video hiện tại không
-                        const existingVideoPath = preview.data('existing-video');
-                        if (existingVideoPath) {
-                            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf('/', 1));
-                            preview.html('<video controls class="img-fluid" style="max-height: 180px"><source src="' + contextPath + '/' + existingVideoPath + '" type="video/mp4"></video><input type="hidden" name="existingVideo" value="' + existingVideoPath + '">');
-                        } else {
-                            preview.html('<p>Chưa có video</p>');
-                        }
                     }
                 });
 
-                // Cập nhật thứ tự các khối nội dung
+                // Cập nhật thứ tự
                 function updateOrderIndices() {
                     $('.content-container').each(function (index) {
-                        $(this).attr('data-order', index);
-                        console.log(index);
-                        if ($(this).find('input[name^="orderIndex"]').length === 0) {
-                            $(this).append('<input type="hidden" name="orderIndex[' + index + ']" value="' + index + '">');
-                        } else {
-                            $(this).find('input[name="orderIndex"]').attr('name', 'orderIndex[' + index + ']').val(index);
-                        }
+                        $(this).find('input[name^="orderIndex"]').attr('name', `orderIndex[${index}]`).val(index);
+                        $(this).find('textarea[name^="content"]').attr('name', `content[${index}]`);
+                        $(this).find('input[name^="contentType"]').attr('name', `contentType[${index}]`);
+                        $(this).find('input[name^="imageFile"]').attr('name', `imageFile[${index}]`);
+                        $(this).find('input[name^="videoFile"]').attr('name', `videoFile[${index}]`);
+                        $(this).find('input[name^="note"]').attr('name', `note[${index}]`);
+                        $(this).find('input[name^="contentId"]').attr('name', `contentId[${index}]`);
+                        $(this).find('input[name^="existingImage"]').attr('name', `existingImage[${index}]`);
+                        $(this).find('input[name^="existingVideo"]').attr('name', `existingVideo[${index}]`);
                     });
                 }
 
-                // Validate form trước khi submit
+                // Validate form
                 $('#postForm').submit(function (event) {
-                    const title = $('#title').val().trim();
-                    const category = $('#category').val();
-
-                    if (title === '') {
-                        alert('Vui lòng nhập tiêu đề bài viết!');
-                        event.preventDefault();
-                        return;
-                    }
-
-                    if (category === '') {
-                        alert('Vui lòng chọn danh mục!');
-                        event.preventDefault();
-                        return;
-                    }
-
-                    if ($('.content-container').length === 0) {
-                        alert('Vui lòng thêm ít nhất một khối nội dung!');
-                        event.preventDefault();
-                        return;
-                    }
-
-                    // Cập nhật thứ tự lần cuối trước khi submit
                     updateOrderIndices();
-                    console.log('Form data:', $('#postForm').serialize());
-                    console.log('HTML of contentBlocks:', $('#contentBlocks').html());
+                    console.log('Form data:', $(this).serialize());
                 });
             });
         </script>
