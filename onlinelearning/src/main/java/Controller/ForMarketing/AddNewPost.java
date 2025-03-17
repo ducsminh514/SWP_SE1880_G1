@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.UUID;
 
 import DAO.CategoryBlogDAO;
@@ -88,13 +89,15 @@ public class AddNewPost extends HttpServlet {
         // Get arrays of values instead of trying to access indexed parameters
         String[] contentTypes = request.getParameterValues("contentType[]");
         String[] notes = request.getParameterValues("note[]");
+        Collection<Part> parts = request.getParts();
         if (contentTypes == null) {
             System.out.println("No content types found");
             return;
         }
 
         System.out.println("Found " + contentTypes.length + " content blocks to process");
-
+        int imageIndex =1;
+        int videoIndex =1 ;
         for (int i = 0; i < contentTypes.length; i++) {
             PostContent postContent = new PostContent();
             postContent.setPost(pDAO.getById(postId));
@@ -110,7 +113,6 @@ public class AddNewPost extends HttpServlet {
             // Set note if available
             if (notes != null && notes.length > i && notes[i] != null && !notes[i].isEmpty()) {
                 postContent.setNote(notes[i]);
-                System.out.println("Setting note for index " + i + ": " + notes[i]);
             }
 
             // Process based on content type
@@ -122,32 +124,55 @@ public class AddNewPost extends HttpServlet {
                 }
             } else if ("IMAGE".equals(contentType)) {
                 // For files, we might still need to try both naming patterns
-                Part filePart = request.getPart("imageFile[" + i + "]");
-                if (filePart == null || filePart.getSize() == 0) {
-                    // Try alternative naming pattern
-                    filePart = request.getPart("imageFile[]");
+//                Part filePart = request.getPart("imageFile[" + i + "]");
+//                if (filePart == null || filePart.getSize() == 0) {
+//                    // Try alternative naming pattern
+//                    filePart = request.getPart("imageFile[]");
+//                }
+//
+//                if (filePart != null && filePart.getSize() > 0) {
+//                    String fileName = saveFile(filePart, request);
+//                    postContent.setContent(fileName);
+//                } else {
+//                    System.out.println("No image file found for index " + i);
+//                    continue; // Skip this entry if no file
+//                }
+                int idImage = 1;
+                for (Part iPart : parts) {
+                    String name = iPart.getName();
+                    if (name.startsWith("imageFile[") && name.endsWith("]") ) {
+                        System.out.println(name);
+                        if(idImage == imageIndex) {
+                            if (iPart.getSize() > 0) {
+                                String imagePath = saveFile(iPart, request);
+                                // Hàm tự định nghĩa để lưu file
+                                postContent.setContent(imagePath);
+                                imageIndex++;
+                                break;
+                            }
+                        }else{
+                            idImage++;
+                        }
+                    }
                 }
-
-                if (filePart != null && filePart.getSize() > 0) {
-                    String fileName = saveFile(filePart, request);
-                    postContent.setContent(fileName);
-                } else {
-                    System.out.println("No image file found for index " + i);
-                    continue; // Skip this entry if no file
-                }
-            } else if ("VIDEO".equals(contentType)) {
-                Part filePart = request.getPart("videoFile[" + i + "]");
-                if (filePart == null || filePart.getSize() == 0) {
-                    // Try alternative naming pattern
-                    filePart = request.getPart("videoFile[]");
-                }
-
-                if (filePart != null && filePart.getSize() > 0) {
-                    String fileName = saveFile(filePart, request);
-                    postContent.setContent(fileName);
-                } else {
-                    System.out.println("No video file found for index " + i);
-                    continue; // Skip this entry if no file
+            }else if ("VIDEO".equals(contentType)) {
+                int idVideo = 1;
+                for (Part vPart : parts) {
+                    String name = vPart.getName();
+                    if (name.startsWith("videoFile[") && name.endsWith("]") ) {
+                        System.out.println(name);
+                        if(idVideo == videoIndex) {
+                            if (vPart.getSize() > 0) {
+                                String videoPath = saveFile(vPart, request);
+                                // Hàm tự định nghĩa để lưu file
+                                postContent.setContent(videoPath);
+                                videoIndex++;
+                                break;
+                            }
+                        }else{
+                            idVideo++;
+                        }
+                    }
                 }
             }
 

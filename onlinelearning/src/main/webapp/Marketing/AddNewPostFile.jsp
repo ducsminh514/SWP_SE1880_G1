@@ -248,6 +248,9 @@
                     <button type="button" class="btn btn-danger btn-sm ml-auto remove-block"><i class="fas fa-trash mr-1"></i>Xóa</button>
                 </div>
                 <textarea class="form-control" name="content"></textarea>
+                <div class="form-group">
+                    <input type="hidden" class="form-control" name="note" >
+                </div>
                 <input type="hidden" name="contentType" value="TEXT">
             </div>
         </template>
@@ -266,6 +269,7 @@
                     </div>
                     <div class="image-preview mt-2"></div>
                 </div>
+                <textarea type="hidden" class="form-control" name="content" style="display: none;"></textarea>
                 <div class="form-group">
                     <label>Mô tả hình ảnh:</label>
                     <input type="text" class="form-control" name="note" placeholder="Nhập mô tả hình ảnh">
@@ -288,6 +292,7 @@
                     </div>
                     <div class="video-preview mt-2"></div>
                 </div>
+                <textarea type="hidden" class="form-control" name="content" style="display: none;"></textarea>
                 <div class="form-group">
                     <label>Mô tả video:</label>
                     <input type="text" class="form-control" name="note" placeholder="Nhập mô tả video">
@@ -296,7 +301,7 @@
             </div>
         </template>
 
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.10.2/Sortable.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input@1.3.4/dist/bs-custom-file-input.min.js"></script>
 
@@ -324,7 +329,7 @@
                     // Đổi tên các input trong khối text
                     clone.querySelector('textarea[name="content"]').name = `content[${index}]`;
                     clone.querySelector('input[name="contentType"]').name = `contentType[${index}]`;
-
+                    clone.querySelector('input[name="note"]').name = `note[${index}]`;
                     // Thêm khối vào #contentBlocks
                     $('#contentBlocks').append(clone);
 
@@ -337,6 +342,7 @@
                     const clone = document.importNode(template.content, true);
                     const index = $('.content-container').length; // Lấy số lượng khối hiện tại
 
+                    clone.querySelector('textarea[name="content"]').name = `content[${index}]`;
                     clone.querySelector('.image-upload').name = `imageFile[${index}]`;
                     clone.querySelector('input[name="note"]').name = `note[${index}]`;
                     clone.querySelector('input[name="contentType"]').name = `contentType[${index}]`;
@@ -350,6 +356,7 @@
                     const clone = document.importNode(template.content, true);
                     const index = $('.content-container').length;
 
+                    clone.querySelector('textarea[name="content"]').name = `content[${index}]`;
                     clone.querySelector('.video-upload').name = `videoFile[${index}]`;
                     clone.querySelector('input[name="note"]').name = `note[${index}]`;
                     const contentTypeInput = clone.querySelector('input[name="contentType"]');

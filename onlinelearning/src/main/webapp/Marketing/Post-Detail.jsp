@@ -188,12 +188,15 @@
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
         </style>
+       <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+               <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.10.2/Sortable.min.js"></script>
+               <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input@1.3.4/dist/bs-custom-file-input.min.js"></script>
     </head>
     <body>
         <div class="container">
             <h1 class="mb-4">Chỉnh Sửa Bài Post</h1>
             <c:set value="${requestScope.post}" var="post"/>
-            <form id="postForm" action="postDetail" method="POST" enctype="multipart/form-data">
+            <form id="postForm" action="updatePost" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="postId" value="${post.postId}"> <!-- Giả sử có postId để xác định bài post -->
 
                 <!-- Tiêu đề -->
@@ -253,10 +256,15 @@
                                             <h5>Đoạn văn bản</h5>
                                             <button type="button" class="btn btn-danger btn-sm ml-auto remove-block"><i class="fas fa-trash mr-1"></i>Xóa</button>
                                         </div>
-                                        <textarea class="form-control" name="content[${loop.index}]">${postContent.content}</textarea>
-                                        <input type="hidden" name="contentType[${loop.index}]" value="TEXT">
-                                        <input type="hidden" name="contentId[${loop.index}]" value="${postContent.contentId}">
-                                        <input type="hidden" name="orderIndex[${loop.index}]" value="${loop.index}">
+                                         <div class="form-group">
+                                             <input type="hidden" class="form-control" name="note" >
+                                         </div>
+                                        <textarea class="form-control" name="content">${postContent.content}</textarea>
+                                        <input type="hidden" name="oldContent" value="">
+                                        <input type="hidden" name="contentType" value="TEXT">
+                                        <input type="hidden" name="contentId" value="${postContent.contentId}">
+                                        <input type="hidden" name="orderIndex" value="">
+                                        <input type="hidden" class ="check" name="check" value="">
                                     </div>
                                 </c:when>
                                 <c:when test="${postContent.contentType == 'IMAGE'}">
@@ -268,23 +276,25 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input image-upload" name="imageFile[${loop.index}]" accept="image/*">
+                                                <input type="file" class="custom-file-input image-upload" name="imageFile" accept="image/*">
                                                 <label class="custom-file-label">Chọn hình ảnh</label>
                                             </div>
                                             <div class="image-preview mt-2" data-existing-image="${postContent.content}">
                                                 <c:if test="${not empty postContent.content}">
                                                     <img src="${postContent.content}" alt="Image" class="img-fluid" style="max-width: 300px;">
-                                                    <input type="hidden" name="existingImage[${loop.index}]" value="${postContent.content}">
                                                 </c:if>
                                             </div>
+                                            <input type="hidden" name="oldContent" value="${postContent.content}">
                                         </div>
+                                        <textarea type="hidden" class="form-control" name="content" style="display: none;"></textarea>
                                         <div class="form-group">
                                             <label>Mô tả hình ảnh:</label>
-                                            <input type="text" class="form-control" name="note[${loop.index}]" value="${postContent.note}" placeholder="Nhập mô tả hình ảnh">
+                                            <input type="text" class="form-control" name="note" value="${postContent.note}" placeholder="Nhập mô tả hình ảnh">
                                         </div>
-                                        <input type="hidden" name="contentType[${loop.index}]" value="IMAGE">
-                                        <input type="hidden" name="contentId[${loop.index}]" value="${postContent.contentId}">
-                                        <input type="hidden" name="orderIndex[${loop.index}]" value="${loop.index}">
+                                        <input type="hidden" name="contentType" value="IMAGE">
+                                        <input type="hidden" name="contentId" value="${postContent.contentId}">
+                                        <input type="hidden" name="orderIndex" value="">
+                                        <input type="hidden" class ="check" name="check" value="">
                                     </div>
                                 </c:when>
                                 <c:when test="${postContent.contentType == 'VIDEO'}">
@@ -296,7 +306,7 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input video-upload" name="videoFile[${loop.index}]" accept="video/*">
+                                                <input type="file" class="custom-file-input video-upload" name="videoFile" accept="video/*">
                                                 <label class="custom-file-label">Chọn video</label>
                                             </div>
                                             <div class="video-preview mt-2" data-existing-video="${postContent.content}">
@@ -305,17 +315,19 @@
                                                         <source src="${postContent.content}" type="video/mp4">
                                                         Trình duyệt không hỗ trợ video.
                                                     </video>
-                                                    <input type="hidden" name="existingVideo[${loop.index}]" value="${postContent.content}">
                                                 </c:if>
                                             </div>
+                                            <input type="hidden" name="oldContent" value="${postContent.content}">
                                         </div>
+                                        <textarea type="hidden" class="form-control" name="content" style="display: none;"></textarea>
                                         <div class="form-group">
                                             <label>Mô tả video:</label>
-                                            <input type="text" class="form-control" name="note[${loop.index}]" value="${postContent.note}" placeholder="Nhập mô tả video">
+                                            <input type="text" class="form-control" name="note" value="${postContent.note}" placeholder="Nhập mô tả video">
                                         </div>
-                                        <input type="hidden" name="contentType[${loop.index}]" value="VIDEO">
-                                        <input type="hidden" name="contentId[${loop.index}]" value="${postContent.contentId}">
-                                        <input type="hidden" name="orderIndex[${loop.index}]" value="${loop.index}">
+                                        <input type="hidden" class="check" name="check" value="">
+                                        <input type="hidden" name="contentType" value="VIDEO">
+                                        <input type="hidden" name="contentId" value="${postContent.contentId}">
+                                        <input type="hidden" name="orderIndex" value="">
                                     </div>
                                 </c:when>
                             </c:choose>
@@ -341,7 +353,14 @@
                 </div>
                 <textarea class="form-control" name="content"></textarea>
                 <input type="hidden" name="contentType" value="TEXT">
+                <div class="form-group">
+                     <input type="hidden" class="form-control" name="note" >
+                </div>
+                <input type="hidden" name="oldContent" value="">
+                <input type="hidden" name="contentType" value="TEXT">
                 <input type="hidden" name="orderIndex" value="">
+                <input type="hidden" name="contentId" value="">
+                <input type="hidden" class ="check" name="check" value="">
             </div>
         </template>
 
@@ -359,12 +378,16 @@
                     </div>
                     <div class="image-preview mt-2"></div>
                 </div>
+                <textarea type="hidden" class="form-control" name="content" style="display: none;"></textarea>
                 <div class="form-group">
                     <label>Mô tả hình ảnh:</label>
                     <input type="text" class="form-control" name="note" placeholder="Nhập mô tả hình ảnh">
                 </div>
+                <input type="hidden" name="oldContent" value="">
                 <input type="hidden" name="contentType" value="IMAGE">
                 <input type="hidden" name="orderIndex" value="">
+                <input type="hidden" name="contentId" value="">
+                <input type="hidden" class ="check" name="check" value="">
             </div>
         </template>
 
@@ -382,19 +405,21 @@
                     </div>
                     <div class="video-preview mt-2"></div>
                 </div>
+                <textarea type="hidden" class="form-control" name="content" style="display: none;"></textarea>
                 <div class="form-group">
                     <label>Mô tả video:</label>
                     <input type="text" class="form-control" name="note" placeholder="Nhập mô tả video">
                 </div>
+                <input type="hidden" name="oldContent" value="">
                 <input type="hidden" name="contentType" value="VIDEO">
                 <input type="hidden" name="orderIndex" value="">
+                <input type="hidden" name="contentId" value="">
+                <input type="hidden" class ="check"  name="check" value="">
             </div>
         </template>
 
         <!-- Scripts -->
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.10.2/Sortable.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input@1.3.4/dist/bs-custom-file-input.min.js"></script>
+
         <script>
             $(document).ready(function () {
                 bsCustomFileInput.init();
@@ -404,14 +429,26 @@
                     animation: 150
                 });
 
+               $(document).on('change', '.image-upload', function() {
+                   // Get the parent container
+                   const container = $(this).closest('.content-container');
+
+                   // Find the hidden check input within this container and set its value to "change"
+                   container.find('.check').val('change');
+
+               });
+                $(document).on('change', '.video-upload', function() {
+                   // Get the parent container
+                   const container = $(this).closest('.content-container');
+
+                   // Find the hidden check input within this container and set its value to "change"
+                   container.find('.check').val('change');
+               });
+
                 // Thêm khối văn bản
                 $('#addText').click(function () {
                     const template = document.getElementById('textBlockTemplate');
                     const clone = document.importNode(template.content, true);
-                    const index = $('.content-container').length;
-                    clone.querySelector('textarea[name="content"]').name = `content[${index}]`;
-                    clone.querySelector('input[name="contentType"]').name = `contentType[${index}]`;
-                    clone.querySelector('input[name="orderIndex"]').name = `orderIndex[${index}]`;
                     $('#contentBlocks').append(clone);
                     updateOrderIndices();
                 });
@@ -420,11 +457,7 @@
                 $('#addImage').click(function () {
                     const template = document.getElementById('imageBlockTemplate');
                     const clone = document.importNode(template.content, true);
-                    const index = $('.content-container').length;
-                    clone.querySelector('.image-upload').name = `imageFile[${index}]`;
-                    clone.querySelector('input[name="note"]').name = `note[${index}]`;
-                    clone.querySelector('input[name="contentType"]').name = `contentType[${index}]`;
-                    clone.querySelector('input[name="orderIndex"]').name = `orderIndex[${index}]`;
+
                     $('#contentBlocks').append(clone);
                     bsCustomFileInput.init();
                     updateOrderIndices();
@@ -434,11 +467,7 @@
                 $('#addVideo').click(function () {
                     const template = document.getElementById('videoBlockTemplate');
                     const clone = document.importNode(template.content, true);
-                    const index = $('.content-container').length;
-                    clone.querySelector('.video-upload').name = `videoFile[${index}]`;
-                    clone.querySelector('input[name="note"]').name = `note[${index}]`;
-                    clone.querySelector('input[name="contentType"]').name = `contentType[${index}]`;
-                    clone.querySelector('input[name="orderIndex"]').name = `orderIndex[${index}]`;
+
                     $('#contentBlocks').append(clone);
                     bsCustomFileInput.init();
                     updateOrderIndices();
@@ -495,15 +524,17 @@
                 // Cập nhật thứ tự
                 function updateOrderIndices() {
                     $('.content-container').each(function (index) {
-                        $(this).find('input[name^="orderIndex"]').attr('name', `orderIndex[${index}]`).val(index);
-                        $(this).find('textarea[name^="content"]').attr('name', `content[${index}]`);
-                        $(this).find('input[name^="contentType"]').attr('name', `contentType[${index}]`);
-                        $(this).find('input[name^="imageFile"]').attr('name', `imageFile[${index}]`);
-                        $(this).find('input[name^="videoFile"]').attr('name', `videoFile[${index}]`);
-                        $(this).find('input[name^="note"]').attr('name', `note[${index}]`);
-                        $(this).find('input[name^="contentId"]').attr('name', `contentId[${index}]`);
-                        $(this).find('input[name^="existingImage"]').attr('name', `existingImage[${index}]`);
-                        $(this).find('input[name^="existingVideo"]').attr('name', `existingVideo[${index}]`);
+                        console.log(index) ;
+                        $(this).find('input[name="check"]').attr('name', `check[${index}]`);
+                        $(this).find('input[name="orderIndex"]').attr('name', `orderIndex[${index}]`);
+                        $(this).find('textarea[name="content"]').attr('name', `content[${index}]`);
+                        $(this).find('input[name="contentType"]').attr('name', `contentType[${index}]`);
+                        $(this).find('input[name="imageFile"]').attr('name', `imageFile[${index}]`);
+                        console.log("Updated contentType name:", $(this).find('input[name^="imageFile"]').attr('name'));
+                        $(this).find('input[name="videoFile"]').attr('name', `videoFile[${index}]`);
+                        $(this).find('input[name="note"]').attr('name', `note[${index}]`);
+                        $(this).find('input[name="contentId"]').attr('name', `contentId[${index}]`);
+                        $(this).find('input[name="oldContent"]').attr('name', `oldContent[${index}]`);
                     });
                 }
 
