@@ -32,7 +32,7 @@
     <jsp:include page="../common/common_admin_css.jsp"></jsp:include>
 
     <style>
-        .dropdown-menu open show{
+        .dropdown-menu.open.show {
             max-height: 200px;
         }
     </style>

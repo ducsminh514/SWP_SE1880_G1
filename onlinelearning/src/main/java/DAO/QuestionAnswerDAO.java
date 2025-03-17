@@ -18,6 +18,25 @@ public class QuestionAnswerDAO extends DBContext implements GenericDAO<QuestionA
 
     @Override
     public int insert(QuestionAnswer questionAnswer) {
+        String sql = "INSERT INTO QuestionAnswer (SortOrder, Content, QuestionID, IsCorrect) "
+                   + "VALUES (?, ?, ?, ?)";
+        try (PreparedStatement st = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            st.setInt(1, questionAnswer.getSortOrder());
+            st.setString(2, questionAnswer.getContent());
+            st.setInt(3, questionAnswer.getQuestionId());
+            st.setBoolean(4, questionAnswer.isCorrect());
+            
+            int affectedRows = st.executeUpdate();
+            if (affectedRows > 0) {
+                try (ResultSet rs = st.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
         return 0;
     }
 
@@ -53,6 +72,7 @@ public class QuestionAnswerDAO extends DBContext implements GenericDAO<QuestionA
         List<QuestionAnswer> questionAnswers = new ArrayList<>();
         try{
             PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, questionId);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 questionAnswers.add(getFromResultSet(rs));
@@ -63,5 +83,16 @@ public class QuestionAnswerDAO extends DBContext implements GenericDAO<QuestionA
         return questionAnswers;
     }
 
+    public boolean deleteAnswersByQuestionId(int questionId) {
+        String sql = "DELETE FROM QuestionAnswer WHERE QuestionID = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, questionId);
+            int affectedRows = st.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
 
 }

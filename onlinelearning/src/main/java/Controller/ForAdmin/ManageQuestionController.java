@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import Module.Subject;
 import java.util.List;
 import Module.QuestionAnswer;
@@ -13,6 +14,7 @@ import Module.Question;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.File;
 
 import Module.CourseType;
 import Module.QuestionType;
@@ -46,10 +48,10 @@ public class ManageQuestionController extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
-        if (action == null || action == "list") {
+        if (action == null || action.equals("list")) {
             searchByFilter(request, response);
-        } else {
-
+        } else if (action.equals("update")) {
+            updateQuestion(request, response);
         }
     }
 
@@ -183,5 +185,100 @@ public class ManageQuestionController extends HttpServlet {
         request.setAttribute("questionAnswers", questionAnswers);
         //day ve JSP
         request.getRequestDispatcher("/admin/edit-question.jsp").forward(request, response);
+    }
+
+    private void updateQuestion(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        int questionId = Integer.parseInt(request.getParameter("questionId"));
+        String content = request.getParameter("content");
+        int level = Integer.parseInt(request.getParameter("level"));
+        int subjectId = Integer.parseInt(request.getParameter("subject"));
+        int mark = Integer.parseInt(request.getParameter("mark"));
+        int questionTypeId = Integer.parseInt(request.getParameter("questionType"));
+        boolean isActive = Boolean.parseBoolean(request.getParameter("status"));
+        
+        // Get the current question
+        QuestionDAO questionDAO = new QuestionDAO();
+        Question question = questionDAO.GetQuestionById(questionId);
+        
+        // Update question properties
+        question.setContent(content);
+        question.setLevel(level);
+        
+        // Set subject
+        SubjectDAO subjectDAO = new SubjectDAO();
+        Subject subject = subjectDAO.getSubjectById(subjectId);
+        question.setSubject(subject);
+        
+        question.setMark(mark);
+        
+        // Set question type
+        QuestionTypeDAO questionTypeDAO = new QuestionTypeDAO();
+        QuestionType questionType = questionTypeDAO.getQuestionTypeById(questionTypeId);
+        question.setQuestionType(questionType);
+        
+        question.setStatus(isActive);
+        
+        // Handle MP3 file if uploaded
+        Part audioPart = request.getPart("audioFile");
+        String deleteAudio = request.getParameter("deleteAudio");
+        
+        if (deleteAudio != null && deleteAudio.equals("true")) {
+            // Delete the existing audio file
+            question.setMp3(null);
+        } else if (audioPart != null && audioPart.getSize() > 0) {
+            // Save the new audio file
+            String fileName = getSubmittedFileName(audioPart);
+            String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
+            String uploadPath = request.getServletContext().getRealPath("/uploads/audio/");
+            
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) uploadDir.mkdirs();
+            
+            audioPart.write(uploadPath + File.separator + uniqueFileName);
+            question.setMp3(uniqueFileName);
+        }
+        
+        // Update the question in the database
+        boolean updated = questionDAO.update(question);
+        
+        // Handle question answers
+        if (updated) {
+            // First delete existing answers
+            QuestionAnswerDAO answerDAO = new QuestionAnswerDAO();
+            answerDAO.deleteAnswersByQuestionId(questionId);
+            
+            // Then add new answers
+            int optionCount = 0;
+            String optionValue;
+            
+            while ((optionValue = request.getParameter("option" + (optionCount + 1))) != null) {
+                QuestionAnswer answer = new QuestionAnswer();
+                answer.setContent(optionValue);
+                answer.setQuestionId(questionId);
+                answer.setSortOrder(optionCount + 1);
+                
+                String isCorrectParam = request.getParameter("isCorrect" + (optionCount + 1));
+                boolean isCorrect = isCorrectParam != null && 
+                                   (isCorrectParam.equals("on") || isCorrectParam.equals("true"));
+                answer.setCorrect(isCorrect);
+                
+                answerDAO.insert(answer);
+                optionCount++;
+            }
+        }
+        
+        // Redirect back to the question list
+        response.sendRedirect(request.getContextPath() + "/manage-question");
+    }
+
+    // Helper method to get the submitted file name
+    private String getSubmittedFileName(Part part) {
+        for (String cd : part.getHeader("content-disposition").split(";")) {
+            if (cd.trim().startsWith("filename")) {
+                return cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
+            }
+        }
+        return null;
     }
 }

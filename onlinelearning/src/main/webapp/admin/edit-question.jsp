@@ -2,6 +2,7 @@
   Templates. --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -41,16 +42,14 @@
         }
 
         .image-preview {
-            width: 100%;
-            height: 150px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            overflow: hidden;
+            height: 200px;
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            background: #f8f9fa;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #f8f9fa;
-            position: relative;
+            overflow: hidden;
         }
 
         .image-preview img {
@@ -109,6 +108,22 @@
         .no-image-text {
             color: #6c757d;
         }
+
+        .delete-image, .delete-new-image, .delete-audio {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .audio-container {
+            min-height: 100px;
+        }
     </style>
 </head>
 
@@ -157,8 +172,10 @@
                                             <label for="subject">Subject</label>
                                             <select class="form-control" id="subject" name="subject">
                                                 <c:forEach items="${subjectList}" var="subject">
-                                                    <option value="${subject.subjectId}" ${question.subject.subjectId==subject.subjectId
-                                                            ? "selected" : "" }>${subject.subjectName}</option>
+                                                    <option value="${subject.subjectId}" 
+                                                            ${question.subject.subjectId == subject.subjectId ? "selected" : ""}>
+                                                        ${subject.subjectName}
+                                                    </option>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -227,100 +244,69 @@
                                         <div class="form-group">
                                             <label>Image <span
                                                     style="color: #ff6666;">(chỉ theo định dạng ảnh)</span></label>
-
-                                            <!-- Container for all images -->
                                             <div id="imagesContainer">
                                                 <!-- Existing images -->
-                                                <c:if test="${not empty question.questionImage}">
-                                                    <c:forEach items="${question.questionImage}" var="image"
-                                                               varStatus="status">
-                                                        <div class="image-item mb-3">
-                                                            <div class="position-relative">
-                                                                <div class="image-preview">
-                                                                    <img src="${pageContext.request.contextPath}/uploads/images/${image.imageUrl}"
-                                                                         alt="Question Image"
-                                                                         style="max-width: 100%; max-height: 100%;">
-                                                                </div>
-                                                                <button type="button" class="btn btn-danger btn-sm"
-                                                                        style="position: absolute; top: 5px; right: 5px;"
-                                                                        data-image-id="${image.imageId}">X
-                                                                </button>
-                                                            </div>
-                                                            <div class="mt-2">
-                                                                <input type="text" class="form-control"
-                                                                       name="imageTitle${status.index}"
-                                                                       value="${image.title}" placeholder="Title">
-                                                                <input type="hidden"
-                                                                       name="existingImageId${status.index}"
-                                                                       value="${image.imageId}">
-                                                            </div>
-                                                        </div>
-                                                    </c:forEach>
-                                                </c:if>
-
-                                                <!-- New image upload template -->
-                                                <div id="newImageTemplate" style="display: none;">
+                                                <c:forEach items="${question.questionImage}" var="image" varStatus="status">
                                                     <div class="image-item mb-3">
                                                         <div class="position-relative">
                                                             <div class="image-preview">
-                                                                <img src="" alt="Preview"
-                                                                     style="max-width: 100%; max-height: 100%; display: none;">
-                                                                <span class="no-image-text">No image selected</span>
+                                                                <img src="${pageContext.request.contextPath}/uploads/images/${image.imageUrl}" 
+                                                                     alt="Question Image" class="img-fluid">
                                                             </div>
-                                                            <button type="button" class="btn btn-danger btn-sm"
-                                                                    style="position: absolute; top: 5px; right: 5px;">X
-                                                            </button>
+                                                            <button type="button" class="btn btn-danger btn-sm delete-image" 
+                                                                    data-image-id="${image.imageId}">X</button>
                                                         </div>
                                                         <div class="mt-2">
-                                                            <input type="file" class="form-control-file new-image-file"
-                                                                   name="newImageFile"
-                                                                   accept="image/*">
-                                                            <input type="text" class="form-control mt-2"
-                                                                   name="newImageTitle"
-                                                                   placeholder="Title">
+                                                            <input type="text" class="form-control" name="imageTitle${status.index}" 
+                                                                   value="${image.title}" placeholder="Title">
+                                                            <input type="hidden" name="existingImageId${status.index}" value="${image.imageId}">
                                                         </div>
+                                                    </div>
+                                                </c:forEach>
+
+                                                <!-- New image template -->
+                                                <div class="image-item mb-3 new-image-template" style="display: none;">
+                                                    <div class="position-relative">
+                                                        <div class="image-preview">
+                                                            <img src="" alt="Preview" class="img-fluid preview-image" style="display: none;">
+                                                            <span class="no-image-text">No image selected</span>
+                                                        </div>
+                                                        <button type="button" class="btn btn-danger btn-sm delete-new-image">X</button>
+                                                    </div>
+                                                    <div class="mt-2">
+                                                        <input type="file" class="form-control-file image-upload" accept="image/*">
+                                                        <input type="text" class="form-control mt-2 image-title" placeholder="Title">
                                                     </div>
                                                 </div>
 
-                                                <!-- Container for new images -->
                                                 <div id="newImagesContainer"></div>
                                             </div>
-
-                                            <button type="button" class="btn btn-warning mt-3" id="addImageBtn">Thêm
-                                                hình ảnh
-                                            </button>
+                                            <button type="button" class="btn btn-warning mt-3" id="addImageBtn">Thêm hình ảnh</button>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Audio <span
-                                                    style="color: #ff6666;">(chỉ theo định dạng nhạc audio)</span></label>
-                                            <div
-                                                    style="position: relative; border: 1px solid #ddd; padding: 15px; border-radius: 4px;">
+                                            <label for="audioUpload">Audio (MP3)</label>
+                                            <div class="audio-container position-relative">
                                                 <c:if test="${not empty question.mp3}">
-                                                    <audio controls style="width: 100%;">
-                                                        <source src="${pageContext.request.contextPath}/uploads/audio/${question.mp3}"
-                                                                type="audio/mpeg">
+                                                    <audio controls class="w-100">
+                                                        <source src="${pageContext.request.contextPath}/uploads/audio/${question.mp3}" type="audio/mpeg">
                                                         Your browser does not support the audio element.
                                                     </audio>
-                                                    <button type="button" class="btn btn-danger btn-sm"
-                                                            style="position: absolute; top: 5px; right: 5px;">X
+                                                    <button type="button" class="btn btn-danger delete-audio">
+                                                        <i class="fa fa-times"></i>
                                                     </button>
-                                                    <input type="hidden" name="hasExistingAudio" value="true">
                                                 </c:if>
-                                                <c:if test="${empty question.mp3}">
-                                                    <div id="audioPlaceholder" class="text-center py-3">
-                                                        <span>No audio</span>
-                                                    </div>
-                                                </c:if>
-                                            </div>
-                                            <div class="mt-3">
-                                                <input type="file" id="audioUpload" name="audioFile"
-                                                       class="form-control-file"
-                                                       accept="audio/*">
-                                                <small class="form-text text-muted">Select an audio file to
-                                                    upload</small>
+                                                <div id="audioPlaceholder" class="text-center py-3" 
+                                                     style="${empty question.mp3 ? '' : 'display: none;'}">
+                                                    <span>No audio</span>
+                                                </div>
+                                                <div class="mt-3">
+                                                    <input type="file" class="form-control-file" id="audioUpload" name="audioFile" accept="audio/mpeg">
+                                                    <input type="hidden" name="currentAudio" value="${question.mp3}">
+                                                    <input type="hidden" name="deleteAudio" id="deleteAudio" value="false">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -338,7 +324,7 @@
                                                 <c:if test="${question.questionType.questionTypeId == 1}"> <!-- Multiple Choice -->
                                                     <input type="checkbox"
                                                            name="isCorrect${status.index + 1}" ${answer.isCorrect ? "checked" : ""}>
-                                                    <label class="ml-2 mr-2">IsCorrect</label>
+                                                    <label class="ml-2 mr-2">Is Correct</label>
                                                 </c:if>
                                                 <c:if test="${question.questionType.questionTypeId != 1}"> <!-- Fill in the blank -->
                                                     <input type="hidden" name="isCorrect${status.index + 1}"
@@ -506,132 +492,79 @@
         $("#questionType").trigger("change");
 
         // Xử lý thêm hình ảnh mới
-        let newImageCount = 0;
-
-        $("#addImageBtn").click(function () {
-            newImageCount++;
-            const template = $("#newImageTemplate").html();
-            const newImageDiv = $("<div>").html(template).children();
-
-            // Cập nhật tên các trường để có index
-            newImageDiv.find(".new-image-file").attr("name", "newImageFile" + newImageCount);
-            newImageDiv.find("input[type='text']").attr("name", "newImageTitle" + newImageCount);
-
-            $("#newImagesContainer").append(newImageDiv);
+        let imageIndex = 0;
+        $('#addImageBtn').click(function() {
+            const newImage = $('.new-image-template').clone().removeClass('new-image-template').show();
+            const container = $('#newImagesContainer');
+            
+            newImage.find('.image-upload').attr('name', 'newImageFile[' + imageIndex + ']');
+            newImage.find('.image-title').attr('name', 'newImageTitle[' + imageIndex + ']');
+            
+            container.append(newImage);
+            imageIndex++;
         });
 
-        // Xử lý preview ảnh khi chọn file
-        $(document).on("change", ".new-image-file", function () {
+        // Xử lý preview ảnh
+        $(document).on('change', '.image-upload', function() {
             const file = this.files[0];
-            const preview = $(this).closest(".image-item").find(".image-preview");
-            const img = preview.find("img");
-            const noImageText = preview.find(".no-image-text");
+            const preview = $(this).closest('.image-item').find('.preview-image');
+            const noImageText = $(this).closest('.image-item').find('.no-image-text');
 
             if (file) {
                 const reader = new FileReader();
-
-                reader.onload = function (e) {
-                    img.attr("src", e.target.result);
-                    img.show();
+                reader.onload = function(e) {
+                    preview.attr('src', e.target.result).show();
                     noImageText.hide();
-                };
-
+                }
                 reader.readAsDataURL(file);
-            } else {
-                img.hide();
-                noImageText.show();
             }
         });
 
-        // Xử lý xóa hình ảnh mới
-        $(document).on("click", ".image-item .btn-danger", function () {
-            $(this).closest(".image-item").remove();
+        // Xử lý xóa ảnh
+        $(document).on('click', '.delete-image, .delete-new-image', function() {
+            $(this).closest('.image-item').remove();
         });
 
-        // Xử lý xóa hình ảnh đã tồn tại
-        $("[data-image-id]").click(function () {
-            const imageId = $(this).data("image-id");
-            $(this).closest(".image-item").remove();
-
-            // Thêm input hidden để đánh dấu ảnh cần xóa
-            $("<input>")
-                .attr("type", "hidden")
-                .attr("name", "deleteImageId")
-                .attr("value", imageId)
-                .appendTo("form");
-        });
-
-        // Xử lý preview audio khi chọn file
-        $("#audioUpload").change(function () {
+        // Xử lý audio upload
+        $('#audioUpload').change(function() {
             const file = this.files[0];
+            const container = $('.audio-container');
+            const placeholder = $('#audioPlaceholder');
+            
             if (file) {
-                const audioContainer = $(this).closest(".form-group").find("div[style*='position: relative']");
-                const audioUrl = URL.createObjectURL(file);
-
-                // Xóa placeholder nếu có
-                audioContainer.find("#audioPlaceholder").remove();
-
-                // Xóa audio cũ nếu có
-                audioContainer.find("audio").remove();
-
-                // Thêm audio mới
-                const audioElement = $(`
-                  <audio controls style="width: 100%;">
-                    <source src="${audioUrl}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                  </audio>
-                `);
-
-                // Thêm nút xóa nếu chưa có
-                if (audioContainer.find(".btn-danger").length === 0) {
-                    const deleteButton = $(`
-                    <button type="button" class="btn btn-danger btn-sm"
-                      style="position: absolute; top: 5px; right: 5px;">X</button>
-                  `);
-
-                    deleteButton.click(function () {
+                const url = URL.createObjectURL(file);
+                placeholder.hide();
+                
+                // Remove existing audio elements
+                container.find('audio').remove();
+                
+                // Add new audio element
+                const audioElement = $('<audio controls class="w-100"></audio>')
+                    .append('<source src="' + url + '" type="' + file.type + '">');
+                
+                // Add delete button
+                const deleteBtn = $('<button type="button" class="btn btn-danger delete-audio">')
+                    .click(function() {
                         audioElement.remove();
                         $(this).remove();
-                        audioContainer.append(`
-                      <div id="audioPlaceholder" class="text-center py-3">
-                        <span>No audio</span>
-                      </div>
-                    `);
-                        $("#audioUpload").val("");
+                        placeholder.show();
+                        $('#audioUpload').val('');
                     });
-
-                    audioContainer.append(deleteButton);
-                }
-
-                audioContainer.prepend(audioElement);
-
-                // Đảm bảo audio được load
-                setTimeout(function () {
-                    audioElement[0].load();
-                }, 100);
+                
+                container.prepend(audioElement, deleteBtn);
             }
         });
 
-        // Xử lý xóa audio hiện tại
-        $(".form-group:has(audio) .btn-danger").click(function () {
-            const audioContainer = $(this).parent();
-            audioContainer.find("audio").remove();
+        // Xử lý xóa audio existing
+        $('.delete-audio').click(function() {
+            $('.existing-audio').remove();
             $(this).remove();
-
-            audioContainer.prepend(`
-                <div id="audioPlaceholder" class="text-center py-3">
-                  <span>No audio</span>
-                </div>
-              `);
-
-            // Thêm input hidden để đánh dấu xóa audio
-            $("<input>")
-                .attr("type", "hidden")
-                .attr("name", "deleteAudio")
-                .attr("value", "true")
-                .appendTo("form");
-
-            $("#audioUpload").val("");
+            $('#audioPlaceholder').show();
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'deleteAudio',
+                value: 'true'
+            }).appendTo('form');
         });
     });
 </script>

@@ -60,4 +60,25 @@ public class QuestionImageDAO extends DBContext implements GenericDAO<QuestionIm
         }
         return questionImagesList;
     }
+    
+    // Add the missing method to get images by question ID
+    public List<QuestionImage> getImageByQuestionId(int questionId) {
+        String sql = "SELECT [ImageID]\n" +
+                "      ,[ImageTitle]\n" +
+                "      ,[QuestionImageID]\n" +
+                "  FROM [dbo].[QuestionImages]\n" +
+                "  WHERE [QuestionImageID] = ? ";
+        List<QuestionImage> questionImagesList = new ArrayList<>();
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, questionId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                questionImagesList.add(getFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return questionImagesList;
+    }
 }

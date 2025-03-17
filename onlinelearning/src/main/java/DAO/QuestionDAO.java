@@ -47,6 +47,26 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
 
     @Override
     public boolean update(Question question) {
+        String sql = "UPDATE Question SET "
+                + "Content = ?, Level = ?, SubjectId = ?, Mark = ?, "
+                + "QuestionTypeID = ?, IsActive = ?, UpdateAt = GETDATE(), Mp3 = ? "
+                + "WHERE QuestionID = ?";
+        
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, question.getContent());
+            st.setInt(2, question.getLevel());
+            st.setInt(3, question.getSubject().getSubjectId());
+            st.setInt(4, question.getMark());
+            st.setInt(5, question.getQuestionType().getQuestionTypeId());
+            st.setBoolean(6, question.isStatus());
+            st.setString(7, question.getMp3());
+            st.setInt(8, question.getQuestionId());
+            
+            int affectedRows = st.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
         return false;
     }
 
@@ -134,7 +154,7 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         QuestionType qt = questionTypeDao.getQuestionTypeById(resultSet.getInt("QuestionTypeID"));
 
         QuestionImageDAO questionImageDao = new QuestionImageDAO();
-        List<QuestionImage> questionImageList = questionImageDao.getImageByQuestionImage(resultSet.getInt("QuestionImageID"));
+        List<QuestionImage> questionImageList = questionImageDao.getImageByQuestionId(resultSet.getInt("QuestionID"));
 
         SubjectDAO subjectDao = new SubjectDAO();
         Subject subject = subjectDao.getSubjectById(resultSet.getInt("SubjectId"));
@@ -165,7 +185,6 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
                 "      ,[IsActive]\n" +
                 "      ,[CreateAt]\n" +
                 "      ,[UpdateAt]\n" +
-                "      ,[QuestionImageID]\n" +
                 "      ,[Mp3]\n" +
                 "  FROM [dbo].[Question]\n" +
                 "  WHERE QuestionID = ?";

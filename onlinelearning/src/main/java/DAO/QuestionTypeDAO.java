@@ -6,6 +6,7 @@ import Module.QuestionType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -13,7 +14,18 @@ public class QuestionTypeDAO extends DBContext implements GenericDAO<QuestionTyp
 
     @Override
     public List<QuestionType> findAll() {
-        return List.of();
+        List<QuestionType> questionTypes = new ArrayList<>();
+        String sql = "SELECT * FROM QuestionType";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                questionTypes.add(getFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return questionTypes;
     }
 
     @Override
