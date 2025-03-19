@@ -160,6 +160,124 @@
         .preview-container {
             margin-top: 10px;
         }
+
+        /* Style mới cho phần option */
+        .options-container {
+            margin-top: 20px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .options-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 10px;
+        }
+        
+        .options-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        .option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            background-color: white;
+            border-radius: 6px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .option-row:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .option-label {
+            width: 80px;
+            font-weight: bold;
+            color: #495057;
+            background-color: #e9ecef;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-right: 10px;
+            text-align: center;
+        }
+        
+        .option-input {
+            flex-grow: 1;
+            margin-right: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 8px 12px;
+        }
+        
+        .option-correct {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .option-correct input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+        }
+        
+        .delete-btn {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .delete-btn:hover {
+            background-color: #ff3333;
+            transform: scale(1.1);
+        }
+        
+        .add-option-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+        }
+        
+        .add-option-btn i {
+            margin-right: 8px;
+        }
+        
+        .add-option-btn:hover {
+            background-color: #218838;
+        }
+        
+        .correct-label {
+            font-weight: 500;
+            color: #28a745;
+        }
     </style>
 </head>
 
@@ -198,45 +316,24 @@
                             
                             <div class="row">
                                 <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="content">Nội dung câu hỏi</label>
-                                        <textarea class="form-control" id="content" name="content" rows="4" required>${question.content}</textarea>
+                                    <div class="ml-auto">
+                                        <h3>Thông tin câu hỏi</h3>
                                     </div>
                                 </div>
                                 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="level">Cấp độ</label>
-                                        <select class="form-control" id="level" name="level" required>
-                                            <option value="1" ${question.level == 1 ? 'selected' : ''}>Dễ</option>
-                                            <option value="2" ${question.level == 2 ? 'selected' : ''}>Trung bình</option>
-                                            <option value="3" ${question.level == 3 ? 'selected' : ''}>Khó</option>
-                                        </select>
+                                <!-- Nội dung câu hỏi -->
+                                <div class="form-group col-12">
+                                    <label class="col-form-label">Nội dung câu hỏi</label>
+                                    <div>
+                                        <textarea class="form-control" name="content" rows="4">${question.content}</textarea>
                                     </div>
                                 </div>
                                 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="subject">Môn học</label>
-                                        <select class="form-control" id="subject" name="subject" required>
-                                            <c:forEach items="${subjectList}" var="subject">
-                                                <option value="${subject.subjectId}" ${question.subject.subjectId == subject.subjectId ? 'selected' : ''}>${subject.subjectName}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="mark">Điểm</label>
-                                        <input type="number" class="form-control" id="mark" name="mark" value="${question.mark}" min="1" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="questionType">Loại câu hỏi</label>
-                                        <select class="form-control" id="questionType" name="questionType" required>
+                                <!-- Loại câu hỏi -->
+                                <div class="form-group col-md-6">
+                                    <label class="col-form-label">Loại câu hỏi</label>
+                                    <div>
+                                        <select class="form-control" id="questionType" name="questionType">
                                             <c:forEach items="${questionTypes}" var="type">
                                                 <option value="${type.questionTypeId}" ${question.questionType.questionTypeId == type.questionTypeId ? 'selected' : ''}>${type.questionTypeName}</option>
                                             </c:forEach>
@@ -244,73 +341,93 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="status">Trạng thái</label>
-                                        <select class="form-control" id="status" name="status">
+                                <!-- Môn học -->
+                                <div class="form-group col-md-6">
+                                    <label class="col-form-label">Môn học</label>
+                                    <div>
+                                        <select class="form-control" name="subject">
+                                            <c:forEach items="${subjectList}" var="subject">
+                                                <option value="${subject.subjectId}" ${question.subject.subjectId == subject.subjectId ? 'selected' : ''}>${subject.subjectName}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Cấp độ -->
+                                <div class="form-group col-md-4">
+                                    <label class="col-form-label">Cấp độ</label>
+                                    <div>
+                                        <select class="form-control" name="level">
+                                            <option value="1" ${question.level == 1 ? 'selected' : ''}>Dễ</option>
+                                            <option value="2" ${question.level == 2 ? 'selected' : ''}>Trung bình</option>
+                                            <option value="3" ${question.level == 3 ? 'selected' : ''}>Khó</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Điểm -->
+                                <div class="form-group col-md-4">
+                                    <label class="col-form-label">Điểm</label>
+                                    <div>
+                                        <input class="form-control" type="number" name="mark" value="${question.mark}" min="1" max="10">
+                                    </div>
+                                </div>
+                                
+                                <!-- Trạng thái -->
+                                <div class="form-group col-md-4">
+                                    <label class="col-form-label">Trạng thái</label>
+                                    <div>
+                                        <select class="form-control" name="status">
                                             <option value="true" ${question.status ? 'selected' : ''}>Kích hoạt</option>
                                             <option value="false" ${!question.status ? 'selected' : ''}>Vô hiệu hóa</option>
                                         </select>
                                     </div>
                                 </div>
                                 
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="audioUpload">Audio (MP3)</label>
-                                        <div class="audio-container position-relative">
-                                            <c:if test="${not empty question.mp3}">
-                                                <audio controls class="w-100">
-                                                    <source src="${pageContext.request.contextPath}/uploads/audio/${question.mp3}" type="audio/mpeg">
-                                                    Your browser does not support the audio element.
-                                                </audio>
-                                                <button type="button" class="btn btn-danger delete-audio">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </c:if>
-                                            <div id="audioPlaceholder" class="text-center py-3" 
-                                                 style="${empty question.mp3 ? '' : 'display: none;'}">
-                                                <span>Không có audio</span>
-                                            </div>
-                                            <div class="mt-3">
-                                                <input type="file" class="form-control-file" id="audioUpload" name="audioFile" accept="audio/mpeg">
-                                                <input type="hidden" name="currentAudio" value="${question.mp3}">
-                                                <input type="hidden" name="deleteAudio" id="deleteAudio" value="false">
-                                            </div>
-                                            
-                                            <!-- Audio preview for new uploads -->
-                                            <div id="audioPreview" style="display: none; margin-top: 10px;">
-                                                <audio controls class="w-100">
-                                                    <source id="newAudioPlayer" src="" type="audio/mpeg">
-                                                    Your browser does not support the audio element.
-                                                </audio>
-                                            </div>
+                                <!-- Audio -->
+                                <div class="form-group col-12">
+                                    <label class="col-form-label">Audio (MP3)</label>
+                                    <div class="audio-container position-relative">
+                                        <c:if test="${not empty question.mp3}">
+                                            <audio controls class="w-100 existing-audio">
+                                                <source src="${pageContext.request.contextPath}/uploads/audio/${question.mp3}" type="audio/mpeg">
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                            <button type="button" class="btn btn-danger delete-audio">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </c:if>
+                                        <div id="audioPlaceholder" class="text-center py-3" 
+                                             style="${empty question.mp3 ? '' : 'display: none;'}">
+                                            <span>Không có audio</span>
+                                        </div>
+                                        <div id="audioPreview" style="display: none;" class="mt-3">
+                                            <audio controls class="w-100">
+                                                <source id="newAudioPlayer" src="" type="audio/mpeg">
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                        </div>
+                                        <div class="mt-3">
+                                            <input type="file" class="form-control-file" id="audioUpload" name="audioFile" accept="audio/mpeg">
+                                            <input type="hidden" name="currentAudio" value="${question.mp3}">
+                                            <input type="hidden" name="deleteAudio" id="deleteAudio" value="false">
                                         </div>
                                     </div>
                                 </div>
                                 
-                                <!-- Existing Images Section -->
+                                <!-- Hình ảnh hiện tại -->
                                 <div class="col-12 mt-4">
-                                    <h5>Hình ảnh hiện tại</h5>
-                                    <div class="row" id="existingImagesContainer">
-                                        <c:if test="${empty question.questionImage}">
-                                            <div class="col-12">
-                                                <p class="text-muted">Không có hình ảnh</p>
-                                            </div>
-                                        </c:if>
-                                        
+                                    <h4>Hình ảnh hiện tại</h4>
+                                    <div class="row">
                                         <c:forEach items="${question.questionImage}" var="image" varStatus="status">
                                             <div class="col-md-4">
                                                 <div class="image-item">
                                                     <div class="image-preview">
-                                                        <img src="${pageContext.request.contextPath}/uploads/images/${image.imageTitle}" 
-                                                             alt="Question Image" class="preview-image">
+                                                        <img src="${pageContext.request.contextPath}/uploads/images/${image.imageTitle}" alt="Question Image" class="preview-image">
                                                     </div>
-                                                    <div class="image-title">
-                                                        <input type="text" class="form-control" name="imageTitle[${status.index}]" 
-                                                               value="${image.imageTitle}" readonly>
-                                                        <input type="hidden" name="imageId[${status.index}]" value="${image.imageId}">
-                                                        <input type="hidden" class="delete-image-flag" name="deleteImage[${status.index}]" value="false">
-                                                    </div>
+                                                    <input type="text" class="form-control mb-2" name="imageTitle[${status.index}]" value="${image.imageTitle}" placeholder="Tiêu đề ảnh">
+                                                    <input type="hidden" name="imageId" value="${image.imageId}">
+                                                    <input type="hidden" class="delete-image-flag" name="deleteImage" value="false">
                                                     <button type="button" class="btn btn-danger delete-image">
                                                         <i class="fa fa-times"></i>
                                                     </button>
@@ -320,27 +437,25 @@
                                     </div>
                                 </div>
                                 
-                                <!-- New Images Section -->
+                                <!-- Thêm hình ảnh mới -->
                                 <div class="col-12 mt-4">
-                                    <h5>Thêm hình ảnh mới</h5>
-                                    <div class="row" id="newImagesContainer">
-                                        <!-- New images will be added here -->
-                                    </div>
-                                    <button type="button" id="addImageBtn" class="btn btn-info mt-2">
+                                    <h4>Thêm hình ảnh mới</h4>
+                                    <button type="button" id="addImageBtn" class="btn btn-warning mb-3">
                                         <i class="fa fa-plus"></i> Thêm hình ảnh
                                     </button>
+                                    <div id="newImagesContainer" class="row">
+                                        <!-- Container for new images -->
+                                    </div>
                                     
                                     <!-- Template for new image (hidden) -->
                                     <div class="col-md-4 new-image-template" style="display: none;">
                                         <div class="image-item">
                                             <div class="image-preview">
-                                                <img src="" alt="New Image" class="preview-image" style="display: none;">
-                                                <span class="no-image-text">Chưa chọn ảnh</span>
+                                                <img src="" alt="Preview" class="preview-image" style="display: none;">
+                                                <span class="no-image-text">Chưa có ảnh</span>
                                             </div>
-                                            <div class="image-title">
-                                                <input type="text" class="form-control image-title" placeholder="Tiêu đề ảnh">
-                                            </div>
-                                            <input type="file" class="form-control-file mt-2 image-upload" accept="image/*">
+                                            <input type="file" class="form-control-file mb-2 image-upload" accept="image/*">
+                                            <input type="text" class="form-control mb-2 image-title" placeholder="Tiêu đề ảnh">
                                             <button type="button" class="btn btn-danger delete-new-image">
                                                 <i class="fa fa-times"></i>
                                             </button>
@@ -348,35 +463,44 @@
                                     </div>
                                 </div>
                                 
-                                <!-- Options Section -->
-                                <div class="col-12 mt-4" id="optionsSection">
-                                    <h5>Các tùy chọn</h5>
-                                    <div id="optionsContainer">
-                                        <c:forEach items="${questionAnswers}" var="answer" varStatus="status">
-                                            <div class="option-row">
-                                                <div class="option-label">Option ${status.index + 1}</div>
-                                                <input type="text" class="form-control option-input" name="option${status.index + 1}" value="${answer.content}">
-                                                <c:choose>
-                                                    <c:when test="${question.questionType.questionTypeId == 1}">
-                                                        <input type="checkbox" name="isCorrect${status.index + 1}" ${answer.isCorrect ? 'checked' : ''}>
-                                                        <label class="ml-2 mr-2">Đáp án đúng</label>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <input type="hidden" name="isCorrect${status.index + 1}" value="${answer.isCorrect}">
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <button type="button" class="delete-btn">X</button>
+                                <!-- Các tùy chọn -->
+                                <div class="col-12 mt-4">
+                                    <div class="options-container">
+                                        <div class="options-header">
+                                            <div class="options-title">
+                                                <i class="fa fa-list-ul"></i> Các tùy chọn đáp án
                                             </div>
-                                        </c:forEach>
+                                            <div>
+                                                <span class="badge badge-info">Số lượng: <span id="optionCount">${questionAnswers.size()}</span></span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="optionsContainer">
+                                            <c:forEach items="${questionAnswers}" var="answer" varStatus="status">
+                                                <div class="option-row">
+                                                    <div class="option-label">Option ${status.index + 1}</div>
+                                                    <input type="text" class="form-control option-input" name="option${status.index + 1}" value="${answer.content}">
+                                                    <div class="option-correct">
+                                                        <input type="checkbox" id="isCorrect${status.index + 1}" name="isCorrect${status.index + 1}" ${answer.isCorrect ? 'checked' : ''}>
+                                                        <label for="isCorrect${status.index + 1}" class="correct-label">Đáp án đúng</label>
+                                                    </div>
+                                                    <button type="button" class="delete-btn" title="Xóa tùy chọn">
+                                                        <i class="fa fa-times"></i>
+                                                    </button>
+                                                </div>
+                                            </c:forEach>
+                                        </div>
+                                        
+                                        <button type="button" id="addOptionBtn" class="add-option-btn">
+                                            <i class="fa fa-plus"></i> Thêm tùy chọn
+                                        </button>
                                     </div>
-                                    <button type="button" id="addOption" class="add-btn">
-                                        <i class="fa fa-plus"></i> Thêm tùy chọn
-                                    </button>
                                 </div>
                                 
+                                <!-- Nút submit -->
                                 <div class="col-12 mt-4">
                                     <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-                                    <a href="${pageContext.request.contextPath}/manage-question" class="btn btn-secondary ml-2">Hủy</a>
+                                    <a href="${pageContext.request.contextPath}/manage-question" class="btn btn-secondary">Hủy</a>
                                 </div>
                             </div>
                         </form>
@@ -386,6 +510,7 @@
         </div>
     </div>
 </main>
+
 <div class="ttr-overlay"></div>
 
 <!-- External JavaScripts -->
@@ -393,42 +518,64 @@
 
 <script>
     $(document).ready(function() {
-        // Debug cho nút thêm option
-        $('#addOption').click(function() {
+        // Cập nhật số lượng option
+        function updateOptionCount() {
+            $('#optionCount').text($('.option-row').length);
+        }
+        
+        // Xử lý thêm option
+        $('#addOptionBtn').click(function() {
             console.log('Add Option button clicked');
             const optionsContainer = $('#optionsContainer');
             const optionCount = optionsContainer.children().length + 1;
             console.log('Current option count:', optionCount);
 
             const newOption = `
-                <div class="option-row">
+                <div class="option-row" style="display: none;">
                     <div class="option-label">Option ${optionCount}</div>
                     <input type="text" class="form-control option-input" name="option${optionCount}" value="">
-                    <input type="checkbox" name="isCorrect${optionCount}">
-                    <button type="button" class="delete-btn">X</button>
+                    <div class="option-correct">
+                        <input type="checkbox" id="isCorrect${optionCount}" name="isCorrect${optionCount}">
+                        <label for="isCorrect${optionCount}" class="correct-label">Đáp án đúng</label>
+                    </div>
+                    <button type="button" class="delete-btn" title="Xóa tùy chọn">
+                        <i class="fa fa-times"></i>
+                    </button>
                 </div>
             `;
-            optionsContainer.append(newOption);
-            console.log('New option added:', newOption);
+            
+            const $newOption = $(newOption);
+            optionsContainer.append($newOption);
+            $newOption.slideDown(300);
+            updateOptionCount();
+            console.log('New option added');
         });
 
-        // Debug cho nút xóa option
+        // Xử lý xóa option
         $(document).on('click', '.delete-btn', function() {
             console.log('Delete button clicked');
             const optionRow = $(this).closest('.option-row');
-            console.log('Deleting option:', optionRow.find('.option-input').val());
-            optionRow.remove();
             
-            // Cập nhật lại số thứ tự các option
-            $('.option-row').each(function(index) {
-                console.log('Updating option number:', index + 1);
-                $(this).find('.option-label').text('Option ' + (index + 1));
-                $(this).find('.option-input').attr('name', 'option' + (index + 1));
-                $(this).find('input[type="checkbox"]').attr('name', 'isCorrect' + (index + 1));
+            optionRow.slideUp(300, function() {
+                $(this).remove();
+                
+                // Cập nhật lại số thứ tự các option
+                $('.option-row').each(function(index) {
+                    console.log('Updating option number:', index + 1);
+                    $(this).find('.option-label').text('Option ' + (index + 1));
+                    $(this).find('.option-input').attr('name', 'option' + (index + 1));
+                    $(this).find('input[type="checkbox"]').attr({
+                        'name': 'isCorrect' + (index + 1),
+                        'id': 'isCorrect' + (index + 1)
+                    });
+                    $(this).find('label').attr('for', 'isCorrect' + (index + 1));
+                });
+                
+                updateOptionCount();
             });
         });
 
-        // Debug cho thay đổi loại câu hỏi
+        // Xử lý thay đổi loại câu hỏi
         $("#questionType").change(function() {
             console.log('Question type changed to:', $(this).val());
             const selectedType = $(this).val();
@@ -446,8 +593,13 @@
                         <div class="option-row">
                             <div class="option-label">Option ${i}</div>
                             <input type="text" class="form-control option-input" name="option${i}" value="">
-                            <input type="checkbox" name="isCorrect${i}">
-                            <button type="button" class="delete-btn">X</button>
+                            <div class="option-correct">
+                                <input type="checkbox" id="isCorrect${i}" name="isCorrect${i}">
+                                <label for="isCorrect${i}" class="correct-label">Đáp án đúng</label>
+                            </div>
+                            <button type="button" class="delete-btn" title="Xóa tùy chọn">
+                                <i class="fa fa-times"></i>
+                            </button>
                         </div>
                     `;
                     optionsContainer.append(option);
@@ -460,13 +612,20 @@
                         <div class="option-row">
                             <div class="option-label">Option ${i}</div>
                             <input type="text" class="form-control option-input" name="option${i}" value="${value}" readonly>
-                            <input type="checkbox" name="isCorrect${i}">
-                            <button type="button" class="delete-btn">X</button>
+                            <div class="option-correct">
+                                <input type="checkbox" id="isCorrect${i}" name="isCorrect${i}">
+                                <label for="isCorrect${i}" class="correct-label">Đáp án đúng</label>
+                            </div>
+                            <button type="button" class="delete-btn" title="Xóa tùy chọn">
+                                <i class="fa fa-times"></i>
+                            </button>
                         </div>
                     `;
                     optionsContainer.append(option);
                 }
             }
+            
+            updateOptionCount();
         });
 
         // Debug cho xử lý hình ảnh

@@ -2,16 +2,19 @@ package Controller.ForAdmin;
 
 import DAO.*;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import Module.Subject;
+
+import java.util.Collection;
 import java.util.List;
 import Module.QuestionAnswer;
 import Module.Question;
-
+import Module.QuestionImage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
@@ -19,7 +22,7 @@ import java.io.File;
 import Module.CourseType;
 import Module.QuestionType;
 
-
+@MultipartConfig
 @WebServlet(name = "ManageQuestion", urlPatterns = {"/manage-question"})
 public class ManageQuestionController extends HttpServlet {
 
@@ -189,7 +192,8 @@ public class ManageQuestionController extends HttpServlet {
 
     private void updateQuestion(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        int questionId = Integer.parseInt(request.getParameter("questionId"));
+        String questionIdStr = request.getParameter("questionId");
+        int questionId = Integer.parseInt(questionIdStr);
         String content = request.getParameter("content");
         int level = Integer.parseInt(request.getParameter("level"));
         int subjectId = Integer.parseInt(request.getParameter("subject"));
@@ -239,6 +243,57 @@ public class ManageQuestionController extends HttpServlet {
             question.setMp3(uniqueFileName);
         }
         
+        // Handle existing images
+        QuestionImageDAO imageDAO = new QuestionImageDAO();
+        String[] imageIds = request.getParameterValues("imageId");
+        String[] deleteFlags = request.getParameterValues("deleteImage");
+        
+        if (imageIds != null && deleteFlags != null) {
+            for (int i = 0; i < imageIds.length; i++) {
+                int imageId = Integer.parseInt(imageIds[i]);
+                boolean deleteFlag = Boolean.parseBoolean(deleteFlags[i]);
+                
+                if (deleteFlag) {
+                    // Delete the image
+                    QuestionImage image = new QuestionImage();
+                    image.setImageId(imageId);
+                    imageDAO.delete(image);
+                }
+            }
+        }
+        
+        // Handle new images
+        Collection<Part> imageParts = request.getParts();
+        for (Part part : imageParts) {
+            if (part.getName().startsWith("newImageFile[") && part.getSize() > 0) {
+                // Extract index from name
+                String name = part.getName();
+                int startIndex = name.indexOf('[') + 1;
+                int endIndex = name.indexOf(']');
+                int index = Integer.parseInt(name.substring(startIndex, endIndex));
+                
+                // Get corresponding title
+                String titleParam = "newImageTitle[" + index + "]";
+                String imageTitle = request.getParameter(titleParam);
+                
+                // Save the image file
+                String fileName = getSubmittedFileName(part);
+                String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
+                String uploadPath = request.getServletContext().getRealPath("/uploads/images/");
+                
+                File uploadDir = new File(uploadPath);
+                if (!uploadDir.exists()) uploadDir.mkdirs();
+                
+                part.write(uploadPath + File.separator + uniqueFileName);
+                
+                // Create and save new QuestionImage
+                QuestionImage newImage = new QuestionImage();
+                newImage.setImageTitle(imageTitle);
+                newImage.setQuestionImangeId(questionId);
+                imageDAO.insert(newImage);
+            }
+        }
+        
         // Update the question in the database
         boolean updated = questionDAO.update(question);
         
@@ -252,7 +307,7 @@ public class ManageQuestionController extends HttpServlet {
             int optionCount = 0;
             String optionValue;
             
-            while ((optionValue = request.getParameter("option" + (optionCount + 1))) != null) {
+            while ((optionValue = request.getParameter("option" + (optionCount + 1))) != null && !optionValue.trim().isEmpty()) {
                 QuestionAnswer answer = new QuestionAnswer();
                 answer.setContent(optionValue);
                 answer.setQuestionId(questionId);
@@ -265,6 +320,7 @@ public class ManageQuestionController extends HttpServlet {
                 
                 answerDAO.insert(answer);
                 optionCount++;
+                System.out.println("Added option: " + optionValue + ", isCorrect: " + isCorrect);
             }
         }
         

@@ -26,11 +26,35 @@ public class QuestionImageDAO extends DBContext implements GenericDAO<QuestionIm
 
     @Override
     public int insert(QuestionImage questionImage) {
+        String sql = "INSERT INTO QuestionImages (ImageTitle, QuestionImageID) VALUES (?, ?)";
+        try (PreparedStatement st = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            st.setString(1, questionImage.getImageTitle());
+            st.setInt(2, questionImage.getQuestionImangeId());
+            
+            int affectedRows = st.executeUpdate();
+            if (affectedRows > 0) {
+                try (ResultSet rs = st.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
         return 0;
     }
 
     @Override
     public boolean delete(QuestionImage questionImage) {
+        String sql = "DELETE FROM QuestionImages WHERE ImageID = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, questionImage.getImageId());
+            int affectedRows = st.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
         return false;
     }
 
@@ -63,11 +87,9 @@ public class QuestionImageDAO extends DBContext implements GenericDAO<QuestionIm
     
     // Add the missing method to get images by question ID
     public List<QuestionImage> getImageByQuestionId(int questionId) {
-        String sql = "SELECT [ImageID]\n" +
-                "      ,[ImageTitle]\n" +
-                "      ,[QuestionImageID]\n" +
-                "  FROM [dbo].[QuestionImages]\n" +
-                "  WHERE [QuestionImageID] = ? ";
+        String sql = "SELECT [ImageID], [ImageTitle], [QuestionImageID] " +
+                     "FROM [dbo].[QuestionImages] " +
+                     "WHERE [QuestionImageID] = ?";
         List<QuestionImage> questionImagesList = new ArrayList<>();
         try {
             PreparedStatement st = connection.prepareStatement(sql);
