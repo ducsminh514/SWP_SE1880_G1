@@ -12,9 +12,11 @@ import Module.Subject;
 
 import java.util.Collection;
 import java.util.List;
+
 import Module.QuestionAnswer;
 import Module.Question;
 import Module.QuestionImage;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
@@ -37,13 +39,12 @@ public class ManageQuestionController extends HttpServlet {
             searchByFilter(request, response);
         } else {
             switch (action) {
-                case "edit" :
-                    ShowEditForm(request,response);
+                case "edit":
+                    ShowEditForm(request, response);
                     break;
             }
         }
     }
-
 
 
     @Override
@@ -158,39 +159,47 @@ public class ManageQuestionController extends HttpServlet {
 
 
     private void ShowEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Nhan tham so
+        // Nhận tham số
         String questionIdStr = request.getParameter("questionId");
         int questionId = 0;
-        try{
+        try {
             questionId = Integer.parseInt(questionIdStr);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
         }
-        //Lay ra question can edit va cau hoi va hinh anh tuong ung
+
+        // Lấy ra question cần edit
         QuestionDAO questionDAO = new QuestionDAO();
         Question question = questionDAO.GetQuestionById(questionId);
 
-        //Lấy ra questionType
+        // Lấy ra hình ảnh của question
+        QuestionImageDAO questionImageDAO = new QuestionImageDAO();
+        List<QuestionImage> questionImages = questionImageDAO.getImageByQuestionId(questionId);
+
+        // Lấy ra questionType
         QuestionTypeDAO questionTypeDAO = new QuestionTypeDAO();
         List<QuestionType> questionTypes = questionTypeDAO.findAll();
 
-        //Lay ra subject
+        // Lấy ra subject
         SubjectDAO subjectDAO = new SubjectDAO();
         List<Subject> subjectList = subjectDAO.findAll();
 
-        //Lay ra Answer cua question
+        // Lấy ra Answer của question
         QuestionAnswerDAO questionAnswerDAO = new QuestionAnswerDAO();
         List<QuestionAnswer> questionAnswers = questionAnswerDAO.getAnswerByQuestionId(questionId);
+
         // Set Attribute
         request.setAttribute("question", question);
+        request.setAttribute("questionImages", questionImages);
         request.setAttribute("questionTypes", questionTypes);
         request.setAttribute("subjectList", subjectList);
         request.setAttribute("questionAnswers", questionAnswers);
-        //day ve JSP
+
+        // Gửi về JSP
         request.getRequestDispatcher("/admin/edit-question.jsp").forward(request, response);
     }
 
-    private void updateQuestion(HttpServletRequest request, HttpServletResponse response) 
+    private void updateQuestion(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String questionIdStr = request.getParameter("questionId");
         int questionId = Integer.parseInt(questionIdStr);
@@ -200,33 +209,33 @@ public class ManageQuestionController extends HttpServlet {
         int mark = Integer.parseInt(request.getParameter("mark"));
         int questionTypeId = Integer.parseInt(request.getParameter("questionType"));
         boolean isActive = Boolean.parseBoolean(request.getParameter("status"));
-        
+
         // Get the current question
         QuestionDAO questionDAO = new QuestionDAO();
         Question question = questionDAO.GetQuestionById(questionId);
-        
+
         // Update question properties
         question.setContent(content);
         question.setLevel(level);
-        
+
         // Set subject
         SubjectDAO subjectDAO = new SubjectDAO();
         Subject subject = subjectDAO.getSubjectById(subjectId);
         question.setSubject(subject);
-        
+
         question.setMark(mark);
-        
+
         // Set question type
         QuestionTypeDAO questionTypeDAO = new QuestionTypeDAO();
         QuestionType questionType = questionTypeDAO.getQuestionTypeById(questionTypeId);
         question.setQuestionType(questionType);
-        
+
         question.setStatus(isActive);
-        
+
         // Handle MP3 file if uploaded
         Part audioPart = request.getPart("audioFile");
         String deleteAudio = request.getParameter("deleteAudio");
-        
+
         if (deleteAudio != null && deleteAudio.equals("true")) {
             // Delete the existing audio file
             question.setMp3(null);
@@ -235,24 +244,24 @@ public class ManageQuestionController extends HttpServlet {
             String fileName = getSubmittedFileName(audioPart);
             String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
             String uploadPath = request.getServletContext().getRealPath("/uploads/audio/");
-            
+
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) uploadDir.mkdirs();
-            
+
             audioPart.write(uploadPath + File.separator + uniqueFileName);
             question.setMp3(uniqueFileName);
         }
-        
+
         // Handle existing images
         QuestionImageDAO imageDAO = new QuestionImageDAO();
         String[] imageIds = request.getParameterValues("imageId");
         String[] deleteFlags = request.getParameterValues("deleteImage");
-        
+
         if (imageIds != null && deleteFlags != null) {
             for (int i = 0; i < imageIds.length; i++) {
                 int imageId = Integer.parseInt(imageIds[i]);
                 boolean deleteFlag = Boolean.parseBoolean(deleteFlags[i]);
-                
+
                 if (deleteFlag) {
                     // Delete the image
                     QuestionImage image = new QuestionImage();
@@ -261,7 +270,7 @@ public class ManageQuestionController extends HttpServlet {
                 }
             }
         }
-        
+
         // Handle new images
         Collection<Part> imageParts = request.getParts();
         for (Part part : imageParts) {
@@ -271,21 +280,21 @@ public class ManageQuestionController extends HttpServlet {
                 int startIndex = name.indexOf('[') + 1;
                 int endIndex = name.indexOf(']');
                 int index = Integer.parseInt(name.substring(startIndex, endIndex));
-                
+
                 // Get corresponding title
                 String titleParam = "newImageTitle[" + index + "]";
                 String imageTitle = request.getParameter(titleParam);
-                
+
                 // Save the image file
                 String fileName = getSubmittedFileName(part);
                 String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
                 String uploadPath = request.getServletContext().getRealPath("/uploads/images/");
-                
+
                 File uploadDir = new File(uploadPath);
                 if (!uploadDir.exists()) uploadDir.mkdirs();
-                
+
                 part.write(uploadPath + File.separator + uniqueFileName);
-                
+
                 // Create and save new QuestionImage
                 QuestionImage newImage = new QuestionImage();
                 newImage.setImageTitle(imageTitle);
@@ -296,37 +305,41 @@ public class ManageQuestionController extends HttpServlet {
                 imageDAO.insert(newImage);
             }
         }
-        
+
         // Update the question in the database
         boolean updated = questionDAO.update(question);
-        
+
         // Handle question answers
         if (updated) {
             // First delete existing answers
             QuestionAnswerDAO answerDAO = new QuestionAnswerDAO();
             answerDAO.deleteAnswersByQuestionId(questionId);
-            
+
             // Then add new answers
             int optionCount = 0;
-            String optionValue;
-            
-            while ((optionValue = request.getParameter("option" + (optionCount + 1))) != null && !optionValue.trim().isEmpty()) {
+            String[] optionValue;
+
+            optionValue = request.getParameterValues("option");
+            for (int i = 0; i < optionValue.length; i++) {
+                if (optionValue[i] == null || optionValue[i].trim().isEmpty()) break;
                 QuestionAnswer answer = new QuestionAnswer();
-                answer.setContent(optionValue);
+                answer.setContent(optionValue[i]);
                 answer.setQuestionId(questionId);
-                answer.setSortOrder(optionCount + 1);
-                
-                String isCorrectParam = request.getParameter("isCorrect" + (optionCount + 1));
-                boolean isCorrect = isCorrectParam != null && 
-                                   (isCorrectParam.equals("on") || isCorrectParam.equals("true"));
+                answer.setSortOrder(i);
+
+                String isCorrectParam = request.getParameter("isCorrect" + (i + 1));
+                boolean isCorrect = isCorrectParam != null &&
+                        (isCorrectParam.equals("on") || isCorrectParam.equals("true"));
                 answer.setCorrect(isCorrect);
-                
+
                 answerDAO.insert(answer);
-                optionCount++;
+                // optionCount++;
                 System.out.println("Added option: " + optionValue + ", isCorrect: " + isCorrect);
             }
+
+
         }
-        
+
         // Redirect back to the question list
         response.sendRedirect(request.getContextPath() + "/manage-question");
     }

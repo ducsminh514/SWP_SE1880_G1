@@ -494,9 +494,9 @@
                                             <c:forEach items="${questionAnswers}" var="answer" varStatus="status">
                                                 <div class="option-row">
                                                     <div class="option-label">Option ${status.index + 1}</div>
-                                                    <input type="text" class="form-control option-input" name="option${status.index + 1}" value="${answer.content}">
+                                                    <input type="text" class="form-control option-input" name="option" value="${answer.content}">
                                                     <div class="option-correct">
-                                                        <input type="checkbox" id="isCorrect${status.index + 1}" name="isCorrect${status.index + 1}" ${answer.isCorrect ? 'checked' : ''}>
+                                                        <input type="checkbox" id="isCorrect${status.index + 1}" name="isCorrect${status.index + 1}" ${answer.correct ? 'checked' : ''}>
                                                         <label for="isCorrect${status.index + 1}" class="correct-label">Đáp án đúng</label>
                                                     </div>
                                                     <button type="button" class="delete-btn" title="Xóa tùy chọn">
@@ -538,17 +538,16 @@
             $('#optionCount').text($('.option-row').length);
         }
         
-        // Xử lý thêm option
+        // Thêm option mới
         $('#addOptionBtn').click(function() {
-            console.log('Add Option button clicked');
+            console.log('Add option button clicked');
             const optionsContainer = $('#optionsContainer');
-            const optionCount = optionsContainer.children().length + 1;
-            console.log('Current option count:', optionCount);
-
+            const optionCount = $('.option-row').length + 1;
+            
             const newOption = `
-                <div class="option-row" style="display: none;">
+                <div class="option-row">
                     <div class="option-label">Option ${optionCount}</div>
-                    <input type="text" class="form-control option-input" name="option${optionCount}" value="">
+                    <input type="text" class="form-control option-input" name="option" value="">
                     <div class="option-correct">
                         <input type="checkbox" id="isCorrect${optionCount}" name="isCorrect${optionCount}">
                         <label for="isCorrect${optionCount}" class="correct-label">Đáp án đúng</label>
@@ -559,10 +558,7 @@
                 </div>
             `;
             
-            const $newOption = $(newOption);
-            optionsContainer.append($newOption);
-            $newOption.slideDown(300);
-            updateOptionCount();
+            optionsContainer.append(newOption);
             console.log('New option added');
         });
 
@@ -571,43 +567,39 @@
             console.log('Delete button clicked');
             const optionRow = $(this).closest('.option-row');
             
-            optionRow.slideUp(300, function() {
-                $(this).remove();
-                
-                // Cập nhật lại số thứ tự các option
-                $('.option-row').each(function(index) {
-                    console.log('Updating option number:', index + 1);
-                    $(this).find('.option-label').text('Option ' + (index + 1));
-                    $(this).find('.option-input').attr('name', 'option' + (index + 1));
-                    $(this).find('input[type="checkbox"]').attr({
-                        'name': 'isCorrect' + (index + 1),
-                        'id': 'isCorrect' + (index + 1)
-                    });
-                    $(this).find('label').attr('for', 'isCorrect' + (index + 1));
+            optionRow.remove();
+            
+            // Cập nhật lại số thứ tự các option
+            $('.option-row').each(function(index) {
+                console.log('Updating option number:', index + 1);
+                $(this).find('.option-label').text('Option ' + (index + 1));
+                $(this).find('input[type="checkbox"]').attr({
+                    'name': 'isCorrect' + (index + 1),
+                    'id': 'isCorrect' + (index + 1)
                 });
-                
-                updateOptionCount();
+                $(this).find('label').attr('for', 'isCorrect' + (index + 1));
             });
+            
+            updateOptionCount();
         });
 
         // Xử lý thay đổi loại câu hỏi
-        $("#questionType").change(function() {
-            console.log('Question type changed to:', $(this).val());
+        $('#questionType').change(function() {
+            console.log('Question type changed');
             const selectedType = $(this).val();
-            const optionsContainer = $("#optionsContainer");
+            const optionsContainer = $('#optionsContainer');
             
-            // Clear existing options
+            // Xóa tất cả các option hiện tại
             optionsContainer.empty();
-            console.log('Cleared existing options');
-
-            // Add appropriate number of options based on question type
-            if (selectedType === "1") { // Multiple choice
+            
+            // Thêm các option mặc định dựa trên loại câu hỏi
+            if (selectedType === "1") { // Multiple Choice
                 console.log('Adding multiple choice options');
                 for (let i = 1; i <= 4; i++) {
                     const option = `
                         <div class="option-row">
                             <div class="option-label">Option ${i}</div>
-                            <input type="text" class="form-control option-input" name="option${i}" value="">
+                            <input type="text" class="form-control option-input" name="option" value="">
                             <div class="option-correct">
                                 <input type="checkbox" id="isCorrect${i}" name="isCorrect${i}">
                                 <label for="isCorrect${i}" class="correct-label">Đáp án đúng</label>
@@ -626,7 +618,7 @@
                     const option = `
                         <div class="option-row">
                             <div class="option-label">Option ${i}</div>
-                            <input type="text" class="form-control option-input" name="option${i}" value="${value}" readonly>
+                            <input type="text" class="form-control option-input" name="option" value="${value}" readonly>
                             <div class="option-correct">
                                 <input type="checkbox" id="isCorrect${i}" name="isCorrect${i}">
                                 <label for="isCorrect${i}" class="correct-label">Đáp án đúng</label>
@@ -639,8 +631,6 @@
                     optionsContainer.append(option);
                 }
             }
-            
-            updateOptionCount();
         });
 
         // Debug cho xử lý hình ảnh
