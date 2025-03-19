@@ -419,18 +419,33 @@
                                 <div class="col-12 mt-4">
                                     <h4>Hình ảnh hiện tại</h4>
                                     <div class="row">
-                                        <c:forEach items="${question.questionImage}" var="image" varStatus="status">
-                                            <div class="col-md-4">
-                                                <div class="image-item">
-                                                    <div class="image-preview">
-                                                        <img src="${pageContext.request.contextPath}/uploads/images/${image.imageTitle}" alt="Question Image" class="preview-image">
+                                        <c:forEach items="${questionImages}" var="image">
+                                            <div class="col-md-4 image-item">
+                                                <div class="card mb-3">
+                                                    <div class="card-body">
+                                                        <input type="hidden" name="imageId" value="${image.imageId}">
+                                                        <input type="hidden" class="delete-image-flag" name="deleteImage" value="false">
+                                                        
+                                                        <div class="image-preview">
+                                                            <c:choose>
+                                                                <c:when test="${not empty image.imageURL}">
+                                                                    <img src="${pageContext.request.contextPath}${image.imageURL}" class="preview-image" alt="${image.imageTitle}">
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <img src="${pageContext.request.contextPath}/uploads/images/${image.imageTitle}" class="preview-image" alt="${image.imageTitle}">
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </div>
+                                                        
+                                                        <div class="form-group">
+                                                            <label>Tiêu đề ảnh</label>
+                                                            <input type="text" class="form-control" value="${image.imageTitle}" readonly>
+                                                        </div>
+                                                        
+                                                        <button type="button" class="btn btn-danger delete-image">
+                                                            <i class="fa fa-trash"></i> Xóa ảnh
+                                                        </button>
                                                     </div>
-                                                    <input type="text" class="form-control mb-2" name="imageTitle[${status.index}]" value="${image.imageTitle}" placeholder="Tiêu đề ảnh">
-                                                    <input type="hidden" name="imageId" value="${image.imageId}">
-                                                    <input type="hidden" class="delete-image-flag" name="deleteImage" value="false">
-                                                    <button type="button" class="btn btn-danger delete-image">
-                                                        <i class="fa fa-times"></i>
-                                                    </button>
                                                 </div>
                                             </div>
                                         </c:forEach>

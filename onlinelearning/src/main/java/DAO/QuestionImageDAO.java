@@ -20,16 +20,21 @@ public class QuestionImageDAO extends DBContext implements GenericDAO<QuestionIm
         QuestionImage questionImage = new QuestionImage();
         questionImage.setImageId(resultSet.getInt("ImageID"));
         questionImage.setImageTitle(resultSet.getString("ImageTitle"));
+        String imageUrl = resultSet.getString("ImageURL");
+        if (imageUrl != null) {
+            questionImage.setImageURL(imageUrl);
+        }
         questionImage.setQuestionImangeId(resultSet.getInt("QuestionImageID"));
         return questionImage;
     }
 
     @Override
     public int insert(QuestionImage questionImage) {
-        String sql = "INSERT INTO QuestionImages (ImageTitle, QuestionImageID) VALUES (?, ?)";
+        String sql = "INSERT INTO QuestionImages (ImageTitle, ImageURL, QuestionImageID) VALUES (?, ?, ?)";
         try (PreparedStatement st = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             st.setString(1, questionImage.getImageTitle());
-            st.setInt(2, questionImage.getQuestionImangeId());
+            st.setString(2, questionImage.getImageURL());
+            st.setInt(3, questionImage.getQuestionImangeId());
             
             int affectedRows = st.executeUpdate();
             if (affectedRows > 0) {
@@ -85,9 +90,8 @@ public class QuestionImageDAO extends DBContext implements GenericDAO<QuestionIm
         return questionImagesList;
     }
     
-    // Add the missing method to get images by question ID
     public List<QuestionImage> getImageByQuestionId(int questionId) {
-        String sql = "SELECT [ImageID], [ImageTitle], [QuestionImageID] " +
+        String sql = "SELECT [ImageID], [ImageTitle], [ImageURL], [QuestionImageID] " +
                      "FROM [dbo].[QuestionImages] " +
                      "WHERE [QuestionImageID] = ?";
         List<QuestionImage> questionImagesList = new ArrayList<>();

@@ -3,6 +3,7 @@ package Module;
 public class QuestionImage {
     private int imageId;
     private String imageTitle;
+    private String imageURL;
     private int questionImangeId;
 
     public QuestionImage() {
@@ -36,5 +37,13 @@ public class QuestionImage {
 
     public void setQuestionImangeId(int questionImangeId) {
         this.questionImangeId = questionImangeId;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 }

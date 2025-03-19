@@ -289,6 +289,9 @@ public class ManageQuestionController extends HttpServlet {
                 // Create and save new QuestionImage
                 QuestionImage newImage = new QuestionImage();
                 newImage.setImageTitle(imageTitle);
+                // Lưu đường dẫn tương đối đến file ảnh
+                String relativePath = "/uploads/images/" + uniqueFileName;
+                newImage.setImageURL(relativePath);
                 newImage.setQuestionImangeId(questionId);
                 imageDAO.insert(newImage);
             }
