@@ -40,13 +40,6 @@
 <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.2/js/bootstrap-select.min.js"></script>--%>
 
 <!-- Khởi tạo Bootstrap Select -->
-<script>
-    $(document).ready(function() {
-        $('.selectpicker').selectpicker({
-            style: 'btn-default',
-            size: 4
-        });
-    });
-</script>
+
 
 
