@@ -48,7 +48,7 @@ public class QuestionTypeDAO extends DBContext implements GenericDAO<QuestionTyp
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             if(rs.next()){
-                questionType.setQuestionTypeId(rs.getInt("QuestionTypeId"));
+                questionType.setQuestionTypeId(rs.getInt("QuestionTypeID"));
                 questionType.setQuestionTypeName(rs.getString("QuestionTypeName"));
                 return questionType;
             }
@@ -58,4 +58,21 @@ public class QuestionTypeDAO extends DBContext implements GenericDAO<QuestionTyp
         return null;
     }
 
+    public static void main(String[] args) {
+        // Giả sử bạn đã thiết lập kết nối với cơ sở dữ liệu
+
+
+        QuestionTypeDAO questionTypeDao = new QuestionTypeDAO();  // Giả sử bạn đã có lớp QuestionTypeDao
+
+        // Gọi phương thức getQuestionTypeById với id là 1
+        QuestionType questionType = questionTypeDao.getQuestionTypeById(1);
+
+        // Kiểm tra kết quả trả về
+        if (questionType != null) {
+            System.out.println("Question Type ID: " + questionType.getQuestionTypeId());
+            System.out.println("Question Type Name: " + questionType.getQuestionTypeName());
+        } else {
+            System.out.println("Không tìm thấy Question Type với ID 1.");
+        }
+    }
 }

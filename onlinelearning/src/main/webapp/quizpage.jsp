@@ -82,25 +82,23 @@
 
 <div class="container">
     <div class="question-box">
-     <form action="quiz" method="get">
+     <form action="quiz" method="post"id="quizForm">
      <h5>${requestScope.error}<h5>
-
+<input type="hidden" name="id" value="${requestScope.id}">
      <c:forEach items="${requestScope.listQuestion}" var="list">
         <div class="question-title">Question: ${list.content}</div>
-            <input type="hidden" name="id" value="${requestScope.id}">
             <div class="answer-box">
-
+        <c:if test="${not empty list.questionImage}">
+            <img style="width: 200px; height: 200px" src="${list.questionImage}" />
+        </c:if>
                     <c:if test="${list.questionType.questionTypeId == 1}">
-                        <li><img style="width: 756px; height: 756px" src="${list.questionImage.imageTitle}" /></li>
                         <c:forEach var="ans" items="${requestScope.listans}">
                             <c:if test="${list.questionId ==ans.questionId}">
                                 <label>
-                                <input type="radio" name="radio" value="${ans.answerId}"
-                                > ${ans.content}
+                                <input type="radio" name="radio" value="${ans.answerId}"> ${ans.content}
                                 </label>
                             </c:if>
                         </c:forEach>
-
                     </c:if>
                      <c:if test="${list.questionType.questionTypeId == 2}">
                         <label>Answer: <input type="text" name="answertext"/></label>
@@ -114,9 +112,6 @@
 
               </div>
         </c:forEach>
-
-
-
             <button id="finishButton" type="submit" style="margin-top:15px;background-color:red;color:white;border:none;padding:10px;">
                 Finish attempt
             </button>
@@ -127,9 +122,8 @@
         <strong>Quiz Navigation</strong><br>
          <ul class="pagination-container">
              <c:forEach begin="1" end="${requestScope.num}" var="i">
-                 <li class="page-item ${i == requestScope.currentPage ? 'active' : ''}">
-                     <a class="page-link m-lg-1"
-                        href="quiz?page=${i}&amp;id=${requestScope.id}">
+                 <li class="page-item">
+                     <a class="page-link m-lg-1">
                          ${i}
                      </a>
                  </li>
@@ -137,7 +131,7 @@
          </ul>
 
 
-        <p>Time left: <strong id="time">${requestScope.lessonQuiz.TimeLimit}</strong></p>
+        <p>Time left: <strong id="time"></strong></p>
     </div>
 </div>
 <br>
@@ -146,29 +140,38 @@
 <br>
 <br>
 <jsp:include page="footer.jsp"/>
+ <script type="text/javascript">
+         window.onload = function() {
+             // Lấy giá trị TimeLimit từ request (giả sử giá trị là 5 phút)
+             var timeLimitInMinutes = ${lessonQuiz.timeLimit};  // Ví dụ: 5 phút
+             var timeLimitInSeconds = timeLimitInMinutes * 60; // Chuyển đổi sang giây
 
-<script type="text/javascript">
-        // Lấy giá trị TimeLimit từ JSP (giây)
-        var timeLimit = ${requestScope.lessonQuiz.TimeLimit};
-        var countdownElement = document.getElementById("time");
+             // Hiển thị TimeLimit ban đầu (chuyển đổi từ giây sang phút và giây)
+             function formatTime(seconds) {
+                 var minutes = Math.floor(seconds / 60);
+                 var remainingSeconds = seconds % 60;
+                 return minutes + "m " + remainingSeconds + "s";
+             }
 
-        // Hàm đếm ngược
-        function startCountdown() {
-            var timer = setInterval(function() {
-                if (timeLimit <= 0) {
-                    clearInterval(timer); // Dừng khi hết thời gian
-                    alert("Time's up! Your quiz will be submitted now."); // Cảnh báo khi hết giờ
-                    document.getElementById("finishButton").click();  // Tự động kích hoạt nút submit
-                } else {
-                    countdownElement.textContent = timeLimit + " seconds"; // Cập nhật đồng hồ đếm ngược
-                    timeLimit--; // Giảm thời gian
-                }
-            }, 1000); // Cập nhật mỗi giây
-        }
+             document.getElementById("time").innerText = formatTime(timeLimitInSeconds);
 
-        // Bắt đầu đếm ngược khi trang được tải
-        startCountdown();
-    </script>
+             // Đếm ngược
+             var countdown = setInterval(function() {
+                 timeLimitInSeconds--; // Giảm giá trị thời gian đi 1 giây
+                 document.getElementById("time").innerText = formatTime(timeLimitInSeconds);
+
+                 // Nếu thời gian hết, dừng đếm ngược và nộp bài
+                 if (timeLimitInSeconds <= 0) {
+                     clearInterval(countdown);
+                     alert("Time's up! Your quiz will be submitted.");
+
+                     // Gửi form tự động khi hết thời gian
+                     document.getElementById("quizForm").submit();  // Gửi form nộp bài
+                 }
+             }, 1000);  // Mỗi giây (1000ms) đếm ngược 1 lần
+         };
+     </script>
+
 <script>
   function previewImages() {
     const preview = document.getElementById('imagePreview');

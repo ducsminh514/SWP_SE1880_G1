@@ -50,6 +50,26 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
 
     @Override
     public boolean update(Question question) {
+        String sql = "UPDATE Question SET "
+                + "Content = ?, Level = ?, SubjectId = ?, Mark = ?, "
+                + "QuestionTypeID = ?, IsActive = ?, UpdateAt = GETDATE(), Mp3 = ? "
+                + "WHERE QuestionID = ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, question.getContent());
+            st.setInt(2, question.getLevel());
+            st.setInt(3, question.getSubject().getSubjectId());
+            st.setInt(4, question.getMark());
+            st.setInt(5, question.getQuestionType().getQuestionTypeId());
+            st.setBoolean(6, question.isStatus());
+            st.setString(7, question.getMp3());
+            st.setInt(8, question.getQuestionId());
+
+            int affectedRows = st.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
         return false;
     }
 
@@ -162,7 +182,7 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
 
 
     public int getQuestionCountByQuizId(int quizId) {
-        String sql = "SELECT COUNT(*) AS NumberOfQuestions FROM QuizQuestions WHERE QuizId = ?";
+        String sql = "SELECT COUNT(*) AS NumberOfQuestions FROM QuizQuestions WHERE QuizQuestionID = ?";
         int questionCount = 0;
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -178,25 +198,22 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         }
         return questionCount;
     }
-    public ArrayList<Question>getQuestion(int quizId, int start){
+    public ArrayList<Question>getQuestion(int quizId){
         ArrayList<Question> listQuestion = new ArrayList<>();
         String sql = "SELECT q.*, qq.SortOrder FROM Question q "
                 + "JOIN QuizQuestions qq ON q.QuestionId = qq.QuestionId "
                 + "WHERE qq.QuizQuestionID = ? "
-                + "ORDER BY qq.SortOrder ASC OFFSET ? ROWS FETCH NEXT 1 ROWS ONLY";
+                ;
         QuestionTypeDAO qtd= new QuestionTypeDAO();
         try{
             QuestionDAO qd= new QuestionDAO();
             PreparedStatement pre = connection.prepareStatement(sql);
-            int index =1 ;
-            if(start>=0){
-                pre.setInt(index++,quizId);
-                pre.setInt(index++, start);
-            }
+
+                pre.setInt(1,quizId);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 Question c= new Question();
-                c.setQuestionId(rs.getInt("Id"));
+                c.setQuestionId(rs.getInt("QuestionID"));
                 c.setContent(rs.getString("Content"));
                 c.setMp3(rs.getString("Mp3"));
                 c.setQuestionImage(qd.listImage(rs.getInt("QuestionImageID")));
@@ -264,15 +281,7 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         }
         return list;
     }
-    public static void main(String[] args) {
-        QuestionDAO questionDAO = new QuestionDAO();
-        int quizId = 1;
-        int start = 1;
-        ArrayList<QuestionImage> questions = questionDAO.listImage(quizId);
 
-
-
-    }
 
     public Question getQuestionById(int id){
         String sql = "select * from Questions where Id=?";
@@ -341,10 +350,8 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         }catch (SQLException e) { e.printStackTrace(); }
     }
     public int findQuizAttendIDbyQuizQuestionID(int id){
-        String sql = "SELECT qa.QuizAttendID FROM QuizAttend qa"
-                +"JOIN LessonQuiz lq ON qa.LessonQuizID = lq.LessonQuizID"
-                +"JOIN QuizQuestions qq ON lq.LessonQuizID = qq.LessonQuizID"
-                +"WHERE qq.QuizQuestionID =?";
+        String sql = "SELECT qa.QuizAttendID FROM QuizAttend qa JOIN LessonQuiz lq ON qa.LessonQuizID = lq.LessonQuizID JOIN QuizQuestions qq ON lq.LessonQuizID = qq.LessonQuizID WHERE qq.QuizQuestionID =?"
+               ;
         try{
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1,id);
@@ -359,10 +366,10 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
 
         return 0;
     }
+
     public LessonQuiz takeLessonQuizByQuizQuestionID(int id){
-        String sql = "Select lq.* from LessonQuiz lq"
-                +"Join QuizQuestions qq on qq.LessonQuizID=lq.LessonQuizID"
-                +"where qq.QuizQuestionID=?";
+        String sql = "Select lq.* from LessonQuiz lq Join QuizQuestions qq on qq.LessonQuizID=lq.LessonQuizID where qq.QuizQuestionID=?"
+               ;
         try{
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -382,8 +389,7 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         return null;
     }
     public void saveUserAnswers(int userId, int quizId, HashMap<Integer, Integer> answers) {
-        String sqlQuizResult = "INSERT INTO QuizResults (UserID, QuizId, QuizDate, NumberOfQuestion, NumberOfCorrect, Mark) "
-                + "VALUES (?, ?, NOW(), ?, 0, 0)";
+        String sqlQuizResult = "INSERT INTO QuizResults (UserID, QuizId, QuizDate, NumberOfQuestion, NumberOfCorrect, Mark) VALUES (?, ?, NOW(), ?, 0, 0)";
         String sqlQuizDetail = "INSERT INTO QuizResultDetails (QuizResultId, QuestionId, ChooseOptionId) VALUES (?, ?, ?)";
         String sqlCorrectCheck = "SELECT IsCorrect FROM Options WHERE Id = ?";
 
@@ -457,8 +463,8 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         }
     }
     public int GetMarkfromQuestion(int id){
-        String sql = "select q.Mark from Question q"
-                +"where q.QuestionID=?";
+        String sql = "select q.Mark from Question q where q.QuestionID=?"
+                ;
         try{
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -471,6 +477,24 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         }
         return 0;
     }
+    public static void main(String[] args) {
+        QuestionDAO questionDAO = new QuestionDAO();
+
+        int quizId = 1;  // ID của quiz bạn muốn truy vấn
+        int a= questionDAO.getQuestionCountByQuizId(quizId);
+        LessonQuiz lessonQuiz = questionDAO.takeLessonQuizByQuizQuestionID(1);  // Giả sử id là 1
+
+        // Hiển thị kết quả
+        if (lessonQuiz != null) {
+            System.out.println("Lesson Quiz ID: " + lessonQuiz.getLessonQuizID());
+            System.out.println("Time Limit: " + lessonQuiz.getTimeLimit());
+            System.out.println("Image URL: " + lessonQuiz.getImageUrl());
+            System.out.println("Attempt Allowed: " + lessonQuiz.getAttemptAllowed());
+            System.out.println("MP3 URL: " + lessonQuiz.getMp3Url());
+        } else {
+            System.out.println("No LessonQuiz found for the given QuizQuestionID.");
+        }
+    }
     public void updateTotalScore(int quizAttendID, int totalScore) {
         String sql = "UPDATE QuizAttend SET Score = ? WHERE QuizAttendID = ?";
         try  {
@@ -482,6 +506,7 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
             e.printStackTrace();
         }
     }
+
 
 
 

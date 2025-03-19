@@ -33,34 +33,18 @@ public class QuizServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id_raw = request.getParameter("id");
-        String Page = request.getParameter("page");
         int quizid = 0;
         ArrayList<Question> listQuestion = new ArrayList<>();
         ArrayList<QuestionAnswer> listans = new ArrayList<>();
         QuestionDAO qd = new QuestionDAO();
 
-
         try {
             quizid = Integer.parseInt(id_raw);
             int totalQuestions = qd.getQuestionCountByQuizId(quizid);
             request.setAttribute("num", totalQuestions);
-
-            int page = 0;
-            if (Page == null || Page.isEmpty()) {
-                listQuestion = qd.getQuestion(quizid, 0);
-                request.setAttribute("currentPage", 1);
-            } else {
-                try {
-                    page = Integer.parseInt(Page);
-                    listQuestion = qd.getQuestion(quizid, page - 1);
-                } catch (NumberFormatException e) {
-                    System.out.println(e);
-                }
-                request.setAttribute("currentPage", page);
-            }
             LessonQuiz lessonQuiz= qd.takeLessonQuizByQuizQuestionID(quizid);
             request.setAttribute("lessonQuiz",lessonQuiz);
-
+            listQuestion= qd.getQuestion(quizid);
             request.setAttribute("listQuestion", listQuestion);
             listans = qd.getAnswer(quizid);
             request.setAttribute("listans", listans);
@@ -127,8 +111,7 @@ public class QuizServlet extends HttpServlet {
                     if (!uploadDirFile.exists()) {
                         uploadDirFile.mkdir();
                     }
-
-                    // Lưu hình ảnh
+// Lưu hình ảnh
                     File file = new File(uploadDir + fileName);
                     try (InputStream inputStream = imagePart.getInputStream();
                          OutputStream outputStream = new FileOutputStream(file)) {
@@ -153,8 +136,6 @@ public class QuizServlet extends HttpServlet {
         qd.updateTotalScore(quizAttendID, totalScore);
         request.setAttribute("score", totalScore);
         request.getRequestDispatcher("result.jsp").forward(request, response);
-
-
     }
 
 
