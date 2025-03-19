@@ -471,6 +471,17 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         }
         return 0;
     }
+    public void updateTotalScore(int quizAttendID, int totalScore) {
+        String sql = "UPDATE QuizAttend SET Score = ? WHERE QuizAttendID = ?";
+        try  {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, totalScore);  // Cập nhật điểm số
+            st.setInt(2, quizAttendID);  // Cập nhật cho QuizAttendID cụ thể
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

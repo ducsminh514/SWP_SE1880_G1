@@ -145,9 +145,12 @@ public class QuizServlet extends HttpServlet {
                     imageDetail.setTitle(file.getAbsolutePath());  // Lưu đường dẫn của ảnh
                     resultImages.add(imageDetail);
                     qd.saveQuizResultDetailImages(resultImages);
+
                 }
             }
         }
+        int quizAttendID =qd.findQuizAttendIDbyQuizQuestionID(quizId);
+        qd.updateTotalScore(quizAttendID, totalScore);
         request.setAttribute("score", totalScore);
         request.getRequestDispatcher("result.jsp").forward(request, response);
 
