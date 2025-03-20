@@ -82,36 +82,48 @@
 
 <div class="container">
     <div class="question-box">
-     <form action="quiz" method="post"id="quizForm">
-     <h5>${requestScope.error}<h5>
-<input type="hidden" name="id" value="${requestScope.id}">
-     <c:forEach items="${requestScope.listQuestion}" var="list">
-        <div class="question-title">Question: ${list.content}</div>
-            <div class="answer-box">
-        <c:if test="${not empty list.questionImage}">
-            <img style="width: 200px; height: 200px" src="${list.questionImage}" />
-        </c:if>
-                    <c:if test="${list.questionType.questionTypeId == 1}">
-                        <c:forEach var="ans" items="${requestScope.listans}">
-                            <c:if test="${list.questionId ==ans.questionId}">
-                                <label>
-                                <input type="radio" name="radio" value="${ans.answerId}"> ${ans.content}
-                                </label>
-                            </c:if>
-                        </c:forEach>
-                    </c:if>
-                     <c:if test="${list.questionType.questionTypeId == 2}">
-                        <label>Answer: <input type="text" name="answertext"/></label>
-                       <label>Images:
-                           <input type="file" name="images_${list.questionId}" multiple accept="image/*" onchange="previewImages()"/>
-                       </label>
-                         <br>
-                         <div id="imagePreview"></div>
-                         <br>
-                   </c:if>
+     <form action="quiz" method="post"id="quizForm" enctype="multipart/form-data">
+     <h5>${requestScope.error}</h5>
+     <p>Quiz ID: ${requestScope.id}</p>
+     <input type="hidden" name="id" value="${requestScope.id}">
+     <c:forEach items="${requestScope.listQuestion}" var="list" varStatus="status">
 
-              </div>
-        </c:forEach>
+         <div class="question-title">Question ${status.index + 1}: ${list.content}</div>
+         <div class="answer-box">
+             <c:if test="${not empty list.questionImage}">
+                 <img style="width: 200px; height: 200px" src="${list.questionImage}" />
+             </c:if>
+               <c:if test="${not empty list.mp3}">
+                         <audio controls>
+                             <source src="${list.mp3}" type="audio/mpeg">
+                             Your browser does not support the audio element.
+                         </audio>
+               </c:if>
+             <!-- Kiểm tra loại câu hỏi là kiểu radio (multiple choice) -->
+             <c:if test="${list.questionType.questionTypeId == 1}">
+                 <c:forEach var="ans" items="${requestScope.listans}">
+                     <c:if test="${list.questionId == ans.questionId}">
+                         <label>
+                             <input type="radio" name="radio_${list.questionId}" value="${ans.answerId}"> ${ans.content}
+                         </label>
+                     </c:if>
+                 </c:forEach>
+             </c:if>
+
+             <!-- Kiểm tra loại câu hỏi là kiểu text input -->
+             <c:if test="${list.questionType.questionTypeId == 2}">
+                 <label>Answer: <input type="text" name="answertext_${list.questionId}"/></label>
+                 <label>Images:
+                     <input type="file" name="images_${list.questionId}" multiple accept="image/*" onchange="previewImages()"/>
+                 </label>
+                 <br>
+                 <div id="imagePreview"></div>
+                 <br>
+             </c:if>
+         </div>
+
+     </c:forEach>
+
             <button id="finishButton" type="submit" style="margin-top:15px;background-color:red;color:white;border:none;padding:10px;">
                 Finish attempt
             </button>

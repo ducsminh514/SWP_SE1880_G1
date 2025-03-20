@@ -182,7 +182,7 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
 
 
     public int getQuestionCountByQuizId(int quizId) {
-        String sql = "SELECT COUNT(*) AS NumberOfQuestions FROM QuizQuestions WHERE QuizQuestionID = ?";
+        String sql = "SELECT COUNT(*) AS NumberOfQuestions FROM QuizQuestions WHERE LessonQuizID = ?";
         int questionCount = 0;
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -202,7 +202,8 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         ArrayList<Question> listQuestion = new ArrayList<>();
         String sql = "SELECT q.*, qq.SortOrder FROM Question q "
                 + "JOIN QuizQuestions qq ON q.QuestionId = qq.QuestionId "
-                + "WHERE qq.QuizQuestionID = ? "
+                +"JOIN LessonQuiz lq ON qq.LessonQuizID = lq.LessonQuizID "
+                + "WHERE lq.LessonQuizID = ? "
                 ;
         QuestionTypeDAO qtd= new QuestionTypeDAO();
         try{
@@ -254,7 +255,8 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         String sql = "SELECT a.* FROM QuestionAnswer a "
                 + "JOIN Question q ON q.QuestionId = a.QuestionId "
                 + "JOIN QuizQuestions qq ON qq.QuestionId = q.QuestionId "
-                + "WHERE qq.QuizQuestionID = ? "
+                +"JOIN LessonQuiz lq ON qq.LessonQuizID = lq.LessonQuizID "
+                + "WHERE lq.LessonQuizID = ? "
                 + "ORDER BY a.SortOrder ASC";
 
         try (PreparedStatement pre = connection.prepareStatement(sql)) {
@@ -367,8 +369,8 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         return 0;
     }
 
-    public LessonQuiz takeLessonQuizByQuizQuestionID(int id){
-        String sql = "Select lq.* from LessonQuiz lq Join QuizQuestions qq on qq.LessonQuizID=lq.LessonQuizID where qq.QuizQuestionID=?"
+    public LessonQuiz takeLessonQuizByID(int id){
+        String sql = "Select lq.* from LessonQuiz lq where lq.LessonQuizID=?"
                ;
         try{
             PreparedStatement st = connection.prepareStatement(sql);
@@ -477,24 +479,24 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         }
         return 0;
     }
-    public static void main(String[] args) {
-        QuestionDAO questionDAO = new QuestionDAO();
-
-        int quizId = 1;  // ID của quiz bạn muốn truy vấn
-        int a= questionDAO.getQuestionCountByQuizId(quizId);
-        LessonQuiz lessonQuiz = questionDAO.takeLessonQuizByQuizQuestionID(1);  // Giả sử id là 1
-
-        // Hiển thị kết quả
-        if (lessonQuiz != null) {
-            System.out.println("Lesson Quiz ID: " + lessonQuiz.getLessonQuizID());
-            System.out.println("Time Limit: " + lessonQuiz.getTimeLimit());
-            System.out.println("Image URL: " + lessonQuiz.getImageUrl());
-            System.out.println("Attempt Allowed: " + lessonQuiz.getAttemptAllowed());
-            System.out.println("MP3 URL: " + lessonQuiz.getMp3Url());
-        } else {
-            System.out.println("No LessonQuiz found for the given QuizQuestionID.");
-        }
-    }
+//    public static void main(String[] args) {
+//        QuestionDAO questionDAO = new QuestionDAO();
+//
+//        int quizId = 1;  // ID của quiz bạn muốn truy vấn
+//        int a= questionDAO.getQuestionCountByQuizId(quizId);
+//        LessonQuiz lessonQuiz = questionDAO.takeLessonQuizByQuizQuestionID(1);  // Giả sử id là 1
+//
+//        // Hiển thị kết quả
+//        if (lessonQuiz != null) {
+//            System.out.println("Lesson Quiz ID: " + lessonQuiz.getLessonQuizID());
+//            System.out.println("Time Limit: " + lessonQuiz.getTimeLimit());
+//            System.out.println("Image URL: " + lessonQuiz.getImageUrl());
+//            System.out.println("Attempt Allowed: " + lessonQuiz.getAttemptAllowed());
+//            System.out.println("MP3 URL: " + lessonQuiz.getMp3Url());
+//        } else {
+//            System.out.println("No LessonQuiz found for the given QuizQuestionID.");
+//        }
+//    }
     public void updateTotalScore(int quizAttendID, int totalScore) {
         String sql = "UPDATE QuizAttend SET Score = ? WHERE QuizAttendID = ?";
         try  {
