@@ -185,39 +185,28 @@
      </script>
 
 <script>
-  function previewImages() {
+function previewImages() {
     const preview = document.getElementById('imagePreview');
     preview.innerHTML = ''; // Xóa các hình ảnh đã hiển thị trước đó
 
     const files = document.querySelector('input[type="file"]').files;
     for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const reader = new FileReader();
+        const file = files[i];
+        const reader = new FileReader();
 
-      reader.onload = function(e) {
-        // Tạo phần tử chứa hình ảnh và ô nhập chú thích
-        const container = document.createElement('div');
-        container.style.marginBottom = '20px';
+        reader.onload = function(e) {
+            // Tạo phần tử chứa hình ảnh
+            const img = document.createElement('img');
+            img.src = e.target.result;  // Dữ liệu hình ảnh từ FileReader
+            img.style.maxWidth = '200px'; // Giới hạn kích thước hình ảnh
+            img.style.marginRight = '10px'; // Thêm khoảng cách giữa các hình ảnh
 
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        img.style.maxWidth = '200px'; // Giới hạn kích thước hình ảnh
-        img.style.marginRight = '10px'; // Thêm khoảng cách giữa hình ảnh và chú thích
+            preview.appendChild(img); // Thêm hình ảnh vào div preview
+        }
 
-        const captionInput = document.createElement('input');
-        captionInput.type = 'text';
-        captionInput.placeholder = 'Enter caption for this ';
-        captionInput.name = 'captions[]'; // Gửi các chú thích dưới dạng mảng
-
-        container.appendChild(img);
-        container.appendChild(captionInput);
-
-        preview.appendChild(container); // Thêm phần tử vào div preview
-      }
-
-      reader.readAsDataURL(file);
+        reader.readAsDataURL(file);  // Đọc tệp hình ảnh và chuyển thành dữ liệu URL
     }
-  }
+}
 </script>
 </body>
 </html>
