@@ -414,7 +414,7 @@ CREATE TABLE [dbo].[QuizQuestions](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
-/****** Object:  Table [dbo].[QuizResultDetail]    Script Date: 3/20/2025 12:47:27 AM ******/
+/****** Object:  Table [dbo].[QuizResultDetailDAO]    Script Date: 3/20/2025 12:47:27 AM ******/
     SET ANSI_NULLS ON
     GO
     SET QUOTED_IDENTIFIER ON
@@ -1551,4 +1551,57 @@ ALTER TABLE [dbo].[Marketing]  WITH CHECK ADD CHECK  (([ExperienceYears]>=(0)))
     USE [master]
     GO
 ALTER DATABASE [SWP52] SET  READ_WRITE
+
+-- Thêm dữ liệu cho bảng Lessons
+SET IDENTITY_INSERT [dbo].[Lessons] ON
+GO
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) 
+VALUES
+    (1, 1, N'Basic Vocabulary - Nouns', N'Học các danh từ cơ bản dùng hàng ngày', 60, 1, 1, CAST(N'2025-03-03T00:00:00.000' AS DateTime), N'Video', NULL),
+    (2, 1, N'Basic Vocabulary - Verbs', N'Các động từ thường gặp trong giao tiếp', 50, 2, 1, CAST(N'2025-03-03T00:00:00.000' AS DateTime), N'Text', NULL),
+    (3, 2, N'Present Simple Tense', N'Cấu trúc và cách sử dụng thì hiện tại đơn', 45, 1, 1, CAST(N'2025-03-03T00:00:00.000' AS DateTime), N'Video', NULL),
+    (4, 2, N'Past Simple Tense', N'Cách sử dụng thì quá khứ đơn', 45, 2, 1, CAST(N'2025-03-03T00:00:00.000' AS DateTime), N'Text', NULL),
+    (5, 3, N'English Vowel Sounds', N'Luyện phát âm nguyên âm tiếng Anh', 30, 1, 1, CAST(N'2025-03-03T00:00:00.000' AS DateTime), N'Audio', NULL),
+    (6, 4, N'Basic Grammar Rules', N'Học các quy tắc ngữ pháp cơ bản', 55, 1, 1, CAST(N'2025-03-03T00:00:00.000' AS DateTime), N'Video', NULL)
+GO
+SET IDENTITY_INSERT [dbo].[Lessons] OFF
+GO
+
+-- Thêm dữ liệu cho bảng LessonQuiz
+SET IDENTITY_INSERT [dbo].[LessonQuiz] ON
+GO
+INSERT [dbo].[LessonQuiz] ([LessonQuizID], [LessonID], [PassPercentage], [TimeLimit], [AttemptAllowed], [Status]) VALUES 
+    (1, 1, 70, 30, 3, 1),
+    (2, 3, 75, 25, 2, 1),
+    (3, 5, 80, 20, 2, 1),
+    (4, 6, 65, 40, 3, 1)
+GO
+SET IDENTITY_INSERT [dbo].[LessonQuiz] OFF
+GO
+
+-- Dữ liệu cho bảng QuizQuestions (sử dụng QuestionID từ 3 đến 12 đã có sẵn trong DB)
+INSERT [dbo].[QuizQuestions] ([LessonQuizID], [QuestionID], [SortOrder]) VALUES
+    (1, 3, 1),
+    (1, 4, 2),
+    (1, 5, 3),
+    (2, 6, 1),
+    (2, 7, 2),
+    (2, 8, 3),
+    (3, 9, 1),
+    (3, 10, 2),
+    (4, 11, 1),
+    (4, 12, 2)
+GO
+
+-- Dữ liệu cho bảng QuizAttend
+SET IDENTITY_INSERT [dbo].[QuizAttend] ON
+GO
+INSERT [dbo].[QuizAttend] ([QuizAttendID], [UserID], [LessonQuizID], [Score], [Passed], [StartTime], [EndTime]) VALUES
+    (1, 2, 1, 85.5, 1, CAST(N'2025-03-05T09:00:00.000' AS DateTime), CAST(N'2025-03-05T09:25:00.000' AS DateTime)),
+    (2, 3, 1, 72.0, 1, CAST(N'2025-03-05T10:00:00.000' AS DateTime), CAST(N'2025-03-05T10:28:00.000' AS DateTime)),
+    (3, 2, 2, 68.0, 0, CAST(N'2025-03-05T11:00:00.000' AS DateTime), CAST(N'2025-03-05T11:18:00.000' AS DateTime)),
+    (4, 3, 3, 90.0, 1, CAST(N'2025-03-06T14:00:00.000' AS DateTime), CAST(N'2025-03-06T14:15:00.000' AS DateTime)),
+    (5, 2, 4, 75.0, 1, CAST(N'2025-03-07T16:30:00.000' AS DateTime), CAST(N'2025-03-07T17:05:00.000' AS DateTime))
+GO
+SET IDENTITY_INSERT [dbo].[QuizAttend] OFF
 GO
