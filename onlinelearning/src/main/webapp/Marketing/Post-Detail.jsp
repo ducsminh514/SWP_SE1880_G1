@@ -204,7 +204,15 @@
                     <label for="title">Tiêu đề:</label>
                     <input type="text" class="form-control" id="title" name="title" value="${post.title}" required>
                 </div>
-
+         <div class="form-group">
+               <label for="status" class="mr-2">Trạng thái:</label>
+               <div class="custom-control custom-switch">
+                   <!-- Nếu post.status là true (1), checkbox sẽ được chọn -->
+                   <input type="checkbox" class="custom-control-input" id="status" name="status"
+                          ${post.status ? 'checked' : ''}>
+                   <label class="custom-control-label" for="status">Bật/Tắt</label>
+               </div>
+           </div>
                 <!-- Danh mục -->
                 <div class="form-group">
                     <label for="category">Danh mục:</label>

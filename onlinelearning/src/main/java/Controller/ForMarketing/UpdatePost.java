@@ -1,8 +1,6 @@
 package Controller.ForMarketing;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -67,6 +65,8 @@ public class UpdatePost extends HttpServlet {
         } catch (NumberFormatException e) {
             System.out.println(e);
         }
+        String statusStr = request.getParameter("status") ;
+        boolean status = statusStr != null && statusStr.equals("on");
         Part thumbnailPart = request.getPart("thumbnail");
         String thumbnailFileName = null;
         if (thumbnailPart != null && thumbnailPart.getSize() > 0) {
@@ -75,7 +75,7 @@ public class UpdatePost extends HttpServlet {
             thumbnailFileName = request.getParameter("existingThumbnail");
         }
         PostDAO pDAO = new PostDAO();
-        pDAO.update(categoryId, 1, title, thumbnailFileName, postId);
+        pDAO.update(categoryId, status, title, thumbnailFileName, postId);
         processContentBlocks(request, postId);
         request.getRequestDispatcher("/postDetail?postId=" + postId).forward(request, response);
     }
@@ -95,7 +95,9 @@ public class UpdatePost extends HttpServlet {
         String[] checkValues = request.getParameterValues("check[]");
         Collection<Part> parts = request.getParts();
         ArrayList<String> listContent = pcDAO.getAllContent(postId);
-        System.out.println("số content ban đàu " + listContent.size());
+        if(listContent != null) {
+            System.out.println("số content ban đàu " + listContent.size());
+        }
         // Duyệt qua từng khối nội dung
         System.out.println("số content lúc sau " + contentTypes.length);
         int imageIndex = 1;
@@ -185,7 +187,9 @@ public class UpdatePost extends HttpServlet {
                     break;
             }
             System.out.println("content: " + content);
-            if (checkExist(listContent, postContent.getContent())) {
+            if(listContent == null){
+                pcDAO.insert(postContent);
+            } else if (checkExist(listContent, postContent.getContent())) {
                 pcDAO.update(postContent);
             } else {
                 pcDAO.insert(postContent);
@@ -243,8 +247,17 @@ public class UpdatePost extends HttpServlet {
             uploadDir.mkdirs();
         }
 
-        // Lưu file vào thư mục uploads
-        part.write(uploadPath + File.separator + fileName);
+        // Tạo luồng đầu ra để sao chép dữ liệu
+        File outputFile = new File(uploadPath + File.separator + fileName);
+        try (InputStream input = part.getInputStream();
+             FileOutputStream output = new FileOutputStream(outputFile)) {
+
+            byte[] buffer = new byte[8192];
+            int length;
+            while ((length = input.read(buffer)) > 0) {
+                output.write(buffer, 0, length);
+            }
+        }
 
         // Trả về đường dẫn tương đối đến file
         return UPLOAD_DIRECTORY + "/" + fileName;

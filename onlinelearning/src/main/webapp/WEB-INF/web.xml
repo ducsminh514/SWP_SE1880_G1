@@ -15,6 +15,26 @@
     <filter-class>Filter.FilterLogin</filter-class>
   </filter>
 
+  <servlet>
+    <servlet-name>UpdatePost</servlet-name>
+    <servlet-class>Controller.ForMarketing.UpdatePost</servlet-class>
+    <multipart-config>
+      <max-file-size>524288000</max-file-size> <!-- 500MB -->
+      <max-request-size>1073741824</max-request-size> <!-- 1GB -->
+      <file-size-threshold>52428800</file-size-threshold> <!-- 50MB -->
+    </multipart-config>
+  </servlet>
+
+  <servlet>
+    <servlet-name>AddNewPost</servlet-name>
+    <servlet-class>Controller.ForMarketing.AddNewPost</servlet-class>
+    <multipart-config>
+      <max-file-size>524288000</max-file-size> <!-- 500MB -->
+      <max-request-size>1073741824</max-request-size> <!-- 1GB -->
+      <file-size-threshold>52428800</file-size-threshold> <!-- 50MB -->
+    </multipart-config>
+  </servlet>
+
   <filter-mapping>
     <filter-name>FilterLogin</filter-name>
     <url-pattern>/addCommentPost</url-pattern>
