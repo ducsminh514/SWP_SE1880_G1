@@ -5,7 +5,7 @@ import Module.QuizResultDetail;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+import Module.QuizResultDetailImage;
 public class QuizResultDetailDAO extends DBContext implements GenericDAO<QuizResultDetail> {
 
     @Override
@@ -160,5 +160,39 @@ public class QuizResultDetailDAO extends DBContext implements GenericDAO<QuizRes
             ex.printStackTrace();
         }
         return null;
+    }
+    public void saveQuizResultDetails(List<QuizResultDetail> resultDetails){
+        String sql = "INSERT INTO QuizResultDetail (QuizAttendID, QuestionID, ChooseOptionID, AnswerText, IsCorrect) "
+                + "VALUES (?, ?, ?, ?, ?)";
+        try{
+            PreparedStatement st = connection.prepareStatement(sql);
+            for (QuizResultDetail detail : resultDetails) {
+                // Cài đặt các tham số cho câu trả lời
+                st.setInt(1, detail.getQuizAttendID());  // QuizAttendID
+                st.setInt(2, detail.getQuestionID());    // QuestionID
+                st.setInt(3, detail.getChooseOptionID()); // ChooseOptionID
+                st.setString(4, detail.getAnswerText());  // AnswerText
+                st.setBoolean(5, detail.isCorrect());     // IsCorrect
+
+                st.addBatch();  // Thêm vào batch
+            }
+            st.executeBatch();
+        }catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    public void saveQuizResultDetailImages(List<QuizResultDetailImage> resultImages){
+        String sql = "INSERT INTO QuizResultDetailImage (ImageQuizID, Title) "
+                + "VALUES (?, ?)";
+        try{
+            PreparedStatement st = connection.prepareStatement(sql);
+            for (QuizResultDetailImage imageDetail : resultImages) {
+                // Cài đặt các tham số cho câu trả lời
+                st.setInt(1, imageDetail.getImageQuizID());  // ImageQuizID (ID của câu trả lời)
+                st.setString(2, imageDetail.getTitle());     // Title (đường dẫn hoặc tên tệp hình ảnh)
+
+                st.addBatch();  // Thêm vào batch
+            }
+            st.executeBatch();
+        }catch (SQLException e) { e.printStackTrace(); }
     }
 }
