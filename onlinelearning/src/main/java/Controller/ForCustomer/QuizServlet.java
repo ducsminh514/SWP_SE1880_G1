@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import DAO.QuestionDAO;
+import DAO.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -37,16 +37,18 @@ public class QuizServlet extends HttpServlet {
         ArrayList<Question> listQuestion = new ArrayList<>();
         ArrayList<QuestionAnswer> listans = new ArrayList<>();
         QuestionDAO qd = new QuestionDAO();
-
+        LessonQuizDAO lessonQuizDAO = new LessonQuizDAO();
+        QuizQuesionsDAO quizzQuestionDAO = new QuizQuesionsDAO();
+        QuestionAnswerDAO questionAnswerDAO = new QuestionAnswerDAO();
         try {
             quizid = Integer.parseInt(id_raw);
-            int totalQuestions = qd.getQuestionCountByQuizId(quizid);
+            int totalQuestions = lessonQuizDAO.getQuestionCountByQuizId(quizid);
             request.setAttribute("num", totalQuestions);
-            LessonQuiz lessonQuiz= qd.takeLessonQuizByQuizQuestionID(quizid);
+            LessonQuiz lessonQuiz= lessonQuizDAO.takeLessonQuizByQuizQuestionID(quizid);
             request.setAttribute("lessonQuiz",lessonQuiz);
-            listQuestion= qd.getQuestion(quizid);
+            listQuestion= quizzQuestionDAO.getQuestion(quizid);
             request.setAttribute("listQuestion", listQuestion);
-            listans = qd.getAnswer(quizid);
+            listans = questionAnswerDAO.getAnswer(quizid);
             request.setAttribute("listans", listans);
             request.setAttribute("id", quizid);
         } catch (NumberFormatException e) {
@@ -58,15 +60,18 @@ public class QuizServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+//        HttpSession session = request.getSession();
         String id_raw = request.getParameter("id");
         int quizId = Integer.parseInt(id_raw);
-        ArrayList<QuestionAnswer> Answers = new QuestionDAO().getAnswer(quizId);
+        QuestionAnswerDAO questionAnswerDAO = new QuestionAnswerDAO();
+        QuizAttendDAO quizAttendDAO = new QuizAttendDAO();
+        ArrayList<QuestionAnswer> Answers = questionAnswerDAO.getAnswer(quizId);
         ArrayList<QuizResultDetail> resultDetails = new ArrayList<>();
         ArrayList<QuizResultDetailImage> resultImages = new ArrayList<>();
         QuestionDAO qd= new QuestionDAO();
         int totalScore = 0;
         for (QuestionAnswer Answer:Answers){
+
 
             String userAnswerRadio = request.getParameter("radio");
             String AnswerText = request.getParameter("answertext" );
@@ -75,7 +80,7 @@ public class QuizServlet extends HttpServlet {
                     .filter(part -> part.getName().startsWith("images_" + Answer.getQuestionId()))
                     .collect(Collectors.toList());
             QuizResultDetail detail = new QuizResultDetail();
-            detail.setQuizAttendID(qd.findQuizAttendIDbyQuizQuestionID(quizId));
+            detail.setQuizAttendID(quizAttendDAO.findQuizAttendIDbyQuizQuestionID(quizId));
             detail.setQuestionID(Answer.getQuestionId());
             if (userAnswerRadio != null ) {
                 // Nếu người dùng chọn một đáp án (radio), lưu answerId
@@ -83,7 +88,7 @@ public class QuizServlet extends HttpServlet {
                 detail.setAnswerText(null);  // Đối với câu trả lời dạng radio, không cần lưu văn bản
                 detail.setCorrect(Answer.isCorrect());
                 if (Answer.isCorrect()){
-                    totalScore += qd.GetMarkfromQuestion(Answer.getQuestionId());
+                    totalScore += questionAnswerDAO.GetMarkfromQuestion(Answer.getQuestionId());
                 }
             } else {
                 // Nếu câu trả lời là văn bản, lưu vào AnswerText
@@ -93,7 +98,7 @@ public class QuizServlet extends HttpServlet {
                 boolean isCorrect = AnswerText.equals(Answer.getContent());
                 detail.setCorrect(isCorrect);
                 if (isCorrect) {
-                    totalScore += qd.GetMarkfromQuestion(Answer.getQuestionId());
+                    totalScore += questionAnswerDAO.GetMarkfromQuestion(Answer.getQuestionId());
                 }
             }
             resultDetails.add(detail);

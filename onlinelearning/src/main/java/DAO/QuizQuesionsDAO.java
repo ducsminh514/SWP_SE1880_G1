@@ -6,7 +6,9 @@ import Module.QuizzQuestion;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+import Module.Question;
+import DAO.QuestionImageDAO;
+import Module.QuestionImage;
 public class QuizQuesionsDAO extends DBContext implements GenericDAO<QuizzQuestion> {
 
     @Override
@@ -136,5 +138,41 @@ public class QuizQuesionsDAO extends DBContext implements GenericDAO<QuizzQuesti
     private void handleException(SQLException e) {
         System.err.println("SQL Error in QuizQuestionsDAO: " + e.getMessage());
         e.printStackTrace();
+    }
+
+    public ArrayList<Question>getQuestion(int quizId){
+        ArrayList<Question> listQuestion = new ArrayList<>();
+        String sql = "SELECT q.*, qq.SortOrder FROM Question q "
+                + "JOIN QuizQuestions qq ON q.QuestionId = qq.QuestionId "
+                + "WHERE qq.QuizQuestionID = ? "
+                ;
+        QuestionTypeDAO qtd= new QuestionTypeDAO();
+        try{
+            QuestionDAO qd= new QuestionDAO();
+            QuestionImageDAO qim= new QuestionImageDAO();
+            PreparedStatement pre = connection.prepareStatement(sql);
+
+            pre.setInt(1,quizId);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Question c= new Question();
+                List<QuestionImage> listImage = new ArrayList<>();
+                listImage = qim.getImageByQuestionId(rs.getInt("QuestionID"));
+                c.setQuestionId(rs.getInt("QuestionID"));
+                c.setContent(rs.getString("Content"));
+                c.setMp3(rs.getString("Mp3"));
+                c.setQuestionImage(listImage);
+                c.setLevel(rs.getInt("Level"));
+                c.setMark(rs.getInt("Mark"));
+                c.setQuestionType(qtd.getQuestionTypeById(rs.getInt("QuestionTypeId")));
+                listQuestion.add(c);
+
+            }
+            return listQuestion ;
+        }catch (SQLException e){
+            System.out.println(e);
+            System.out.println("getQuestion");
+        }
+        return null;
     }
 }

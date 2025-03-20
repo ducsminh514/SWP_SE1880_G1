@@ -142,4 +142,46 @@ public class LessonQuizDAO extends DBContext implements GenericDAO<LessonQuiz> {
         System.err.println(message + ": " + e.getMessage());
         e.printStackTrace();
     }
+
+
+
+    public int getQuestionCountByQuizId(int quizId) {
+        String sql = "SELECT COUNT(*) AS NumberOfQuestions FROM QuizQuestions WHERE QuizQuestionID = ?";
+        int questionCount = 0;
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, quizId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                questionCount = rs.getInt("NumberOfQuestions");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return questionCount;
+    }
+
+    public LessonQuiz takeLessonQuizByQuizQuestionID(int id){
+        String sql = "Select lq.* from LessonQuiz lq Join QuizQuestions qq on qq.LessonQuizID=lq.LessonQuizID where qq.QuizQuestionID=?"
+                ;
+        try{
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            LessonQuiz lessonQuiz= new LessonQuiz();
+            if(rs.next()){
+                lessonQuiz.setTimeLimit(rs.getInt("TimeLimit"));
+                lessonQuiz.setLessonQuizID(rs.getInt("LessonQuizID"));
+                lessonQuiz.setImageUrl(rs.getString("ImageUrl"));
+                lessonQuiz.setAttemptAllowed(rs.getInt("AttemptAllowed"));
+                lessonQuiz.setMp3Url(rs.getString("Mp3Url"));
+                return lessonQuiz;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 }

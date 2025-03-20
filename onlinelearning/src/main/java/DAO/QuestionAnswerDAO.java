@@ -95,4 +95,53 @@ public class QuestionAnswerDAO extends DBContext implements GenericDAO<QuestionA
         return false;
     }
 
+    public ArrayList<QuestionAnswer> getAnswer(int id) {
+        ArrayList<QuestionAnswer> list = new ArrayList<>();
+        String sql = "SELECT a.* FROM QuestionAnswer a "
+                + "JOIN Question q ON q.QuestionId = a.QuestionId "
+                + "JOIN QuizQuestions qq ON qq.QuestionId = q.QuestionId "
+                + "WHERE qq.QuizQuestionID = ? "
+                + "ORDER BY a.SortOrder ASC";
+
+        try (PreparedStatement pre = connection.prepareStatement(sql)) {
+            // Set the parameter for QuizQuestionID
+            pre.setInt(1, id);
+
+            // Execute the query
+            ResultSet rs = pre.executeQuery();
+
+            // Iterate over the result set
+            while (rs.next()) {
+                QuestionAnswer qa = new QuestionAnswer();
+                qa.setCorrect(rs.getBoolean("IsCorrect"));
+                qa.setAnswerId(rs.getInt("AnswerID"));
+                qa.setSortOrder(rs.getInt("SortOrder"));
+                qa.setContent(rs.getString("Content"));
+                qa.setQuestionId(rs.getInt("QuestionID"));
+                list.add(qa);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching answers: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException(e); // Optional: Can add custom error handling
+        }
+        return list;
+    }
+
+    public int GetMarkfromQuestion(int id){
+        String sql = "select q.Mark from Question q where q.QuestionID=?"
+                ;
+        try{
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return rs.getInt("Mark");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
+    }
+
 }
