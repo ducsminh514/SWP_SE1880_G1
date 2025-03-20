@@ -1,30 +1,30 @@
 package Module;
 
 public class QuizzQuestion {
-    private int quizzQuestionId;
+    private int quizQuestionId;
     private int questionId;
     private int sortOrder;
-    private int quizId;
+    private int lessonQuizId;
 
-    public QuizzQuestion(int quizzQuestionId) {
-        this.quizzQuestionId = quizzQuestionId;
+    public QuizzQuestion(int quizQuestionId) {
+        this.quizQuestionId = quizQuestionId;
     }
     public QuizzQuestion() {
     }
 
-    public QuizzQuestion(int quizzQuestionId, int questionId, int sortOrder, int quizId) {
-        this.quizzQuestionId = quizzQuestionId;
+    public QuizzQuestion(int quizQuestionId, int questionId, int sortOrder, int lessonQuizId) {
+        this.quizQuestionId = quizQuestionId;
         this.questionId = questionId;
         this.sortOrder = sortOrder;
-        this.quizId = quizId;
+        this.lessonQuizId = lessonQuizId;
     }
 
-    public int getQuizzQuestionId() {
-        return quizzQuestionId;
+    public int getQuizQuestionId() {
+        return quizQuestionId;
     }
 
-    public void setQuizzQuestionId(int quizzQuestionId) {
-        this.quizzQuestionId = quizzQuestionId;
+    public void setQuizQuestionId(int quizQuestionId) {
+        this.quizQuestionId = quizQuestionId;
     }
 
     public int getQuestionId() {
@@ -43,11 +43,11 @@ public class QuizzQuestion {
         this.sortOrder = sortOrder;
     }
 
-    public int getQuizId() {
-        return quizId;
+    public int getLessonQuizId() {
+        return lessonQuizId;
     }
 
-    public void setQuizId(int quizId) {
-        this.quizId = quizId;
+    public void setLessonQuizId(int lessonQuizId) {
+        this.lessonQuizId = lessonQuizId;
     }
 }

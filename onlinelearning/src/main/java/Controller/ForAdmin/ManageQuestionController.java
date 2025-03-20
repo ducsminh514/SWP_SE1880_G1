@@ -222,16 +222,12 @@ public class ManageQuestionController extends HttpServlet {
         SubjectDAO subjectDAO = new SubjectDAO();
         Subject subject = subjectDAO.getSubjectById(subjectId);
         question.setSubject(subject);
-
         question.setMark(mark);
-
         // Set question type
         QuestionTypeDAO questionTypeDAO = new QuestionTypeDAO();
         QuestionType questionType = questionTypeDAO.getQuestionTypeById(questionTypeId);
         question.setQuestionType(questionType);
-
         question.setStatus(isActive);
-
         // Handle MP3 file if uploaded
         Part audioPart = request.getPart("audioFile");
         String deleteAudio = request.getParameter("deleteAudio");
@@ -244,10 +240,8 @@ public class ManageQuestionController extends HttpServlet {
             String fileName = getSubmittedFileName(audioPart);
             String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
             String uploadPath = request.getServletContext().getRealPath("/uploads/audio/");
-
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) uploadDir.mkdirs();
-
             audioPart.write(uploadPath + File.separator + uniqueFileName);
             question.setMp3(uniqueFileName);
         }
@@ -336,8 +330,6 @@ public class ManageQuestionController extends HttpServlet {
                 // optionCount++;
                 System.out.println("Added option: " + optionValue + ", isCorrect: " + isCorrect);
             }
-
-
         }
 
         // Redirect back to the question list
