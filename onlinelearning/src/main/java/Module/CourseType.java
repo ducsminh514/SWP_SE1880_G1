@@ -6,6 +6,7 @@ public class CourseType {
 
     public CourseType() {
     }
+
     public CourseType(int courseTypeId, String courseTypeName) {
         this.courseTypeId = courseTypeId;
         this.courseTypeName = courseTypeName;

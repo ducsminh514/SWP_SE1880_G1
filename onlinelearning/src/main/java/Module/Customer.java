@@ -6,6 +6,7 @@ public class Customer {
     private String socialRole ;
     private String levelOfEnglish ;
 
+
     public Customer() {
     }
 
