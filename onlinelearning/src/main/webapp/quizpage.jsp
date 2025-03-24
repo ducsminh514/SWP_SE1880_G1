@@ -84,7 +84,7 @@
     <div class="question-box">
      <form action="quiz" method="post"id="quizForm" enctype="multipart/form-data">
      <h5>${requestScope.error}</h5>
-     <p>Quiz ID: ${requestScope.id}</p>
+
      <input type="hidden" name="id" value="${requestScope.id}">
      <c:forEach items="${requestScope.listQuestion}" var="list" varStatus="status">
 

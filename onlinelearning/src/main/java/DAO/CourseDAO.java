@@ -225,7 +225,7 @@ public class CourseDAO extends DBContext {
             rs.close();
             st.close();
         } catch (SQLException e) {
-            System.err.println(e);
+            System.err.println("ngu1");
         }
 
         return courses;

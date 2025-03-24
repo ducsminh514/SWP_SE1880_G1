@@ -77,7 +77,7 @@ public class QuizServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             // Nếu không thể chuyển đổi sang int, xử lý ngoại lệ
             request.getSession().setAttribute("error", "Invalid Quiz ID format!");
-            response.sendRedirect("errorPage.jsp");  // Chuyển hướng tới trang lỗi
+            request.getRequestDispatcher("result.jsp").forward(request, response);
             return;  // Dừng lại không tiếp tục xử lý
         }
 
