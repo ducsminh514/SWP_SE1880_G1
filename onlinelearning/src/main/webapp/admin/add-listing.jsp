@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
+<!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.jsp by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
 <head>
 
 	<!-- META ============================================= -->
@@ -65,7 +65,7 @@
 			<!--logo start -->
 			<div class="ttr-logo-box">
 				<div>
-					<a href="index.html" class="ttr-logo">
+					<a href="index.jsp" class="ttr-logo">
 						<img alt="" class="ttr-logo-mobile" src="assets/images/logo-mobile.png" width="30" height="30">
 						<img alt="" class="ttr-logo-desktop" src="assets/images/logo-white.png" width="160" height="27">
 					</a>
@@ -248,7 +248,7 @@
 			<nav class="ttr-sidebar-navi">
 				<ul>
 					<li>
-						<a href="index.html" class="ttr-material-button">
+						<a href="index.jsp" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-home"></i></span>
 		                	<span class="ttr-label">Dashborad</span>
 		                </a>
@@ -494,5 +494,5 @@
 </script>
 </body>
 
-<!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
+<!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.jsp by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
 </html>

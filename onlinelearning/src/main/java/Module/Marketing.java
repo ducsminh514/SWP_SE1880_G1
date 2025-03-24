@@ -5,6 +5,9 @@ public class Marketing {
       private User user;
       private int experienceYear ;
 
+    public Marketing() {
+    }
+
     public Marketing(int marketingId, User user, int experienceYear) {
         this.marketingId = marketingId;
         this.user = user;

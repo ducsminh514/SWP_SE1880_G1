@@ -1,20 +1,39 @@
 package Module;
 
-public class Question {
-    private int questionId ;
-    private Quiz quiz ;
-    private int orderNo ;
-    private String content ;
-    private String level ;
-    private boolean isMultipleChoice ;
+import java.sql.Date;
+import java.util.List;
+import Module.CourseType;
+import Module.QuestionType;
 
-    public Question(int questionId, Quiz quiz, int orderNo, String content, String level, boolean isMultipleChoice) {
+
+public class Question {
+    private int questionId;
+    private String content;
+    private int level;
+    private Subject subject;
+    private int mark;
+    private QuestionType questionType;
+    private boolean status;
+    private Date createTime;
+    private Date updateTime;
+    private List<QuestionImage> questionImage;
+    private String mp3;
+
+    public Question() {
+    }
+
+    public Question(int questionId, String content, int level, Subject subject, int mark, QuestionType questionType, boolean status, Date createTime, Date updateTime, List<QuestionImage> questionImage, String mp3) {
         this.questionId = questionId;
-        this.quiz = quiz;
-        this.orderNo = orderNo;
         this.content = content;
         this.level = level;
-        this.isMultipleChoice = isMultipleChoice;
+        this.subject = subject;
+        this.mark = mark;
+        this.questionType = questionType;
+        this.status = status;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.questionImage = questionImage;
+        this.mp3 = mp3;
     }
 
     public int getQuestionId() {
@@ -25,22 +44,6 @@ public class Question {
         this.questionId = questionId;
     }
 
-    public Quiz getQuiz() {
-        return quiz;
-    }
-
-    public void setQuiz(Quiz quiz) {
-        this.quiz = quiz;
-    }
-
-    public int getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(int orderNo) {
-        this.orderNo = orderNo;
-    }
-
     public String getContent() {
         return content;
     }
@@ -49,19 +52,75 @@ public class Question {
         this.content = content;
     }
 
-    public String getLevel() {
+    public int getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(int level) {
         this.level = level;
     }
 
-    public boolean isMultipleChoice() {
-        return isMultipleChoice;
+    public Subject getSubject() {
+        return subject;
     }
 
-    public void setMultipleChoice(boolean multipleChoice) {
-        isMultipleChoice = multipleChoice;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    public int getMark() {
+        return mark;
+    }
+
+    public void setMark(int mark) {
+        this.mark = mark;
+    }
+
+    public QuestionType getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(QuestionType questionType) {
+        this.questionType = questionType;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public List<QuestionImage> getQuestionImage() {
+        return questionImage;
+    }
+
+    public void setQuestionImage(List<QuestionImage> questionImage) {
+        this.questionImage = questionImage;
+    }
+
+    public String getMp3() {
+        return mp3;
+    }
+
+    public void setMp3(String mp3) {
+        this.mp3 = mp3;
     }
 }

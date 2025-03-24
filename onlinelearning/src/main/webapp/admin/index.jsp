@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from educhamp.themetrades.com/demo/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:08:15 GMT -->
+<!-- Mirrored from educhamp.themetrades.com/demo/admin/index.jsp by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:08:15 GMT -->
 <head>
 
 	<!-- META ============================================= -->
@@ -34,7 +34,6 @@
 	<script src="assets/js/html5shiv.min.js"></script>
 	<script src="assets/js/respond.min.js"></script>
 	<![endif]-->
-	
 	<!-- All PLUGINS CSS ============================================= -->
 	<link rel="stylesheet" type="text/css" href="assets/css/assets.css">
 	<link rel="stylesheet" type="text/css" href="assets/vendors/calendar/fullcalendar.css">
@@ -305,7 +304,7 @@
 		                </a>
 		            </li>
 					<li>
-						<a href="add-listing.html" class="ttr-material-button">
+						<a href="add-listing.jsp" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
 		                	<span class="ttr-label">Add listing</span>
 		                </a>
@@ -325,6 +324,12 @@
 		                	</li>
 		                </ul>
 		            </li>
+					<li>
+						<a href="${pageContext.request.contextPath}/manage-account" class="ttr-material-button">
+							<span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
+							<span class="ttr-label">Manage account</span>
+						</a>
+					</li>
 		            <li class="ttr-seperate"></li>
 				</ul>
 				<!-- sidebar menu end -->
@@ -685,25 +690,25 @@
 	<div class="ttr-overlay"></div>
 
 <!-- External JavaScripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/vendors/bootstrap/js/popper.min.js"></script>
-<script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
-<script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
-<script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
-<script src="assets/vendors/counter/waypoints-min.js"></script>
-<script src="assets/vendors/counter/counterup.min.js"></script>
-<script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
-<script src="assets/vendors/masonry/masonry.js"></script>
-<script src="assets/vendors/masonry/filter.js"></script>
-<script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
-<script src='assets/vendors/scroll/scrollbar.min.js'></script>
-<script src="assets/js/functions.js"></script>
-<script src="assets/vendors/chart/chart.min.js"></script>
-<script src="assets/js/admin.js"></script>
-<script src='assets/vendors/calendar/moment.min.js'></script>
-<script src='assets/vendors/calendar/fullcalendar.js'></script>
-<script src='assets/vendors/switcher/switcher.js'></script>
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/vendors/bootstrap/js/popper.min.js"></script>
+	<script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
+	<script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
+	<script src="assets/vendors/counter/waypoints-min.js"></script>
+	<script src="assets/vendors/counter/counterup.min.js"></script>
+	<script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
+	<script src="assets/vendors/masonry/masonry.js"></script>
+	<script src="assets/vendors/masonry/filter.js"></script>
+	<script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
+	<script src='assets/vendors/scroll/scrollbar.min.js'></script>
+	<script src="assets/js/functions.js"></script>
+	<script src="assets/vendors/chart/chart.min.js"></script>
+	<script src="assets/js/admin.js"></script>
+	<script src='assets/vendors/calendar/moment.min.js'></script>
+	<script src='assets/vendors/calendar/fullcalendar.js'></script>
+	<script src='assets/vendors/switcher/switcher.js'></script>
 <script>
   $(document).ready(function() {
 
@@ -785,5 +790,5 @@
 </script>
 </body>
 
-<!-- Mirrored from educhamp.themetrades.com/demo/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
+<!-- Mirrored from educhamp.themetrades.com/demo/admin/index.jsp by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
 </html>

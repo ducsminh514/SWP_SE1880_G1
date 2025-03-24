@@ -58,22 +58,30 @@ $(function(){
     // Color changer
     jQuery(".skin-1").on('click',function(){
         jQuery(".skin").attr("href", "assets/css/color/color-1.css");
-		jQuery(".ttr-sidebar-logo img").attr("src", "assets/images/logo.png");
+		jQuery(".menu-logo img").attr("src", "assets/images/logo.png");
+		jQuery(".header-transparent .menu-logo img").attr("src", "assets/images/logo-white.png");
+		jQuery(".pt-logo img").attr("src", "assets/images/logo-white.png");
         return false;
     });
     jQuery(".skin-2").on('click',function(){
         jQuery(".skin").attr("href", "assets/css/color/color-2.css");
-		jQuery(".ttr-sidebar-logo img").attr("src", "assets/images/logo-2.png");
+		jQuery(".menu-logo img").attr("src", "assets/images/logo-2.png");
+		jQuery(".header-transparent .menu-logo img").attr("src", "assets/images/logo-white-2.png");
+		jQuery(".pt-logo img").attr("src", "assets/images/logo-white-2.png");
         return false;
     });
     jQuery(".skin-3").on('click',function(){
         jQuery(".skin").attr("href", "assets/css/color/color-3.css");
-		jQuery(".ttr-sidebar-logo img").attr("src", "assets/images/logo-3.png");
+		jQuery(".menu-logo img").attr("src", "assets/images/logo-3.png");
+		jQuery(".header-transparent .menu-logo img").attr("src", "assets/images/logo-white-3.png");
+		jQuery(".pt-logo img").attr("src", "assets/images/logo-white-3.png");
         return false;
     });
 	jQuery(".skin-4").on('click',function(){
         jQuery(".skin").attr("href", "assets/css/color/color-4.css");
-		jQuery(".ttr-sidebar-logo img").attr("src", "assets/images/logo-4.png");
+		jQuery(".menu-logo img").attr("src", "assets/images/logo-4.png");
+		jQuery(".header-transparent .menu-logo img").attr("src", "assets/images/logo-white-4.png");
+		jQuery(".pt-logo img").attr("src", "assets/images/logo-white-4.png");
         return false;
     });
 	//=== Color css change function	=====================//	

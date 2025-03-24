@@ -10,6 +10,9 @@ public class Subject {
     private int orderNo ;
     private Date createDate ;
 
+    public Subject() {
+    }
+
     public Subject(int subjectId, Course course, String subjectName, String description, int orderNo, Date createDate) {
         this.subjectId = subjectId;
         this.course = course;

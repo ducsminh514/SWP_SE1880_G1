@@ -126,6 +126,20 @@
     padding: 4px 8px;
 }
 .btn,
+.btn-search {
+    height: 40px; /* Chiều cao cố định cho nút */
+    background-color: #ffcc41;
+    border-radius: 3px;
+}
+
+.btn-search:hover {
+    background-color: #e6b52a;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-search:active {
+    background-color: #d4a620;
+}
 .btn-secondry {
     color: #fff;
     padding: 10px 20px;
@@ -854,7 +868,7 @@
 .btn-link.yellow:hover,
 .btn-link.yellow:active,
 .btn-link.yellow:focus {
-    color: ##d4af19;
+    color: #d4af19;
 }
 /* purple */
 
