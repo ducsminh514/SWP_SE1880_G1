@@ -152,8 +152,54 @@ public class PostDAO extends DBContext {
             }
             return listPost;
         } catch (SQLException e) {
-            System.out.println("ngu");
+            System.out.println(e);
         }
         return listPost;
+    }
+
+    public int insert(int categoryBlogId,int marketingId , String title  ,String thumbnail){
+        String sql ="INSERT INTO [dbo].[Posts]\n" +
+                "           ([CategoryBlogID]\n" +
+                "           ,[MarketingID]\n" +
+                "           ,[Title]\n" +
+                "           ,[Thumbnail])\n" +
+                "     VALUES\n" +
+                "           (?,?,?,?); SELECT SCOPE_IDENTITY() AS PostID" ;
+        try{
+            PreparedStatement pre = connection.prepareStatement(sql) ;
+            pre.setInt(1,categoryBlogId);
+            pre.setInt(2,marketingId);
+            pre.setString(3,title);
+            pre.setString(4,thumbnail);
+            pre.executeUpdate() ;
+            ResultSet rs = pre.getGeneratedKeys();
+            if(rs.next()){
+                int postId = rs.getInt(1) ;
+                return  postId ;
+            }
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return 0 ;
+    }
+
+    public void update(int categoryBlogId, boolean status, String title ,String thumbnail,int postId){
+        String sql ="UPDATE [dbo].[Posts]\n" +
+                "   SET [CategoryBlogID] = ?,\n" +
+                "       [Status] = ?,\n" +
+                "       [Title] = ?,\n" +
+                "       [Thumbnail] = ?\n" +
+                " WHERE [PostID] = ?\n";
+        try{
+            PreparedStatement pre = connection.prepareStatement(sql) ;
+            pre.setInt(1,categoryBlogId);
+            pre.setBoolean(2,status);
+            pre.setString(3,title);
+            pre.setString(4,thumbnail);
+            pre.setInt(5,postId);
+            pre.executeUpdate() ;
+        }catch(SQLException e){
+            System.out.println(e);
+        }
     }
 }

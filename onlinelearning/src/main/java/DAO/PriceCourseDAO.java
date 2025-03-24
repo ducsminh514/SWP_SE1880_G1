@@ -34,7 +34,11 @@ public class PriceCourseDAO extends DBContext {
    }
 
    public PriceCourse getById(int priceCourseId){
-       String sql ="SELECT * FROM PriceCourse where PriceID =?" ;
+       String sql ="DECLARE @PriceID INT;\n" +
+               "\n" +
+               "SET @PriceID = ?; -- Gán giá trị cho PriceID\n" +
+               "\n" +
+               "SELECT * FROM PriceCourse WHERE PriceID = @PriceID;\n" ;
        ArrayList<PriceCourse> list = new ArrayList<>() ;
        PriceCourse p = new PriceCourse();
        try{
@@ -56,5 +60,32 @@ public class PriceCourseDAO extends DBContext {
            System.out.println(e);
        }
        return p ;
+   }
+
+   public ArrayList<PriceCourse> getByCourse(int courseId){
+       String sql = "Select * from PriceCourse where CourseID = ?";
+       ArrayList<PriceCourse> listPrice = new ArrayList<>() ;
+       try{
+           PreparedStatement pre = connection.prepareStatement(sql) ;
+           pre.setInt(1,courseId);
+           ResultSet rs = pre.executeQuery();
+           CourseDAO cDAO = new CourseDAO() ;
+           while(rs.next()){
+               PriceCourse p = new PriceCourse() ;
+               p.setCourse(cDAO.getById(rs.getInt("CourseID")));
+               p.setPrice(rs.getFloat("Price"));
+               p.setPriceCourseName(rs.getString("PriceName"));
+               p.setDescription(rs.getString("Description"));
+               p.setPriceId(rs.getInt("PriceID"));
+               p.setStatus(rs.getBoolean("Status"));
+               p.setAccessDuration(rs.getInt("AccessDuration"));
+               p.setSalePrice(rs.getFloat("SalePrice"));
+               listPrice.add(p) ;
+           }
+           return listPrice ;
+       }catch(SQLException e){
+           System.out.println(e);
+       }
+       return listPrice ;
    }
 }

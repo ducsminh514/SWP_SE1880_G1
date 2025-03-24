@@ -33,11 +33,13 @@ public class AddCommentPost extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         String parentID = request.getParameter("parentId");
-         HttpSession session = request.getSession();
-         User user = (User) session.getAttribute("account") ;
-         int userId = user.getUserId() ;
-         String postID= request.getParameter("postId");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("account") ;
+        int userId = user.getUserId() ;
+        String parentID = (String)session.getAttribute("parentId");
+        System.out.println(parentID);
+        String postID= (String)session.getAttribute("postId");
+        System.out.println(postID);
          int parentId=0 , postId=0 ;
          try{
              parentId= Integer.parseInt(parentID) ;
@@ -45,9 +47,13 @@ public class AddCommentPost extends HttpServlet {
          }catch(NumberFormatException e){
              System.out.println(e);
          }
-         String content = request.getParameter("content") ;
+         String content = (String)session.getAttribute("content") ;
+         session.removeAttribute("parentId");
+         session.removeAttribute("postId");
+         session.removeAttribute("content");
          CommentPostDAO cpDAO = new CommentPostDAO();
          cpDAO.insert(parentId,postId,userId,content);
+         request.getRequestDispatcher("/postDetail?postId="+postId).forward(request,response);
     }
 
     @Override

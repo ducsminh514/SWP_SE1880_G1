@@ -32,6 +32,7 @@ public class CourseDAO extends DBContext {
                 c.setStatus(rs.getBoolean("status"));
                 c.setCourseType(ctDAO.getByID(rs.getInt("course_typeId")));
                 c.setExpert(eDAO.getByID(rs.getInt("ExpertID")));
+                c.setLevel(rs.getString("SkillLevel"));
                 listCourse.add(c) ;
             }
             return listCourse;
@@ -67,6 +68,7 @@ public class CourseDAO extends DBContext {
                 c.setStatus(rs.getBoolean("status"));
                 c.setCourseType(ctDAO.getByID(rs.getInt("course_typeId")));
                 c.setExpert(eDAO.getByID(rs.getInt("ExpertID")));
+                c.setLevel(rs.getString("SkillLevel"));
                 listCoursePage.add(c) ;
             }
             return listCoursePage;
@@ -95,16 +97,16 @@ public class CourseDAO extends DBContext {
         if(categoryID >0){
             sql += " AND course_typeId = ?" ;
         }
-        if (arrange != null && !arrange.isEmpty()) {
-            if (arrange.equalsIgnoreCase("rating")) {
-                sql += " ORDER BY (SELECT AVG(Rating) from ReviewCourse WHERE ReviewCourse.CourseID = Courses.CourseID) DESC ";
-            } else if (arrange.equalsIgnoreCase("date-soon")) {
-                sql += " ORDER BY CreatedDate ASC ";
-            } else if (arrange.equalsIgnoreCase("date-late")) {
-                sql += " ORDER BY CreatedDate DESC ";
-            } else {
-                sql += " ORDER BY CreatedDate DESC ";
-            }
+            if (arrange != null && !arrange.isEmpty()) {
+                    if (arrange.equalsIgnoreCase("rating")) {
+                        sql += " ORDER BY (SELECT AVG(Rating) from ReviewCourse WHERE ReviewCourse.CourseID = Courses.CourseID) DESC ";
+                    } else if (arrange.equalsIgnoreCase("date-soon")) {
+                        sql += " ORDER BY CreatedDate ASC ";
+                    } else if (arrange.equalsIgnoreCase("date-late")) {
+                        sql += " ORDER BY CreatedDate DESC ";
+                    } else {
+                        sql += " ORDER BY CreatedDate DESC ";
+                    }
         } else {
             sql += " ORDER BY CreatedDate DESC ";
         }

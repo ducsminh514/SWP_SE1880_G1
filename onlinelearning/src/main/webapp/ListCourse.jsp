@@ -694,8 +694,8 @@
                                             <form class="col-2" action="listCourse" id="statusForm">
                                                 <input type="hidden" name="search" value="${requestScope.search}">
                                                 <input type="hidden" name="page" value="${requestScope.currentPage}">
-                                                                                                <input type="hidden" name="cate" value="${requestScope.cate}">
-                                                                                                                                                <input type="hidden" name="numberOfCourse" value="${requestScope.numberOfCourse}">
+                                                <input type="hidden" name="cate" value="${requestScope.cate}">
+                                                <input type="hidden" name="numberOfCourse" value="${requestScope.numberOfCourse}">
                                                 <select class="form-select form-select-sm" aria-label="Small select example" name="arrange" onchange="document.getElementById('statusForm').submit();">
                                                     <option selected>Arrange</option>
                                                     <option value="rating">Highest Rating</option>
@@ -756,7 +756,7 @@
                                                         <a href="#" class="btn">Regist</a>
                                                     </div>
                                                     <div class="info-bx text-center">
-                                                        <h5><a href="#">${courseDetail.course.courseName}</a></h5>
+                                                        <h5><a href="courseDetail?courseId=${courseDetail.course.courseId}">${courseDetail.course.courseName}</a></h5>
                                                         <span class="course-author " id="author-${courseDetail.course.courseId}">
                                                             ${courseDetail.course.expert.user.firstName} ${courseDetail.course.expert.user.lastName}
                                                         </span>

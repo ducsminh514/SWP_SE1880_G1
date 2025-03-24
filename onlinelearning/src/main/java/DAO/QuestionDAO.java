@@ -217,7 +217,7 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
                 c.setQuestionId(rs.getInt("QuestionID"));
                 c.setContent(rs.getString("Content"));
                 c.setMp3(rs.getString("Mp3"));
-                c.setQuestionImage(qd.listImage(rs.getInt("QuestionImageID")));
+                //c.setQuestionImage(qd.listImage(rs.getInt("ImageID")));
                 c.setLevel(rs.getInt("Level"));
                 c.setMark(rs.getInt("Mark"));
                 c.setQuestionType(qtd.getQuestionTypeById(rs.getInt("QuestionTypeId")));

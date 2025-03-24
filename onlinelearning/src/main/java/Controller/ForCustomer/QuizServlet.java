@@ -33,7 +33,7 @@ public class QuizServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id_raw = request.getParameter("id");
-        System.out.println("id_raw value in POST request: " + id_raw);
+
         int quizid = 0;
         ArrayList<Question> listQuestion = new ArrayList<>();
         ArrayList<QuestionAnswer> listans = new ArrayList<>();
@@ -54,21 +54,35 @@ public class QuizServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             request.getSession().setAttribute("error", "Invalid data!");
         }
-        System.out.println("Received id: " + id_raw);
+
         request.getRequestDispatcher("quizpage.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id_raw = request.getParameter("id");
-        if (id_raw == null || id_raw.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Quiz ID is missing.");
+        String quizId = request.getParameter("id");
+
+
+        if (quizId == null || quizId.trim().isEmpty()) {
+
+            request.getSession().setAttribute("error", "Quiz ID is missing!");
             return;
         }
-        int quizId = Integer.parseInt(id_raw);
+
+        int quizid;
+        try {
+            // Chuyển quizId từ String sang int
+            quizid = Integer.parseInt(quizId);
+        } catch (NumberFormatException e) {
+            // Nếu không thể chuyển đổi sang int, xử lý ngoại lệ
+            request.getSession().setAttribute("error", "Invalid Quiz ID format!");
+            response.sendRedirect("errorPage.jsp");  // Chuyển hướng tới trang lỗi
+            return;  // Dừng lại không tiếp tục xử lý
+        }
+
         // Get answers and initialize variables
-        ArrayList<QuestionAnswer> Answers = new QuestionDAO().getAnswer(quizId);
+        ArrayList<QuestionAnswer> Answers = new QuestionDAO().getAnswer(quizid);
         ArrayList<QuizResultDetail> resultDetails = new ArrayList<>();
         ArrayList<QuizResultDetailImage> resultImages = new ArrayList<>();
         QuestionDAO qd = new QuestionDAO();
@@ -81,7 +95,7 @@ public class QuizServlet extends HttpServlet {
 
             // Process result details for text or radio answers
             QuizResultDetail detail = new QuizResultDetail();
-            detail.setQuizAttendID(qd.findQuizAttendIDbyQuizQuestionID(quizId));
+            detail.setQuizAttendID(qd.findQuizAttendIDbyQuizQuestionID(quizid));
             detail.setQuestionID(Answer.getQuestionId());
 
             if (userAnswerRadio != null) {
@@ -149,7 +163,7 @@ public class QuizServlet extends HttpServlet {
         qd.saveQuizResultDetailImages(resultImages);
 
         // Update the total score in the database
-        int quizAttendID = qd.findQuizAttendIDbyQuizQuestionID(quizId);
+        int quizAttendID = qd.findQuizAttendIDbyQuizQuestionID(quizid);
         qd.updateTotalScore(quizAttendID, totalScore);
 
         // Forward the score to the result page

@@ -3,8 +3,10 @@ package DAO;
 import dal.DBContext;
 import Module.Subject;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SubjectDAO extends DBContext implements GenericDAO<Subject> {
@@ -13,8 +15,45 @@ public class SubjectDAO extends DBContext implements GenericDAO<Subject> {
     public List<Subject> findAll() {
         return List.of();
     }
+    public ArrayList<Subject> findByCourse(int courseId){
+        String sql = "Select * from Subjects where CourseID=?" ;
+        ArrayList<Subject> listSubject = new ArrayList<>() ;
+        try{
+            PreparedStatement pre = connection.prepareStatement(sql) ;
+            pre.setInt(1,courseId);
+            ResultSet rs = pre.executeQuery();
+            CourseDAO cDAO = new CourseDAO() ;
+            while(rs.next()){
+                Subject s = new Subject() ;
+                s.setCourse(cDAO.getById(courseId));
+                s.setDescription(rs.getString("Description"));
+                s.setCreateDate(rs.getDate("CreatedDate"));
+                s.setSubjectId(rs.getInt("SubjectID"));
+                s.setSubjectName(rs.getString("SubjectName"));
+                s.setOrderNo(rs.getInt("OrderNo"));
+                listSubject.add(s) ;
+            }
+            return listSubject ;
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return listSubject ;
+    }
 
-
+    public int countSubject(int courseId) {
+        String sql = "select COUNT(*) from Subjects where CourseID=?";
+        int cnt = 0;
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, courseId);
+            ResultSet rs = pre.executeQuery();
+            cnt = rs.getInt(1);
+            return cnt;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return cnt;
+    }
     @Override
     public int insert(Subject subject) {
         return 0;
