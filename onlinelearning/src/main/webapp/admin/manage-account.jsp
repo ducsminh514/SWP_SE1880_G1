@@ -164,13 +164,13 @@
                                         </td>
                                         <td>
                                             <span
-                                                    <c:if test="${acc.isStatus()}">
+                                                    <c:if test="${acc.status}">
                                                         class="btn green radius-xl outline"
                                                     </c:if>
-                                                <c:if test="${!acc.isStatus()}">
+                                                <c:if test="${!acc.status}">
                                                     class="btn red radius-xl outline"
                                                 </c:if>>
-                                                    ${acc.isStatus() ? 'Active' : 'Non-active'}
+                                                    ${acc.status ? 'Active' : 'Non-active'}
                                             </span>
                                         </td>
                                         <td>

@@ -6,11 +6,20 @@ public class Customer {
     private String socialRole ;
     private String levelOfEnglish ;
 
+    public Customer() {
+    }
+
     public Customer(int customerId, User user, String socialRole, String levelOfEnglish) {
         this.customerId = customerId;
         this.user = user;
         this.socialRole = socialRole;
         this.levelOfEnglish = levelOfEnglish;
+    }
+
+    public Customer(String socialRole, String levelOfEnglish, User user) {
+        this.socialRole = socialRole;
+        this.levelOfEnglish = levelOfEnglish;
+        this.user = user;
     }
 
     public int getCustomerId() {
