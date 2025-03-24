@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page isELIgnored="false" %>
 <head>
 
 	<!-- META ============================================= -->
@@ -46,176 +48,54 @@
 	<!-- STYLESHEETS ============================================= -->
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
-	
-</head>
-<body id="bg">
-<div class="page-wraper">
-	<div id="loading-icon-bx"></div>
-    <!-- Header Top ==== -->
-    <header class="header rs-nav">
-		<div class="top-bar">
-			<div class="container">
-				<div class="row d-flex justify-content-between">
-					<div class="topbar-left">
-						<ul>
-							<li><a href="faq-1.jsp"><i class="fa fa-question-circle"></i>Ask a Question</a></li>
-							<li><a href="javascript:;"><i class="fa fa-envelope-o"></i>Support@website.com</a></li>
-						</ul>
-					</div>
-					<div class="topbar-right">
-						<ul>
-							<li>
-								<select class="header-lang-bx">
-									<option data-icon="flag flag-uk">English UK</option>
-									<option data-icon="flag flag-us">English US</option>
-								</select>
-							</li>
-							<li><a href="login.jsp">Login</a></li>
-							<li><a href="register.html">Register</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="sticky-header navbar-expand-lg">
-            <div class="menu-bar clearfix">
-                <div class="container clearfix">
-					<!-- Header Logo ==== -->
-					<div class="menu-logo">
-						<a href="index.jsp"><img src="assets/images/logo.png" alt=""></a>
-					</div>
-					<!-- Mobile Nav Button ==== -->
-                    <button class="navbar-toggler collapsed menuicon justify-content-end" type="button" data-toggle="collapse" data-target="#menuDropdown" aria-controls="menuDropdown" aria-expanded="false" aria-label="Toggle navigation">
-						<span></span>
-						<span></span>
-						<span></span>
-					</button>
-					<!-- Author Nav ==== -->
-                    <div class="secondary-menu">
-                        <div class="secondary-inner">
-                            <ul>
-								<li><a href="javascript:;" class="btn-link"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="javascript:;" class="btn-link"><i class="fa fa-google-plus"></i></a></li>
-								<li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li>
-								<!-- Search Button ==== -->
-								<li class="search-btn"><button id="quik-search-btn" type="button" class="btn-link"><i class="fa fa-search"></i></button></li>
-							</ul>
-						</div>
-                    </div>
-					<!-- Search Box ==== -->
-                    <div class="nav-search-bar">
-                        <form action="#">
-                            <input name="search" value="" type="text" class="form-control" placeholder="Type to search">
-                            <span><i class="ti-search"></i></span>
-                        </form>
-						<span id="search-remove"><i class="ti-close"></i></span>
-                    </div>
-					<!-- Navigation Menu ==== -->
-                    <div class="menu-links navbar-collapse collapse justify-content-start" id="menuDropdown">
-						<div class="menu-logo">
-							<a href="index.jsp"><img src="assets/images/logo.png" alt=""></a>
-						</div>
-                        <ul class="nav navbar-nav">	
-							<li class="active"><a href="javascript:;">Home <i class="fa fa-chevron-down"></i></a>
-								<ul class="sub-menu">
-									<li><a href="index.jsp">Home 1</a></li>
-									<li><a href="index-2.jsp">Home 2</a></li>
-								</ul>
-							</li>
-							<li><a href="javascript:;">Pages <i class="fa fa-chevron-down"></i></a>
-								<ul class="sub-menu">
-									<li><a href="javascript:;">About<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="about-1.jsp">About 1</a></li>
-											<li><a href="about-2.jsp">About 2</a></li>
-										</ul>
-									</li>
-									<li><a href="javascript:;">Event<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="event.jsp">Event</a></li>
-											<li><a href="events-details.jsp">Events Details</a></li>
-										</ul>
-									</li>
-									<li><a href="javascript:;">FAQ's<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="faq-1.jsp">FAQ's 1</a></li>
-											<li><a href="faq-2.jsp">FAQ's 2</a></li>
-										</ul>
-									</li>
-									<li><a href="javascript:;">Contact Us<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="contact-1.jsp">Contact Us 1</a></li>
-											<li><a href="contact-2.jsp">Contact Us 2</a></li>
-										</ul>
-									</li>
-									<li><a href="portfolio.jsp">Portfolio</a></li>
-									<li><a href="profile.html">Profile</a></li>
-									<li><a href="membership.jsp">Membership</a></li>
-									<li><a href="error-404.jsp">404 Page</a></li>
-								</ul>
-							</li>
-							<li class="add-mega-menu"><a href="javascript:;">Our Courses <i class="fa fa-chevron-down"></i></a>
-								<ul class="sub-menu add-menu">
-									<li class="add-menu-left">
-										<h5 class="menu-adv-title">Our Courses</h5>
-										<ul>
-											<li><a href="courses.jsp">Courses </a></li>
-											<li><a href="courses-details.jsp">Courses Details</a></li>
-											<li><a href="profile.html">Instructor Profile</a></li>
-											<li><a href="event.jsp">Upcoming Event</a></li>
-											<li><a href="membership.jsp">Membership</a></li>
-										</ul>
-									</li>
-									<li class="add-menu-right">
-										<img src="assets/images/adv/adv.jpg" alt=""/>
-									</li>
-								</ul>
-							</li>
-							<li><a href="javascript:;">Blog <i class="fa fa-chevron-down"></i></a>
-								<ul class="sub-menu">
-									<li><a href="blog-classic-grid.jsp">Blog Classic</a></li>
-									<li><a href="blog-classic-sidebar.jsp">Blog Classic Sidebar</a></li>
-									<li><a href="blog-list-sidebar.jsp">Blog List Sidebar</a></li>
-									<li><a href="blog-standard-sidebar.jsp">Blog Standard Sidebar</a></li>
-									<li><a href="blog-details.jsp">Blog Details</a></li>
-								</ul>
-							</li>
-							<li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
-								<ul class="sub-menu">
-									<li><a href="admin/index.jsp">Dashboard</a></li>
-									<li><a href="admin/add-listing.html">Add Listing</a></li>
-									<li><a href="admin/bookmark.html">Bookmark</a></li>
-									<li><a href="admin/courses.html">Courses</a></li>
-									<li><a href="admin/review.html">Review</a></li>
-									<li><a href="admin/teacher-profile.html">Teacher Profile</a></li>
-									<li><a href="admin/user-profile.html">User Profile</a></li>
-									<li><a href="javascript:;">Calendar<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="admin/basic-calendar.html">Basic Calendar</a></li>
-											<li><a href="admin/list-view-calendar.html">List View Calendar</a></li>
-										</ul>
-									</li>
-									<li><a href="javascript:;">Mailbox<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="admin/mailbox.html">Mailbox</a></li>
-											<li><a href="admin/mailbox-compose.html">Compose</a></li>
-											<li><a href="admin/mailbox-read.html">Mail Read</a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-						</ul>
-						<div class="nav-social-link">
-							<a href="javascript:;"><i class="fa fa-facebook"></i></a>
-							<a href="javascript:;"><i class="fa fa-google-plus"></i></a>
-							<a href="javascript:;"><i class="fa fa-linkedin"></i></a>
-						</div>
-                    </div>
-					<!-- Navigation Menu END ==== -->
-                </div>
-            </div>
-        </div>
-    </header>
+	<style>
+	.action-card {
+        opacity: 1;
+        transition: opacity 0.5s ease-in-out;
+    }
+            .popup-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: none;
+                justify-content: center;
+                align-items: center;
+            }
+            .popup-content {
+                background: #f8f1e7;
+                padding: 20px;
+                border-radius: 10px;
+                width: 400px;
+            }
+            .filter-btn-container {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
+            .btn-change-avatar {
+                display: block;
+                margin: 10px auto; /* Căn giữa theo chiều ngang */
+                background-color: #ff9800;
+                color: white;
+                border: none;
+                padding: 5px 10px;
+                cursor: pointer;
+                font-size: 14px;
+                border-radius: 5px;
+            }
+
+            .btn-change-avatar:hover {
+                background-color: #e68900;
+            }
+
+            }
+
+        </style>
+
+    <jsp:include page="header.jsp" />
     <!-- header END ==== -->
     <!-- Content -->
     <div class="page-content bg-white">
@@ -227,6 +107,12 @@
 				 </div>
             </div>
         </div>
+        <%
+            String id = request.getParameter("id");
+            if (id == null) {
+                id = (String) session.getAttribute("id");
+            }
+        %>
 		<!-- Breadcrumb row -->
 		<div class="breadcrumb-row">
 			<div class="container">
@@ -246,20 +132,16 @@
 						<div class="col-lg-3 col-md-4 col-sm-12 m-b30">
 							<div class="profile-bx text-center">
 								<div class="user-profile-thumb">
-									<img src="assets/images/profile/pic1.jpg" alt=""/>
+									<img src="${user.avatar}" alt=""/>
 								</div>
+
+
 								<div class="profile-info">
-									<h4>Mark Andre</h4>
-									<span>mark.example@info.com</span>
+									<h4>${user.lastName}</h4>
+									<span>${user.email}</span>
+
 								</div>
-								<div class="profile-social">
-									<ul class="list-inline m-a0">
-										<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-										<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-										<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-										<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-									</ul>
-								</div>
+
 								<div class="profile-tabnav">
 									<ul class="nav nav-tabs">
 										<li class="nav-item">
@@ -271,295 +153,123 @@
 										<li class="nav-item">
 											<a class="nav-link" data-toggle="tab" href="#edit-profile"><i class="ti-pencil-alt"></i>Edit Profile</a>
 										</li>
-										<li class="nav-item">
-											<a class="nav-link" data-toggle="tab" href="#change-password"><i class="ti-lock"></i>Change Password</a>
-										</li>
+
 									</ul>
 								</div>
 							</div>
 						</div>
+						<c:set var="coursesPerPage" value="${param.coursesPerPage ne null ? param.coursesPerPage : 4}" />
+                        <c:set var="totalCourses" value="${fn:length(requestScope.courses)}" />
+                        <c:set var="totalPages" value="${(totalCourses/coursesPerPage) + (totalCourses%coursesPerPage > 0 ? 1 : 0)}" />
+                        <c:set var="currentPage" value="${param.page ne null ? param.page : 1}" />
+
+                        <%-- Tính toán vị trí bắt đầu và kết thúc cho mỗi trang --%>
+                        <c:set var="startIndex" value="${(currentPage - 1) * coursesPerPage}" />
+                        <c:set var="endIndex" value="${startIndex + coursesPerPage}" />
+                        <c:set var="endIndex" value="${endIndex > totalCourses ? totalCourses : endIndex}" />
 						<div class="col-lg-9 col-md-8 col-sm-12 m-b30">
 							<div class="profile-content-bx">
 								<div class="tab-content">
-									<div class="tab-pane active" id="courses">
-										<div class="profile-head">
-											<h3>My Courses</h3>
-											<div class="feature-filters style1 ml-auto">
-												<ul class="filters" data-toggle="buttons">
-													<li data-filter="" class="btn active">
-														<input type="radio">
-														<a href="#"><span>All</span></a> 
-													</li>
-													<li data-filter="publish" class="btn">
-														<input type="radio">
-														<a href="#"><span>Publish</span></a> 
-													</li>
-													<li data-filter="pending" class="btn">
-														<input type="radio">
-														<a href="#"><span>Pending</span></a> 
-													</li>
-												</ul>
-											</div>
-										</div>
-										<div class="courses-filter">
-											<div class="clearfix">
-												<ul id="masonry" class="ttr-gallery-listing magnific-image row">
-													<li class="action-card col-xl-4 col-lg-6 col-md-12 col-sm-6 publish">
-														<div class="cours-bx">
-															<div class="action-box">
-																<img src="assets/images/courses/pic1.jpg" alt="">
-																<a href="#" class="btn">Read More</a>
-															</div>
-															<div class="info-bx text-center">
-																<h5><a href="#">Introduction EduChamp – LMS plugin</a></h5>
-																<span>Programming</span>
-															</div>
-															<div class="cours-more-info">
-																<div class="review">
-																	<span>3 Review</span>
-																	<ul class="cours-star">
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																	</ul>
-																</div>
-																<div class="price">
-																	<del>$190</del>
-																	<h5>$120</h5>
-																</div>
-															</div>
-														</div>
-													</li>
-													<li class="action-card col-xl-4 col-lg-6 col-md-12 col-sm-6 pending">
-														<div class="cours-bx">
-															<div class="action-box">
-																<img src="assets/images/courses/pic2.jpg" alt="">
-																<a href="#" class="btn">Read More</a>
-															</div>
-															<div class="info-bx text-center">
-																<h5><a href="#">Introduction EduChamp – LMS plugin</a></h5>
-																<span>Programming</span>
-															</div>
-															<div class="cours-more-info">
-																<div class="review">
-																	<span>3 Review</span>
-																	<ul class="cours-star">
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																	</ul>
-																</div>
-																<div class="price">
-																	<del>$190</del>
-																	<h5>$120</h5>
-																</div>
-															</div>
-														</div>
-													</li>
-													<li class="action-card col-xl-4 col-lg-6 col-md-12 col-sm-6 publish">
-														<div class="cours-bx">
-															<div class="action-box">
-																<img src="assets/images/courses/pic3.jpg" alt="">
-																<a href="#" class="btn">Read More</a>
-															</div>
-															<div class="info-bx text-center">
-																<h5><a href="#">Introduction EduChamp – LMS plugin</a></h5>
-																<span>Programming</span>
-															</div>
-															<div class="cours-more-info">
-																<div class="review">
-																	<span>3 Review</span>
-																	<ul class="cours-star">
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																	</ul>
-																</div>
-																<div class="price">
-																	<del>$190</del>
-																	<h5>$120</h5>
-																</div>
-															</div>
-														</div>
-													</li>
-													<li class="action-card col-xl-4 col-lg-6 col-md-12 col-sm-6 pending">
-														<div class="cours-bx">
-															<div class="action-box">
-																<img src="assets/images/courses/pic4.jpg" alt="">
-																<a href="#" class="btn">Read More</a>
-															</div>
-															<div class="info-bx text-center">
-																<h5><a href="#">Introduction EduChamp – LMS plugin</a></h5>
-																<span>Programming</span>
-															</div>
-															<div class="cours-more-info">
-																<div class="review">
-																	<span>3 Review</span>
-																	<ul class="cours-star">
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																	</ul>
-																</div>
-																<div class="price">
-																	<del>$190</del>
-																	<h5>$120</h5>
-																</div>
-															</div>
-														</div>
-													</li>
-													<li class="action-card col-xl-4 col-lg-6 col-md-12 col-sm-6 publish">
-														<div class="cours-bx">
-															<div class="action-box">
-																<img src="assets/images/courses/pic5.jpg" alt="">
-																<a href="#" class="btn">Read More</a>
-															</div>
-															<div class="info-bx text-center">
-																<h5><a href="#">Introduction EduChamp – LMS plugin</a></h5>
-																<span>Programming</span>
-															</div>
-															<div class="cours-more-info">
-																<div class="review">
-																	<span>3 Review</span>
-																	<ul class="cours-star">
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																	</ul>
-																</div>
-																<div class="price">
-																	<del>$190</del>
-																	<h5>$120</h5>
-																</div>
-															</div>
-														</div>
-													</li>
-													<li class="action-card col-xl-4 col-lg-6 col-md-12 col-sm-6 pending">
-														<div class="cours-bx">
-															<div class="action-box">
-																<img src="assets/images/courses/pic6.jpg" alt="">
-																<a href="#" class="btn">Read More</a>
-															</div>
-															<div class="info-bx text-center">
-																<h5><a href="#">Introduction EduChamp – LMS plugin</a></h5>
-																<span>Programming</span>
-															</div>
-															<div class="cours-more-info">
-																<div class="review">
-																	<span>3 Review</span>
-																	<ul class="cours-star">
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																	</ul>
-																</div>
-																<div class="price">
-																	<del>$190</del>
-																	<h5>$120</h5>
-																</div>
-															</div>
-														</div>
-													</li>
-													<li class="action-card col-xl-4 col-lg-6 col-md-12 col-sm-6 publish">
-														<div class="cours-bx">
-															<div class="action-box">
-																<img src="assets/images/courses/pic7.jpg" alt="">
-																<a href="#" class="btn">Read More</a>
-															</div>
-															<div class="info-bx text-center">
-																<h5><a href="#">Introduction EduChamp – LMS plugin</a></h5>
-																<span>Programming</span>
-															</div>
-															<div class="cours-more-info">
-																<div class="review">
-																	<span>3 Review</span>
-																	<ul class="cours-star">
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																	</ul>
-																</div>
-																<div class="price">
-																	<del>$190</del>
-																	<h5>$120</h5>
-																</div>
-															</div>
-														</div>
-													</li>
-													<li class="action-card col-xl-4 col-lg-6 col-md-12 col-sm-6 book">
-														<div class="cours-bx">
-															<div class="action-box">
-																<img src="assets/images/courses/pic8.jpg" alt="">
-																<a href="#" class="btn">Read More</a>
-															</div>
-															<div class="info-bx text-center">
-																<h5><a href="#">Introduction EduChamp – LMS plugin</a></h5>
-																<span>Programming</span>
-															</div>
-															<div class="cours-more-info">
-																<div class="review">
-																	<span>3 Review</span>
-																	<ul class="cours-star">
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																	</ul>
-																</div>
-																<div class="price">
-																	<del>$190</del>
-																	<h5>$120</h5>
-																</div>
-															</div>
-														</div>
-													</li>
-													<li class="action-card col-xl-4 col-lg-6 col-md-12 col-sm-6 publish">
-														<div class="cours-bx">
-															<div class="action-box">
-																<img src="assets/images/courses/pic9.jpg" alt="">
-																<a href="#" class="btn">Read More</a>
-															</div>
-															<div class="info-bx text-center">
-																<h5><a href="#">Introduction EduChamp – LMS plugin</a></h5>
-																<span>Programming</span>
-															</div>
-															<div class="cours-more-info">
-																<div class="review">
-																	<span>3 Review</span>
-																	<ul class="cours-star">
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li class="active"><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																		<li><i class="fa fa-star"></i></li>
-																	</ul>
-																</div>
-																<div class="price">
-																	<del>$190</del>
-																	<h5>$120</h5>
-																</div>
-															</div>
-														</div>
-													</li>
-												</ul>
-											</div>
-										</div>
-									</div>
+									                                   <div class="tab-pane active" id="courses">
+                                                                            <div class="profile-head">
+                                                                                <h3>My Courses</h3>
+                                                                                <div class="feature-filters style1 ml-auto">
+                                                                                <button class="btn btn-primary" id="filter-btn">Filter</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="courses-filter">
+                                                                                <div class="clearfix">
+                                                                                    <ul id="masonry" class="ttr-gallery-listing magnific-image row">
+                                                                                        <c:forEach items="${requestScope.courses}" var="c">
+                                                                                            <li class="action-card col-xl-4 col-lg-6 col-md-12 col-sm-6 publish"
+                                                                                                    >
+                                                                                                <div class="cours-bx">
+                                                                                                    <div class="action-box">
+                                                                                                        <img src="assets/images/courses/pic3.jpg" alt="">
+                                                                                                        <a href="#" class="btn">Read More</a>
+                                                                                                    </div>
+                                                                                                    <div class="info-bx text-center">
+                                                                                                        <h5><a href="#">${c.courseType.courseTypeName}</a></h5>
+                                                                                                        <h6>${c.title}</h6>
+                                                                                                        <span>${c.description}</span>
+
+                                                                                                    </div>
+                                                                                                    <div class="cours-more-info">
+                                                                                                        <div class="review">
+                                                                                                            <c:forEach var="i" items="${requestScope.enrollList}">
+                                                                                                                <c:if test="${c.courseId == i.course.courseId}">
+                                                                                                                <span>Enroll Date</span>
+                                                                                                                <h5>${i.enrollDate}</h5>
+                                                                                                                </c:if>
+                                                                                                            </c:forEach>
+                                                                                                        </div>
+                                                                                                        <div class="price">
+                                                                                                            <c:forEach var="i" items="${requestScope.enrollList}">
+                                                                                                                <c:if test="${c.courseId == i.course.courseId}">
+                                                                                                                 <span>Progress</span>
+                                                                                                                 <h5>${i.processPercentage}</h5>
+                                                                                                                </c:if>
+                                                                                                            </c:forEach>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </li>
+                                                                                        </c:forEach>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                         <div class="popup-overlay" id="popup">
+                                                                                <div class="popup-content">
+                                                                                    <h5>Display Properties</h5>
+                                                                                    <form>
+                                                                                        <div class="form-check">
+                                                                                         <input class="form-check-input" type="checkbox" name="display" id="courseTypeName">
+                                                                                         <label class="form-check-label" for="courseTypeName">Course Type Name</label>
+                                                                                         </div>
+                                                                                         <div class="form-check">
+                                                                                         <input class="form-check-input" type="checkbox" name="display" id="title">
+                                                                                         <label class="form-check-label" for="title">title</label>
+                                                                                         </div>
+                                                                                         <div class="form-check">
+                                                                                         <input class="form-check-input" type="checkbox" name="display" id="description">
+                                                                                         <label class="form-check-label" for="description">Description</label>
+                                                                                         </div>
+                                                                                          <div class="form-check">
+                                                                                          <input class="form-check-input" type="checkbox" name="display" id="enrollDate">
+                                                                                          <label class="form-check-label" for="enrollDate">Enroll Date</label>
+                                                                                          </div>
+                                                                                          <div class="form-check">
+                                                                                          <input class="form-check-input" type="checkbox" name="display" id="processPercentage">
+                                                                                          <label class="form-check-label" for="processPercentage">processPercentage</label>
+                                                                                          </div>
+                                                                                        <hr>
+                                                                                        <h5>Display Progress</h5>
+                                                                                       <div class="form-check">
+                                                                                           <input class="form-check-input" type="checkbox" name="progress" id="pending">
+                                                                                           <label class="form-check-label" for="pending">Pending</label>
+                                                                                       </div>
+                                                                                       <div class="form-check">
+                                                                                           <input class="form-check-input" type="checkbox" name="progress" id="done">
+                                                                                           <label class="form-check-label" for="done">Done</label>
+                                                                                       </div>
+                                                                                       <div class="form-check">
+                                                                                           <input class="form-check-input" type="checkbox" name="progress" id="not-yet">
+                                                                                           <label class="form-check-label" for="not-yet">Not Yet</label>
+                                                                                       </div>
+
+
+                                                                                        <hr>
+
+                                                                                        <label for="courses-per-page">Number of Courses per Page</label>
+                                                                                        <input type="number" class="form-control" id="courses-per-page" min="1" max="100" value="4">
+                                                                                        <div class="mt-3 text-end">
+                                                                                            <button type="button" class="btn btn-secondary" id="close-btn">Close</button>
+                                                                                            <button type="submit" class="btn btn-primary">Apply</button>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
 									<div class="tab-pane" id="quiz-results">
 										<div class="profile-head">
 											<h3>Quiz Results</h3>
@@ -593,161 +303,83 @@
 									</div>
 									<div class="tab-pane" id="edit-profile">
 										<div class="profile-head">
-											<h3>Edit Profile</h3>
+                            <h3>Profile</h3>
 										</div>
-										<form class="edit-profile">
+                                            <form class="edit-profile" action="profile" method="post">
+                                             <c:set value="${requestScope.user}" var="a" />
 											<div class="">
+											    <div class="form-group row">
+                                                    <label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">User Name</label>
+                                                	<div class="col-12 col-sm-9 col-md-9 col-lg-7">
+                                                	<input type="hidden" name="id" value="${a.userId}">
+                                                	<input type="hidden" name="id" value="<%= id %>">
+                                                		<input class="form-control" type="text" value="${a.userName}"name="userName">
+                                                	</div>
+                                                </div>
+
+
 												<div class="form-group row">
-													<div class="col-12 col-sm-9 col-md-9 col-lg-10 ml-auto">
-														<h3>1. Personal Details</h3>
-													</div>
-												</div>
-												<div class="form-group row">
-													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Full Name</label>
+													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">First Name</label>
 													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value="Mark Andre">
+													<input type="hidden" name="id" value="${a.userId}">
+														<input class="form-control" type="text" value="${a.firstName}"name= "firstName">
+													</div>
+												</div>
+                                                <div class="form-group row">
+													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Last Name</label>
+													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
+														<input class="form-control" type="text" value="${a.lastName}"name="lastName">
 													</div>
 												</div>
 												<div class="form-group row">
-													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Occupation</label>
+													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Email</label>
 													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value="CTO">
+														<input class="form-control" type="text" value="${a.email}"name="email" readonly>
 													</div>
 												</div>
 												<div class="form-group row">
-													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Company Name</label>
+													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Phone Number</label>
 													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value="EduChamp">
-														<span class="help">If you want your invoices addressed to a company. Leave blank to use your full name.</span>
+														<input class="form-control" type="text" value="${a.phoneNumber}"name="phoneNumber">
 													</div>
 												</div>
-												<div class="form-group row">
-													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Phone No.</label>
-													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value="+120 012345 6789">
-													</div>
-												</div>
+
 												
 												<div class="seperator"></div>
-												
-												<div class="form-group row">
-													<div class="col-12 col-sm-9 col-md-9 col-lg-10 ml-auto">
-														<h3>2. Address</h3>
-													</div>
-												</div>
-												<div class="form-group row">
-													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Address</label>
-													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value="5-S2-20 Dummy City, UK">
-													</div>
-												</div>
-												<div class="form-group row">
-													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">City</label>
-													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value="US">
-													</div>
-												</div>
-												<div class="form-group row">
-													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">State</label>
-													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value="California">
-													</div>
-												</div>
-												<div class="form-group row">
-													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Postcode</label>
-													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value="000702">
-													</div>
-												</div>
-
-												<div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
 
 												<div class="form-group row">
-													<div class="col-12 col-sm-9 col-md-9 col-lg-10 ml-auto">
-														<h3 class="m-form__section">3. Social Links</h3>
-													</div>
-												</div>
-
-												<div class="form-group row">
-													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Linkedin</label>
+													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Gender</label>
 													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value="www.linkedin.com">
+														<input class="form-control" type="text" value="${a.gender}"name="gender">
 													</div>
 												</div>
 												<div class="form-group row">
-													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Facebook</label>
-													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value="www.facebook.com">
-													</div>
-												</div>
-												<div class="form-group row">
-													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Twitter</label>
-													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value="www.twitter.com">
-													</div>
-												</div>
-												<div class="form-group row">
-													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Instagram</label>
-													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value="www.instagram.com">
-													</div>
-												</div>
+                                                	<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Avatar</label>
+                                                	<div class="col-12 col-sm-9 col-md-9 col-lg-7">
+                                                	<input class="form-control" type="text" value="${a.avatar}"name="avatar">
+                                                	</div>
+                                                	</div>
 											</div>
 											<div class="">
 												<div class="">
 													<div class="row">
 														<div class="col-12 col-sm-3 col-md-3 col-lg-2">
 														</div>
+														 <h5 style="color: green">${requestScope.message}</h5>
+														  <h5 style="color: red">${requestScope.error}</h5>
 														<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-															<button type="reset" class="btn">Save changes</button>
+															<button type="submit" class="btn">Save changes</button>
 															<button type="reset" class="btn-secondry">Cancel</button>
 														</div>
+														<h5 style="color: green">${sessionScope.message}</h5>
+                                                        <h5 style="color: red">${sessionScope.error}</h5>
 													</div>
+
 												</div>
 											</div>
 										</form>
 									</div>
-									<div class="tab-pane" id="change-password">
-										<div class="profile-head">
-											<h3>Change Password</h3>
-										</div>
-										<form class="edit-profile">
-											<div class="">
-												<div class="form-group row">
-													<div class="col-12 col-sm-8 col-md-8 col-lg-9 ml-auto">
-														<h3>Password</h3>
-													</div>
-												</div>
-												<div class="form-group row">
-													<label class="col-12 col-sm-4 col-md-4 col-lg-3 col-form-label">Current Password</label>
-													<div class="col-12 col-sm-8 col-md-8 col-lg-7">
-														<input class="form-control" type="password" value="">
-													</div>
-												</div>
-												<div class="form-group row">
-													<label class="col-12 col-sm-4 col-md-4 col-lg-3 col-form-label">New Password</label>
-													<div class="col-12 col-sm-8 col-md-8 col-lg-7">
-														<input class="form-control" type="password" value="">
-													</div>
-												</div>
-												<div class="form-group row">
-													<label class="col-12 col-sm-4 col-md-4 col-lg-3 col-form-label">Re Type New Password</label>
-													<div class="col-12 col-sm-8 col-md-8 col-lg-7">
-														<input class="form-control" type="password" value="">
-													</div>
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-12 col-sm-4 col-md-4 col-lg-3">
-												</div>
-												<div class="col-12 col-sm-8 col-md-8 col-lg-7">
-													<button type="reset" class="btn">Save changes</button>
-													<button type="reset" class="btn-secondry">Cancel</button>
-												</div>
-											</div>
-												
-										</form>
-									</div>
+
 								</div> 
 							</div>
 						</div>
@@ -759,113 +391,121 @@
     </div>
     <!-- Content END-->
 	<!-- Footer ==== -->
-    <footer>
-        <div class="footer-top">
-			<div class="pt-exebar">
-				<div class="container">
-					<div class="d-flex align-items-stretch">
-						<div class="pt-logo mr-auto">
-							<a href="index.jsp"><img src="assets/images/logo-white.png" alt=""/></a>
-						</div>
-						<div class="pt-social-link">
-							<ul class="list-inline m-a0">
-								<li><a href="#" class="btn-link"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="#" class="btn-link"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#" class="btn-link"><i class="fa fa-linkedin"></i></a></li>
-								<li><a href="#" class="btn-link"><i class="fa fa-google-plus"></i></a></li>
-							</ul>
-						</div>
-						<div class="pt-btn-join">
-							<a href="#" class="btn ">Join Now</a>
-						</div>
-					</div>
-				</div>
-			</div>
-            <div class="container">
-                <div class="row">
-					<div class="col-lg-4 col-md-12 col-sm-12 footer-col-4">
-                        <div class="widget">
-                            <h5 class="footer-title">Sign Up For A Newsletter</h5>
-							<p class="text-capitalize m-b20">Weekly Breaking news analysis and cutting edge advices on job searching.</p>
-                            <div class="subscribe-form m-b20">
-								<form class="subscription-form" action="http://educhamp.themetrades.com/demo/assets/script/mailchamp.php" method="post">
-									<div class="ajax-message"></div>
-									<div class="input-group">
-										<input name="email" required="required"  class="form-control" placeholder="Your Email Address" type="email">
-										<span class="input-group-btn">
-											<button name="submit" value="Submit" type="submit" class="btn"><i class="fa fa-arrow-right"></i></button>
-										</span> 
-									</div>
-								</form>
-							</div>
-                        </div>
-                    </div>
-					<div class="col-12 col-lg-5 col-md-7 col-sm-12">
-						<div class="row">
-							<div class="col-4 col-lg-4 col-md-4 col-sm-4">
-								<div class="widget footer_widget">
-									<h5 class="footer-title">Company</h5>
-									<ul>
-										<li><a href="index.jsp">Home</a></li>
-										<li><a href="about-1.jsp">About</a></li>
-										<li><a href="faq-1.jsp">FAQs</a></li>
-										<li><a href="contact-1.jsp">Contact</a></li>
-									</ul>
-								</div>
-							</div>
-							<div class="col-4 col-lg-4 col-md-4 col-sm-4">
-								<div class="widget footer_widget">
-									<h5 class="footer-title">Get In Touch</h5>
-									<ul>
-										<li><a href="http://educhamp.themetrades.com/admin/index.html">Dashboard</a></li>
-										<li><a href="blog-classic-grid.jsp">Blog</a></li>
-										<li><a href="portfolio.jsp">Portfolio</a></li>
-										<li><a href="event.jsp">Event</a></li>
-									</ul>
-								</div>
-							</div>
-							<div class="col-4 col-lg-4 col-md-4 col-sm-4">
-								<div class="widget footer_widget">
-									<h5 class="footer-title">Courses</h5>
-									<ul>
-										<li><a href="courses.jsp">Courses</a></li>
-										<li><a href="courses-details.jsp">Details</a></li>
-										<li><a href="membership.jsp">Membership</a></li>
-										<li><a href="profile.html">Profile</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-                    </div>
-					<div class="col-12 col-lg-3 col-md-5 col-sm-12 footer-col-4">
-                        <div class="widget widget_gallery gallery-grid-4">
-                            <h5 class="footer-title">Our Gallery</h5>
-                            <ul class="magnific-image">
-								<li><a href="assets/images/gallery/pic1.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic1.jpg" alt=""></a></li>
-								<li><a href="assets/images/gallery/pic2.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic2.jpg" alt=""></a></li>
-								<li><a href="assets/images/gallery/pic3.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic3.jpg" alt=""></a></li>
-								<li><a href="assets/images/gallery/pic4.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic4.jpg" alt=""></a></li>
-								<li><a href="assets/images/gallery/pic5.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic5.jpg" alt=""></a></li>
-								<li><a href="assets/images/gallery/pic6.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic6.jpg" alt=""></a></li>
-								<li><a href="assets/images/gallery/pic7.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic7.jpg" alt=""></a></li>
-								<li><a href="assets/images/gallery/pic8.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic8.jpg" alt=""></a></li>
-							</ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 text-center"> <a target="_blank" href="https://www.templateshub.net">Templates Hub</a></div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer END ==== -->
+   <jsp:include page="footer.jsp" />
     <button class="back-to-top fa fa-chevron-up" ></button>
 </div>
+
+ <script>
+
+     document.addEventListener("DOMContentLoaded", function () {
+         const filterBtn = document.getElementById("filter-btn");
+         const popup = document.getElementById("popup");
+         const closeBtn = document.getElementById("close-btn");
+         const form = popup.querySelector("form");
+         const coursesList = document.querySelectorAll("#masonry .action-card");
+         const coursesPerPageInput = document.getElementById("courses-per-page");
+         const paginationContainer = document.createElement("div");
+         paginationContainer.className = "pagination";
+         document.querySelector(".courses-filter").appendChild(paginationContainer);
+
+         let coursesPerPage = parseInt(coursesPerPageInput.value);
+         let currentPage = 1;
+
+         filterBtn.addEventListener("click", function () {
+             popup.style.display = "block";
+         });
+
+         closeBtn.addEventListener("click", function () {
+             popup.style.display = "none";
+         });
+
+         form.addEventListener("change", function () {
+             const showCourseType = document.getElementById("courseTypeName").checked;
+             const showDescription = document.getElementById("description").checked;
+             const showEnrollDate = document.getElementById("enrollDate").checked;
+             const showProcessPercentage = document.getElementById("processPercentage").checked;
+             const showTitle = document.getElementById("title").checked;
+             const showPending = document.getElementById("pending").checked;
+             const showDone = document.getElementById("done").checked;
+             const showNotYet = document.getElementById("not-yet").checked;
+
+             coursesList.forEach(course => {
+                 const progressElement = course.querySelector(".price h5");
+                 const progressText = progressElement.textContent.trim(); // Assuming progress is stored as text like 'Done', 'Pending', etc.
+
+                 let showCourse = false;
+
+                 // Apply progress filter
+                 if (showPending && progressText === "Pending") {
+                     showCourse = true;
+                 }
+                 if (showDone && progressText === "Done") {
+                     showCourse = true;
+                 }
+                 if (showNotYet && progressText === "Not yet") {
+                     showCourse = true;
+                 }
+
+                 // Control display of other course information
+                 course.querySelector(".info-bx h5").style.display = showCourseType ? "block" : "none";
+                 course.querySelector(".info-bx span").style.display = showDescription ? "block" : "none";
+                 course.querySelector(".review h5").style.display = showEnrollDate ? "block" : "none";
+                 course.querySelector(".price h5").style.display = showProcessPercentage ? "block" : "none";
+                 course.querySelector(".info-bx h6").style.display = showTitle ? "block" : "none";
+
+                 // Show or hide course based on progress filter
+                 course.style.display = showCourse ? "block" : "none";
+             });
+         });
+
+         form.addEventListener("submit", function (e) {
+             e.preventDefault();
+             coursesPerPage = parseInt(coursesPerPageInput.value);
+             currentPage = 1;
+             updatePagination();
+             popup.style.display = "none";
+         });
+
+         function updatePagination() {
+             const totalCourses = coursesList.length;
+             const totalPages = Math.ceil(totalCourses / coursesPerPage);
+             paginationContainer.innerHTML = "";
+
+             for (let i = 1; i <= totalPages; i++) {
+                 const pageBtn = document.createElement("button");
+                 pageBtn.textContent = i;
+                 pageBtn.className = "page-btn";
+                 if (i === currentPage) pageBtn.classList.add("active");
+                 pageBtn.addEventListener("click", function () {
+                     currentPage = i;
+                     updateCourseVisibility();
+                     updatePagination();
+                 });
+                 paginationContainer.appendChild(pageBtn);
+             }
+
+             updateCourseVisibility();
+         }
+
+         function updateCourseVisibility() {
+             // Smooth transition effect
+             document.querySelectorAll(".action-card").forEach(card => {
+                 card.style.transition = "opacity 0.5s ease-in-out";
+             });
+
+             coursesList.forEach((course, index) => {
+                 const start = (currentPage - 1) * coursesPerPage;
+                 const end = start + coursesPerPage;
+                 course.style.display = index >= start && index < end ? "block" : "none";
+                 course.style.opacity = index >= start && index < end ? 1 : 0;
+             });
+         }
+
+         updatePagination();
+     });
+
+    </script>
+
 <!-- External JavaScripts -->
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
