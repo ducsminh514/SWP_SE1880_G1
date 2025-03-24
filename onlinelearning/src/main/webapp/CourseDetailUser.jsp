@@ -158,6 +158,25 @@
         .completed-lesson {
             color: #28a745;
         }
+        
+        /* Progress bar styles */
+        .course-progress {
+            padding: 15px;
+            border: 1px solid #e9e9e9;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+            background-color: #e9e9e9;
+        }
+        
+        .progress-bar {
+            background-color: #4c1864;
+            border-radius: 5px;
+        }
 
         /* Responsive adjustments */
         @media (max-width: 767px) {
@@ -216,6 +235,21 @@
                                 </div>
                             </div>
 
+                            <!-- Progress bar -->
+                            <div class="course-progress mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h5>Your Progress</h5>
+                                    <span>${completedLessons}/${lessonCount} lessons completed (<c:out value="${Math.round(progressPercentage)}"/>%)</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" 
+                                         style="width: <c:out value="${progressPercentage}"/>%" 
+                                         aria-valuenow="<c:out value="${progressPercentage}"/>" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100"></div>
+                                </div>
+                            </div>
+
                             <!-- Content display area -->
                             <div class="content-display" id="lesson-content">
                                 <!-- Content will be loaded here via AJAX -->
@@ -230,17 +264,17 @@
                                 <div class="widget widget-newslatter">
                                     <h6 class="widget-title">Course Content</h6>
                                     <div class="course-lessons">
-                                        <c:forEach items="${subjects}" var="subject" varStatus="subjectStatus">
+                                        <c:forEach items="${listSubject}" var="subject" varStatus="subjectStatus">
                                             <div class="subject-panel">
-                                                <div class="subject-header" onclick="toggleSubject(${subject.subjectId})">
-                                                    <h6 class="m-0">${subject.name}</h6>
+                                                <div class="subject-header" onclick="toggleSubject('${subject.subjectId}')">
+                                                    <h6 class="m-0">${subject.subjectName}</h6>
                                                     <button class="toggle-btn">
                                                         <i id="icon-${subject.subjectId}" class="fa fa-plus"></i>
                                                     </button>
                                                 </div>
                                                 <div class="subject-content" id="subject-${subject.subjectId}">
-                                                    <c:forEach items="${subject.lessons}" var="lesson">
-                                                        <div class="lesson-item" onclick="loadLessonContent(${lesson.lessonId}, '${lesson.type}')">
+                                                    <c:forEach items="${subjectLessonsMap[subject.subjectId]}" var="lesson">
+                                                        <div class="lesson-item" onclick="loadLessonContent('${lesson.lessonId}', '${lesson.type}')">
                                                             <div class="lesson-icon">
                                                                 <c:choose>
                                                                     <c:when test="${lesson.type == 'TEXT'}">
@@ -268,10 +302,10 @@
                                                                             <i class="fa fa-clock-o"></i> ${lesson.duration} min
                                                                         </c:when>
                                                                         <c:when test="${lesson.type == 'QUIZ'}">
-                                                                            <i class="fa fa-question-circle"></i> ${lesson.questionCount} questions
+                                                                            <i class="fa fa-question-circle"></i> Quiz
                                                                         </c:when>
                                                                         <c:otherwise>
-                                                                            <i class="fa fa-file-text"></i> ${lesson.type}
+                                                                            <i class="fa fa-clock-o"></i> ${lesson.duration} min
                                                                         </c:otherwise>
                                                                     </c:choose>
                                                                 </div>
@@ -340,6 +374,18 @@
         const contentDisplay = document.getElementById('lesson-content');
         contentDisplay.innerHTML = '<div class="text-center p-5"><i class="fa fa-spinner fa-spin fa-3x"></i><p>Loading content...</p></div>';
         
+        // Highlight the active lesson
+        const lessonItems = document.querySelectorAll('.lesson-item');
+        lessonItems.forEach(item => {
+            item.classList.remove('active');
+        });
+        
+        // Find and highlight the clicked lesson
+        const clickedLesson = document.querySelector(`.lesson-item[onclick*="${lessonId}"]`);
+        if (clickedLesson) {
+            clickedLesson.classList.add('active');
+        }
+        
         // AJAX request to get lesson content
         $.ajax({
             url: 'lesson-content',
@@ -350,7 +396,7 @@
             },
             success: function(response) {
                 contentDisplay.innerHTML = response;
-                // Mark as viewed (you can add your tracking logic here)
+                // Mark as viewed
                 markLessonAsViewed(lessonId);
             },
             error: function() {
@@ -359,10 +405,45 @@
         });
     }
     
-    // Mark lesson as viewed (placeholder)
+    // Mark lesson as viewed
     function markLessonAsViewed(lessonId) {
-        // You can add AJAX call to mark the lesson as viewed here
-        console.log('Lesson ' + lessonId + ' marked as viewed');
+        // Log to console (in a real app, this would call the server)
+        console.log('Lesson ' + lessonId + ' viewed');
+    }
+    
+    // Mark lesson as completed
+    function markLessonAsCompleted(lessonId) {
+        // AJAX request to mark lesson as completed
+        $.ajax({
+            url: 'mark-lesson-completed',
+            type: 'POST',
+            data: {
+                lessonId: lessonId
+            },
+            success: function(response) {
+                // Add completion indicator to lesson in sidebar
+                const lessonItem = document.querySelector(`.lesson-item[onclick*="${lessonId}"]`);
+                if (lessonItem && !lessonItem.querySelector('.completed-lesson')) {
+                    const completionIndicator = document.createElement('div');
+                    completionIndicator.innerHTML = '<i class="fa fa-check-circle completed-lesson"></i>';
+                    lessonItem.appendChild(completionIndicator);
+                }
+                
+                // Show success message
+                const successMessage = document.createElement('div');
+                successMessage.className = 'alert alert-success mt-3';
+                successMessage.innerHTML = 'Lesson marked as completed!';
+                document.getElementById('lesson-content').appendChild(successMessage);
+                
+                // Remove the message after 3 seconds
+                setTimeout(function() {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            },
+            error: function() {
+                alert('Error marking lesson as completed. Please try again.');
+            }
+        });
     }
     
     // Initialize the first subject as open
@@ -377,6 +458,20 @@
                 firstSubjectHeader.click();
             }
         }
+        
+        // Add CSS for active lesson
+        const style = document.createElement('style');
+        style.textContent = `
+            .lesson-item.active {
+                background-color: #f1f1f1;
+                border-left: 3px solid #4c1864;
+            }
+            .completed-lesson {
+                color: #28a745;
+                margin-left: 10px;
+            }
+        `;
+        document.head.appendChild(style);
     });
 </script>
 </body>

@@ -13,6 +13,7 @@ public class Lesson {
     private Date createdDate;
     private String type;
     private Date updateDate;
+    private boolean completed;
 
     public Lesson() {
     }
@@ -30,6 +31,7 @@ public class Lesson {
         this.createdDate = createdDate;
         this.type = type;
         this.updateDate = updateDate;
+        this.completed = false;
     }
 
     // Getters and Setters
@@ -111,5 +113,13 @@ public class Lesson {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }

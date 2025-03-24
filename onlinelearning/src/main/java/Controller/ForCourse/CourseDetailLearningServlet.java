@@ -4,9 +4,11 @@ import DAO.CourseDAO;
 import DAO.EnrollmentDAO;
 import DAO.SubjectDAO;
 import DAO.LessonDAO;
+import DAO.LessonCompletionDAO;
 import Module.Course;
 import Module.Subject;
 import Module.Lesson;
+import Module.LessonCompletion;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,9 +18,11 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Set;
+import Module.User;
 @WebServlet(name = "CourseDetailLearningServlet", urlPatterns = {"/course-learning"})
 public class CourseDetailLearningServlet extends HttpServlet {
 
@@ -41,6 +45,7 @@ public class CourseDetailLearningServlet extends HttpServlet {
             SubjectDAO subjectDAO = new SubjectDAO();
             LessonDAO lessonDAO = new LessonDAO();
             EnrollmentDAO enrollmentDAO = new EnrollmentDAO();
+            LessonCompletionDAO completionDAO = new LessonCompletionDAO();
             
             // Get course information
             Course course = courseDAO.getCourseById(courseId);
@@ -57,9 +62,42 @@ public class CourseDetailLearningServlet extends HttpServlet {
             int totalLessons = 0;
             int totalDuration = 0;
             
+            // Get user ID from session for completion tracking
+            HttpSession session = request.getSession();
+            int userId = -1;
+            try {
+                // Lấy đối tượng user từ session
+                Object userObj = session.getAttribute("account");
+                if (userObj != null && userObj instanceof User) {
+                    User user = (User) userObj;
+                    userId = user.getUserId();
+                }
+                // Nếu không lấy được userId từ đối tượng user, giữ userId mặc định là -1
+            } catch (Exception e) {
+                System.out.println("Error getting userId from user object: " + e.getMessage());
+                // Tiếp tục với userId mặc định -1
+            }
+            
+            // Get completed lessons for the user
+            Set<Integer> completedLessonIds = new HashSet<>();
+            if (userId > 0) {
+                List<LessonCompletion> completedLessons = completionDAO.getCompletedLessons(userId);
+                for (LessonCompletion completion : completedLessons) {
+                    completedLessonIds.add(completion.getLessonId());
+                }
+            }
+            
             // Populate the map with lessons for each subject
             for (Subject subject : listSubject) {
                 ArrayList<Lesson> lessons = lessonDAO.getBySubject(subject.getSubjectId());
+                
+                // Mark completed lessons
+                for (Lesson lesson : lessons) {
+                    if (completedLessonIds.contains(lesson.getLessonId())) {
+                        lesson.setCompleted(true);
+                    }
+                }
+                
                 subjectLessonsMap.put(subject.getSubjectId(), lessons);
                 
                 // Calculate totals
@@ -69,6 +107,13 @@ public class CourseDetailLearningServlet extends HttpServlet {
                 }
             }
             
+            // Calculate progress percentage
+            double progressPercentage = 0;
+            int completedLessons = completedLessonIds.size();
+            if (totalLessons > 0 && userId > 0) {
+                progressPercentage = completionDAO.getCourseCompletionPercentage(courseId, userId);
+            }
+            
             // Set attributes for JSP
             request.setAttribute("course", course);
             request.setAttribute("listSubject", listSubject);
@@ -76,11 +121,8 @@ public class CourseDetailLearningServlet extends HttpServlet {
             request.setAttribute("subjectCount", listSubject.size());
             request.setAttribute("lessonCount", totalLessons);
             request.setAttribute("totalDuration", totalDuration);
-            
-            // TODO: Calculate user progress (this would require user session and completion data)
-            // For now, we'll use placeholder values
-            request.setAttribute("completedLessons", 0);
-            request.setAttribute("progressPercentage", 0);
+            request.setAttribute("completedLessons", completedLessons);
+            request.setAttribute("progressPercentage", progressPercentage);
             
             // Forward to the JSP
             request.getRequestDispatcher("CourseDetailUser.jsp").forward(request, response);

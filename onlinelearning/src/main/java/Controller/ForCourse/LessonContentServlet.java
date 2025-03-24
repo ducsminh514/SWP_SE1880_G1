@@ -28,7 +28,7 @@ public class LessonContentServlet extends HttpServlet {
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
        // Set response content type
-       response.setContentType("application/json");
+       response.setContentType("text/html");
        response.setCharacterEncoding("UTF-8");
 
        // Get lesson ID from request
@@ -36,9 +36,7 @@ public class LessonContentServlet extends HttpServlet {
        PrintWriter out = response.getWriter();
 
        if (lessonIdStr == null || lessonIdStr.isEmpty()) {
-           JsonObject errorJson = new JsonObject();
-           errorJson.addProperty("error", "Lesson ID is required");
-           out.print(errorJson.toString());
+           out.print("<div class='alert alert-danger'>Lesson ID is required</div>");
            return;
        }
 
@@ -50,21 +48,22 @@ public class LessonContentServlet extends HttpServlet {
            Lesson lesson = lessonDAO.findById(lessonId);
 
            if (lesson == null) {
-               JsonObject errorJson = new JsonObject();
-               errorJson.addProperty("error", "Lesson not found");
-               out.print(errorJson.toString());
+               out.print("<div class='alert alert-danger'>Lesson not found</div>");
                return;
            }
 
-           // Create JSON response
-           JsonObject jsonResponse = new JsonObject();
-           jsonResponse.addProperty("lessonId", lesson.getLessonId());
-           jsonResponse.addProperty("lessonName", lesson.getLessonName());
-           jsonResponse.addProperty("lessonType", lesson.getType());
-           jsonResponse.addProperty("duration", lesson.getDuration());
-
-           // Based on lesson type, fetch specific content
+           // Generate HTML content based on lesson type
            String lessonType = lesson.getType();
+           StringBuilder htmlContent = new StringBuilder();
+           
+           // Common header for all lesson types
+           htmlContent.append("<div class='lesson-header mb-4'>");
+           htmlContent.append("<h4>").append(lesson.getLessonName()).append("</h4>");
+           htmlContent.append("<div class='lesson-meta'>");
+           htmlContent.append("<span><i class='fa fa-clock-o'></i> ").append(lesson.getDuration()).append(" minutes</span>");
+           htmlContent.append("</div>");
+           htmlContent.append("</div>");
+
            if (lessonType != null) {
                switch (lessonType.toLowerCase()) {
                    case "text":
@@ -72,7 +71,9 @@ public class LessonContentServlet extends HttpServlet {
                        LessonTextDAO textDAO = new LessonTextDAO();
                        LessonText text = textDAO.getLessonTextByLessonId(lessonId);
                        if (text != null) {
-                           jsonResponse.addProperty("content", text.getContent());
+                           htmlContent.append("<div class='lesson-content'>");
+                           htmlContent.append(text.getContent());
+                           htmlContent.append("</div>");
                        }
                        break;
 
@@ -81,10 +82,16 @@ public class LessonContentServlet extends HttpServlet {
                        LessonVideoDAO videoDAO = new LessonVideoDAO();
                        LessonVideo video = videoDAO.getLessonVideoByLessonId(lessonId);
                        if (video != null) {
-                           jsonResponse.addProperty("videoUrl", video.getVideoUrl());
-                           jsonResponse.addProperty("videoDuration", video.getVideoDuration());
-                           jsonResponse.addProperty("transcript", video.getTranscript());
-                           jsonResponse.addProperty("downloadAllowed", video.isDownloadAllowed());
+                           htmlContent.append("<div class='video-container mb-4'>");
+                           htmlContent.append("<iframe src='").append(video.getVideoUrl()).append("' allowfullscreen></iframe>");
+                           htmlContent.append("</div>");
+                           
+                           if (video.getTranscript() != null && !video.getTranscript().isEmpty()) {
+                               htmlContent.append("<div class='transcript-container'>");
+                               htmlContent.append("<h5>Transcript</h5>");
+                               htmlContent.append("<div class='transcript-content'>").append(video.getTranscript()).append("</div>");
+                               htmlContent.append("</div>");
+                           }
                        }
                        break;
 
@@ -93,45 +100,52 @@ public class LessonContentServlet extends HttpServlet {
                        LessonFileDAO fileDAO = new LessonFileDAO();
                        LessonFile file = fileDAO.getLessonFileByLessonId(lessonId);
                        if (file != null) {
-                           jsonResponse.addProperty("fileUrl", file.getFileUrl());
-                           jsonResponse.addProperty("fileType", file.getFileType());
-                           jsonResponse.addProperty("fileSize", file.getFileSize());
+                           htmlContent.append("<div class='file-container'>");
+                           htmlContent.append("<h5>Download Resource</h5>");
+                           htmlContent.append("<p>File Type: ").append(file.getFileType()).append("</p>");
+                           htmlContent.append("<p>File Size: ").append(file.getFileSize()).append(" KB</p>");
+                           htmlContent.append("<a href='").append(file.getFileUrl()).append("' class='btn' download>");
+                           htmlContent.append("<i class='fa fa-download'></i> Download File</a>");
+                           htmlContent.append("</div>");
                        }
                        break;
 
                    case "quiz":
-                       // Get quiz details
-                       LessonQuizDAO quizDAO = new LessonQuizDAO();
-                       List<LessonQuiz> quizzes = quizDAO.findByLessonId(lessonId);
-                       LessonQuiz quiz = quizzes.isEmpty() ? null : quizzes.get(0);
-                       if (quiz != null) {
-                           jsonResponse.addProperty("quizId", quiz.getLessonQuizID());
-                           jsonResponse.addProperty("passPercentage", quiz.getPassPercentage());
-                           jsonResponse.addProperty("timeLimit", quiz.getTimeLimit());
-                           jsonResponse.addProperty("attemptAllowed", quiz.getAttemptAllowed());
-                       }
+                       // For quizzes, we'll just display a message and link to the quiz
+                       htmlContent.append("<div class='quiz-container text-center p-5'>");
+                       htmlContent.append("<h5>Quiz</h5>");
+                       htmlContent.append("<p>This lesson contains a quiz to test your knowledge.</p>");
+                       htmlContent.append("<a href='quiz?lessonId=").append(lessonId).append("' class='btn'>");
+                       htmlContent.append("<i class='fa fa-check-circle'></i> Start Quiz</a>");
+                       htmlContent.append("</div>");
                        break;
 
                    default:
-                       jsonResponse.addProperty("content", lesson.getContent());
+                       htmlContent.append("<div class='lesson-content'>");
+                       htmlContent.append(lesson.getContent());
+                       htmlContent.append("</div>");
                        break;
                }
            } else {
                // If no specific type, use the general content
-               jsonResponse.addProperty("content", lesson.getContent());
+               htmlContent.append("<div class='lesson-content'>");
+               htmlContent.append(lesson.getContent());
+               htmlContent.append("</div>");
            }
+           
+           // Add completion button
+           htmlContent.append("<div class='mt-4 text-right'>");
+           htmlContent.append("<button class='btn' onclick='markLessonAsCompleted(").append(lessonId).append(")'>");
+           htmlContent.append("<i class='fa fa-check-circle'></i> Mark as Completed</button>");
+           htmlContent.append("</div>");
 
            // Send the response
-           out.print(jsonResponse.toString());
+           out.print(htmlContent.toString());
 
        } catch (NumberFormatException e) {
-           JsonObject errorJson = new JsonObject();
-           errorJson.addProperty("error", "Invalid lesson ID");
-           out.print(errorJson.toString());
+           out.print("<div class='alert alert-danger'>Invalid lesson ID</div>");
        } catch (Exception e) {
-           JsonObject errorJson = new JsonObject();
-           errorJson.addProperty("error", "Error loading lesson content: " + e.getMessage());
-           out.print(errorJson.toString());
+           out.print("<div class='alert alert-danger'>Error loading lesson content: " + e.getMessage() + "</div>");
        }
    }
 
