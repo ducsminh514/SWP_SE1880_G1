@@ -94,7 +94,7 @@ public class CourseDetailLearningServlet extends HttpServlet {
                 // Mark completed lessons
                 for (Lesson lesson : lessons) {
                     if (completedLessonIds.contains(lesson.getLessonId())) {
-                        lesson.setCompleted(true);
+                        lesson.setStatus(true);
                     }
                 }
                 

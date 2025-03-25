@@ -7,11 +7,10 @@ import Module.QuestionType;
 
 
 public class Question {
-    private Subject subject;
     private int questionId;
     private String content;
     private int level;
-    private CourseType courseType;
+    private Subject subject;
     private int mark;
     private QuestionType questionType;
     private boolean status;

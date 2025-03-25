@@ -9,25 +9,10 @@ public class QuestionImage {
     public QuestionImage() {
     }
 
-    public QuestionImage(int imageId, String imageTitle, String imageURL, int questionImangeId) {
-        this.imageId = imageId;
-        this.imageTitle = imageTitle;
-        this.imageURL = imageURL;
-        this.questionImangeId = questionImangeId;
-    }
-
     public QuestionImage(int imageId, String imageTitle, int questionImangeId) {
         this.imageId = imageId;
         this.imageTitle = imageTitle;
         this.questionImangeId = questionImangeId;
-    }
-
-    public String getImageURL() {
-        return imageURL;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
     }
 
     public int getImageId() {
@@ -52,5 +37,13 @@ public class QuestionImage {
 
     public void setQuestionImangeId(int questionImangeId) {
         this.questionImangeId = questionImangeId;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 }

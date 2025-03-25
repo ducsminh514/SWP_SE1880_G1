@@ -252,7 +252,7 @@
                                                 <i class="fa fa-bank text-primary"></i>
                                             </div>
                                             <h4><a href="listCourse">Learn Course Online</a></h4>
-                                            <a href="#" class="btn radius-xl">View More</a>
+                                            <a href="listCourse" class="btn radius-xl">View More</a>
                                         </div>
                                     </div>
                                 </div>

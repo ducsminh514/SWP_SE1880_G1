@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page isELIgnored="false" %>
+
 <html>
 <head>
     <title>Add New Question</title>
@@ -126,7 +126,7 @@
     <label for="questionText">Câu hỏi:</label>
     <input type="text" name="questionText" id="questionText" required /><br/>
 
-    <labelzzzzzzzz for="questionType">Loại câu hỏi:</labelzzzzzzzz>
+    <label for="questionType">Loại câu hỏi:</label>
     <select name="questionType" id="questionType">
         <option value="multiple_choice">Multiple Choice</option>
         <option value="fill_in_blank">Fill in Blank</option>

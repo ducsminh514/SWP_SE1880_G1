@@ -1,180 +1,110 @@
-package Controller.ForCustomer;
-
-import java.io.*;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import DAO.QuestionDAO;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
-import Module.*;
-
-@WebServlet(name = "QuizServlet", urlPatterns = {"/quiz"})
-public class QuizServlet extends HttpServlet {
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet QuizServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet QuizServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String id_raw = request.getParameter("id");
-
-        int quizid = 0;
-        ArrayList<Question> listQuestion = new ArrayList<>();
-        ArrayList<QuestionAnswer> listans = new ArrayList<>();
-        QuestionDAO qd = new QuestionDAO();
-
-        try {
-            quizid = Integer.parseInt(id_raw);
-            int totalQuestions = qd.getQuestionCountByQuizId(quizid);
-            request.setAttribute("num", totalQuestions);
-            LessonQuiz lessonQuiz= qd.takeLessonQuizByID(quizid);
-            request.setAttribute("lessonQuiz",lessonQuiz);
-            listQuestion= qd.getQuestion(quizid);
-            request.setAttribute("listQuestion", listQuestion);
-            listans = qd.getAnswer(quizid);
-            request.setAttribute("listans", listans);
-            request.setAttribute("id", quizid);
-
-        } catch (NumberFormatException e) {
-            request.getSession().setAttribute("error", "Invalid data!");
-        }
-
-        request.getRequestDispatcher("quizpage.jsp").forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String quizId = request.getParameter("id");
-
-
-        if (quizId == null || quizId.trim().isEmpty()) {
-
-            request.getSession().setAttribute("error", "Quiz ID is missing!");
-            return;
-        }
-
-        int quizid;
-        try {
-            // Chuyển quizId từ String sang int
-            quizid = Integer.parseInt(quizId);
-        } catch (NumberFormatException e) {
-            // Nếu không thể chuyển đổi sang int, xử lý ngoại lệ
-            request.getSession().setAttribute("error", "Invalid Quiz ID format!");
-            request.getRequestDispatcher("result.jsp").forward(request, response);
-            return;  // Dừng lại không tiếp tục xử lý
-        }
-
-        // Get answers and initialize variables
-        ArrayList<QuestionAnswer> Answers = new QuestionDAO().getAnswer(quizid);
-        ArrayList<QuizResultDetail> resultDetails = new ArrayList<>();
-        ArrayList<QuizResultDetailImage> resultImages = new ArrayList<>();
-        QuestionDAO qd = new QuestionDAO();
-        int totalScore = 0;
-
-        // Process each answer
-        for (QuestionAnswer Answer : Answers) {
-            String userAnswerRadio = request.getParameter("radio");
-            String AnswerText = request.getParameter("answertext");
-
-            // Process result details for text or radio answers
-            QuizResultDetail detail = new QuizResultDetail();
-            detail.setQuizAttendID(qd.findQuizAttendIDbyQuizQuestionID(quizid));
-            detail.setQuestionID(Answer.getQuestionId());
-
-            if (userAnswerRadio != null) {
-                // If user selected a radio button answer
-                detail.setChooseOptionID(Integer.parseInt(userAnswerRadio));
-                detail.setAnswerText(null);  // No text answer for radio
-                detail.setCorrect(Answer.isCorrect());
-                if (Answer.isCorrect()) {
-                    totalScore += qd.GetMarkfromQuestion(Answer.getQuestionId());
-                }
-            } else {
-                // If the answer is text
-                detail.setChooseOptionID(0);  // No radio answer
-                detail.setAnswerText(AnswerText);
-                boolean isCorrect = AnswerText.equals(Answer.getContent());
-                detail.setCorrect(isCorrect);
-                if (isCorrect) {
-                    totalScore += qd.GetMarkfromQuestion(Answer.getQuestionId());
-                }
-            }
-
-            // Add result detail to the list
-            resultDetails.add(detail);
-
-            // Process images for this question
-            Collection<Part> userImageParts = request.getParts();
-            List<Part> imageParts = userImageParts.stream()
-                    .filter(part -> part.getName().startsWith("images_" + Answer.getQuestionId()))
-                    .collect(Collectors.toList());
-
-            for (Part imagePart : imageParts) {
-                if (imagePart.getSize() > 0) {
-                    // Generate a file path for the image
-                    String fileName = imagePart.getSubmittedFileName();
-                    String uploadDir = "C:/Users/MSI/IdeaProject/SWP_SE1880_G1/onlinelearning/src/main/webapp/assets/images/";
-
-                    // Create directory if not exists
-                    File uploadDirFile = new File(uploadDir);
-                    if (!uploadDirFile.exists()) {
-                        uploadDirFile.mkdir();
-                    }
-
-                    // Save the image to the directory
-                    File file = new File(uploadDir + fileName);
-                    try (InputStream inputStream = imagePart.getInputStream();
-                         OutputStream outputStream = new FileOutputStream(file)) {
-                        byte[] buffer = new byte[1024];
-                        int bytesRead;
-                        while ((bytesRead = inputStream.read(buffer)) != -1) {
-                            outputStream.write(buffer, 0, bytesRead);
-                        }
-                    }
-
-                    // Add image details to the result
-                    QuizResultDetailImage imageDetail = new QuizResultDetailImage();
-                    imageDetail.setImageQuizID(Answer.getAnswerId());
-                    imageDetail.setTitle(file.getAbsolutePath());
-                    resultImages.add(imageDetail);
-                }
-            }
-        }
-
-        // Save the result details and images after processing all answers
-        qd.saveQuizResultDetails(resultDetails);
-        qd.saveQuizResultDetailImages(resultImages);
-
-        // Update the total score in the database
-        int quizAttendID = qd.findQuizAttendIDbyQuizQuestionID(quizid);
-        qd.updateTotalScore(quizAttendID, totalScore);
-
-        // Forward the score to the result page
-        request.setAttribute("score", totalScore);
-        request.getRequestDispatcher("result.jsp").forward(request, response);
-    }
-
-
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }
-}
+//package Controller.ForCustomer;
+//
+//import java.io.*;
+//import java.util.*;
+//import java.util.stream.Collectors;
+//
+//import DAO.*;
+//import jakarta.servlet.ServletException;
+//import jakarta.servlet.annotation.WebServlet;
+//import jakarta.servlet.http.*;
+//import Module.*;
+//
+//@WebServlet(name = "QuizServlet", urlPatterns = {"/quiz"})
+//public class QuizServlet extends HttpServlet {
+//
+//    @Override
+//    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        String id_raw = request.getParameter("id");
+//        int quizid = 0;
+//        ArrayList<Question> listQuestion = new ArrayList<>();
+//        ArrayList<QuestionAnswer> listans = new ArrayList<>();
+//        QuestionDAO qd = new QuestionDAO();
+//        LessonQuizDAO lessonQuizDAO = new LessonQuizDAO();
+//        QuizQuesionsDAO quizzQuestionDAO = new QuizQuesionsDAO();
+//        QuestionAnswerDAO questionAnswerDAO = new QuestionAnswerDAO();
+//        try {
+//            quizid = Integer.parseInt(id_raw);
+//            int totalQuestions = lessonQuizDAO.getQuestionCountByQuizId(quizid);
+//            request.setAttribute("num", totalQuestions);
+//            LessonQuiz lessonQuiz= lessonQuizDAO.takeLessonQuizByQuizQuestionID(quizid);
+//            request.setAttribute("lessonQuiz",lessonQuiz);
+//            listQuestion= quizzQuestionDAO.getQuestion(quizid);
+//            request.setAttribute("listQuestion", listQuestion);
+//            listans = questionAnswerDAO.getAnswer(quizid);
+//            request.setAttribute("listans", listans);
+//            request.setAttribute("id", quizid);
+//        } catch (NumberFormatException e) {
+//            request.getSession().setAttribute("error", "Invalid data!");
+//        }
+//        request.getRequestDispatcher("quizpage.jsp").forward(request, response);
+//    }
+//
+//    @Override
+//    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+////        HttpSession session = request.getSession();
+//        String id_raw = request.getParameter("id");
+//        int quizId = Integer.parseInt(id_raw);
+//        QuestionAnswerDAO questionAnswerDAO = new QuestionAnswerDAO();
+//        QuizAttendDAO quizAttendDAO = new QuizAttendDAO();
+//        QuizResultDetailDAO quizResultDetailDAO = new QuizResultDetailDAO();
+//        ArrayList<QuestionAnswer> Answers = questionAnswerDAO.getAnswer(quizId);
+//        ArrayList<QuizResultDetail> resultDetails = new ArrayList<>();
+//        ArrayList<QuizResultDetailImage> resultImages = new ArrayList<>();
+//        QuestionDAO qd= new QuestionDAO();
+//        int totalScore = 0;
+//        for (QuestionAnswer Answer:Answers){
+//            String userAnswerRadio = request.getParameter("radio");
+//            String AnswerText = request.getParameter("answertext" );
+//            Collection<Part> userImageParts = request.getParts();
+//            List<Part> imageParts = userImageParts.stream()
+//                    .filter(part -> part.getName().startsWith("images_" + Answer.getQuestionId()))
+//                    .collect(Collectors.toList());
+//            QuizResultDetail detail = new QuizResultDetail();
+//            detail.setQuizAttendID(quizAttendDAO.findQuizAttendIDbyQuizQuestionID(quizId));
+//            detail.setQuestionID(Answer.getQuestionId());
+//            if (userAnswerRadio != null ) {
+//                // Nếu người dùng chọn một đáp án (radio), lưu answerId
+//                detail.setChooseOptionID(Integer.parseInt(userAnswerRadio));  // Lưu ID đáp án
+//                detail.setAnswerText(null);  // Đối với câu trả lời dạng radio, không cần lưu văn bản
+//                detail.setCorrect(Answer.isCorrect());
+//                if (Answer.isCorrect()){
+//                    totalScore += questionAnswerDAO.GetMarkfromQuestion(Answer.getQuestionId());
+//                }
+//            } else {
+//                // Nếu câu trả lời là văn bản, lưu vào AnswerText
+//                int a= 0;
+//                detail.setChooseOptionID( a);  // Không có chọn lựa đáp án
+//                detail.setAnswerText(AnswerText );  // Lưu câu trả lời văn bản
+//                boolean isCorrect = AnswerText.equals(Answer.getContent());
+//                detail.setCorrect(isCorrect);
+//                if (isCorrect) {
+//                    totalScore += questionAnswerDAO.GetMarkfromQuestion(Answer.getQuestionId());
+//                }
+//            }
+//            resultDetails.add(detail);
+//            quizResultDetailDAO.saveQuizResultDetails(resultDetails);
+//            for (Part imagePart : imageParts) {
+//                if (imagePart.getSize() > 0) {
+//                    // Lưu từng hình ảnh vào hệ thống hoặc cơ sở dữ liệu
+//
+//
+//                    // Tạo thư mục nếu chưa tồn tại
+//
+//
+//                }
+//            }
+//        }
+//        int quizAttendID =quizAttendDAO.findQuizAttendIDbyQuizQuestionID(quizId);
+//        quizAttendDAO.updateTotalScore(quizAttendID, totalScore);
+//        request.setAttribute("score", totalScore);
+//        request.getRequestDispatcher("result.jsp").forward(request, response);
+//    }
+//
+//    @Override
+//    public String getServletInfo() {
+//        return "Short description";
+//    }
+//}

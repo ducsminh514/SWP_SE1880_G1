@@ -103,19 +103,19 @@
           </ul>
         </li>
         <li>
-          <a href="manage-account" class="ttr-material-button">
+          <a href="${pageContext.request.contextPath}/manage-account" class="ttr-material-button">
             <span class="ttr-icon"><i class="fa-solid fa-users"></i></span>
             <span class="ttr-label">Manage account</span>
           </a>
         </li>
         <li>
-          <a href="manage-setting" class="ttr-material-button">
+          <a href="${pageContext.request.contextPath}/manage-setting" class="ttr-material-button">
             <span class="ttr-icon"><i class="fa-solid fa-gear"></i></span>
             <span class="ttr-label">Setting list</span>
           </a>
         </li>
         <li>
-          <a href="manage-question" class="ttr-material-button">
+          <a href="${pageContext.request.contextPath}/manage-question" class="ttr-material-button">
             <span class="ttr-icon"><i class="fa-solid fa-clipboard-question"></i></span>
             <span class="ttr-label">Question list</span>
           </a>

@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page isELIgnored="false" %>
+
 <html>
 
 <head>
@@ -230,8 +230,8 @@
                                     <div class="form-group">
                                         <label for="status">Status</label>
                                         <select class="form-control"  id="status" name="status">
-                                            <option value="true" ${user.status ? 'selected' : ''}>Active</option>
-                                            <option value="false" ${!user.status ? 'selected' : ''}>Inactive</option>
+                                            <option value="true" ${user.isStatus() ? 'selected' : ''}>Active</option>
+                                            <option value="false" ${!user.isStatus() ? 'selected' : ''}>Inactive</option>
                                         </select>
                                     </div>
                                     <button class="btn" type="submit" >Update Account</button>
@@ -246,6 +246,9 @@
     </div>
 </main>
 <div class="ttr-overlay"></div>
+<div style="padding-top: 80px;" >
+    <jsp:include page="../footer.jsp"></jsp:include>
+</div>
 <!-- External JavaScripts -->
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
 <script>
@@ -278,4 +281,5 @@
     }
 </script>
 </body>
+
 </html>

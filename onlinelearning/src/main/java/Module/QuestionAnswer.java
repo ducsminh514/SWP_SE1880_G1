@@ -49,4 +49,8 @@ public class QuestionAnswer {
     public void setCorrect(boolean correct) {
         isCorrect = correct;
     }
+
+    public boolean getIsCorrect() {
+        return isCorrect;
+    }
 }

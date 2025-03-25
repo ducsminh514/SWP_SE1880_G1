@@ -9,9 +9,30 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import Module.Lesson;
+import Module.*;
 
 public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
+    public Subject getSubjectById(int id){
+        String sql = "select * from Subjects where SubjectID=?";
 
+        Subject sub= new Subject();
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                sub.setSubjectId(rs.getInt("SubjectID"));
+                sub.setCreateDate(rs.getDate("CreatedDate"));
+                sub.setDescription(rs.getString("Description"));
+                sub.setSubjectName(rs.getString("SubjectName"));
+                sub.setOrderNo(rs.getInt("OrderNo"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("ngu");
+        }
+        return sub;
+    }
     @Override
     public List<Lesson> findAll() {
         List<Lesson> lessons = new ArrayList<>();
@@ -30,14 +51,15 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
     @Override
     public Lesson getFromResultSet(ResultSet rs) throws SQLException {
         Lesson lesson = new Lesson();
+        LessonDAO ls= new LessonDAO();
         lesson.setLessonId(rs.getInt("LessonID"));
-        lesson.setSubjectId(rs.getInt("SubjectID"));
+        lesson.setSubject(ls.getSubjectById(rs.getInt("SubjectID")));
         lesson.setLessonName(rs.getString("LessonName"));
         lesson.setContent(rs.getString("Content"));
         lesson.setDuration(rs.getInt("Duration"));
         lesson.setOrderNo(rs.getInt("OrderNo"));
-        lesson.setStatusLesson(rs.getBoolean("status_lesson"));
-        lesson.setCreatedDate(rs.getDate("CreatedDate"));
+        lesson.setStatus(rs.getBoolean("status_lesson"));
+        lesson.setCreateDate(rs.getDate("CreatedDate"));
         lesson.setType(rs.getString("Type"));
         lesson.setUpdateDate(rs.getDate("UpdateDate"));
         return lesson;
@@ -49,16 +71,16 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
                    + "OrderNo, status_lesson, CreatedDate, Type, UpdateDate) "
                    + "OUTPUT INSERTED.LessonID VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
-            st.setInt(1, lesson.getSubjectId());
+            st.setInt(1, lesson.getSubject().getSubjectId());
             st.setString(2, lesson.getLessonName());
             st.setString(3, lesson.getContent());
             st.setInt(4, lesson.getDuration());
             st.setInt(5, lesson.getOrderNo());
-            st.setBoolean(6, lesson.getStatusLesson());
-            st.setDate(7, new java.sql.Date(lesson.getCreatedDate().getTime()));
+            st.setBoolean(6, lesson.isStatus());
+            st.setDate(7, new java.sql.Date(lesson.getCreateDate().getTime()));
             st.setString(8, lesson.getType());
             st.setDate(9, new java.sql.Date(lesson.getUpdateDate().getTime()));
-
+            
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt(1);
@@ -85,22 +107,22 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
     @Override
     public boolean update(Lesson lesson) {
         String sql = "UPDATE Lessons SET "
-                + "SubjectID = ?, LessonName = ?, Content = ?, Duration = ?, "
-                + "OrderNo = ?, status_lesson = ?, CreatedDate = ?, "
-                + "Type = ?, UpdateDate = ? "
-                + "WHERE LessonID = ?";
+                   + "SubjectID = ?, LessonName = ?, Content = ?, Duration = ?, "
+                   + "OrderNo = ?, status_lesson = ?, CreatedDate = ?, "
+                   + "Type = ?, UpdateDate = ? "
+                   + "WHERE LessonID = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
-            st.setInt(1, lesson.getSubjectId());
+            st.setInt(1, lesson.getSubject().getSubjectId());
             st.setString(2, lesson.getLessonName());
             st.setString(3, lesson.getContent());
             st.setInt(4, lesson.getDuration());
             st.setInt(5, lesson.getOrderNo());
-            st.setBoolean(6, lesson.getStatusLesson());
-            st.setDate(7, new java.sql.Date(lesson.getCreatedDate().getTime()));
+            st.setBoolean(6, lesson.isStatus());
+            st.setDate(7, new java.sql.Date(lesson.getCreateDate().getTime()));
             st.setString(8, lesson.getType());
             st.setDate(9, new java.sql.Date(lesson.getUpdateDate().getTime()));
             st.setInt(10, lesson.getLessonId());
-
+            
             return st.executeUpdate() > 0;
         } catch (SQLException ex) {
             handleException("Error updating lesson", ex);
@@ -127,12 +149,12 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
     public List<Lesson> findLessonsBySubject(int subjectId, int page, int pageSize) {
         List<Lesson> lessons = new ArrayList<>();
         String sql = "SELECT * FROM Lessons WHERE SubjectID = ? "
-                + "ORDER BY OrderNo OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+                   + "ORDER BY OrderNo OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, subjectId);
             st.setInt(2, (page - 1) * pageSize);
             st.setInt(3, pageSize);
-
+            
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
                     lessons.add(getFromResultSet(rs));
@@ -162,75 +184,8 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
         ex.printStackTrace();
     }
 
-    public static void main(String[] args) {
-        LessonDAO dao = new LessonDAO();
 
-        // Test create new lesson
-        Lesson newLesson = new Lesson();
-        newLesson.setSubjectId(1);
-        newLesson.setLessonName("Bài học test");
-        newLesson.setContent("Nội dung test");
-        newLesson.setDuration(45);
-        newLesson.setOrderNo(5);
-        newLesson.setStatusLesson(true);
-        newLesson.setCreatedDate(new Date());
-        newLesson.setType("Lý thuyết");
-        newLesson.setUpdateDate(new Date());
 
-        // Test insert
-        int newId = dao.insert(newLesson);
-        System.out.println("New lesson ID: " + newId);
-
-        // Test find by ID
-        Lesson foundLesson = dao.findById(newId);
-        System.out.println("\nLesson after insert:");
-        printLessonDetails(foundLesson);
-
-        // Test update
-        if(foundLesson != null) {
-            foundLesson.setLessonName("Bài học đã cập nhật");
-            foundLesson.setContent("Nội dung mới");
-            boolean updateResult = dao.update(foundLesson);
-            System.out.println("\nUpdate result: " + (updateResult ? "Thành công" : "Thất bại"));
-
-            Lesson updatedLesson = dao.findById(newId);
-            System.out.println("Lesson after update:");
-            printLessonDetails(updatedLesson);
-        }
-
-        // Test find by subject with pagination
-        System.out.println("\nLessons in subject 1 (page 1, pageSize 5):");
-        List<Lesson> subjectLessons = dao.findLessonsBySubject(1, 1, 5);
-        subjectLessons.forEach(LessonDAO::printLessonDetails);
-
-        // Test delete
-        boolean deleteResult = dao.delete(foundLesson);
-        System.out.println("\nDelete result: " + (deleteResult ? "Thành công" : "Thất bại"));
-
-        // Verify delete
-        Lesson deletedLesson = dao.findById(newId);
-        System.out.println("Lesson after delete: " + (deletedLesson == null ? "Không tồn tại" : "Vẫn tồn tại"));
-
-        // Test count
-        System.out.println("\nTotal lessons: " + dao.getTotalLessons());
-    }
-
-    private static void printLessonDetails(Lesson lesson) {
-        if(lesson == null) {
-            System.out.println("Lesson không tồn tại");
-            return;
-        }
-        System.out.println("ID: " + lesson.getLessonId());
-        System.out.println("Tên bài: " + lesson.getLessonName());
-        System.out.println("Môn học ID: " + lesson.getSubjectId());
-        System.out.println("Thời lượng: " + lesson.getDuration() + " phút");
-        System.out.println("Thứ tự: " + lesson.getOrderNo());
-        System.out.println("Trạng thái: " + (lesson.getStatusLesson() ? "Kích hoạt" : "Ẩn"));
-        System.out.println("Loại: " + lesson.getType());
-        System.out.println("Ngày tạo: " + lesson.getCreatedDate());
-        System.out.println("Ngày cập nhật: " + lesson.getUpdateDate());
-        System.out.println("-----------------------------------");
-    }
 
     public ArrayList<Lesson> getBySubject(int subjectId){
         String sql = "DECLARE @SubjectID INT; \n" +

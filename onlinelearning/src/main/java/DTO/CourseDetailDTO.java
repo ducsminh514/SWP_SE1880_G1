@@ -18,12 +18,6 @@ public class CourseDetailDTO {
         this.originalPrice = originalPrice;
     }
 
-    public CourseDetailDTO(Course course, float rating, int totalEnrollment) {
-        this.course = course;
-        this.rating = rating;
-        this.totalEnrollment = totalEnrollment;
-    }
-
     public Course getCourse() {
         return course;
     }

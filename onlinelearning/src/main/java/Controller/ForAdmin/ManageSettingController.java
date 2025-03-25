@@ -17,6 +17,7 @@ import Module.Setting;
 @WebServlet(name = "ManageSettingController", urlPatterns = {"/manage-setting"})
 public class ManageSettingController extends HttpServlet {
 
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -98,9 +99,9 @@ public class ManageSettingController extends HttpServlet {
         request.setAttribute("settingList", settingList);
         request.setAttribute("currentPage", page);
 
-        request.setAttribute("search", searchFilter);
-        request.setAttribute("type", typeFilter);
-        request.setAttribute("status", statusFilter);
+        request.setAttribute("searchFilter", searchFilter);
+        request.setAttribute("typeFilter", typeFilter);
+        request.setAttribute("statusFilter", statusFilter);
 
         request.getRequestDispatcher("/admin/manage-setting.jsp").forward(request, response);
     }

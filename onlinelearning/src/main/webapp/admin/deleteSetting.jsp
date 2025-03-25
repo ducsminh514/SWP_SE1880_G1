@@ -5,7 +5,6 @@
   Time: 4:16 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page isELIgnored="false" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="modal fade" id="delete-product-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

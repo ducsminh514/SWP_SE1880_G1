@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ManageAccountController extends HttpServlet {
 
 
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -97,7 +98,6 @@ public class ManageAccountController extends HttpServlet {
 
     private void editAccForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String userId = request.getParameter("userId");
-        System.out.println(userId);
         if (userId != null && !userId.isEmpty()) {
             int id = Integer.parseInt(userId);
             UserDAO userDAO = new UserDAO();
@@ -155,6 +155,7 @@ public class ManageAccountController extends HttpServlet {
         String search = request.getParameter("search");
         String role = request.getParameter("role");
 
+
         int page = 1;
         int pageSize = 3;
         String pageStr = request.getParameter("page");
@@ -185,9 +186,7 @@ public class ManageAccountController extends HttpServlet {
         request.setAttribute("userList", userList);
 
         request.getRequestDispatcher("/admin/manage-account.jsp").forward(request, response);
-
     }
-
     private void setToastMessage(HttpServletRequest request, String message, String type) {
         request.getSession().setAttribute("toastMessage", message);
         request.getSession().setAttribute("toastType", type);

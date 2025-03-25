@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<%@ page isELIgnored="false" %>
+
 <head>
 
 	<!-- META ============================================= -->
@@ -52,26 +52,25 @@
 <div class="page-wraper">
 	<div id="loading-icon-bx"></div>
 	<div class="account-form">
-		<div class="account-head" style="background-image:url(assets/images/background/bg-3.jpg);">
+		<div class="account-head" style="background-image:url(assets/images/background/bg2.jpg);">
 			<a href="index.html"><img src="assets/images/logo-white-2.png" alt=""></a>
 		</div>
 		<div class="account-form-inner">
 			<div class="account-container">
 				<div class="heading-bx left">
 					<h2 class="title-head">Forget <span>Password</span></h2>
-					<p>Login Your Account <a href="login.jsp">Click here</a></p>
+					<p>Login Your Account <a href="login.html">Click here</a></p>
 				</div>	
-				<form class="contact-bx" method="post" action= "forget">
+				<form class="contact-bx">
 					<div class="row placeani">
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="input-group">
 									<label>Your Email Address</label>
-									<input name="email" type="email" required="" class="form-control">
+									<input name="dzName" type="email" required="" class="form-control">
 								</div>
 							</div>
 						</div>
-						<h5 style="color: red">${requestScope.error}</h5>
 						<div class="col-lg-12 m-b30">
 							<button name="submit" type="submit" value="Submit" class="btn button-md">Submit</button>
 						</div>

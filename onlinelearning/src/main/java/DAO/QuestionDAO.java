@@ -9,12 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import Module.QuestionImage;
 import Module.Subject;
-import Module.*;
 public class QuestionDAO extends DBContext implements GenericDAO<Question> {
 
 
@@ -54,7 +51,7 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
                 + "Content = ?, Level = ?, SubjectId = ?, Mark = ?, "
                 + "QuestionTypeID = ?, IsActive = ?, UpdateAt = GETDATE(), Mp3 = ? "
                 + "WHERE QuestionID = ?";
-
+        
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, question.getContent());
             st.setInt(2, question.getLevel());
@@ -64,7 +61,7 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
             st.setBoolean(6, question.isStatus());
             st.setString(7, question.getMp3());
             st.setInt(8, question.getQuestionId());
-
+            
             int affectedRows = st.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
@@ -116,6 +113,7 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         }
         return questions;
     }
+
     public int getTotalQuestionByFilter(String search, String subject, String level, String status) {
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM Question WHERE 1=1");
         List<Object> params = new ArrayList<>();
@@ -152,14 +150,11 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
     }
 
     public Question getFromResultSet(ResultSet resultSet) throws SQLException {
-        CourseTypeDAO courseTypeDao = new CourseTypeDAO();
-        CourseType ct = courseTypeDao.getByID(resultSet.getInt("SubjectId"));
-
         QuestionTypeDAO questionTypeDao = new QuestionTypeDAO();
         QuestionType qt = questionTypeDao.getQuestionTypeById(resultSet.getInt("QuestionTypeID"));
 
         QuestionImageDAO questionImageDao = new QuestionImageDAO();
-        List<QuestionImage> questionImageList = questionImageDao.getImageByQuestionImage(resultSet.getInt("QuestionImageID"));
+        List<QuestionImage> questionImageList = questionImageDao.getImageByQuestionId(resultSet.getInt("QuestionID"));
 
         SubjectDAO subjectDao = new SubjectDAO();
         Subject subject = subjectDao.getSubjectById(resultSet.getInt("SubjectId"));
@@ -173,344 +168,44 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
         question.setMark(resultSet.getInt("Mark"));
         question.setQuestionType(qt);
         question.setStatus(resultSet.getBoolean("IsActive"));
-        question.setCreateTime(resultSet.getDate("CreatedAt"));
-        question.setUpdateTime(resultSet.getDate("UpdatedAt"));
+        question.setCreateTime(resultSet.getDate("CreateAt"));
+        question.setUpdateTime(resultSet.getDate("UpdateAt"));
         question.setQuestionImage(questionImageList);
         question.setMp3(resultSet.getString("Mp3"));
         return question;
     }
 
-
-    public int getQuestionCountByQuizId(int quizId) {
-        String sql = "SELECT COUNT(*) AS NumberOfQuestions FROM QuizQuestions WHERE LessonQuizID = ?";
-        int questionCount = 0;
-
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, quizId);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                questionCount = rs.getInt("NumberOfQuestions");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return questionCount;
-    }
-    public ArrayList<Question>getQuestion(int quizId){
-        ArrayList<Question> listQuestion = new ArrayList<>();
-        String sql = "SELECT q.*, qq.SortOrder FROM Question q "
-                + "JOIN QuizQuestions qq ON q.QuestionId = qq.QuestionId "
-                +"JOIN LessonQuiz lq ON qq.LessonQuizID = lq.LessonQuizID "
-                + "WHERE lq.LessonQuizID = ? "
-                ;
-        QuestionTypeDAO qtd= new QuestionTypeDAO();
-        try{
-            QuestionDAO qd= new QuestionDAO();
-            PreparedStatement pre = connection.prepareStatement(sql);
-
-                pre.setInt(1,quizId);
-            ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
-                Question c= new Question();
-                c.setQuestionId(rs.getInt("QuestionID"));
-                c.setContent(rs.getString("Content"));
-                c.setMp3(rs.getString("Mp3"));
-                //c.setQuestionImage(qd.listImage(rs.getInt("ImageID")));
-                c.setLevel(rs.getInt("Level"));
-                c.setMark(rs.getInt("Mark"));
-                c.setQuestionType(qtd.getQuestionTypeById(rs.getInt("QuestionTypeId")));
-                listQuestion.add(c);
-
-            }
-            return listQuestion ;
-        }catch (SQLException e){
-            System.out.println(e);
-            System.out.println("getQuestion");
-        }
-        return null;
-    }
-    public ArrayList<QuestionImage>listImage(int id){
-        ArrayList<QuestionImage>list= new ArrayList<>() ;
-        String sql = "Select * from QuestionImages where QuestionImageID=? ";
-        try{
-            PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1,id);
-            ResultSet rs = pre.executeQuery();
-            while(rs.next()){
-                QuestionImage q= new QuestionImage();
-                q.setImageId(rs.getInt("ImageID"));
-                q.setImageTitle(rs.getString("ImageTitle"));
-                q.setQuestionImangeId(rs.getInt("QuestionImageID"));
-                list.add(q);
-            }
-            return list;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public ArrayList<QuestionAnswer> getAnswer(int id) {
-        ArrayList<QuestionAnswer> list = new ArrayList<>();
-        String sql = "SELECT a.* FROM QuestionAnswer a "
-                + "JOIN Question q ON q.QuestionId = a.QuestionId "
-                + "JOIN QuizQuestions qq ON qq.QuestionId = q.QuestionId "
-                +"JOIN LessonQuiz lq ON qq.LessonQuizID = lq.LessonQuizID "
-                + "WHERE lq.LessonQuizID = ? "
-                + "ORDER BY a.SortOrder ASC";
-
-        try (PreparedStatement pre = connection.prepareStatement(sql)) {
-            // Set the parameter for QuizQuestionID
-            pre.setInt(1, id);
-
-            // Execute the query
-            ResultSet rs = pre.executeQuery();
-
-            // Iterate over the result set
-            while (rs.next()) {
-                QuestionAnswer qa = new QuestionAnswer();
-                qa.setCorrect(rs.getBoolean("IsCorrect"));
-                qa.setAnswerId(rs.getInt("AnswerID"));
-                qa.setSortOrder(rs.getInt("SortOrder"));
-                qa.setContent(rs.getString("Content"));
-                qa.setQuestionId(rs.getInt("QuestionID"));
-                list.add(qa);
-            }
-        } catch (SQLException e) {
-            System.err.println("Error fetching answers: " + e.getMessage());
-            e.printStackTrace();
-            throw new RuntimeException(e); // Optional: Can add custom error handling
-        }
-        return list;
-    }
-
-
-    public Question getQuestionById(int id){
-        String sql = "select * from Questions where Id=?";
-        Question Question = new Question();
-        QuestionTypeDAO qtd= new QuestionTypeDAO();
+    public Question GetQuestionById(int id){
+        String sql = "SELECT [QuestionID]\n" +
+                "      ,[Content]\n" +
+                "      ,[Level]\n" +
+                "      ,[SubjectId]\n" +
+                "      ,[Mark]\n" +
+                "      ,[QuestionTypeID]\n" +
+                "      ,[IsActive]\n" +
+                "      ,[CreateAt]\n" +
+                "      ,[UpdateAt]\n" +
+                "      ,[Mp3]\n" +
+                "  FROM [dbo].[Question]\n" +
+                "  WHERE QuestionID = ?";
+        Question question = new Question();
         try{
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             if(rs.next()){
-                Question.setQuestionId(rs.getInt("Id"));
-                Question.setQuestionType(qtd.getQuestionTypeById(rs.getInt("QuestionTypeId")));
-                Question.setMark(rs.getInt("Mark"));
-                Question.setLevel(rs.getInt("Level"));
-                Question.setStatus(rs.getBoolean("IsActive"));
-                Question.setCreateTime(rs.getDate("CreatedAt"));
-                Question.setUpdateTime(rs.getDate("UpdatedAt"));
-                return Question;
+                question = getFromResultSet(rs);
+                return question;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return null;
     }
-    private int getTotalMark(int quizId) {
-        String sql ="SELECT TotalMark FROM Quiz WHERE Id = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, quizId);
-            ResultSet rs = st.executeQuery();
-            return rs.next() ? rs.getInt("TotalMark") : 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return 0;
+
+    public static void main(String[] args) {
+        QuestionDAO questionDAO = new QuestionDAO();
+        Question question = questionDAO.GetQuestionById(1);
+        System.out.println(question.getContent());
     }
-    public void saveQuizResultDetails(List<QuizResultDetail> resultDetails){
-        String sql = "INSERT INTO QuizResultDetail (QuizAttendID, QuestionID, ChooseOptionID, AnswerText, IsCorrect) "
-                + "VALUES (?, ?, ?, ?, ?)";
-        try{
-            PreparedStatement st = connection.prepareStatement(sql);
-            for (QuizResultDetail detail : resultDetails) {
-                // Cài đặt các tham số cho câu trả lời
-                st.setInt(1, detail.getQuizAttendID());  // QuizAttendID
-                st.setInt(2, detail.getQuestionID());    // QuestionID
-                st.setInt(3, detail.getChooseOptionID()); // ChooseOptionID
-                st.setString(4, detail.getAnswerText());  // AnswerText
-                st.setBoolean(5, detail.isCorrect());     // IsCorrect
-
-                st.addBatch();  // Thêm vào batch
-            }
-            st.executeBatch();
-        }catch (SQLException e) { e.printStackTrace(); }
-    }
-    public void saveQuizResultDetailImages(List<QuizResultDetailImage> resultImages){
-        String sql = "INSERT INTO QuizResultDetailImage (ImageQuizID, Title) "
-                + "VALUES (?, ?)";
-        try{
-            PreparedStatement st = connection.prepareStatement(sql);
-            for (QuizResultDetailImage imageDetail : resultImages) {
-                // Cài đặt các tham số cho câu trả lời
-                st.setInt(1, imageDetail.getImageQuizID());  // ImageQuizID (ID của câu trả lời)
-                st.setString(2, imageDetail.getTitle());     // Title (đường dẫn hoặc tên tệp hình ảnh)
-
-                st.addBatch();  // Thêm vào batch
-            }
-            st.executeBatch();
-        }catch (SQLException e) { e.printStackTrace(); }
-    }
-    public int findQuizAttendIDbyQuizQuestionID(int id){
-        String sql = "SELECT qa.QuizAttendID FROM QuizAttend qa JOIN LessonQuiz lq ON qa.LessonQuizID = lq.LessonQuizID JOIN QuizQuestions qq ON lq.LessonQuizID = qq.LessonQuizID WHERE qq.QuizQuestionID =?"
-               ;
-        try{
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1,id);
-            ResultSet rs = st.executeQuery();
-            if(rs.next()){
-                return rs.getInt("QuizAttendID");
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return 0;
-    }
-
-    public LessonQuiz takeLessonQuizByID(int id){
-        String sql = "Select lq.* from LessonQuiz lq where lq.LessonQuizID=?"
-               ;
-        try{
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, id);
-            ResultSet rs = st.executeQuery();
-            LessonQuiz lessonQuiz= new LessonQuiz();
-            if(rs.next()){
-               lessonQuiz.setTimeLimit(rs.getInt("TimeLimit"));
-               lessonQuiz.setLessonQuizID(rs.getInt("LessonQuizID"));
-               lessonQuiz.setImageUrl(rs.getString("ImageUrl"));
-               lessonQuiz.setAttemptAllowed(rs.getInt("AttemptAllowed"));
-               lessonQuiz.setMp3Url(rs.getString("Mp3Url"));
-                return lessonQuiz;
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-    }
-    public void saveUserAnswers(int userId, int quizId, HashMap<Integer, Integer> answers) {
-        String sqlQuizResult = "INSERT INTO QuizResults (UserID, QuizId, QuizDate, NumberOfQuestion, NumberOfCorrect, Mark) VALUES (?, ?, NOW(), ?, 0, 0)";
-        String sqlQuizDetail = "INSERT INTO QuizResultDetails (QuizResultId, QuestionId, ChooseOptionId) VALUES (?, ?, ?)";
-        String sqlCorrectCheck = "SELECT IsCorrect FROM Options WHERE Id = ?";
-
-        try {
-            // Assuming `connection` is already initialized elsewhere in the class
-            connection.setAutoCommit(false);
-
-            // 1️⃣ - Create a new record in QuizResults
-            try (PreparedStatement qr = connection.prepareStatement(sqlQuizResult, PreparedStatement.RETURN_GENERATED_KEYS)) {
-                qr.setInt(1, userId);
-                qr.setInt(2, quizId);
-                qr.setInt(3, answers.size());
-                qr.executeUpdate();
-
-                ResultSet rs = qr.getGeneratedKeys();
-                int quizResultId = rs.next() ? rs.getInt(1) : 0;
-                rs.close();
-
-                // 2️⃣ - Insert answers into QuizResultDetails
-                try (PreparedStatement qd = connection.prepareStatement(sqlQuizDetail)) {
-                    int correctCount = 0;
-
-                    for (Integer questionId : answers.keySet()) {
-                        int optionId = answers.get(questionId);
-
-                        qd.setInt(1, quizResultId);
-                        qd.setInt(2, questionId);
-                        qd.setInt(3, optionId);
-                        qd.addBatch();
-
-                        // 3️⃣ - Check if the answer is correct
-                        try (PreparedStatement cc = connection.prepareStatement(sqlCorrectCheck)) {
-                            cc.setInt(1, optionId);
-                            ResultSet rsCorrect = cc.executeQuery();
-
-                            if (rsCorrect.next() && rsCorrect.getBoolean("IsCorrect")) {
-                                correctCount++;
-                            }
-                            rsCorrect.close();
-                        }
-                    }
-
-                    qd.executeBatch();
-
-                    // 4️⃣ - Update the quiz result with the correct count and score
-                    int totalMark = getTotalMark(quizId);
-                    double score = ((double) correctCount / answers.size()) * totalMark;
-
-                    String sqlUpdateResult = "UPDATE QuizResults SET NumberOfCorrect = ?, Mark = ? WHERE Id = ?";
-                    try (PreparedStatement psUpdateResult = connection.prepareStatement(sqlUpdateResult)) {
-                        psUpdateResult.setInt(1, correctCount);
-                        psUpdateResult.setDouble(2, score);
-                        psUpdateResult.setInt(3, quizResultId);
-                        psUpdateResult.executeUpdate();
-                    }
-                }
-
-                connection.commit();
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            try {
-                if (connection != null) {
-                    connection.rollback();
-                }
-            } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
-            }
-            throw new RuntimeException(e);
-        }
-    }
-    public int GetMarkfromQuestion(int id){
-        String sql = "select q.Mark from Question q where q.QuestionID=?"
-                ;
-        try{
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, id);
-            ResultSet rs = st.executeQuery();
-            if(rs.next()){
-                return rs.getInt("Mark");
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return 0;
-    }
-//    public static void main(String[] args) {
-//        QuestionDAO questionDAO = new QuestionDAO();
-//
-//        int quizId = 1;  // ID của quiz bạn muốn truy vấn
-//        int a= questionDAO.getQuestionCountByQuizId(quizId);
-//        LessonQuiz lessonQuiz = questionDAO.takeLessonQuizByQuizQuestionID(1);  // Giả sử id là 1
-//
-//        // Hiển thị kết quả
-//        if (lessonQuiz != null) {
-//            System.out.println("Lesson Quiz ID: " + lessonQuiz.getLessonQuizID());
-//            System.out.println("Time Limit: " + lessonQuiz.getTimeLimit());
-//            System.out.println("Image URL: " + lessonQuiz.getImageUrl());
-//            System.out.println("Attempt Allowed: " + lessonQuiz.getAttemptAllowed());
-//            System.out.println("MP3 URL: " + lessonQuiz.getMp3Url());
-//        } else {
-//            System.out.println("No LessonQuiz found for the given QuizQuestionID.");
-//        }
-//    }
-    public void updateTotalScore(int quizAttendID, int totalScore) {
-        String sql = "UPDATE QuizAttend SET Score = ? WHERE QuizAttendID = ?";
-        try  {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, totalScore);  // Cập nhật điểm số
-            st.setInt(2, quizAttendID);  // Cập nhật cho QuizAttendID cụ thể
-            st.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-
-
 }

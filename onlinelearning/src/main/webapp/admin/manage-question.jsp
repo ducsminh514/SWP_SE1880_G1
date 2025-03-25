@@ -7,27 +7,21 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page isELIgnored="false" %>
 <html>
 <head>
-
     <!-- META ============================================= -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="keywords" content=""/>
     <meta name="author" content=""/>
     <meta name="robots" content=""/>
-
     <!-- DESCRIPTION -->
     <meta name="description" content="EduChamp : Education HTML Template"/>
-
     <!-- OG -->
     <meta property="og:title" content="EduChamp : Education HTML Template"/>
     <meta property="og:description" content="EduChamp : Education HTML Template"/>
     <meta property="og:image" content=""/>
     <meta name="format-detection" content="telephone=no">
-
-
     <!-- PAGE TITLE HERE ============================================= -->
     <title>EduChamp : Education HTML Template </title>
 
@@ -37,7 +31,11 @@
     <!-- All PLUGINS CSS ============================================= -->
     <jsp:include page="../common/common_admin_css.jsp"></jsp:include>
 
-
+    <style>
+        .dropdown-menu.open.show {
+            max-height: 200px;
+        }
+    </style>
 </head>
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
@@ -89,18 +87,18 @@
             <div class="col-lg-12 m-b30">
                 <div class="widget-box">
                     <div class="wc-title">
-                        <h4>Manage account</h4>
+                        <h4>Manage Question</h4>
                     </div>
                     <div class="widget-body ">
                         <div class="widget-inner ">
                             <form action="${paginationUrl}" method="GET"
                                   class="mb-4" class="cours-search">
                                 <div class="row mb-3" style="justify-content: flex-end">
-                                    <div class="col-md-2">
-                                        <select class="form-control" id="subjectFilter" name="subject">
-                                            <option value="">Subject</option>
-                                            <c:forEach items="${courseTypes}" var="type">
-                                                <option value="${type.courseTypeId}" ${param.subject == type.courseTypeId ? "selected":"" }>${type.courseTypeName}</option>
+                                    <div class="col-md-2" >
+                                        <select class="form-control" id="subjectFilter" name="subject" style="max-height: 100px; overflow-y: auto;">
+                                            <option value="">All Subjects</option>
+                                            <c:forEach items="${subjectList}" var="subject">
+                                                <option value="${subject.subjectId}" ${param.subject == subject.subjectId ? "selected":"" }>${subject.subjectName}</option>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -185,7 +183,7 @@
                                         </c:if>
                                         <c:if test="${not empty listColum && listColum.contains('subjectChoice')}">
                                             <td>
-                                                <p>${question.courseType.courseTypeName}</p>
+                                                <p>${question.subject.subjectName}</p>
                                             </td>
                                         </c:if>
                                         <c:if test="${not empty listColum && listColum.contains('levelChoice')}">
@@ -228,7 +226,7 @@
                                                             class="fa-solid fa-eye"></i></a>
                                                     <a class="btn button-sm green radius-xl "
                                                        style="display: flex; align-items: center"
-                                                       href="manage-question?action=edit&questionId=${question.questionId}"
+                                                       href="${pageContext.request.contextPath}/manage-question?action=edit&questionId=${question.questionId}"
                                                        title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
                                                     <a style="display: flex; align-items: center"
                                                        class="btn button-sm red radius-xl" href="#"
@@ -240,7 +238,6 @@
                                         </c:if>
                                     </tr>
                                 </c:forEach>
-
                             </table>
                         </div>
                     </div>
@@ -287,6 +284,8 @@
     <jsp:include page="../footer.jsp"></jsp:include>
 </footer>
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
+
+<!-- Script cuối trang -->
 
 
 </body>

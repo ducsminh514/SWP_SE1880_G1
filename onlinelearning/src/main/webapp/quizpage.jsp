@@ -82,48 +82,36 @@
 
 <div class="container">
     <div class="question-box">
-     <form action="quiz" method="post"id="quizForm" enctype="multipart/form-data">
-     <h5>${requestScope.error}</h5>
+     <form action="quiz" method="post"id="quizForm">
+     <h5>${requestScope.error}<h5>
+<input type="hidden" name="id" value="${requestScope.id}">
+     <c:forEach items="${requestScope.listQuestion}" var="list">
+        <div class="question-title">Question: ${list.content}</div>
+            <div class="answer-box">
+        <c:if test="${not empty list.questionImage}">
+            <img style="width: 200px; height: 200px" src="${list.questionImage}" />
+        </c:if>
+                    <c:if test="${list.questionType.questionTypeId == 1}">
+                        <c:forEach var="ans" items="${requestScope.listans}">
+                            <c:if test="${list.questionId ==ans.questionId}">
+                                <label>
+                                <input type="radio" name="radio" value="${ans.answerId}"> ${ans.content}
+                                </label>
+                            </c:if>
+                        </c:forEach>
+                    </c:if>
+                     <c:if test="${list.questionType.questionTypeId == 2}">
+                        <label>Answer: <input type="text" name="answertext"/></label>
+                       <label>Images:
+                           <input type="file" name="images_${list.questionId}" multiple accept="image/*" onchange="previewImages()"/>
+                       </label>
+                         <br>
+                         <div id="imagePreview"></div>
+                         <br>
+                   </c:if>
 
-     <input type="hidden" name="id" value="${requestScope.id}">
-     <c:forEach items="${requestScope.listQuestion}" var="list" varStatus="status">
-
-         <div class="question-title">Question ${status.index + 1}: ${list.content}</div>
-         <div class="answer-box">
-             <c:if test="${not empty list.questionImage}">
-                 <img style="width: 200px; height: 200px" src="${list.questionImage}" />
-             </c:if>
-               <c:if test="${not empty list.mp3}">
-                         <audio controls>
-                             <source src="${list.mp3}" type="audio/mpeg">
-                             Your browser does not support the audio element.
-                         </audio>
-               </c:if>
-             <!-- Kiểm tra loại câu hỏi là kiểu radio (multiple choice) -->
-             <c:if test="${list.questionType.questionTypeId == 1}">
-                 <c:forEach var="ans" items="${requestScope.listans}">
-                     <c:if test="${list.questionId == ans.questionId}">
-                         <label>
-                             <input type="radio" name="radio_${list.questionId}" value="${ans.answerId}"> ${ans.content}
-                         </label>
-                     </c:if>
-                 </c:forEach>
-             </c:if>
-
-             <!-- Kiểm tra loại câu hỏi là kiểu text input -->
-             <c:if test="${list.questionType.questionTypeId == 2}">
-                 <label>Answer: <input type="text" name="answertext_${list.questionId}"/></label>
-                 <label>Images:
-                     <input type="file" name="images_${list.questionId}" multiple accept="image/*" onchange="previewImages()"/>
-                 </label>
-                 <br>
-                 <div id="imagePreview"></div>
-                 <br>
-             </c:if>
-         </div>
-
-     </c:forEach>
-
+              </div>
+        </c:forEach>
             <button id="finishButton" type="submit" style="margin-top:15px;background-color:red;color:white;border:none;padding:10px;">
                 Finish attempt
             </button>
@@ -185,28 +173,39 @@
      </script>
 
 <script>
-function previewImages() {
+  function previewImages() {
     const preview = document.getElementById('imagePreview');
     preview.innerHTML = ''; // Xóa các hình ảnh đã hiển thị trước đó
 
     const files = document.querySelector('input[type="file"]').files;
     for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const reader = new FileReader();
+      const file = files[i];
+      const reader = new FileReader();
 
-        reader.onload = function(e) {
-            // Tạo phần tử chứa hình ảnh
-            const img = document.createElement('img');
-            img.src = e.target.result;  // Dữ liệu hình ảnh từ FileReader
-            img.style.maxWidth = '200px'; // Giới hạn kích thước hình ảnh
-            img.style.marginRight = '10px'; // Thêm khoảng cách giữa các hình ảnh
+      reader.onload = function(e) {
+        // Tạo phần tử chứa hình ảnh và ô nhập chú thích
+        const container = document.createElement('div');
+        container.style.marginBottom = '20px';
 
-            preview.appendChild(img); // Thêm hình ảnh vào div preview
-        }
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.style.maxWidth = '200px'; // Giới hạn kích thước hình ảnh
+        img.style.marginRight = '10px'; // Thêm khoảng cách giữa hình ảnh và chú thích
 
-        reader.readAsDataURL(file);  // Đọc tệp hình ảnh và chuyển thành dữ liệu URL
+        const captionInput = document.createElement('input');
+        captionInput.type = 'text';
+        captionInput.placeholder = 'Enter caption for this ';
+        captionInput.name = 'captions[]'; // Gửi các chú thích dưới dạng mảng
+
+        container.appendChild(img);
+        container.appendChild(captionInput);
+
+        preview.appendChild(container); // Thêm phần tử vào div preview
+      }
+
+      reader.readAsDataURL(file);
     }
-}
+  }
 </script>
 </body>
 </html>

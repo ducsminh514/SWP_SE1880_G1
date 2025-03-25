@@ -173,15 +173,20 @@
                                                             </div>
                                                             <form action="addCommentPost">
                                                                 <div class="reply-box" style="display: none; margin-top: 10px; margin-bottom : 10px">
+                                                                    <input type="hidden" name="parentId" value="${parent.commentPostId}">
+                                                                    <input type="hidden" name="postId" value="${parent.post.postId}">
                                                                     <textarea placeholder="Nhập nội dung bình luận" rows="3" name="content"></textarea>
                                                                     <button type="submit" class="submit-reply">Gửi</button>
                                                                 </div>
                                                             </form>
+                                                        </div>
+                                                        <ol class="children">
                                                             <c:if test="${not empty parent.children}">
                                                                 <c:set var="childComments" value="${parent.children}" scope="request"/>
-                                                                <jsp:include page="comment-recursive.jsp"/>
+                                                                <jsp:include page="comment-recursive-post.jsp"/>
                                                             </c:if>
                                                             <!-- list END -->
+                                                        </ol>
                                                     </li>
                                                 </c:forEach>
                                             </ol>
@@ -202,7 +207,6 @@
                                                         replyBox.style.display = "none";
                                                     }
                                                 }
-
                                             </script>
                                             <!-- comment list END -->
                                             <!-- Form -->
