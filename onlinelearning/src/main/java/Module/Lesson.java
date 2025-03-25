@@ -13,12 +13,11 @@ public class Lesson {
     private String video_url ;
     private Date createDate ;
     private String description ;
-    private Date updateDate;
-    private String type;
+
     public Lesson() {
     }
 
-    public Lesson(int lessonId, Subject subject, String lessonName, String content, int duration, int orderNo, boolean status, String video_url, Date createDate, String description, Date updateDate) {
+    public Lesson(int lessonId, Subject subject, String lessonName, String content, int duration, int orderNo, boolean status, String video_url, Date createDate, String description) {
         this.lessonId = lessonId;
         this.subject = subject;
         this.lessonName = lessonName;
@@ -29,15 +28,6 @@ public class Lesson {
         this.video_url = video_url;
         this.createDate = createDate;
         this.description = description;
-        this.updateDate = updateDate;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public int getLessonId() {
@@ -118,13 +108,5 @@ public class Lesson {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
     }
 }
