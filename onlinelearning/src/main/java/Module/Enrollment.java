@@ -23,7 +23,12 @@ public class Enrollment {
         this.status = status;
         this.payCode = payCode;
     }
-
+    public Enrollment(int enrollmentId, Course course, Customer customer, Date enrollDate) {
+        this.enrollmentId = enrollmentId;
+        this.course = course;
+        this.customer = customer;
+        this.enrollDate = enrollDate;
+    }
     public int getEnrollmentId() {
         return enrollmentId;
     }

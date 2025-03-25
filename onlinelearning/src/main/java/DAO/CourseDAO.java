@@ -1,5 +1,7 @@
 package DAO;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import dal.DBContext;
 
 import java.sql.PreparedStatement;
@@ -8,11 +10,37 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import Module.*;
 
 public class CourseDAO extends DBContext {
+    private final Cache<String, Object> cache;
+
+    public CourseDAO() {
+        // Khởi tạo cache với Caffeine
+        cache = Caffeine.newBuilder()
+                .expireAfterWrite(10, TimeUnit.MINUTES) // Cache hết hạn sau 10 phút
+                .maximumSize(1000) // Giới hạn 1000 mục trong cache
+                .build();
+    }
+
+    // Hàm tiện ích để tạo key cache từ tên phương thức và tham số
+    private String generateCacheKey(String methodName, Object... params) {
+        StringBuilder key = new StringBuilder(methodName);
+        for (Object param : params) {
+            key.append("_").append(param != null ? param.toString() : "null");
+        }
+        return key.toString();
+    }
+
     public ArrayList<Course> getAll() {
+        String cacheKey = generateCacheKey("getAll");
+        @SuppressWarnings("unchecked")
+        ArrayList<Course> cachedResult = (ArrayList<Course>) cache.getIfPresent(cacheKey);
+        if (cachedResult != null) {
+            return cachedResult;
+        }
         String sql = "select * from Courses";
         ArrayList<Course> listCourse = new ArrayList<>();
         try {
@@ -35,6 +63,7 @@ public class CourseDAO extends DBContext {
                 c.setLevel(rs.getString("SkillLevel"));
                 listCourse.add(c) ;
             }
+            cache.put(cacheKey, listCourse);
             return listCourse;
         } catch (SQLException e) {
             System.out.println(e);
@@ -89,6 +118,12 @@ public class CourseDAO extends DBContext {
     }
 
     public ArrayList<Course> getCourse(String search, int categoryID , String arrange , int start , int row){
+        String cacheKey = generateCacheKey("getCourse", search, categoryID, arrange, start, row);
+        @SuppressWarnings("unchecked")
+        ArrayList<Course> cachedResult = (ArrayList<Course>) cache.getIfPresent(cacheKey);
+        if (cachedResult != null) {
+            return cachedResult;
+        }
         ArrayList<Course> listCourse = new ArrayList<>();
         String sql = "SELECT * FROM Courses WHERE 1=1";
         if(search != null && !search.isEmpty()){
@@ -143,6 +178,7 @@ public class CourseDAO extends DBContext {
                 c.setExpert(eDAO.getByID(rs.getInt("ExpertID")));
                 listCourse.add(c) ;
             }
+            cache.put(cacheKey, listCourse); // Lưu vào cache
             return listCourse ;
         }catch (SQLException e){
             System.out.println(e);

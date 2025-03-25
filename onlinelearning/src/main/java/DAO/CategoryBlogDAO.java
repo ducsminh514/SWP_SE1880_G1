@@ -8,8 +8,6 @@ import Module.CategoryBlog ;
 import dal.DBContext;
 
 public class CategoryBlogDAO extends DBContext {
-
-
     public ArrayList<CategoryBlog> getAll(){
         String sql = "select * from CategoryBlog" ;
         ArrayList<CategoryBlog> listCategoryBlog = new ArrayList<>();

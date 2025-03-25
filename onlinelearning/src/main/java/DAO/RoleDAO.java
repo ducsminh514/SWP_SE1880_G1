@@ -22,11 +22,14 @@ public class RoleDAO extends DBContext {
                role.setRoleId(rs.getInt("roleId"));
                role.setRoleName(rs.getString("roleName"));
             }
+
         } catch (SQLException e) {
             System.out.println("ngu");
         }
         return role;
     }
+
+
 
 
 

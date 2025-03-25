@@ -9,14 +9,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import Module.QuestionImage;
+import Module.Subject;
+public class QuestionDAO extends DBContext implements GenericDAO<Question> {
 
-public class QuestionDAO extends DBContext  {
 
-
-
+    @Override
     public List<Question> findAll() {
         List<Question> questions = new ArrayList<>();
-        String sql = "SELECT * FROM Questions";
+        String sql = "SELECT * FROM Question";
         try (PreparedStatement ps = connection.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
@@ -33,24 +34,44 @@ public class QuestionDAO extends DBContext  {
     }
 
 
-
+    @Override
     public int insert(Question question) {
         return 0;
     }
 
-
+    @Override
     public boolean delete(Question question) {
         return false;
     }
 
-
+    @Override
     public boolean update(Question question) {
+        String sql = "UPDATE Question SET "
+                + "Content = ?, Level = ?, SubjectId = ?, Mark = ?, "
+                + "QuestionTypeID = ?, IsActive = ?, UpdateAt = GETDATE(), Mp3 = ? "
+                + "WHERE QuestionID = ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, question.getContent());
+            st.setInt(2, question.getLevel());
+            st.setInt(3, question.getSubject().getSubjectId());
+            st.setInt(4, question.getMark());
+            st.setInt(5, question.getQuestionType().getQuestionTypeId());
+            st.setBoolean(6, question.isStatus());
+            st.setString(7, question.getMp3());
+            st.setInt(8, question.getQuestionId());
+
+            int affectedRows = st.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
         return false;
     }
 
     public List<Question> getQuestionByFilter(String search, String subject, String level, String status, int page, int pageSize) {
         List<Question> questions = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT * FROM Questions Where 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM Question Where 1=1");
         List<Object> params = new ArrayList<>();
 
         if (search != null && !search.isEmpty()) {
@@ -71,7 +92,7 @@ public class QuestionDAO extends DBContext  {
         }
 
         // Phần ORDER BY, OFFSET, FETCH NEXT
-        sql.append(" ORDER BY Id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+        sql.append(" ORDER BY QuestionID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
         params.add((page - 1) * pageSize);
         params.add(pageSize);
         try {
@@ -91,8 +112,9 @@ public class QuestionDAO extends DBContext  {
         }
         return questions;
     }
+
     public int getTotalQuestionByFilter(String search, String subject, String level, String status) {
-        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM Questions WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM Question WHERE 1=1");
         List<Object> params = new ArrayList<>();
         if (search != null && !search.isEmpty()) {
             sql.append(" AND Content LIKE ?");
@@ -127,30 +149,62 @@ public class QuestionDAO extends DBContext  {
     }
 
     public Question getFromResultSet(ResultSet resultSet) throws SQLException {
-        CourseTypeDAO courseTypeDao = new CourseTypeDAO();
-        CourseType ct = courseTypeDao.getByID(resultSet.getInt("SubjectId"));
-
         QuestionTypeDAO questionTypeDao = new QuestionTypeDAO();
-        QuestionType qt = questionTypeDao.getQuestionTypeById(resultSet.getInt("QuestionTypeId"));
+        QuestionType qt = questionTypeDao.getQuestionTypeById(resultSet.getInt("QuestionTypeID"));
+
+        QuestionImageDAO questionImageDao = new QuestionImageDAO();
+        List<QuestionImage> questionImageList = questionImageDao.getImageByQuestionId(resultSet.getInt("QuestionID"));
+
+        SubjectDAO subjectDao = new SubjectDAO();
+        Subject subject = subjectDao.getSubjectById(resultSet.getInt("SubjectId"));
 
         Question question = new Question();
-        question.setQuestionId(resultSet.getInt("Id"));
+
+        question.setQuestionId(resultSet.getInt("QuestionID"));
         question.setContent(resultSet.getString("Content"));
         question.setLevel(resultSet.getInt("Level"));
-        question.setCourseType(ct);
+        question.setSubject(subject);
         question.setMark(resultSet.getInt("Mark"));
-        question.setStatus(resultSet.getBoolean("IsActive"));
         question.setQuestionType(qt);
-        question.setCreateTime(resultSet.getDate("CreatedAt"));
-        question.setUpdateTime(resultSet.getDate("UpdatedAt"));
+        question.setStatus(resultSet.getBoolean("IsActive"));
+        question.setCreateTime(resultSet.getDate("CreateAt"));
+        question.setUpdateTime(resultSet.getDate("UpdateAt"));
+        question.setQuestionImage(questionImageList);
+        question.setMp3(resultSet.getString("Mp3"));
         return question;
+    }
+
+    public Question GetQuestionById(int id){
+        String sql = "SELECT [QuestionID]\n" +
+                "      ,[Content]\n" +
+                "      ,[Level]\n" +
+                "      ,[SubjectId]\n" +
+                "      ,[Mark]\n" +
+                "      ,[QuestionTypeID]\n" +
+                "      ,[IsActive]\n" +
+                "      ,[CreateAt]\n" +
+                "      ,[UpdateAt]\n" +
+                "      ,[Mp3]\n" +
+                "  FROM [dbo].[Question]\n" +
+                "  WHERE QuestionID = ?";
+        Question question = new Question();
+        try{
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                question = getFromResultSet(rs);
+                return question;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
     public static void main(String[] args) {
         QuestionDAO questionDAO = new QuestionDAO();
-        List<Question> q = questionDAO.findAll();
-        for (int i = 0; i < q.size(); i++) {
-            System.out.println(q.get(i).toString());
-        }
+        Question question = questionDAO.GetQuestionById(1);
+        System.out.println(question.getContent());
     }
 }
