@@ -344,13 +344,9 @@
                 </div>
 
                 <!-- Nút hành động -->
-                <div class="row">
-                    <div class="form-actions">
-                        <a href="javascript:history.back()" class="btn btn-secondary"><i class="fas fa-times mr-2"></i>Hủy</a>
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane mr-2"></i>Lưu thay đổi</button>
-                        <!-- Nút Xóa màu đỏ -->
-                        <button type="button" class="btn btn-danger"><i class="fas fa-trash mr-2"></i>Xóa</button>
-                    </div>
+                <div class="form-actions">
+                    <a href="javascript:history.back()" class="btn btn-secondary"><i class="fas fa-times mr-2"></i>Hủy</a>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane mr-2"></i>Lưu thay đổi</button>
                 </div>
             </form>
         </div>
@@ -457,32 +453,13 @@
                    container.find('.check').val('change');
                });
 
-
-               function cleanupDuplicateBlocks() {
-                   const seenBlockIds = new Set();
-                   $('#contentBlocks .content-container').each(function() {
-                       const blockId = $(this).data('content-id');
-                       const blockType = $(this).data('type');
-
-                       const uniqueKey = blockId + blockType;
-
-                       if (seenBlockIds.has(uniqueKey)) {
-                           $(this).remove();
-                       } else {
-                           seenBlockIds.add(uniqueKey);
-                       }
-                   });
-               }
-
-               // Gọi hàm này sau khi thêm hoặc di chuyển khối
-               $('#addText').click(function () {
-                   const template = document.getElementById('textBlockTemplate');
-                   const clone = document.importNode(template.content, true);
-
-                   $('#contentBlocks').append(clone);
-                   updateOrderIndices();
-                   cleanupDuplicateBlocks();
-               });
+                // Thêm khối văn bản
+                $('#addText').click(function () {
+                    const template = document.getElementById('textBlockTemplate');
+                    const clone = document.importNode(template.content, true);
+                    $('#contentBlocks').append(clone);
+                    updateOrderIndices();
+                });
 
                 // Thêm khối hình ảnh
                 $('#addImage').click(function () {

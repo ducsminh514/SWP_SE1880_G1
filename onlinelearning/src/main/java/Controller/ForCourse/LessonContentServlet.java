@@ -55,7 +55,7 @@ public class LessonContentServlet extends HttpServlet {
            // Generate HTML content based on lesson type
            String lessonType = lesson.getType();
            StringBuilder htmlContent = new StringBuilder();
-
+           
            // Common header for all lesson types
            htmlContent.append("<div class='lesson-header mb-4'>");
            htmlContent.append("<h4>").append(lesson.getLessonName()).append("</h4>");
@@ -85,7 +85,7 @@ public class LessonContentServlet extends HttpServlet {
                            htmlContent.append("<div class='video-container mb-4'>");
                            htmlContent.append("<iframe src='").append(video.getVideoUrl()).append("' allowfullscreen></iframe>");
                            htmlContent.append("</div>");
-
+                           
                            if (video.getTranscript() != null && !video.getTranscript().isEmpty()) {
                                htmlContent.append("<div class='transcript-container'>");
                                htmlContent.append("<h5>Transcript</h5>");
@@ -132,7 +132,7 @@ public class LessonContentServlet extends HttpServlet {
                htmlContent.append(lesson.getContent());
                htmlContent.append("</div>");
            }
-
+           
            // Add completion button
            htmlContent.append("<div class='mt-4 text-right'>");
            htmlContent.append("<button class='btn' onclick='markLessonAsCompleted(").append(lessonId).append(")'>");

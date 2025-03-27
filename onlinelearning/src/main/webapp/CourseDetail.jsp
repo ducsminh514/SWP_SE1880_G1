@@ -153,38 +153,6 @@
                 color: #ddd; /* Màu xám cho sao trống */
                 width: 100%; /* Chiều rộng đầy đủ cho ngôi sao rỗng */
             }
-            .price-package-item .form-check {
-                margin: 0;
-            }
-
-            .price-package-item .form-check-input {
-                margin-top: 1.5rem;
-            }
-
-            .price-package-item .package-details {
-                margin-left: 1.5rem;
-                transition: all 0.3s ease;
-            }
-
-            .price-package-item .form-check-input:checked + .form-check-label .package-details {
-                border-color: var(--primary) !important;
-                background-color: rgba(var(--primary-rgb), 0.05);
-            }
-
-            .price-info {
-                margin-top: 0.5rem;
-            }
-
-            .original-price {
-                text-decoration: line-through;
-                color: #999;
-                margin-right: 1rem;
-            }
-
-            .sale-price {
-                color: var(--primary);
-                font-weight: bold;
-            }
         </style>
     </head>
     <body id="bg">
@@ -295,57 +263,7 @@
                                             <h4 class="price">$${course.lowestSalePrice}</h4>
                                         </div>
                                         <div class="course-buy-now text-center" style="margin-bottom: 70px;">
-                                            <a href="#" class="btn radius-xl text-uppercase" data-toggle="modal" data-target="#pricePackageModal">Buy Now This Courses</a>
-                                        </div>
-                                        <div class="modal fade" id="pricePackageModal" tabindex="-1" role="dialog" aria-labelledby="pricePackageModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="pricePackageModalLabel">Select Price Package</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="course-info mb-4">
-                                                            <h3>${course.course.courseName}</h3>
-                                                            <p>${course.course.description}</p>
-                                                        </div>
-
-                                                        <form id="pricePackageForm" action="select-price-package" method="POST">
-                                                            <input type="hidden" name="courseId" value="${course.course.courseId}">
-
-                                                            <div class="price-packages">
-                                                                <c:forEach items="${requestScope.pricePackage}" var="price">
-                                                                    <div class="price-package-item mb-3">
-                                                                        <div class="form-check">
-                                                                            <input class="form-check-input" type="radio"
-                                                                                   name="pricePackageId"
-                                                                                   id="package${price.priceId}"
-                                                                                   value="${price.priceId}"
-                                                                                   required>
-                                                                              <label class="form-check-label" for="package${price.priceId}">
-                                                                                <div class="package-details p-3 border rounded">
-                                                                                    <h5>${price.priceCourseName}</h5>
-                                                                                    <p>${price.description}</p>
-                                                                                    <div class="price-info">
-                                                                                        <span class="original-price">$${price.price}</span>
-                                                                                        <span class="sale-price">$${price.salePrice}</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
-                                                                </c:forEach>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <button type="submit" form="pricePackageForm" class="btn btn-primary">Continue to Order</button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <a href="#" class="btn radius-xl text-uppercase">Buy Now This Courses</a>
                                         </div>
                                         <div class="cours-more-info">
                                             <div class="review">

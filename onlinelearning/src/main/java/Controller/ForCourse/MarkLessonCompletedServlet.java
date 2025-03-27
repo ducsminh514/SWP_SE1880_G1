@@ -25,20 +25,20 @@ public class MarkLessonCompletedServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
-
+        
         // Get lesson ID from request
         String lessonIdStr = request.getParameter("lessonId");
-
+        
         // Get user session
         HttpSession session = request.getSession();
         Object accountObj = session.getAttribute("account");
-
+        
         // Check if user is logged in
         if (accountObj == null) {
             out.print("{\"success\": false, \"message\": \"You must be logged in to track progress\"}");
             return;
         }
-
+        
         // Get user ID from session
         int userId = -1;
         try {
@@ -54,39 +54,39 @@ public class MarkLessonCompletedServlet extends HttpServlet {
             out.print("{\"success\": false, \"message\": \"Error getting user information: " + e.getMessage() + "\"}");
             return;
         }
-
+        
         if (lessonIdStr == null || lessonIdStr.isEmpty()) {
             out.print("{\"success\": false, \"message\": \"Lesson ID is required\"}");
             return;
         }
-
+        
         try {
             int lessonId = Integer.parseInt(lessonIdStr);
-
+            
             // Create DAO for lesson completion
             LessonCompletionDAO completionDAO = new LessonCompletionDAO();
-
+            
             // Check if lesson is already marked as completed
             if (completionDAO.isLessonCompleted(lessonId, userId)) {
                 out.print("{\"success\": true, \"message\": \"Lesson already marked as completed\"}");
                 return;
             }
-
+            
             // Create completion record
             LessonCompletion completion = new LessonCompletion();
             completion.setLessonId(lessonId);
             completion.setUserId(userId);
             completion.setCompletionDate(new Date());
-
+            
             // Save completion
             boolean result = completionDAO.insert(completion);
-
+            
             if (result) {
                 out.print("{\"success\": true, \"message\": \"Lesson marked as completed\"}");
             } else {
                 out.print("{\"success\": false, \"message\": \"Failed to mark lesson as completed\"}");
             }
-
+            
         } catch (NumberFormatException e) {
             out.print("{\"success\": false, \"message\": \"Invalid lesson ID\"}");
         } catch (Exception e) {
@@ -100,4 +100,4 @@ public class MarkLessonCompletedServlet extends HttpServlet {
         // GET requests are not supported, redirect to POST
         response.sendRedirect("course-learning");
     }
-}
+} 
