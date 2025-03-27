@@ -232,6 +232,7 @@
                                         <select class="form-control"  id="status" name="status">
                                             <option value="true" ${user.status ? 'selected' : ''}>Active</option>
                                             <option value="false" ${!user.status ? 'selected' : ''}>Inactive</option>
+
                                         </select>
                                     </div>
                                     <button class="btn" type="submit" >Update Account</button>
