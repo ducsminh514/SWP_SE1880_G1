@@ -27,9 +27,6 @@
     background-attachment: fixed;
 	background-size: cover;
 }
-.sticky-top {
-	top:100px;
-}
 .header {
     position: relative;
     z-index: 99999;
@@ -149,10 +146,10 @@
 	margin-right: 2px;
 }
 .header-lang-bx .flag.flag-uk:after{
-	background-image:url(../images/flag/united-kingdom.svg);
+	background-image:url(../../../error-404.html);
 }
 .header-lang-bx .flag.flag-us:after{
-	background-image:url(../images/flag/united-states-of-america.svg);
+	background-image:url(../../../error-404.html);
 }
 @media only screen and (max-width: 767px) {
     .secondary-menu {
@@ -245,9 +242,6 @@
 	color:#000;
 	font-family:rubik;
 	font-size: 14px;
-}
-.header-lang-bx .btn:hover{
-	color:#000;
 }
 .header-lang-bx.bootstrap-select.btn-group .dropdown-toggle .caret{
 	right:0;
@@ -727,7 +721,9 @@
 		display:block;
 	}
 	.menu-links .nav-social-link{
-		margin-top: auto;
+		position: sticky;
+		top: 100%;
+		left: 0;
 		text-align: center;
 		width: 100%;
 		padding: 10px 0;
@@ -765,7 +761,7 @@
         background: #fff;
 		width:100%;
 		display: block;
-		margin-bottom: auto;
+		margin: auto;
     }
     .menu-links .nav li {
         float: none;
@@ -911,8 +907,6 @@
 		margin:0;
 		z-index:99;
 		overflow-y: scroll;
-		display: flex;
-		flex-direction: column;
 	}
 	.rs-nav .menu-links li.open a{
 		position:relative;
@@ -1922,46 +1916,16 @@ button.back-to-top {
 	-o-transform:translateY(-15px);
 }
 /* Recent News */
-.recent-news{
-	box-shadow: 0 5px 10px 0 rgba(0,0,0,.1);
-	background: #fff;
-}
-.recent-news.blog-lg{
-	box-shadow: none;
-}
-.recent-news.blog-lg .info-bx{
-	border:0;
-	padding: 20px 0 0 0;
-}
-.blog-post .post-title,
 .recent-news .post-title{
-	font-size: 24px;
+	font-size: 20px;
 	margin-top: 0px;
-	margin-bottom: 6px;
-	font-family: roboto;
-	line-height: 34px;
+	margin-bottom: 5px;
+}
+.recent-news .action-box{
+	border-radius:4px;
 }
 .recent-news .info-bx{
-	padding: 20px;
-    border: 1px solid #EEEEEE;
-}
-.comments-bx{
-	margin-left:auto;
-	color:#000;
-}
-.comments-bx i{
-	margin-right:5px;
-}
-.post-extra {
-    display: flex;
-    border-top: 1px solid #EEEEEE;
-    padding-top: 20px;
-	margin-top: 20px;
-}
-.media-post{
-	border-bottom: 1px solid #EEEEEE;
-	padding-bottom: 10px;
-	margin-bottom: 15px;
+	padding: 15px 0;	
 }
 .media-post,
 .post-tag{
@@ -1976,12 +1940,11 @@ button.back-to-top {
 	margin-right: 5px;
 }
 .media-post li a{
-	color:var(--primary);
+	color: #878787;
 	vertical-align: middle;
 }
 .media-post li a i{
 	margin-right:5px;
-	font-size: 13px;
 }
 .post-tag li{
 	display: inline-block;
@@ -1989,37 +1952,14 @@ button.back-to-top {
 	margin-bottom: 5px;
 	list-style: none;
 }
-.post-title a{
-	color:#061538;
-}
-.blog-post p,
 .recent-news p{
 	margin-bottom: 10px;
-	font-size: 14px;
-	color:#242424;
 }
 /* Popular Courses */
 .cours-bx .info-bx{
 	padding:15px;
 	font-size: 13px;
-	    min-height: 120px; /* Điều chỉnh theo nhu cầu */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
 }
-.course-author {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap; /* Đảm bảo nếu tên dài thì xuống dòng */
-    gap: 5px; /* Tạo khoảng cách giữa các chữ */
-    text-align: center;
-    width: 100%; /* Đảm bảo không bị lệch */
-    font-size: 14px;
-    color: #555;
-}
-
 .cours-bx .action-box .btn{
 	border-radius: 0;
 	position: absolute;
@@ -2038,18 +1978,11 @@ button.back-to-top {
 	box-shadow:0 0 25px 0 rgba(29,25,0,0.25);
 	border-radius: 4px;
     overflow: hidden;
-    display: flex;
-        flex-direction: column;
-        justify-content: space-between; /* Đảm bảo các phần đều nhau */
-        height: 100%;
 }
 .cours-more-info{
 	border-top: 1px solid #e6e6e6;
 	display: flex;
 	margin: 0;
-	 justify-content: space-between;
-        align-items: center;
-        padding: 10px;
 }
 .cours-star{
 	margin:0;
@@ -2080,8 +2013,6 @@ button.back-to-top {
 }
 .cours-more-info .review{
 	border-right: 1px solid #e6e6e6;
-	display:flex;
-	flex-direction:column ;
 }
 .cours-more-info .price {
 	text-align:right;
@@ -2576,6 +2507,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#391800', end
 	font-weight: 400;
 }
 /* course detail bx */
+.course-detail-bx{
+	padding:20px;
+	border:1px solid rgba(0,0,0,0.1);
+	position: sticky;
+	top: 100px;
+}
 .course-price{
 	text-align:center;
 	padding: 10px 0 20px;
@@ -2654,8 +2591,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#391800', end
 	padding: 8px 20px;
 	font-size: 15px;
 	color: #808080;
-	/*display: flex;
-	align-items: center;*/
+	display: flex;
+	align-items: center;
 	transition:all 0.5s;
 	-moz-transition:all 0.5s;
 	-webkit-transition:all 0.5s;
@@ -2678,8 +2615,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#391800', end
 .course-features{
 	margin:0;
 	margin-bottom: 30px;
-	margin-top: 20px;
-	padding:10px;
+	padding:0;
 	list-style:none;
 	position:sticky;
 	top:80px;
@@ -3075,45 +3011,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#391800', end
 	text-decoration: underline;
 	padding-bottom: 0px;
 }
-/* .g-recaptcha {
-  transform-origin: left top;
-} */
-/* Google Recaptcha */
- 
-.g-recaptcha,
-#rc-imageselect {
-    transform:scale(0.99);
-    -webkit-transform:scale(0.99);
-    -moz-transform:scale(0.99);
-    -o-transform:scale(0.99);
-    
-    transform-origin:0 0;
-    -o-transform-origin:0 0;
-    -moz-transform-origin:0 0;
-    -webkit-transform-origin:0 0;
-}
-@media screen and (max-width: 575px){
-	#rc-imageselect, 
-	.g-recaptcha {
-        transform:scale(0.77);
-        -moz-transform:scale(0.77);
-        -o-transform:scale(0.77);
-        -webkit-transform:scale(0.77);
-        
-        transform-origin:0 0;
-        -moz-transform-origin:0 0;
-        -o-transform-origin:0 0;
-        -webkit-transform-origin:0 0;
-    
-    }
-}
-.recaptcha-box{
- height:60px;
-}
-.g-recaptcha > div{
-	width:250px !important; 
-}
-/* Google Recaptcha */
 /* error */
 .error-page{
 	text-align:center;
@@ -3136,14 +3033,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#391800', end
 .error-page p{
 	font-size:16px;
 	line-height:26px;
-}
-.why-chooses-bx .faq-bx{
-	max-width: 700px;
-	margin: auto;
-}
-.why-chooses-bx .faq-bx .panel {
-	background:#fff;
-	margin-bottom: 6px;
 }
 @media only screen and (max-width: 1200px) {
 	.cours-more-info .review{
@@ -3302,20 +3191,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#391800', end
 		margin-bottom:0;
 	}
 	.event-time{
-		margin-right: 0;
-		border-radius: 0;
-		position: absolute;
-		top: -68px;
-		left: 0;
+		margin-right:15px;
 	}
 	.rev-btn{
 		padding:10px 10px !important;
 		font-size:12px !important;
-	}
-	/* Rev Slide */
-	.rev-slider .tp-rightarrow,
-	.rev-slider .tp-leftarrow{
-		display:none;
 	}
 }
 @media only screen and (max-width: 576px) {
@@ -3368,12 +3248,5 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#391800', end
 	}
 	.courses-filter {
 		padding: 15px 15px 0 15px;
-	}
-	.online-cours h5 {
-		font-size: 14px;
-	}
-	.online-cours h2 {
-		font-size: 24px;
-		margin-bottom: 5px;
 	}
 }
