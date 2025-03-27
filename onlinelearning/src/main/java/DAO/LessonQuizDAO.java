@@ -1,16 +1,16 @@
-package DAO;
-
-import dal.DBContext;
-import Module.LessonQuiz;
-import Module.Lesson;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
-public class LessonQuizDAO extends DBContext  {
-
-    private final LessonDAO lessonDAO = new LessonDAO();
-
+//package DAO;
+//
+//import dal.DBContext;
+//import Module.LessonQuiz;
+//import Module.Lesson;
+//import java.sql.*;
+//import java.util.ArrayList;
+//import java.util.List;
+//
+//public class LessonQuizDAO extends DBContext implements GenericDAO<LessonQuiz> {
+//
+//    private final LessonDAO lessonDAO = new LessonDAO();
+//
 //    @Override
 //    public List<LessonQuiz> findAll() {
 //        List<LessonQuiz> quizzes = new ArrayList<>();
@@ -184,4 +184,4 @@ public class LessonQuizDAO extends DBContext  {
 //        }
 //        return null;
 //    }
-}
+//}

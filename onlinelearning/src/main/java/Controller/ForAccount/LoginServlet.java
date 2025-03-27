@@ -41,7 +41,7 @@ public class LoginServlet  extends HttpServlet {
         String u=request.getParameter("user");
         String p=request.getParameter("password");
         String rememberMe = request.getParameter("rememberMe");
-        UserDAO d = new UserDAO();
+       UserDAO d = new UserDAO();
         User a =d.checkAuthen(u, p);
         if (a!=null) {
             if (a.getUserName().equalsIgnoreCase("admin")) {

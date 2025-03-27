@@ -129,7 +129,7 @@ public class PaymentServlet extends HttpServlet {
         session.setAttribute("amount", amount);
         session.setAttribute("selectedCourseId", course.getCourseId());
         session.setAttribute("selectedPricePackageId", pricePackage.getPriceId());
-
+        session.setAttribute("qrCodeUrl",paymentUrl);
         // Store customer info
         session.setAttribute("customerName", fullName);
         session.setAttribute("customerEmail", email);
@@ -139,7 +139,7 @@ public class PaymentServlet extends HttpServlet {
         session.setAttribute("customerCountry", country);
 
         // SOLUTION 1: Direct redirect to VNPay (recommended for production)
-        response.sendRedirect(paymentUrl);
+        request.getRequestDispatcher("Transaction/vnpay-payment.jsp").forward(request,response);
 
     }
 
