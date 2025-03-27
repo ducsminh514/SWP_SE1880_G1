@@ -27,6 +27,7 @@
     <meta property="og:image" content=""/>
     <meta name="format-detection" content="telephone=no">
 
+
     <!-- PAGE TITLE HERE ============================================= -->
     <title>EduChamp : Education HTML Template </title>
 
@@ -36,7 +37,7 @@
     <!-- All PLUGINS CSS ============================================= -->
     <jsp:include page="../common/common_admin_css.jsp"></jsp:include>
 
-
+    <!-- Bootstrap Select CSS -->
 </head>
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
@@ -46,6 +47,7 @@
 <!-- Left sidebar menu start -->
 <jsp:include page="../common/common_admin_sidebar_menu.jsp"></jsp:include>
 <!-- Left sidebar menu end -->
+
 
 <c:url value="/manage-account" var="paginationUrl">
     <c:param name="action" value="list"/>
@@ -62,7 +64,6 @@
         <c:param name="search" value="${param.search}"/>
     </c:if>
 </c:url>
-
 
 <!--Main container start -->
 <main class="ttr-wrapper">
@@ -94,7 +95,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="" id="roleFilter" name="role">
+                                        <select class="form-control" id="roleFilter" name="role">
                                             <option value="">All Roles</option>
                                             <option value="2" ${param.role=='2' ? 'selected' : '' }>Expert</option>
                                             <option value="3" ${param.role=='3' ? 'selected' : '' }>Marketing</option>
@@ -103,7 +104,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="" id="statusFilter" name="status">
+                                        <select class="form-control" id="statusFilter" name="status">
                                             <option value="">All Status</option>
                                             <option value="true" ${param.status=='true' ? 'selected' : '' }>
                                                 Active
@@ -160,7 +161,7 @@
                                             <p>${acc.getPhoneNumber()}</p>
                                         </td>
                                         <td>
-                                            <p>${acc.role.roleName}</p>
+                                            <p>${acc.getRole().getRoleName()}</p>
                                         </td>
                                         <td>
                                             <span
@@ -177,7 +178,7 @@
                                             <div style="text-align: center; display: flex; justify-content: space-evenly; align-items: center;">
                                                 <a class="btn button-sm green radius-xl"
                                                    style="display: flex; align-items: center"
-                                                   href="manage-account?action=edit&userId=${acc.userId}"
+                                                   href="${pageContext.request.contextPath}/manage-account?action=edit&userId=${acc.getUserId()}"
                                                    title="Edit">
                                                     <i class="fa-solid fa-pen-to-square"></i>
                                                 </a>
@@ -226,17 +227,36 @@
     </div>
 </main>
 <div class="ttr-overlay"></div>
-
+<div style="padding-top: 80px;" >
+    <jsp:include page="../footer.jsp"></jsp:include>
+</div>
 <!-- External JavaScripts -->
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
 
-<script>
-    function confirmDeactive(userId) {
-        if (confirm('Are you sure you want to deactivate this user?')) {
-            window.location.href = '${pageContext.request.contextPath}/manage-account?action=deactive&userId=' + userId;
-        }
-    }
-</script>
+
+<%--<script>--%>
+<%--    function confirmDeactive(userId) {--%>
+<%--        if (confirm('Are you sure you want to deactivate this user?')) {--%>
+<%--            window.location.href = '${pageContext.request.contextPath}/manage-account?action=deactive&userId=' + userId;--%>
+<%--        }--%>
+<%--    }--%>
+
+<%--    $(document).ready(function() {--%>
+<%--        // Khởi tạo selectpicker--%>
+<%--        $('.selectpicker').selectpicker({--%>
+<%--            style: 'btn-default',--%>
+<%--            size: 4--%>
+<%--        });--%>
+<%--        --%>
+<%--        // Đảm bảo rằng selectpicker được refresh sau khi trang đã tải xong--%>
+<%--        setTimeout(function() {--%>
+<%--            $('.selectpicker').selectpicker('refresh');--%>
+<%--        }, 100);--%>
+<%--    });--%>
+<%--</script>--%>
+
+<!-- Thêm vào phần cuối trang, trước thẻ </body> -->
+
 </body>
 
 </html>

@@ -4,6 +4,7 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import dal.DBContext;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,15 +14,16 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import Module.*;
+import dal.DBContext1;
 
-public class CourseDAO extends DBContext {
+public class CourseDAO extends DBContext1 {
     private final Cache<String, Object> cache;
 
     public CourseDAO() {
         // Khởi tạo cache với Caffeine
         cache = Caffeine.newBuilder()
-                .expireAfterWrite(10, TimeUnit.MINUTES) // Cache hết hạn sau 10 phút
-                .maximumSize(1000) // Giới hạn 1000 mục trong cache
+                .expireAfterWrite(20, TimeUnit.MINUTES) // Cache hết hạn sau 10 phút
+                .maximumSize(10000) // Giới hạn 1000 mục trong cache
                 .build();
     }
 
@@ -43,7 +45,7 @@ public class CourseDAO extends DBContext {
         }
         String sql = "select * from Courses";
         ArrayList<Course> listCourse = new ArrayList<>();
-        try {
+        try(Connection connection = DBContext1.getConnection()) {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
             CourseTypeDAO ctDAO = new CourseTypeDAO();
@@ -78,7 +80,7 @@ public class CourseDAO extends DBContext {
                 "ORDER BY CreatedDate DESC\n" +
                 "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
 
-        try {
+        try(Connection connection = DBContext1.getConnection()) {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1,start);
             pre.setInt(2,numCourse);
@@ -148,7 +150,7 @@ public class CourseDAO extends DBContext {
         if(start>=0){
             sql += " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
         }
-        try{
+        try(Connection connection = DBContext1.getConnection()){
             PreparedStatement pre = connection.prepareStatement(sql);
             int index =1 ;
             if(search != null && !search.isEmpty()){
@@ -189,7 +191,7 @@ public class CourseDAO extends DBContext {
         Course course = null;
         String sql = "SELECT * FROM Courses WHERE CourseID = ?";
 
-        try {
+        try(Connection connection = DBContext1.getConnection()) {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, courseId);
             ResultSet rs = st.executeQuery();
@@ -225,7 +227,7 @@ public class CourseDAO extends DBContext {
         List<Course> courses = new ArrayList<>();
         String sql = "SELECT * FROM Courses WHERE CourseID IN (" + String.join(",", Collections.nCopies(courseIds.size(), "?")) + ")";
 
-        try {
+        try(Connection connection = DBContext1.getConnection()) {
             PreparedStatement st = connection.prepareStatement(sql);
 
             // Thiết lập các giá trị courseId vào câu lệnh SQL

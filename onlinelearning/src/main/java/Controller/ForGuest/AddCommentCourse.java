@@ -39,6 +39,8 @@ public class AddCommentCourse extends HttpServlet {
         int userId = user.getUserId() ;
         String parentID = (String)session.getAttribute("parentId");
         String courseID= (String)session.getAttribute("courseId");
+        System.out.println(parentID);
+        System.out.println(courseID);
         int parentId=0 , courseId=0 ;
         try{
             parentId= Integer.parseInt(parentID) ;

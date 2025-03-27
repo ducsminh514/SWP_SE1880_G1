@@ -438,7 +438,8 @@
                 const contentBlocks = document.getElementById('contentBlocks');
                 new Sortable(contentBlocks, {
                     handle: '.drag-handle',
-                    animation: 150
+                    animation: 150,
+
                 });
 
                 $(document).on('change', '.image-upload', function () {
@@ -457,13 +458,32 @@
                     container.find('.check').val('change');
                 });
 
-                // Thêm khối văn bản
-                $('#addText').click(function () {
-                    const template = document.getElementById('textBlockTemplate');
-                    const clone = document.importNode(template.content, true);
-                    $('#contentBlocks').append(clone);
-                    updateOrderIndices();
-                });
+
+               function cleanupDuplicateBlocks() {
+                   const seenBlockIds = new Set();
+                   $('#contentBlocks .content-container').each(function() {
+                       const blockId = $(this).data('content-id');
+                       const blockType = $(this).data('type');
+
+                       const uniqueKey = blockId + blockType;
+
+                       if (seenBlockIds.has(uniqueKey)) {
+                           $(this).remove();
+                       } else {
+                           seenBlockIds.add(uniqueKey);
+                       }
+                   });
+               }
+
+               // Gọi hàm này sau khi thêm hoặc di chuyển khối
+               $('#addText').click(function () {
+                   const template = document.getElementById('textBlockTemplate');
+                   const clone = document.importNode(template.content, true);
+
+                   $('#contentBlocks').append(clone);
+                   updateOrderIndices();
+                   cleanupDuplicateBlocks();
+               });
 
                 // Thêm khối hình ảnh
                 $('#addImage').click(function () {

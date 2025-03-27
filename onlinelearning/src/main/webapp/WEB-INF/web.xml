@@ -39,6 +39,7 @@
     <filter-name>FilterLogin</filter-name>
     <url-pattern>/addCommentPost</url-pattern>
     <url-pattern>/addCommentCourse</url-pattern>
+    <url-pattern>/select-price-package</url-pattern>
   </filter-mapping>
 
 </web-app>

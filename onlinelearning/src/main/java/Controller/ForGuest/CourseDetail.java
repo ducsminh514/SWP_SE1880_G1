@@ -51,6 +51,7 @@ public class CourseDetail extends HttpServlet {
         }catch(NumberFormatException e){
             System.out.println(e) ;
         }
+        System.out.println(courseId);
         CourseDAO cDAO = new CourseDAO() ;
         Course co = cDAO.getById(courseId) ;
         PriceCourse price = pcDAO.getById(pcDAO.lowestSalePrice(co.getCourseId())) ;

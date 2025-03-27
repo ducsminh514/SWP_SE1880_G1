@@ -186,7 +186,7 @@
                                                                                                 <div class="cours-bx">
                                                                                                     <div class="action-box">
                                                                                                         <img src="assets/images/courses/pic3.jpg" alt="">
-                                                                                                        <a href="#" class="btn">Read More</a>
+                                                                                                        <a href="course-learning?courseId=${c.courseId}" class="btn">Read More</a>
                                                                                                     </div>
                                                                                                     <div class="info-bx text-center">
                                                                                                         <h5><a href="#">${c.courseType.courseTypeName}</a></h5>

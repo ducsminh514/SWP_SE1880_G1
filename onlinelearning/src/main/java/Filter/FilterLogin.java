@@ -118,6 +118,7 @@ public class FilterLogin implements Filter {
             session.setAttribute("parentId",req.getParameter("parentId"));
             session.setAttribute("postId",req.getParameter("postId"));
             session.setAttribute("courseId",req.getParameter("courseId"));
+            session.setAttribute("pricePackageId",req.getParameter("pricePackageId"));
             res.sendRedirect("login.jsp");
             return; // Dung lai khong cho tiep tuc vào filter
         }
