@@ -331,18 +331,11 @@ public class UserDAO extends DBContext {
         }
     }
     public User getByID(int id){
-        String sql ="select * from Users where UserID =?" ;
-        RoleDAO ro = new RoleDAO();
-        try {
-            PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1,id);
-            ResultSet rs = pre.executeQuery();
-            if(rs.next()){
-                User u = new User(rs.getInt("userId"),rs.getString("userName"),rs.getString("firstName"),rs.getString("lastName"),rs.getString("password"),rs.getString("email"),rs.getString("phoneNumber"),rs.getDate("CreatedDate"),rs.getString("Gender"),rs.getString("Avatar"),rs.getInt("Age"),ro.getByRoleID(rs.getInt("roleId")),rs.getBoolean("status"));
-                return u ;
+        ArrayList<User> listUserByID = getAll();
+        for(User u : listUserByID){
+            if(u.getUserId() == id){
+                return u;
             }
-        }catch(SQLException e){
-            System.out.println(e);
         }
         return null;
     }

@@ -34,11 +34,11 @@ public class LessonQuizDAO extends DBContext implements GenericDAO<LessonQuiz> {
     private LessonQuiz mapResultSetToQuiz(ResultSet rs) throws SQLException {
         LessonQuiz quiz = new LessonQuiz();
         quiz.setLessonQuizID(rs.getInt("LessonQuizID"));
-
+        
         // Get Lesson object using LessonDAO
         Lesson lesson = lessonDAO.findById(rs.getInt("LessonID"));
         quiz.setLesson(lesson);
-
+        
         quiz.setPassPercentage(rs.getInt("PassPercentage"));
         quiz.setTimeLimit(rs.getInt("TimeLimit"));
         quiz.setAttemptAllowed(rs.getInt("AttemptAllowed"));

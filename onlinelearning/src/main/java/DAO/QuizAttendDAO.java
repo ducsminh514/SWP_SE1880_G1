@@ -36,15 +36,15 @@ public class QuizAttendDAO extends DBContext implements GenericDAO<QuizAttend> {
     private QuizAttend mapResultSetToAttend(ResultSet rs) throws SQLException {
         QuizAttend attend = new QuizAttend();
         attend.setQuizAttendID(rs.getInt("QuizAttendID"));
-
+        
         // Get User from UserDAO
         User user = userDAO.findById(rs.getInt("UserID"));
         attend.setUser(user);
-
+        
         // Get LessonQuiz from LessonQuizDAO
         LessonQuiz lessonQuiz = lessonQuizDAO.findById(rs.getInt("LessonQuizID"));
         attend.setLessonQuiz(lessonQuiz);
-
+        
         attend.setScore(rs.getDouble("Score"));
         attend.setPassed(rs.getBoolean("Passed"));
         attend.setStartTime(rs.getTimestamp("StartTime"));
@@ -162,7 +162,7 @@ public class QuizAttendDAO extends DBContext implements GenericDAO<QuizAttend> {
 
     public static void main(String[] args) {
         QuizAttendDAO dao = new QuizAttendDAO();
-
+        
         // Test create
         QuizAttend attend = new QuizAttend();
         attend.setUser(new UserDAO().findById(1)); // Giả sử user ID 1 tồn tại
@@ -171,21 +171,21 @@ public class QuizAttendDAO extends DBContext implements GenericDAO<QuizAttend> {
         attend.setPassed(true);
         attend.setStartTime(new java.util.Date());
         attend.setEndTime(new java.util.Date());
-
+        
         int newId = dao.insert(attend);
         System.out.println("New attend ID: " + newId);
-
+        
         // Test find by ID
         QuizAttend found = dao.findById(newId);
         System.out.println("\nFound attend: " + (found != null ? "Success" : "Failed"));
-
+        
         // Test update
         if(found != null) {
             found.setScore(90.0);
             boolean updateResult = dao.update(found);
             System.out.println("Update result: " + (updateResult ? "Success" : "Failed"));
         }
-
+        
         // Test delete
         boolean deleteResult = dao.delete(found);
         System.out.println("Delete result: " + (deleteResult ? "Success" : "Failed"));

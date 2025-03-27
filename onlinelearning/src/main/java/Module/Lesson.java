@@ -78,7 +78,7 @@ public class Lesson {
         this.orderNo = orderNo;
     }
 
-    public boolean getStatus() {
+    public boolean isStatus() {
         return status;
     }
 

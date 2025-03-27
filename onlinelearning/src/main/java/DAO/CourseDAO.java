@@ -1,51 +1,21 @@
 package DAO;
 
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
 import dal.DBContext;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import Module.*;
-import dal.DBContext1;
 
-public class CourseDAO extends DBContext1 {
-    private final Cache<String, Object> cache;
-
-    public CourseDAO() {
-        // Khởi tạo cache với Caffeine
-        cache = Caffeine.newBuilder()
-                .expireAfterWrite(20, TimeUnit.MINUTES) // Cache hết hạn sau 10 phút
-                .maximumSize(10000) // Giới hạn 1000 mục trong cache
-                .build();
-    }
-
-    // Hàm tiện ích để tạo key cache từ tên phương thức và tham số
-    private String generateCacheKey(String methodName, Object... params) {
-        StringBuilder key = new StringBuilder(methodName);
-        for (Object param : params) {
-            key.append("_").append(param != null ? param.toString() : "null");
-        }
-        return key.toString();
-    }
-
+public class CourseDAO extends DBContext {
     public ArrayList<Course> getAll() {
-        String cacheKey = generateCacheKey("getAll");
-        @SuppressWarnings("unchecked")
-        ArrayList<Course> cachedResult = (ArrayList<Course>) cache.getIfPresent(cacheKey);
-        if (cachedResult != null) {
-            return cachedResult;
-        }
         String sql = "select * from Courses";
         ArrayList<Course> listCourse = new ArrayList<>();
-        try(Connection connection = DBContext1.getConnection()) {
+        try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
             CourseTypeDAO ctDAO = new CourseTypeDAO();
@@ -65,7 +35,6 @@ public class CourseDAO extends DBContext1 {
                 c.setLevel(rs.getString("SkillLevel"));
                 listCourse.add(c) ;
             }
-            cache.put(cacheKey, listCourse);
             return listCourse;
         } catch (SQLException e) {
             System.out.println(e);
@@ -80,7 +49,7 @@ public class CourseDAO extends DBContext1 {
                 "ORDER BY CreatedDate DESC\n" +
                 "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
 
-        try(Connection connection = DBContext1.getConnection()) {
+        try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1,start);
             pre.setInt(2,numCourse);
@@ -110,41 +79,16 @@ public class CourseDAO extends DBContext1 {
     }
 
     public Course getById (int courseID){
-        String sql = "select * from Courses where CourseID =?" ;
-        try(Connection connection = DBContext1.getConnection()) {
-            PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1,courseID);
-            ResultSet rs = pre.executeQuery();
-            CourseTypeDAO ctDAO = new CourseTypeDAO();
-            ExpertDAO eDAO = new ExpertDAO() ;
-            Course c= new Course();
-            if(rs.next()) {
-                c.setCourseId(rs.getInt("CourseID"));
-                c.setCourseName(rs.getString("CourseName"));
-                c.setDescription(rs.getString("Description"));
-                c.setCreateDate(rs.getDate("CreatedDate"));
-                c.setPrice(rs.getFloat("Price"));
-                c.setTitle(rs.getString("title"));
-                c.setThumbnail(rs.getString("thumbnail"));
-                c.setStatus(rs.getBoolean("status"));
-                c.setCourseType(ctDAO.getByID(rs.getInt("course_typeId")));
-                c.setExpert(eDAO.getByID(rs.getInt("ExpertID")));
-                c.setLevel(rs.getString("SkillLevel"));
+        ArrayList<Course> list = getAll();
+        for(Course c: list){
+            if(c.getCourseId() == courseID){
+                return c;
             }
-            return c;
-        } catch (SQLException e) {
-            System.out.println(e);
         }
         return null;
     }
 
     public ArrayList<Course> getCourse(String search, int categoryID , String arrange , int start , int row){
-        String cacheKey = generateCacheKey("getCourse", search, categoryID, arrange, start, row);
-        @SuppressWarnings("unchecked")
-        ArrayList<Course> cachedResult = (ArrayList<Course>) cache.getIfPresent(cacheKey);
-        if (cachedResult != null) {
-            return cachedResult;
-        }
         ArrayList<Course> listCourse = new ArrayList<>();
         String sql = "SELECT * FROM Courses WHERE 1=1";
         if(search != null && !search.isEmpty()){
@@ -169,7 +113,7 @@ public class CourseDAO extends DBContext1 {
         if(start>=0){
             sql += " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
         }
-        try(Connection connection = DBContext1.getConnection()){
+        try{
             PreparedStatement pre = connection.prepareStatement(sql);
             int index =1 ;
             if(search != null && !search.isEmpty()){
@@ -199,7 +143,6 @@ public class CourseDAO extends DBContext1 {
                 c.setExpert(eDAO.getByID(rs.getInt("ExpertID")));
                 listCourse.add(c) ;
             }
-            cache.put(cacheKey, listCourse); // Lưu vào cache
             return listCourse ;
         }catch (SQLException e){
             System.out.println(e);
@@ -210,7 +153,7 @@ public class CourseDAO extends DBContext1 {
         Course course = null;
         String sql = "SELECT * FROM Courses WHERE CourseID = ?";
 
-        try(Connection connection = DBContext1.getConnection()) {
+        try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, courseId);
             ResultSet rs = st.executeQuery();
@@ -246,7 +189,7 @@ public class CourseDAO extends DBContext1 {
         List<Course> courses = new ArrayList<>();
         String sql = "SELECT * FROM Courses WHERE CourseID IN (" + String.join(",", Collections.nCopies(courseIds.size(), "?")) + ")";
 
-        try(Connection connection = DBContext1.getConnection()) {
+        try {
             PreparedStatement st = connection.prepareStatement(sql);
 
             // Thiết lập các giá trị courseId vào câu lệnh SQL

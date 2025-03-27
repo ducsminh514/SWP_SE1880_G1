@@ -2,6 +2,7 @@ package DAO;
 
 import dal.DBContext;
 import Module.Question;
+import org.apache.http.protocol.RequestTargetHost;
 import Module.CourseType;
 import Module.QuestionType;
 import java.sql.PreparedStatement;
@@ -50,7 +51,7 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
                 + "Content = ?, Level = ?, SubjectId = ?, Mark = ?, "
                 + "QuestionTypeID = ?, IsActive = ?, UpdateAt = GETDATE(), Mp3 = ? "
                 + "WHERE QuestionID = ?";
-
+        
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, question.getContent());
             st.setInt(2, question.getLevel());
@@ -60,7 +61,7 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
             st.setBoolean(6, question.isStatus());
             st.setString(7, question.getMp3());
             st.setInt(8, question.getQuestionId());
-
+            
             int affectedRows = st.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
