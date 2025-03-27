@@ -129,7 +129,7 @@ public class PaymentServlet extends HttpServlet {
         session.setAttribute("amount", amount);
         session.setAttribute("selectedCourseId", course.getCourseId());
         session.setAttribute("selectedPricePackageId", pricePackage.getPriceId());
-        session.setAttribute("qrCodeUrl",paymentUrl);
+        request.setAttribute("qrCodeUrl",paymentUrl);
         // Store customer info
         session.setAttribute("customerName", fullName);
         session.setAttribute("customerEmail", email);

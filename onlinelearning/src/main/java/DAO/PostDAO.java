@@ -1,3 +1,4 @@
+
 package DAO;
 
 import dal.DBContext;
@@ -40,49 +41,68 @@ public class PostDAO extends DBContext {
         return listPost;
     }
 
-   public Post getById(int postID){
-        ArrayList<Post> list = getAll() ;
-        for(Post p: list){
-            if(p.getPostId() == postID){
-                return p;
+    public Post getById(int postID) {
+        String sql = "select * from Posts where PostID=?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, postID);
+            ResultSet rs = pre.executeQuery();
+            MarketingDAO mDAO = new MarketingDAO();
+            CategoryBlogDAO cDAO = new CategoryBlogDAO();
+            Post p = new Post();
+            while (rs.next()) {
+                p.setPostId(rs.getInt("PostID"));
+                p.setContent(rs.getString("Content"));
+                p.setCategoryBlog(cDAO.getByID(rs.getInt("CategoryBlogID")));
+                p.setStatus(rs.getBoolean("Status"));
+                p.setThumbnail(rs.getString("Thumbnail"));
+                p.setCreateDate(rs.getDate("CreateDate"));
+                p.setUpdateDate(rs.getDate("UpdateDate"));
+                p.setTitle(rs.getString("Title"));
+                p.setView(rs.getInt("Amount_View"));
+                p.setPostFile(rs.getString("PostFile"));
+                p.setMarketing(mDAO.getByID(rs.getInt("MarketingID")));
             }
+            return p;
+        } catch (SQLException e) {
+            System.out.println(e);
         }
         return null;
-   }
+    }
 
-   public ArrayList<Post> ArrangeByDate(){
+    public ArrayList<Post> ArrangeByDate() {
         String sql ="SELECT TOP 6 * \n" +
                 "FROM Posts\n" +
                 "ORDER BY UpdateDate DESC;\n" ;
-       ArrayList<Post> listP = new ArrayList<>();
-       try {
-           PreparedStatement pre = connection.prepareStatement(sql);
-           ResultSet rs = pre.executeQuery();
-           MarketingDAO mDAO = new MarketingDAO();
-           CategoryBlogDAO cDAO = new CategoryBlogDAO();
-           while (rs.next()) {
-               Post p = new Post();
-               p.setPostId(rs.getInt("PostID"));
-               p.setContent(rs.getString("Content"));
-               p.setCategoryBlog(cDAO.getByID(rs.getInt("CategoryBlogID")));
-               p.setStatus(rs.getBoolean("Status"));
-               p.setThumbnail(rs.getString("Thumbnail"));
-               p.setCreateDate(rs.getDate("CreateDate"));
-               p.setUpdateDate(rs.getDate("UpdateDate"));
-               p.setTitle(rs.getString("Title"));
-               p.setView(rs.getInt("Amount_View"));
-               p.setPostFile(rs.getString("PostFile"));
-               p.setMarketing(mDAO.getByID(rs.getInt("MarketingID")));
-               listP.add(p);
-           }
-           return listP;
-       } catch (SQLException e) {
-           System.out.println(e);
-       }
-       return listP;
-   }
+        ArrayList<Post> listP = new ArrayList<>();
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            MarketingDAO mDAO = new MarketingDAO();
+            CategoryBlogDAO cDAO = new CategoryBlogDAO();
+            while (rs.next()) {
+                Post p = new Post();
+                p.setPostId(rs.getInt("PostID"));
+                p.setContent(rs.getString("Content"));
+                p.setCategoryBlog(cDAO.getByID(rs.getInt("CategoryBlogID")));
+                p.setStatus(rs.getBoolean("Status"));
+                p.setThumbnail(rs.getString("Thumbnail"));
+                p.setCreateDate(rs.getDate("CreateDate"));
+                p.setUpdateDate(rs.getDate("UpdateDate"));
+                p.setTitle(rs.getString("Title"));
+                p.setView(rs.getInt("Amount_View"));
+                p.setPostFile(rs.getString("PostFile"));
+                p.setMarketing(mDAO.getByID(rs.getInt("MarketingID")));
+                listP.add(p);
+            }
+            return listP;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return listP;
+    }
 
-   public ArrayList<Post> getByCategory(int categoryBlogId){
+    public ArrayList<Post> getByCategory(int categoryBlogId) {
         ArrayList<Post> listByCate = new ArrayList<>();
         for(Post p : getAll()){
             if(p.getCategoryBlog().getCategoryBlogId() == categoryBlogId){
@@ -90,7 +110,7 @@ public class PostDAO extends DBContext {
             }
         }
         return listByCate;
-   }
+    }
 
     public ArrayList<Post> getAllByPage(int start,String search , int categoryID , String arrange , int numberPost ) {
         ArrayList<Post> listPost = new ArrayList<>();

@@ -1,3 +1,4 @@
+
 package DAO;
 
 import dal.DBContext;
@@ -16,13 +17,13 @@ public class ExpertDAO extends DBContext {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-               Expert e = new Expert();
-               e.setExpertId(rs.getInt("ExpertID"));
-               e.setBio(rs.getString("Bio"));
-               e.setExperienceYear(rs.getInt("ExperienceYears"));
-               e.setProfileImage(rs.getString("ProfileImage"));
-               e.setUser(uDAO.getByID(rs.getInt("UserID")));
-               listExpert.add(e);
+                Expert e = new Expert();
+                e.setExpertId(rs.getInt("ExpertID"));
+                e.setBio(rs.getString("Bio"));
+                e.setExperienceYear(rs.getInt("ExperienceYears"));
+                e.setProfileImage(rs.getString("ProfileImage"));
+                e.setUser(uDAO.getByID(rs.getInt("UserID")));
+                listExpert.add(e);
             }
 
             return listExpert;
@@ -33,11 +34,23 @@ public class ExpertDAO extends DBContext {
     }
 
     public Expert getByID(int id) {
-        ArrayList<Expert> list = getAll();
-        for(Expert e : list){
-            if(e.getExpertId() == id){
-                return e;
+        String sql = "select * from Experts where ExpertID =?";
+        UserDAO uDAO = new UserDAO();
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+            ResultSet rs = pre.executeQuery();
+            Expert e = new Expert();
+            if (rs.next()) {
+                e.setExpertId(rs.getInt("ExpertID"));
+                e.setBio(rs.getString("Bio"));
+                e.setExperienceYear(rs.getInt("ExperienceYears"));
+                e.setProfileImage(rs.getString("ProfileImage"));
+                e.setUser(uDAO.getByID(rs.getInt("UserID")));
             }
+            return e;
+        } catch (SQLException e) {
+            System.out.println(e);
         }
         return null;
     }

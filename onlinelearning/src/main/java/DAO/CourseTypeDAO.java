@@ -1,3 +1,4 @@
+
 package DAO;
 
 import dal.DBContext;
@@ -31,12 +32,20 @@ public class CourseTypeDAO extends DBContext {
     }
 
     public CourseType getByID(int id) {
-           ArrayList<CourseType> list = getAll();
-           for(CourseType ct : list){
-               if(ct.getCourseTypeId() == id){
-                   return ct;
-               }
-           }
-           return null;
+        String sql = "select * from Course_Type where course_typeId =?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+            ResultSet rs = pre.executeQuery();
+            CourseType ct = new CourseType();
+            if (rs.next()) {
+                ct.setCourseTypeName(rs.getString("course_typeName"));
+                ct.setCourseTypeId(rs.getInt("course_typeId"));
+            }
+            return ct;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
     }
 }

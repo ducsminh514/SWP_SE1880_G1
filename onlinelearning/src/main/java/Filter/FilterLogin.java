@@ -1,8 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Filter.java to edit this template
- */
-package Filter;
+
+        /*
+         * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+         * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Filter.java to edit this template
+         */
+        package Filter;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -97,8 +98,7 @@ public class FilterLogin implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
-    public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain)
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
         if (debug) {
@@ -118,6 +118,7 @@ public class FilterLogin implements Filter {
             session.setAttribute("parentId",req.getParameter("parentId"));
             session.setAttribute("postId",req.getParameter("postId"));
             session.setAttribute("courseId",req.getParameter("courseId"));
+            session.setAttribute("pricePackageId", req.getParameter("pricePackageId"));
             res.sendRedirect("login.jsp");
             return; // Dung lai khong cho tiep tuc vào filter
         }

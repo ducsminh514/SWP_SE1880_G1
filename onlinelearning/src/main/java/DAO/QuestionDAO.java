@@ -2,7 +2,6 @@ package DAO;
 
 import dal.DBContext;
 import Module.Question;
-import org.apache.http.protocol.RequestTargetHost;
 import Module.CourseType;
 import Module.QuestionType;
 import java.sql.PreparedStatement;

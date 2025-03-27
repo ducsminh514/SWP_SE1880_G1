@@ -22,17 +22,25 @@ public class CategoryBlogDAO extends DBContext {
             }
             return listCategoryBlog ;
         }catch(SQLException e){
-             System.out.println(e);
+            System.out.println(e);
         }
         return listCategoryBlog ;
     }
 
     public CategoryBlog getByID(int id){
-        ArrayList<CategoryBlog> list = getAll();
-        for(CategoryBlog c: list){
-            if(c.getCategoryBlogId() == id ){
-                return c ;
+        String sql = "select * from CategoryBlog where CategoryBlogID =?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+            ResultSet rs = pre.executeQuery();
+            CategoryBlog c = new CategoryBlog();
+            if (rs.next()) {
+                c.setCategoryBlogId(rs.getInt("CategoryBlogID"));
+                c.setCategoryBlogName(rs.getString("CategoryBlogName"));
             }
+            return c;
+        } catch (SQLException e) {
+            System.out.println(e);
         }
         return null;
     }
