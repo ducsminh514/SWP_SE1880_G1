@@ -179,7 +179,7 @@
                 padding: 10px 25px;
                 font-weight: 500;
             }
-            /* Thêm hiệu ứng hover */
+            /* Add some cool hover effects */
             .btn {
                 transition: all 0.3s ease;
             }
@@ -188,9 +188,9 @@
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
         </style>
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.10.2/Sortable.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input@1.3.4/dist/bs-custom-file-input.min.js"></script>
+       <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+               <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.10.2/Sortable.min.js"></script>
+               <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input@1.3.4/dist/bs-custom-file-input.min.js"></script>
     </head>
     <body>
         <div class="container">
@@ -204,15 +204,15 @@
                     <label for="title">Tiêu đề:</label>
                     <input type="text" class="form-control" id="title" name="title" value="${post.title}" required>
                 </div>
-                <div class="form-group">
-                    <label for="status" class="mr-2">Trạng thái:</label>
-                    <div class="custom-control custom-switch">
-                        <!-- Nếu post.status là true (1), checkbox sẽ được chọn -->
-                        <input type="checkbox" class="custom-control-input" id="status" name="status"
-                               ${post.status ? 'checked' : ''}>
-                        <label class="custom-control-label" for="status">Bật/Tắt</label>
-                    </div>
-                </div>
+         <div class="form-group">
+               <label for="status" class="mr-2">Trạng thái:</label>
+               <div class="custom-control custom-switch">
+                   <!-- Nếu post.status là true (1), checkbox sẽ được chọn -->
+                   <input type="checkbox" class="custom-control-input" id="status" name="status"
+                          ${post.status ? 'checked' : ''}>
+                   <label class="custom-control-label" for="status">Bật/Tắt</label>
+               </div>
+           </div>
                 <!-- Danh mục -->
                 <div class="form-group">
                     <label for="category">Danh mục:</label>
@@ -264,9 +264,9 @@
                                             <h5>Đoạn văn bản</h5>
                                             <button type="button" class="btn btn-danger btn-sm ml-auto remove-block"><i class="fas fa-trash mr-1"></i>Xóa</button>
                                         </div>
-                                        <div class="form-group">
-                                            <input type="hidden" class="form-control" name="note" >
-                                        </div>
+                                         <div class="form-group">
+                                             <input type="hidden" class="form-control" name="note" >
+                                         </div>
                                         <textarea class="form-control" name="content">${postContent.content}</textarea>
                                         <input type="hidden" name="oldContent" value="">
                                         <input type="hidden" name="contentType" value="TEXT">
@@ -366,7 +366,7 @@
                 <textarea class="form-control" name="content"></textarea>
                 <input type="hidden" name="contentType" value="TEXT">
                 <div class="form-group">
-                    <input type="hidden" class="form-control" name="note" >
+                     <input type="hidden" class="form-control" name="note" >
                 </div>
                 <input type="hidden" name="oldContent" value="">
                 <input type="hidden" name="contentType" value="TEXT">
@@ -438,25 +438,24 @@
                 const contentBlocks = document.getElementById('contentBlocks');
                 new Sortable(contentBlocks, {
                     handle: '.drag-handle',
-                    animation: 150,
-
+                    animation: 150
                 });
 
-                $(document).on('change', '.image-upload', function () {
-                    // Get the parent container
-                    const container = $(this).closest('.content-container');
+               $(document).on('change', '.image-upload', function() {
+                   // Get the parent container
+                   const container = $(this).closest('.content-container');
 
-                    // Find the hidden check input within this container and set its value to "change"
-                    container.find('.check').val('change');
+                   // Find the hidden check input within this container and set its value to "change"
+                   container.find('.check').val('change');
 
-                });
-                $(document).on('change', '.video-upload', function () {
-                    // Get the parent container
-                    const container = $(this).closest('.content-container');
+               });
+                $(document).on('change', '.video-upload', function() {
+                   // Get the parent container
+                   const container = $(this).closest('.content-container');
 
-                    // Find the hidden check input within this container and set its value to "change"
-                    container.find('.check').val('change');
-                });
+                   // Find the hidden check input within this container and set its value to "change"
+                   container.find('.check').val('change');
+               });
 
 
                function cleanupDuplicateBlocks() {
@@ -556,7 +555,7 @@
                 // Cập nhật thứ tự
                 function updateOrderIndices() {
                     $('.content-container').each(function (index) {
-                        console.log(index);
+                        console.log(index) ;
                         $(this).find('input[name="check"]').attr('name', `check[${index}]`);
                         $(this).find('input[name="orderIndex"]').attr('name', `orderIndex[${index}]`);
                         $(this).find('textarea[name="content"]').attr('name', `content[${index}]`);

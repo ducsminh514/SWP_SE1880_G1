@@ -355,8 +355,8 @@
                     <div class="wc-title">
                         <h4>Setting List</h4>
 
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-                            <a href="${pageContext.request.contextPath}/manage-setting" class="btn btn-primary">Back</a>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <a href="${pageContext.request.contextPath}/manage-setting" class="btn btn-search">Back</a>
                             <form action="${pageContext.request.contextPath}/manage-setting" method="get">
                                 <input type="hidden" name="action" value="add">
                                 <input type="submit" class="btn" value="Add new Setting" onclick="this.closest('form').submit();">

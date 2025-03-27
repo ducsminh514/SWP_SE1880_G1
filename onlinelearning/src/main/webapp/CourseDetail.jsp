@@ -241,8 +241,7 @@
                                                 <c:forEach items="${requestScope.listCourseType}" var="courseType">
                                                     <li class="active">
                                                         <a
-                                                            href="listCourse?cate=${courseType.courseTypeId}">${courseType.courseTypeName}
-                                                        </a>
+                                                            href="listCourse?cate=${courseType.courseTypeId}">${courseType.courseTypeName}</a>
                                                     </li>
                                                 </c:forEach>
                                             </ul>
