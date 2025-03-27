@@ -110,11 +110,30 @@ public class CourseDAO extends DBContext1 {
     }
 
     public Course getById (int courseID){
-        ArrayList<Course> list = getAll();
-        for(Course c: list){
-            if(c.getCourseId() == courseID){
-                return c;
+        String sql = "select * from Courses where CourseID =?" ;
+        try(Connection connection = DBContext1.getConnection()) {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1,courseID);
+            ResultSet rs = pre.executeQuery();
+            CourseTypeDAO ctDAO = new CourseTypeDAO();
+            ExpertDAO eDAO = new ExpertDAO() ;
+            Course c= new Course();
+            if(rs.next()) {
+                c.setCourseId(rs.getInt("CourseID"));
+                c.setCourseName(rs.getString("CourseName"));
+                c.setDescription(rs.getString("Description"));
+                c.setCreateDate(rs.getDate("CreatedDate"));
+                c.setPrice(rs.getFloat("Price"));
+                c.setTitle(rs.getString("title"));
+                c.setThumbnail(rs.getString("thumbnail"));
+                c.setStatus(rs.getBoolean("status"));
+                c.setCourseType(ctDAO.getByID(rs.getInt("course_typeId")));
+                c.setExpert(eDAO.getByID(rs.getInt("ExpertID")));
+                c.setLevel(rs.getString("SkillLevel"));
             }
+            return c;
+        } catch (SQLException e) {
+            System.out.println(e);
         }
         return null;
     }

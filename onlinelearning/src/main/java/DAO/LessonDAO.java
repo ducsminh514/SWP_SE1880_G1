@@ -180,6 +180,7 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
                 l.setLessonId(rs.getInt("LessonID"));
                 l.setLessonName(rs.getString("LessonName"));
                 l.setDuration(rs.getInt("Duration"));
+                l.setOrderNo(rs.getInt("OrderNo"));
                 list.add(l) ;
             }
             return list ;

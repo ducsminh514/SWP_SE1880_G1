@@ -41,12 +41,31 @@ public class PostDAO extends DBContext {
     }
 
    public Post getById(int postID){
-        ArrayList<Post> list = getAll() ;
-        for(Post p: list){
-            if(p.getPostId() == postID){
-                return p;
-            }
-        }
+        String sql = "select * from Posts where PostID=?" ;
+       try {
+           PreparedStatement pre = connection.prepareStatement(sql);
+           pre.setInt(1,postID);
+           ResultSet rs = pre.executeQuery();
+           MarketingDAO mDAO = new MarketingDAO();
+           CategoryBlogDAO cDAO = new CategoryBlogDAO();
+           Post p = new Post();
+           while (rs.next()) {
+               p.setPostId(rs.getInt("PostID"));
+               p.setContent(rs.getString("Content"));
+               p.setCategoryBlog(cDAO.getByID(rs.getInt("CategoryBlogID")));
+               p.setStatus(rs.getBoolean("Status"));
+               p.setThumbnail(rs.getString("Thumbnail"));
+               p.setCreateDate(rs.getDate("CreateDate"));
+               p.setUpdateDate(rs.getDate("UpdateDate"));
+               p.setTitle(rs.getString("Title"));
+               p.setView(rs.getInt("Amount_View"));
+               p.setPostFile(rs.getString("PostFile"));
+               p.setMarketing(mDAO.getByID(rs.getInt("MarketingID")));
+           }
+           return p;
+       } catch (SQLException e) {
+           System.out.println(e);
+       }
         return null;
    }
 
