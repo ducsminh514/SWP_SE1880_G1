@@ -157,6 +157,31 @@ public class QuestionAnswerDAO extends DBContext implements GenericDAO<QuestionA
         }
         return 0;
     }
+
+    public List<QuestionAnswer> getCorrectAnswersByQuestionId(int questionId) {
+        String sql = "SELECT [AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect] "
+                + "FROM [dbo].[QuestionAnswer] "
+                + "WHERE QuestionID = ? AND IsCorrect = 1";
+
+        List<QuestionAnswer> correctAnswers = new ArrayList<>();
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, questionId);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                correctAnswers.add(getFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting correct answers: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            closeResources();
+        }
+
+        return correctAnswers;
+    }
     
 
 }

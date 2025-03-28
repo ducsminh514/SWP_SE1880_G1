@@ -34,11 +34,11 @@ public class LessonQuizDAO extends DBContext implements GenericDAO<LessonQuiz> {
     private LessonQuiz mapResultSetToQuiz(ResultSet rs) throws SQLException {
         LessonQuiz quiz = new LessonQuiz();
         quiz.setLessonQuizID(rs.getInt("LessonQuizID"));
-        
+
         // Get Lesson object using LessonDAO
         Lesson lesson = lessonDAO.findById(rs.getInt("LessonID"));
         quiz.setLesson(lesson);
-        
+
         quiz.setPassPercentage(rs.getInt("PassPercentage"));
         quiz.setTimeLimit(rs.getInt("TimeLimit"));
         quiz.setAttemptAllowed(rs.getInt("AttemptAllowed"));
@@ -51,7 +51,7 @@ public class LessonQuizDAO extends DBContext implements GenericDAO<LessonQuiz> {
     @Override
     public int insert(LessonQuiz quiz) {
         String sql = "INSERT INTO LessonQuiz (LessonID, PassPercentage, TimeLimit, AttemptAllowed, Status, ImageUrl, Mp3Url) "
-                   + "OUTPUT INSERTED.LessonQuizID VALUES (?, ?, ?, ?, ?, ?, ?)";
+                + "OUTPUT INSERTED.LessonQuizID VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, quiz.getLesson().getLessonId());
             st.setInt(2, quiz.getPassPercentage());
@@ -75,8 +75,8 @@ public class LessonQuizDAO extends DBContext implements GenericDAO<LessonQuiz> {
     @Override
     public boolean update(LessonQuiz quiz) {
         String sql = "UPDATE LessonQuiz SET LessonID = ?, PassPercentage = ?, TimeLimit = ?, "
-                   + "AttemptAllowed = ?, Status = ?, ImageUrl = ?, Mp3Url = ? "
-                   + "WHERE LessonQuizID = ?";
+                + "AttemptAllowed = ?, Status = ?, ImageUrl = ?, Mp3Url = ? "
+                + "WHERE LessonQuizID = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, quiz.getLesson().getLessonId());
             st.setInt(2, quiz.getPassPercentage());
@@ -138,12 +138,25 @@ public class LessonQuizDAO extends DBContext implements GenericDAO<LessonQuiz> {
         return quizzes;
     }
 
+    public LessonQuiz getByLessonId(int lessonId) {
+        String sql = "SELECT * FROM LessonQuiz WHERE LessonID = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, lessonId);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToQuiz(rs);
+                }
+            }
+        } catch (SQLException e) {
+            handleException("Error finding quiz by lesson ID", e);
+        }
+        return null;
+    }
+
     private void handleException(String message, SQLException e) {
         System.err.println(message + ": " + e.getMessage());
         e.printStackTrace();
     }
-
-
 
     public int getQuestionCountByQuizId(int quizId) {
         String sql = "SELECT COUNT(*) AS NumberOfQuestions FROM QuizQuestions WHERE QuizQuestionID = ?";

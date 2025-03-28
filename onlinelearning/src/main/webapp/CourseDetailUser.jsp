@@ -289,6 +289,20 @@
         .question-audio audio {
             width: 100%;
         }
+
+        /* Essay question styles */
+        .essay-answer textarea {
+            width: 100%;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        .essay-answer textarea:focus {
+            border-color: #4c1864;
+            box-shadow: 0 0 0 0.2rem rgba(76, 24, 100, 0.25);
+        }
     </style>
 </head>
 <body id="bg">
@@ -399,20 +413,44 @@
                                                             </div>
                                                         </c:if>
 
-                                                        <!-- Answer options -->
+                                                        <!-- Answer options based on question type -->
                                                         <div class="answer-options">
-                                                            <c:forEach items="${questionAnswersMap[question.questionId]}" var="answer">
-                                                                <div class="form-check mb-2">
-                                                                    <input class="form-check-input"
-                                                                           type="${question.questionType.questionTypeId == 1 ? 'radio' : 'checkbox'}"
-                                                                           name="question_${question.questionId}"
-                                                                           id="answer_${answer.answerId}"
-                                                                           value="${answer.answerId}">
-                                                                    <label class="form-check-label" for="answer_${answer.answerId}">
-                                                                            ${answer.content}
-                                                                    </label>
-                                                                </div>
-                                                            </c:forEach>
+                                                            <c:choose>
+                                                                <%-- Multiple choice question (type 1) --%>
+                                                                <c:when test="${question.questionType.questionTypeId == 1}">
+                                                                    <c:forEach items="${questionAnswersMap[question.questionId]}" var="answer">
+                                                                        <div class="form-check mb-2">
+                                                                            <input class="form-check-input"
+                                                                                   type="${question.questionType.questionTypeId == 1 ? 'radio' : 'checkbox'}"
+                                                                                   name="question_${question.questionId}"
+                                                                                   id="answer_${answer.answerId}"
+                                                                                   value="${answer.answerId}">
+                                                                            <label class="form-check-label" for="answer_${answer.answerId}">
+                                                                                    ${answer.content}
+                                                                            </label>
+                                                                        </div>
+                                                                    </c:forEach>
+                                                                </c:when>
+
+                                                                <%-- Essay/fill-in-the-blank question (type 2) --%>
+                                                                <c:when test="${question.questionType.questionTypeId == 2}">
+                                                                    <div class="essay-answer mt-3">
+                                                                        <label for="essay_${question.questionId}" class="form-label">Your Answer:</label>
+                                                                        <textarea class="form-control"
+                                                                                  id="essay_${question.questionId}"
+                                                                                  name="question_${question.questionId}"
+                                                                                  rows="4"
+                                                                                  placeholder="Type your answer here..."></textarea>
+                                                                    </div>
+                                                                </c:when>
+
+                                                                <%-- Default case for other question types --%>
+                                                                <c:otherwise>
+                                                                    <div class="alert alert-warning">
+                                                                        <p>This question type is not currently supported.</p>
+                                                                    </div>
+                                                                </c:otherwise>
+                                                            </c:choose>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -507,16 +545,16 @@
                                                         <div class="lesson-item" onclick="loadLessonContent('${lesson.lessonId}')">
                                                             <div class="lesson-icon">
                                                                 <c:choose>
-                                                                    <c:when test="${lesson.type == 'TEXT'}">
+                                                                    <c:when test="${lesson.type eq 'TEXT' || lesson.type eq 'text'}">
                                                                         <i class="fa fa-file-text-o"></i>
                                                                     </c:when>
-                                                                    <c:when test="${lesson.type == 'VIDEO'}">
+                                                                    <c:when test="${lesson.type eq 'VIDEO' || lesson.type eq 'video'}">
                                                                         <i class="fa fa-play-circle-o"></i>
                                                                     </c:when>
-                                                                    <c:when test="${lesson.type == 'FILE'}">
+                                                                    <c:when test="${lesson.type eq 'FILE' || lesson.type eq 'file'}">
                                                                         <i class="fa fa-file-o"></i>
                                                                     </c:when>
-                                                                    <c:when test="${lesson.type == 'QUIZ'}">
+                                                                    <c:when test="${lesson.type eq 'QUIZ' || lesson.type eq 'quiz'}">
                                                                         <i class="fa fa-question-circle-o"></i>
                                                                     </c:when>
                                                                     <c:otherwise>
@@ -529,17 +567,7 @@
                                                                     ${lesson.lessonName}
                                                                 <!-- Lesson Duration -->
                                                                 <div class="lesson-duration">
-                                                                    <c:choose>
-                                                                        <c:when test="${lesson.type == 'VIDEO'}">
-                                                                            <i class="fa fa-clock-o"></i> ${lesson.duration} min
-                                                                        </c:when>
-                                                                        <c:when test="${lesson.type == 'QUIZ'}">
-                                                                            <i class="fa fa-question-circle"></i> Quiz
-                                                                        </c:when>
-                                                                        <c:otherwise>
-                                                                            <i class="fa fa-clock-o"></i> ${lesson.duration} min
-                                                                        </c:otherwise>
-                                                                    </c:choose>
+                                                                        ${lesson.duration} minutes
                                                                 </div>
                                                             </div>
                                                             <!-- Completed Lesson Indicator -->
@@ -606,13 +634,13 @@
     function loadLessonContent(lessonId) {
         // Show loading indicator with spinner animation
         document.getElementById('lesson-content').innerHTML = `
-            <div class="text-center p-5">
-                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                    <span class="sr-only">Loading...</span>
-                </div>
-                <p class="mt-3">Loading lesson content...</p>
-            </div>
-        `;
+                    <div class="text-center p-5">
+                        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <p class="mt-3">Loading lesson content...</p>
+                    </div>
+                `;
 
         // Navigate to the lesson page
         try {
@@ -620,23 +648,24 @@
         } catch (error) {
             // Show error message if navigation fails
             document.getElementById('lesson-content').innerHTML = `
-                <div class="alert alert-danger p-4">
-                    <h4 class="alert-heading">Error Loading Lesson</h4>
-                    <p>There was a problem loading the lesson content. Please try again or contact support.</p>
-                    <hr>
-                    <p class="mb-0">Error details: ${error.message || 'Unknown error'}</p>
-                </div>
-                <div class="text-center mt-3">
-                    <button class="btn" onclick="loadLessonContent('${lessonId}')">Try Again</button>
-                </div>
-            `;
+                        <div class="alert alert-danger p-4">
+                            <h4 class="alert-heading">Error Loading Lesson</h4>
+                            <p>There was a problem loading the lesson content. Please try again or contact support.</p>
+                            <hr>
+                            <p class="mb-0">Error details: ${error.message || 'Unknown error'}</p>
+                        </div>
+                        <div class="text-center mt-3">
+                            <button class="btn" onclick="loadLessonContent('${lessonId}')">Try Again</button>
+                        </div>
+                    `;
         }
     }
 
     // Track video progress for video lessons
     function trackVideoProgress() {
         const videoIframe = document.querySelector('.video-container iframe');
-        if (!videoIframe) return;
+        if (!videoIframe)
+            return;
 
         // Set up variables for tracking
         let currentLessonId = null;
@@ -736,9 +765,9 @@
         $.ajax({
             url: 'lesson',
             type: 'POST',
-            data: { lessonId: lessonId },
+            data: {lessonId: lessonId},
             dataType: 'json',
-            success: function(response) {
+            success: function (response) {
                 if (!response.success) {
                     console.error('Error:', response.message);
                     alert(response.message);
@@ -771,7 +800,7 @@
                     container.appendChild(successMessage);
 
                     // Remove the message after 3 seconds
-                    setTimeout(function() {
+                    setTimeout(function () {
                         successMessage.style.display = 'none';
                     }, 3000);
                 }
@@ -779,7 +808,7 @@
                 // Update progress if there's a progress bar
                 updateProgressBar();
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error marking lesson as completed:', error);
                 alert('Error marking lesson as completed. Please try again.');
             }
@@ -813,7 +842,7 @@
     }
 
     // Initialize the first subject as open
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Check if there are subjects
         const subjects = document.querySelectorAll('.subject-panel');
         if (subjects.length > 0) {
@@ -828,15 +857,15 @@
         // Add CSS for active lesson
         const style = document.createElement('style');
         style.textContent = `
-            .lesson-item.active {
-                background-color: #f1f1f1;
-                border-left: 3px solid #4c1864;
-            }
-            .completed-lesson {
-                color: #28a745;
-                margin-left: 10px;
-            }
-        `;
+                    .lesson-item.active {
+                        background-color: #f1f1f1;
+                        border-left: 3px solid #4c1864;
+                    }
+                    .completed-lesson {
+                        color: #28a745;
+                        margin-left: 10px;
+                    }
+                `;
         document.head.appendChild(style);
 
         // Initialize video tracking if video exists
@@ -886,10 +915,10 @@
     }
 
     // Handle quiz submission
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const quizForm = document.getElementById('quiz-form');
         if (quizForm) {
-            quizForm.addEventListener('submit', function(e) {
+            quizForm.addEventListener('submit', function (e) {
                 e.preventDefault();
 
                 // Get the lesson ID directly from the URL parameter
