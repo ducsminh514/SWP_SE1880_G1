@@ -14,6 +14,7 @@ public class CustomerDAO extends DBContext {
         ArrayList<Customer> listCustomer = new ArrayList<>();
         UserDAO uDAO = new UserDAO();
         try {
+            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
@@ -27,24 +28,47 @@ public class CustomerDAO extends DBContext {
             return listCustomer ;
         } catch (SQLException e) {
             System.out.println(e);
+        } finally {
+            closeResources();
         }
         return listCustomer;
     }
 
     public Customer getByID(int id) {
-        ArrayList<Customer> list = getAll();
-        for (Customer e : list) {
-            if (e.getCustomerId() == id) {
-                return e;
+        String sql = "SELECT * FROM Customers WHERE CustomerID = ?";
+        try {
+            connection = getConnection();
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                Customer c = new Customer();
+                c.setCustomerId(rs.getInt("CustomerID"));
+                c.setSocialRole(rs.getString("SocialRole"));
+                c.setLevelOfEnglish(rs.getString("LevelOfEnglish"));
+
+                // Lấy thông tin User từ bảng Users
+                int userId = rs.getInt("UserID");
+                UserDAO ud = new UserDAO();
+                User user = ud.getByID(userId);
+                c.setUser(user);
+
+                return c;
             }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            closeResources();
         }
         return null;
     }
+    
     public int GetIDCustomerByID(int iduser){
         int customerID = -1;
         String sql = "SELECT * FROM Customers WHERE UserID = ?";
 
         try {
+            connection = getConnection();
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1,iduser);
             ResultSet rs = st.executeQuery();
@@ -53,35 +77,34 @@ public class CustomerDAO extends DBContext {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeResources();
         }
         return customerID;
     }
 
-        public static void main(String[] args) {
-          CustomerDAO cdao= new CustomerDAO();
-          String a = "hihi";
-          User c= new User(2);
-          Customer ab = new Customer(a,a,c);
-          cdao.insertUser1(ab);
+    public void insertUser1(Customer c) {
+        String sql = "INSERT INTO Customers (SocialRole, LevelOfEnglish, UserID) VALUES (?, ?, ?)";
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1,c.getSocialRole());
+            st.setString(2,c.getLevelOfEnglish());
+            st.setInt(3,c.getUser().getUserId());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            closeResources();
+        }
     }
-public void insertUser1(Customer c) {
-    String sql = "INSERT INTO Customers (SocialRole, LevelOfEnglish, UserID) VALUES (?, ?, ?)";
-    try {
-        PreparedStatement st = connection.prepareStatement(sql);
-        st.setString(1,c.getSocialRole());
-        st.setString(2,c.getLevelOfEnglish());
-        st.setInt(3,c.getUser().getUserId());
-        st.executeUpdate();
-
-    } catch (SQLException e) {
-        System.out.println(e);
-    }
-}
+    
     public Customer getCustomerById(int customerId) {
         Customer customer = null;
         String sql = "SELECT * FROM Customers WHERE CustomerID = ?";
 
         try {
+            connection = getConnection();
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, customerId);
             ResultSet rs = st.executeQuery();
@@ -99,14 +122,14 @@ public void insertUser1(Customer c) {
                 User user = ud.getUserByID(userId);
                 customer.setUser(user);
             }
-
-            rs.close();  // Đóng ResultSet
-            st.close();  // Đóng PreparedStatement
         } catch (SQLException e) {
             System.err.println("Error retrieving customer: " + e);
+        } finally {
+            closeResources();
         }
 
         return customer;  // Trả về đối tượng Customer hoặc null nếu không tìm thấy
     }
+    
 
 }

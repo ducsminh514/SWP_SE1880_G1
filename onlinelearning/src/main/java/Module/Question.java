@@ -17,12 +17,15 @@ public class Question {
     private Date createTime;
     private Date updateTime;
     private List<QuestionImage> questionImage;
+    private int lessonQuizId;
     private String mp3;
 
     public Question() {
     }
 
-    public Question(int questionId, String content, int level, Subject subject, int mark, QuestionType questionType, boolean status, Date createTime, Date updateTime, List<QuestionImage> questionImage, String mp3) {
+    public Question(int questionId, String content, int level, Subject subject, int mark,
+                    QuestionType questionType, boolean status, Date createTime, Date updateTime,
+                    List<QuestionImage> questionImage, String mp3, int lessonQuizId) {
         this.questionId = questionId;
         this.content = content;
         this.level = level;
@@ -34,6 +37,7 @@ public class Question {
         this.updateTime = updateTime;
         this.questionImage = questionImage;
         this.mp3 = mp3;
+        this.lessonQuizId = lessonQuizId;
     }
 
     public int getQuestionId() {
@@ -122,5 +126,13 @@ public class Question {
 
     public void setMp3(String mp3) {
         this.mp3 = mp3;
+    }
+
+    public int getLessonQuizId() {
+        return lessonQuizId;
+    }
+
+    public void setLessonQuizId(int lessonQuizId) {
+        this.lessonQuizId = lessonQuizId;
     }
 }

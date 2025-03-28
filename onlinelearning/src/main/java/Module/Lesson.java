@@ -4,32 +4,37 @@ import java.util.Date;
 
 public class Lesson {
     private int lessonId;
-    private Subject subject ;
-    private String lessonName ;
-    private String content ;
-    private int duration ;
-    private int orderNo ;
-    private boolean status ;
-    private String video_url ;
-    private Date createDate ;
-    private String description ;
+    private int subjectId;
+    private String lessonName;
+    private String content;
+    private int duration;
+    private int orderNo;
+    private Boolean statusLesson;
+    private Date createdDate;
+    private String type;
+    private Date updateDate;
+    private boolean completed;
 
     public Lesson() {
     }
 
-    public Lesson(int lessonId, Subject subject, String lessonName, String content, int duration, int orderNo, boolean status, String video_url, Date createDate, String description) {
+    public Lesson(int lessonId, int subjectId, String lessonName, String content,
+                  int duration, int orderNo, Boolean statusLesson, Date createdDate,
+                  String type, Date updateDate) {
         this.lessonId = lessonId;
-        this.subject = subject;
+        this.subjectId = subjectId;
         this.lessonName = lessonName;
         this.content = content;
         this.duration = duration;
         this.orderNo = orderNo;
-        this.status = status;
-        this.video_url = video_url;
-        this.createDate = createDate;
-        this.description = description;
+        this.statusLesson = statusLesson;
+        this.createdDate = createdDate;
+        this.type = type;
+        this.updateDate = updateDate;
+        this.completed = false;
     }
 
+    // Getters and Setters
     public int getLessonId() {
         return lessonId;
     }
@@ -38,12 +43,12 @@ public class Lesson {
         this.lessonId = lessonId;
     }
 
-    public Subject getSubject() {
-        return subject;
+    public int getSubjectId() {
+        return subjectId;
     }
 
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    public void setSubjectId(int subjectId) {
+        this.subjectId = subjectId;
     }
 
     public String getLessonName() {
@@ -78,35 +83,43 @@ public class Lesson {
         this.orderNo = orderNo;
     }
 
-    public boolean isStatus() {
-        return status;
+    public Boolean getStatusLesson() {
+        return statusLesson;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setStatusLesson(Boolean statusLesson) {
+        this.statusLesson = statusLesson;
     }
 
-    public String getVideo_url() {
-        return video_url;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setVideo_url(String video_url) {
-        this.video_url = video_url;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public String getType() {
+        return type;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getDescription() {
-        return description;
+    public Date getUpdateDate() {
+        return updateDate;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }

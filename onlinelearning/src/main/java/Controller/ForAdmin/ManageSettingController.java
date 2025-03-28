@@ -32,6 +32,9 @@ public class ManageSettingController extends HttpServlet {
                 case "add":
                     request.getRequestDispatcher("admin/add-setting.jsp").forward(request, response);
                     break;
+                case "deactive":
+                    DeactiveSetting(request, response);
+                    break;
                 default:
                     SearchByFilter(request, response);
                     break;
@@ -125,15 +128,25 @@ public class ManageSettingController extends HttpServlet {
     private void DeactiveSetting(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String settingId = request.getParameter("id");
         if (settingId != null && !settingId.isEmpty()) {
-            SettingDAO settingDAO = new SettingDAO();
-            boolean rs = settingDAO.delete(settingDAO.getSettingById(settingId));
-            if (rs) {
-                setToastMessage(request, "User deactive successfully", "success");
-            } else {
-                setToastMessage(request, "User deactive failed", "failed");
+            try {
+                SettingDAO settingDAO = new SettingDAO();
+                Setting setting = settingDAO.getSettingById(settingId);
+
+                if (setting != null && setting.getSettingId() > 0) {
+                    boolean rs = settingDAO.delete(setting);
+                    if (rs) {
+                        setToastMessage(request, "Setting deactivated successfully", "success");
+                    } else {
+                        setToastMessage(request, "Failed to deactivate setting", "error");
+                    }
+                } else {
+                    setToastMessage(request, "Setting not found", "error");
+                }
+            } catch (Exception e) {
+                setToastMessage(request, "Error: " + e.getMessage(), "error");
             }
         } else {
-            setToastMessage(request, "Not found setting id", "failed");
+            setToastMessage(request, "Setting ID is required", "error");
         }
         response.sendRedirect(request.getContextPath() + "/manage-setting");
     }

@@ -21,7 +21,9 @@ public class LessonCompletionDAO extends DBContext {
     public boolean insert(LessonCompletion completion) {
         String sql = "INSERT INTO LessonCompletions (LessonID, UserID, CompletionDate) VALUES (?, ?, ?)";
         
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, completion.getLessonId());
             ps.setInt(2, completion.getUserId());
             ps.setTimestamp(3, new java.sql.Timestamp(completion.getCompletionDate().getTime()));
@@ -32,6 +34,8 @@ public class LessonCompletionDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println("Error inserting lesson completion: " + e.getMessage());
             return false;
+        } finally {
+            closeResources();
         }
     }
     
@@ -44,7 +48,9 @@ public class LessonCompletionDAO extends DBContext {
     public boolean isLessonCompleted(int lessonId, int userId) {
         String sql = "SELECT COUNT(*) FROM LessonCompletions WHERE LessonID = ? AND UserID = ?";
         
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, lessonId);
             ps.setInt(2, userId);
             
@@ -55,6 +61,8 @@ public class LessonCompletionDAO extends DBContext {
             
         } catch (SQLException e) {
             System.out.println("Error checking lesson completion: " + e.getMessage());
+        } finally {
+            closeResources();
         }
         
         return false;
@@ -69,7 +77,9 @@ public class LessonCompletionDAO extends DBContext {
         List<LessonCompletion> completions = new ArrayList<>();
         String sql = "SELECT * FROM LessonCompletions WHERE UserID = ?";
         
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             
@@ -85,6 +95,8 @@ public class LessonCompletionDAO extends DBContext {
             
         } catch (SQLException e) {
             System.out.println("Error retrieving completed lessons: " + e.getMessage());
+        } finally {
+            closeResources();
         }
         
         return completions;
@@ -106,7 +118,9 @@ public class LessonCompletionDAO extends DBContext {
                     "JOIN Subjects S ON L.SubjectID = S.SubjectID " +
                     "WHERE S.CourseID = ?) AS TotalCount";
         
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, courseId);
             ps.setInt(2, userId);
             ps.setInt(3, courseId);
@@ -123,8 +137,12 @@ public class LessonCompletionDAO extends DBContext {
             
         } catch (SQLException e) {
             System.out.println("Error calculating course completion percentage: " + e.getMessage());
+        } finally {
+            closeResources();
         }
         
         return 0.0;
     }
+    
+   
 } 

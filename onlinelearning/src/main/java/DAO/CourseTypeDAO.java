@@ -14,6 +14,7 @@ public class CourseTypeDAO extends DBContext {
         String sql = "select * from Course_Type";
         ArrayList<CourseType> listCourseType = new ArrayList<>();
         try {
+            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
 
@@ -26,17 +27,33 @@ public class CourseTypeDAO extends DBContext {
             return listCourseType;
         } catch (SQLException e) {
             System.out.println(e);
+        } finally {
+            closeResources();
         }
         return listCourseType;
     }
 
     public CourseType getByID(int id) {
-           ArrayList<CourseType> list = getAll();
-           for(CourseType ct : list){
-               if(ct.getCourseTypeId() == id){
-                   return ct;
-               }
-           }
-           return null;
+        String sql = "select * from Course_Type where course_typeId = ?";
+        ArrayList<CourseType> listCourseType = new ArrayList<>();
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setObject(1, id);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                CourseType ct = new CourseType();
+                ct.setCourseTypeName(resultSet.getString("course_typeName"));
+                ct.setCourseTypeId(resultSet.getInt("course_typeId"));
+                return ct;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            closeResources();
+        }
+        return null;
     }
+    
+  
 }

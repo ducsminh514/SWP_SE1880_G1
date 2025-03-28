@@ -29,39 +29,39 @@ public class CourseDetailLearningServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         // Get course ID from request
         String courseIdStr = request.getParameter("courseId");
         if (courseIdStr == null || courseIdStr.isEmpty()) {
             response.sendRedirect("listCourse");
             return;
         }
-        
+
         try {
             int courseId = Integer.parseInt(courseIdStr);
-            
+
             // Get DAOs
             CourseDAO courseDAO = new CourseDAO();
             SubjectDAO subjectDAO = new SubjectDAO();
             LessonDAO lessonDAO = new LessonDAO();
             EnrollmentDAO enrollmentDAO = new EnrollmentDAO();
             LessonCompletionDAO completionDAO = new LessonCompletionDAO();
-            
+
             // Get course information
             Course course = courseDAO.getCourseById(courseId);
             if (course == null) {
                 response.sendRedirect("listCourse");
                 return;
             }
-            
+
             // Get list of subjects for this course
             ArrayList<Subject> listSubject = subjectDAO.findByCourse(courseId);
-            
+
             // Create a map to store lessons for each subject
             Map<Integer, ArrayList<Lesson>> subjectLessonsMap = new HashMap<>();
             int totalLessons = 0;
             int totalDuration = 0;
-            
+
             // Get user ID from session for completion tracking
             HttpSession session = request.getSession();
             int userId = -1;
@@ -77,7 +77,7 @@ public class CourseDetailLearningServlet extends HttpServlet {
                 System.out.println("Error getting userId from user object: " + e.getMessage());
                 // Tiếp tục với userId mặc định -1
             }
-            
+
             // Get completed lessons for the user
             Set<Integer> completedLessonIds = new HashSet<>();
             if (userId > 0) {
@@ -86,34 +86,34 @@ public class CourseDetailLearningServlet extends HttpServlet {
                     completedLessonIds.add(completion.getLessonId());
                 }
             }
-            
+
             // Populate the map with lessons for each subject
             for (Subject subject : listSubject) {
                 ArrayList<Lesson> lessons = lessonDAO.getBySubject(subject.getSubjectId());
-                
+
                 // Mark completed lessons
                 for (Lesson lesson : lessons) {
                     if (completedLessonIds.contains(lesson.getLessonId())) {
                         lesson.setCompleted(true);
                     }
                 }
-                
+
                 subjectLessonsMap.put(subject.getSubjectId(), lessons);
-                
+
                 // Calculate totals
                 totalLessons += lessons.size();
                 for (Lesson lesson : lessons) {
                     totalDuration += lesson.getDuration();
                 }
             }
-            
+
             // Calculate progress percentage
             double progressPercentage = 0;
             int completedLessons = completedLessonIds.size();
             if (totalLessons > 0 && userId > 0) {
                 progressPercentage = completionDAO.getCourseCompletionPercentage(courseId, userId);
             }
-            
+
             // Set attributes for JSP
             request.setAttribute("course", course);
             request.setAttribute("listSubject", listSubject);
@@ -123,10 +123,10 @@ public class CourseDetailLearningServlet extends HttpServlet {
             request.setAttribute("totalDuration", totalDuration);
             request.setAttribute("completedLessons", completedLessons);
             request.setAttribute("progressPercentage", progressPercentage);
-            
+
             // Forward to the JSP
             request.getRequestDispatcher("CourseDetailUser.jsp").forward(request, response);
-            
+
         } catch (NumberFormatException e) {
             response.sendRedirect("listCourse");
         } catch (Exception e) {
@@ -142,4 +142,4 @@ public class CourseDetailLearningServlet extends HttpServlet {
         // submitting quiz answers, etc.
         doGet(request, response);
     }
-} 
+}

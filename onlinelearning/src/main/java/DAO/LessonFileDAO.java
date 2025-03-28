@@ -20,7 +20,9 @@ public class LessonFileDAO extends DBContext {
         LessonFile lessonFile = null;
         String sql = "SELECT * FROM LessonFile WHERE lessonId = ?";
         
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, lessonId);
             ResultSet rs = ps.executeQuery();
             
@@ -34,8 +36,12 @@ public class LessonFileDAO extends DBContext {
             
         } catch (SQLException e) {
             System.out.println("Error retrieving lesson file: " + e.getMessage());
+        } finally {
+            closeResources();
         }
         
         return lessonFile;
     }
+    
+
 } 

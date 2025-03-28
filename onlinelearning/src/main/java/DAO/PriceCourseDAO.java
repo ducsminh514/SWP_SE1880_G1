@@ -8,10 +8,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import Module.Course ;
-import Module.PriceCourse ;
+import Module.Course;
+import Module.PriceCourse;
 public class PriceCourseDAO extends DBContext {
-   public int lowestSalePrice (int courseId){
+   public int lowestSalePrice(int courseId){
        String sql ="DECLARE @CourseID INT;\n" +
                "SET @CourseID = ?;  \n" +
                "\n" +
@@ -19,18 +19,21 @@ public class PriceCourseDAO extends DBContext {
                "FROM PriceCourse\n" +
                "WHERE CourseID = @CourseID\n" +
                "AND SalePrice = (SELECT MIN(SalePrice) FROM PriceCourse WHERE CourseID = @CourseID);\n";
-        int priceId =0;
+        int priceId = 0;
        try{
-           PreparedStatement pre = connection.prepareStatement(sql) ;
+           connection = getConnection();
+           PreparedStatement pre = connection.prepareStatement(sql);
            pre.setInt(1,courseId);
            ResultSet rs = pre.executeQuery();
            if(rs.next()){
                priceId = rs.getInt(1);
            }
        }catch(SQLException e){
-           System.out.println(e) ;
+           System.out.println(e);
+       } finally {
+           closeResources();
        }
-       return priceId ;
+       return priceId;
    }
 
    public PriceCourse getById(int priceCourseId){
@@ -88,4 +91,5 @@ public class PriceCourseDAO extends DBContext {
        }
        return listPrice ;
    }
+
 }

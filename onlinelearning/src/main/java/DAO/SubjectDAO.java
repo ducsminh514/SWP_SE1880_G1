@@ -24,13 +24,16 @@ public class SubjectDAO extends DBContext implements GenericDAO<Subject> {
                 "  FROM [dbo].[Subjects]\n";
         List<Subject> subjectList = new ArrayList<Subject>();
         try{
-            PreparedStatement st  = connection.prepareStatement(sql);
-            ResultSet rs  = st.executeQuery();
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
             while(rs.next()){
                 subjectList.add(getFromResultSet(rs));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            closeResources();
         }
         return subjectList;
     }
@@ -77,6 +80,7 @@ public class SubjectDAO extends DBContext implements GenericDAO<Subject> {
                 "  WHERE SubjectID = ? ";
         Subject subject = new Subject();
         try{
+            connection = getConnection();
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
@@ -86,9 +90,12 @@ public class SubjectDAO extends DBContext implements GenericDAO<Subject> {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            closeResources();
         }
         return subject;
     }
+    
     public static void main(String[] args) {
         SubjectDAO subjectDAO = new SubjectDAO();
         List<Subject> subjects = subjectDAO.findAll();
@@ -97,44 +104,52 @@ public class SubjectDAO extends DBContext implements GenericDAO<Subject> {
         }
     }
 
-
     public ArrayList<Subject> findByCourse(int courseId){
-        String sql = "Select * from Subjects where CourseID=?" ;
-        ArrayList<Subject> listSubject = new ArrayList<>() ;
+        String sql = "Select * from Subjects where CourseID=?";
+        ArrayList<Subject> listSubject = new ArrayList<>();
         try{
-            PreparedStatement pre = connection.prepareStatement(sql) ;
+            connection = getConnection();
+            PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1,courseId);
             ResultSet rs = pre.executeQuery();
-            CourseDAO cDAO = new CourseDAO() ;
+            CourseDAO cDAO = new CourseDAO();
             while(rs.next()){
-                Subject s = new Subject() ;
+                Subject s = new Subject();
                 s.setCourse(cDAO.getById(courseId));
                 s.setDescription(rs.getString("Description"));
                 s.setCreateDate(rs.getDate("CreatedDate"));
                 s.setSubjectId(rs.getInt("SubjectID"));
                 s.setSubjectName(rs.getString("SubjectName"));
                 s.setOrderNo(rs.getInt("OrderNo"));
-                listSubject.add(s) ;
+                listSubject.add(s);
             }
-            return listSubject ;
+            return listSubject;
         }catch(SQLException e){
             System.out.println(e);
+        } finally {
+            closeResources();
         }
-        return listSubject ;
+        return listSubject;
     }
 
     public int countSubject(int courseId) {
         String sql = "select COUNT(*) from Subjects where CourseID=?";
         int cnt = 0;
         try {
+            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, courseId);
             ResultSet rs = pre.executeQuery();
-            cnt = rs.getInt(1);
+            if (rs.next()) {
+                cnt = rs.getInt(1);
+            }
             return cnt;
         } catch (SQLException e) {
             System.out.println(e);
+        } finally {
+            closeResources();
         }
         return cnt;
     }
+    
 }

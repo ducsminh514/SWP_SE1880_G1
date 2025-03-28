@@ -20,6 +20,7 @@ public class EnrollmentDAO extends DBContext {
                 "FROM Enrollments \n" +
                 "WHERE CourseID = @CourseID;\n";
         try{
+            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql) ;
             pre.setInt(1,courseId);
             Enrollment e = new Enrollment();
@@ -29,6 +30,8 @@ public class EnrollmentDAO extends DBContext {
             }
         }catch(SQLException e){
             System.out.println(e);
+        } finally {
+            closeResources();
         }
         return total;
     }
@@ -36,6 +39,7 @@ public class EnrollmentDAO extends DBContext {
         List <Integer> list = new ArrayList<>();
         String sql = "SELECT EnrollmentID FROM Enrollments where CustomerID= ?";
         try {
+            connection = getConnection();
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1,id);
             ResultSet rs = st.executeQuery();
@@ -43,10 +47,10 @@ public class EnrollmentDAO extends DBContext {
 
                 list.add(rs.getInt("EnrollmentID"));
             }
-            rs.close();
-            st.close();
         } catch (SQLException e) {
             System.err.println(e);
+        } finally {
+            closeResources();
         }
         return list;
     }
@@ -54,6 +58,7 @@ public class EnrollmentDAO extends DBContext {
         List <Integer> list = new ArrayList<>();
         String sql = "SELECT CourseID FROM Enrollments where CustomerID= ?";
         try {
+            connection = getConnection();
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1,id);
             ResultSet rs = st.executeQuery();
@@ -61,10 +66,10 @@ public class EnrollmentDAO extends DBContext {
 
                 list.add(rs.getInt("CourseID"));
             }
-            rs.close();
-            st.close();
         } catch (SQLException e) {
             System.err.println(e);
+        } finally {
+            closeResources();
         }
         return list;
     }
@@ -75,6 +80,7 @@ public class EnrollmentDAO extends DBContext {
         String sql = "SELECT * FROM Enrollments WHERE EnrollmentID = ?";
 
         try {
+            connection = getConnection();
             PreparedStatement st = connection.prepareStatement(sql);
 
             for (Integer enrollmentID : enrollmentIDs) {
@@ -98,13 +104,14 @@ public class EnrollmentDAO extends DBContext {
 
                     enrollments.add(enrollment);
                 }
-                rs.close();
             }
-            st.close();
         } catch (SQLException e) {
             System.err.println(e);
+        } finally {
+            closeResources();
         }
 
         return enrollments;
     }
+    
 }
