@@ -99,7 +99,57 @@ public class BlogDetail extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String postID = request.getParameter("postId");
+        PostDAO pDAO = new PostDAO();
+        CategoryBlogDAO cDAO = new CategoryBlogDAO();
+        ReviewPostDAO rpDAO = new ReviewPostDAO();
+        int postId = 0;
+        if (postID != null && !postID.isEmpty()) {
+            try {
+                postId = Integer.parseInt(postID);
+            } catch (NumberFormatException e) {
+                System.out.println(e);
+            }
+        }
+
+        // Lấy thông tin bài viết
+        Post post = pDAO.getById(postId);
+        request.setAttribute("post", post);
+
+        // Lấy nội dung chi tiết của bài viết (PostContent)
+        PostContentDAO pcDAO = new PostContentDAO();
+        ArrayList<PostContent> listPostContent = pcDAO.getByPostId(postId);
+
+        // Sắp xếp PostContent theo orderIndex
+        Collections.sort(listPostContent, new Comparator<PostContent>() {
+            @Override
+            public int compare(PostContent pc1, PostContent pc2) {
+                return Integer.compare(pc1.getOrderIndex(), pc2.getOrderIndex());
+            }
+        });
+
+        request.setAttribute("listPostContent", listPostContent);
+
+        // Lấy danh sách bài viết gần đây
+        ArrayList<Post> listRecentPost = pDAO.getAllByPage(0, null, 0, "date-late", 3);
+        LinkedHashMap<Post, Float> mapRating = new LinkedHashMap<>();
+        for (Post p : listRecentPost) {
+            mapRating.put(p, rpDAO.getRatingOfPost(p.getPostId()));
+        }
+        request.setAttribute("listRecentPost", mapRating);
+
+        // Lấy danh sách danh mục
+        ArrayList<CategoryBlog> listCategory = cDAO.getAll();
+        request.setAttribute("listCategory", listCategory);
+
+        // Lấy danh sách comment
+        CommentPostDAO cpDAO = new CommentPostDAO();
+        ArrayList<CommentPost> listComment = cpDAO.getCommentsByPostID(postId);
+        request.setAttribute("listComment", listComment);
+        int countAll = cpDAO.countAll();
+        request.setAttribute("cntAll", countAll);
+
+        request.getRequestDispatcher("Blog-Detail.jsp").forward(request, response);
     }
 
     @Override

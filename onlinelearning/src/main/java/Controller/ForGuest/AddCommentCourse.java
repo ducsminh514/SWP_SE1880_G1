@@ -37,8 +37,18 @@ public class AddCommentCourse extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("account") ;
         int userId = user.getUserId() ;
-        String parentID = (String)session.getAttribute("parentId");
-        String courseID= (String)session.getAttribute("courseId");
+        String parentID = null ;
+        String courseID = null ;
+        String content = null ;
+        if(request.getParameter("courseId")!= null){
+             parentID = request.getParameter("parentId");
+             courseID = request.getParameter("courseId");
+             content = request.getParameter("content") ;
+        }else{
+             parentID = (String)session.getAttribute("parentId");
+             courseID = (String)session.getAttribute("courseId");
+            content = (String)session.getAttribute("content") ;
+        }
         System.out.println(parentID);
         System.out.println(courseID);
         int parentId=0 , courseId=0 ;
@@ -48,7 +58,6 @@ public class AddCommentCourse extends HttpServlet {
         }catch(NumberFormatException e){
             System.out.println(e);
         }
-        String content = (String)session.getAttribute("content") ;
         session.removeAttribute("parentId");
         session.removeAttribute("courseId");
         session.removeAttribute("content");

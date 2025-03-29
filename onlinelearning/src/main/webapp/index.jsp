@@ -489,14 +489,13 @@
                                                         <img src="assets/images/courses/pic1.jpg" alt="">
                                                         <div class="course-overlay">
                                                             <span class="badge badge-primary">Popular</span>
-                                                            <a href="course-details?id=${cou.key.courseId}" class="btn">View Details</a>
+                                                            <a href="courseDetail?courseId=${cou.key.courseId}" class="btn">View Details</a>
                                                         </div>
                                                     </div>
                                                     <div class="info-bx text-center">
-                                                        <h5><a href="course-details?id=${cou.key.courseId}">${cou.key.courseName}</a></h5>
+                                                        <h5><a href="courseDetail?courseId=${cou.key.courseId}">${cou.key.courseName}</a></h5>
                                                         <div class="course-info-meta">
-                                                            <span><i class="fa fa-user"></i> 245 Students</span>
-                                                            <span><i class="fa fa-clock-o"></i> 15 Hours</span>
+                                                            <span><i class="fa fa-user"></i>${cou.key.expert.user.firstName} ${cou.key.expert.user.lastName}</span>
                                                         </div>
                                                     </div>
                                                     <div class="cours-more-info d-flex justify-content-between align-items-center">
@@ -591,16 +590,15 @@
                                                     </div>
                                                     
                                                     <h5 class="post-title mb-3">
-                                                        <a href="post-details?id=${post.key.postId}" class="text-dark">${post.key.title}</a>
+                                                        <a href="blogDetail?postId=${post.key.postId}" class="text-dark">${post.key.title}</a>
                                                     </h5>
                                                     
                                                     <div class="post-footer mt-auto d-flex justify-content-between align-items-center">
                                                         <div class="author d-flex align-items-center">
                                                             <img src="assets/images/testimonials/pic1.jpg" alt=""
                                                                  class="rounded-circle mr-2" style="width: 30px; height: 30px;">
-                                                            <span class="text-primary">John Doe</span>
                                                         </div>
-                                                        <a href="post-details?id=${post.key.postId}" 
+                                                        <a href="blogDetail?postId=${post.key.postId}"
                                                            class="btn btn-sm btn-outline-primary">Read More</a>
                                                     </div>
                                                 </div>
@@ -608,7 +606,6 @@
                                         </div>
                                     </c:forEach>
                                 </div>
-
                             </div>
                             <div class="text-center mt-4">
                                 <a href="listPost" class="btn btn-primary px-4 py-2"
@@ -628,9 +625,9 @@
                             <div class="widget">
                                 <h6 class="widget-title">Search</h6>
                                 <div class="search-bx style-1">
-                                    <form role="search" method="post" action="search">
+                                    <form action="listCourse">
                                         <div class="input-group">
-                                            <input name="text" class="form-control" placeholder="Enter your keywords..." type="text">
+                                            <input name="search" class="form-control" placeholder="Enter your keywords..." type="text">
                                             <span class="input-group-append">
                                                 <button type="submit" class="btn"><i class="fa fa-search"></i></button>
                                             </span>
@@ -651,7 +648,7 @@
                                             <div class="ttr-post-info">
                                                 <div class="ttr-post-header">
                                                     <h6 class="post-title">
-                                                        <a href="post-details?id=${recentPost.postId}">${recentPost.title}</a>
+                                                        <a href="blogDetail?postId=${recentPost.postId}">${recentPost.title}</a>
                                                     </h6>
                                                 </div>
                                                 <ul class="media-post">
@@ -661,33 +658,6 @@
                                             </div>
                                         </div>
                                     </c:forEach>
-                                </div>
-                            </div>
-                            
-                            <!-- Categories Widget -->
-                            <div class="widget widget_categories">
-                                <h6 class="widget-title">Categories</h6>
-                                <ul>
-                                    <li><a href="#">Programming</a> (15)</li>
-                                    <li><a href="#">Language Learning</a> (12)</li>
-                                    <li><a href="#">Business</a> (18)</li>
-                                    <li><a href="#">Marketing</a> (10)</li>
-                                    <li><a href="#">Design</a> (6)</li>
-                                </ul>
-                            </div>
-                            
-                            <!-- Tag Cloud Widget -->
-                            <div class="widget widget_tag_cloud">
-                                <h6 class="widget-title">Tags</h6>
-                                <div class="tagcloud">
-                                    <a href="#">Design</a>
-                                    <a href="#">Development</a>
-                                    <a href="#">CSS</a>
-                                    <a href="#">JavaScript</a>
-                                    <a href="#">HTML</a>
-                                    <a href="#">Java</a>
-                                    <a href="#">Python</a>
-                                    <a href="#">SQL</a>
                                 </div>
                             </div>
                         </aside>

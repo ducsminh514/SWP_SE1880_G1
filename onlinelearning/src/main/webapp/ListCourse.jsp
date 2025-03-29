@@ -669,7 +669,7 @@
                                                             width="200" height="143" alt=""> </div>
                                                     <div class="ttr-post-info">
                                                         <div class="ttr-post-header">
-                                                            <h6 class="post-title"><a href="#">${recent.course.courseName}</a></h6>
+                                                            <h6 class="post-title"><a href="courseDetail?courseId=${recent.course.courseId}">${recent.course.courseName}</a></h6>
                                                         </div>
                                                         <div class="ttr-post-meta">
                                                             <ul>
@@ -753,7 +753,7 @@
                                                 <div class="cours-bx"  data-course-id="${courseDetail.course.courseId}">
                                                     <div class="action-box">
                                                         <img src="assets/images/courses/pic9.jpg" alt="">
-                                                        <a href="#" class="btn">Regist</a>
+                                                        <a href="courseDetail?courseId=${courseDetail.course.courseId}" class="btn">Read Detail</a>
                                                     </div>
                                                     <div class="info-bx text-center">
                                                         <h5><a href="courseDetail?courseId=${courseDetail.course.courseId}">${courseDetail.course.courseName}</a></h5>
@@ -761,7 +761,6 @@
                                                             ${courseDetail.course.expert.user.firstName} ${courseDetail.course.expert.user.lastName}
                                                         </span>
                                                     </div>
-
                                                     <div class="cours-more-info">
                                                         <!-- Review section -->
                                                         <div class="review" id="review-${courseDetail.course.courseId}" >
