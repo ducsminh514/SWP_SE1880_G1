@@ -1,5 +1,3 @@
-courseDetail. jsp
-
 
 <!DOCTYPE html>
 <html lang="en">
