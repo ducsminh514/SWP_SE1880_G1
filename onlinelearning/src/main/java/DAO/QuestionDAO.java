@@ -498,5 +498,59 @@ public class QuestionDAO extends DBContext implements GenericDAO<Question> {
 
         return subjectMap;
     }
+
+    public ArrayList<Question> getQuestionByQuizID(int quizId) {
+        ArrayList<Question> questions = new ArrayList<>();
+        String sql = "SELECT q.* FROM Question q WHERE q.LessonQuizId = ?";
+        
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, quizId);
+            ResultSet rs = st.executeQuery();
+            
+            while (rs.next()) {
+                Question question = getFromResultSet(rs);
+                questions.add(question);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting questions by quiz ID: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            closeResources();
+        }
+        
+        return questions;
+    }
+    
+    // New method to get answers for a specific question ID
+    public ArrayList<QuestionAnswer> getAnswerByQuestionId(int questionId) {
+        ArrayList<QuestionAnswer> list = new ArrayList<>();
+        String sql = "SELECT * FROM QuestionAnswer WHERE QuestionId = ? ORDER BY SortOrder ASC";
+
+        try {
+            connection = getConnection();
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, questionId);
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+                QuestionAnswer qa = new QuestionAnswer();
+                qa.setCorrect(rs.getBoolean("IsCorrect"));
+                qa.setAnswerId(rs.getInt("AnswerID"));
+                qa.setSortOrder(rs.getInt("SortOrder"));
+                qa.setContent(rs.getString("Content"));
+                qa.setQuestionId(rs.getInt("QuestionID"));
+                list.add(qa);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching answers for question ID " + questionId + ": " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            closeResources();
+        }
+        return list;
+    }
+
 }
 

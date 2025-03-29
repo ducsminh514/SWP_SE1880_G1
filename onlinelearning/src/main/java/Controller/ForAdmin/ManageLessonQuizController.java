@@ -4,10 +4,15 @@ import DAO.CourseDAO;
 import DAO.LessonDAO;
 import DAO.LessonQuizDAO;
 import DAO.SubjectDAO;
+import DAO.QuizQuesionsDAO;
+import DAO.QuestionAnswerDAO;
+import DAO.QuestionDAO;
 import Module.Course;
 import Module.Lesson;
 import Module.LessonQuiz;
 import Module.Subject;
+import Module.Question;
+import Module.QuestionAnswer;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -536,6 +541,20 @@ public class ManageLessonQuizController extends HttpServlet {
                         request.setAttribute("subject", subject);
                     }
                 }
+
+                // Load questions for this quiz
+                QuestionDAO questionDAO = new QuestionDAO();
+                ArrayList<Question> questions = questionDAO.getQuestionByQuizID(quizId);
+                
+                // Load answers/options for each question
+                QuestionAnswerDAO questionAnswerDAO = new QuestionAnswerDAO();
+                for (Question question : questions) {
+                    List<QuestionAnswer> options = questionAnswerDAO.getAnswerByQuestionId(question.getQuestionId());
+                    question.setOptions(options);
+                }
+                
+                // Set questions in the request for the JSP to display
+                request.setAttribute("questions", questions);
 
                 // Forward to the manage questions page
                 request.getRequestDispatcher("/admin/manage-quiz-questions.jsp").forward(request, response);

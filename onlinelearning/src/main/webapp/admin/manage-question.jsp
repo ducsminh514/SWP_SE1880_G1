@@ -222,9 +222,7 @@
                                         <c:if test="${not empty listColum && listColum.contains('actionChoice')}">
                                             <td>
                                                 <div style="text-align: center; display: flex; justify-content: space-evenly; align-items: center;">
-                                                    <a class="btn button-sm blue radius-xl"
-                                                       style="display: flex; align-items: center"> <i
-                                                            class="fa-solid fa-eye"></i></a>
+                                                  
                                                     <a class="btn button-sm green radius-xl "
                                                        style="display: flex; align-items: center"
                                                        href="${pageContext.request.contextPath}/manage-question?action=edit&questionId=${question.questionId}"

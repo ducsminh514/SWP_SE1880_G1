@@ -19,6 +19,7 @@ public class Question {
     private List<QuestionImage> questionImage;
     private int lessonQuizId;
     private String mp3;
+    private List<QuestionAnswer> options;
 
     public Question() {
     }
@@ -134,5 +135,13 @@ public class Question {
 
     public void setLessonQuizId(int lessonQuizId) {
         this.lessonQuizId = lessonQuizId;
+    }
+    
+    public List<QuestionAnswer> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<QuestionAnswer> options) {
+        this.options = options;
     }
 }

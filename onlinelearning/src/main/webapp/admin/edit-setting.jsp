@@ -64,7 +64,7 @@
                         <h4>Setting List</h4>
 
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <a href="${pageContext.request.contextPath}/manage-setting" class="btn btn-search">Back</a>
+                            <a href="${pageContext.request.contextPath}/manage-setting" class="btn btn-secondary">Back</a>
                             <form action="${pageContext.request.contextPath}/manage-setting" method="get">
                                 <input type="hidden" name="action" value="add">
                                 <input type="submit" class="btn btn-secondary" value="Add new Setting">
@@ -119,7 +119,7 @@
                                     </div>
 
                                     <div style="display:flex;justify-content: space-evenly;">
-                                        <button class="btn" type="submit">Update Setting</button>
+                                        <button class="btn-search" type="submit">Update Setting</button>
                                     </div>
                                 </form>
                             </div>

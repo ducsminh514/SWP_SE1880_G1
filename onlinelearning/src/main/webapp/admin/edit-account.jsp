@@ -125,7 +125,7 @@
                                             <option value="false" ${!user.status ? 'selected' : ''}>Inactive</option>
                                         </select>
                                     </div>
-                                    <button class="btn" type="submit" >Update Account</button>
+                                    <button class="btn-group btn btn-outline-dark" type="submit" >Update Account</button>
                                 </form>
                             </div>
                         </div>
