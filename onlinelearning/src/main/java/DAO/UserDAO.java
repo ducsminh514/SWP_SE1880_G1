@@ -172,6 +172,48 @@ public class UserDAO extends DBContext {
         }
     }
 
+    public int insertUser2(User c) {
+        String sql = "INSERT INTO [dbo].[Users]\n"
+                + "           ([Username]\n"
+                + "           ,[FirstName]\n"
+                + "           ,[LastName]\n"
+                + "           ,[Password]\n"
+                + "           ,[Email]\n"
+                + "           ,[PhoneNumber]\n"
+                + "           ,[Gender]\n"
+                + "           ,[Avatar]\n"
+                + "           ,[Age]\n"
+                + "           ,[RoleID]\n"
+                + "           ,[Status])\n"
+                + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            st.setString(1, c.getUserName());
+            st.setString(2, c.getFirstName());
+            st.setString(3, c.getLastName());
+            st.setString(4, c.getPassword());
+            st.setString(5, c.getEmail());
+            st.setString(6, c.getPhoneNumber());
+            st.setString(7, c.getGender());
+            st.setString(8, c.getAvatar());
+            st.setInt(9, c.getAge());
+            st.setInt(10, c.getRole().getRoleId());
+            st.setBoolean(11, c.getStatus());
+
+            st.executeUpdate();
+            ResultSet rs = st.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            closeResources();
+        }
+        return -1;
+    }
+
     public boolean verifyUser(String email) {
         try {
             connection = getConnection();
@@ -649,6 +691,38 @@ public class UserDAO extends DBContext {
 
     public static void main(String[] args) {
         System.out.println(new UserDAO().checkAuthen("customer01", "Minh@123456789"));
+    }
+    public User getUserByEmail(String email) {
+        String sql = "SELECT * FROM Users WHERE Email = ?";
+        try {
+            RoleDAO roleDAO = new RoleDAO();
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                User user = new User(
+                        rs.getInt("userId"),
+                        rs.getString("userName"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        rs.getString("password"),
+                        rs.getString("email"),
+                        rs.getString("phoneNumber"),
+                        rs.getDate("CreatedDate"),
+                        rs.getString("Gender"),
+                        rs.getString("Avatar"),
+                        rs.getInt("Age"),
+                        roleDAO.getByRoleID(rs.getInt("roleId")),
+                        rs.getBoolean("status")
+                );
+                System.out.println("getUserByEmail: Found user with ID " + user.getUserId());
+                return user;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting user by email: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

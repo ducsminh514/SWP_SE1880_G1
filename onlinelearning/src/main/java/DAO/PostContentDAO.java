@@ -6,8 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import Module.Post;
-import Module.PostContent;
+import Module.Post ;
+import Module.PostContent ;
 public class PostContentDAO extends DBContext {
     public void insert(PostContent p){
         String sql ="INSERT INTO [dbo].[PostContent]\n" +
@@ -17,10 +17,9 @@ public class PostContentDAO extends DBContext {
                 "           ,[Note]\n" +
                 "           ,[OrderIndex])\n" +
                 "     VALUES\n" +
-                "           (?,?,?,?,?)";
+                "           (?,?,?,?,?)" ;
         try{
-            connection = getConnection();
-            PreparedStatement pre = connection.prepareStatement(sql);
+            PreparedStatement pre = connection.prepareStatement(sql) ;
             pre.setInt(1,p.getPost().getPostId());
             pre.setString(2,p.getContentType());
             pre.setString(3,p.getContent());
@@ -28,19 +27,15 @@ public class PostContentDAO extends DBContext {
             pre.setInt(5,p.getOrderIndex());
             pre.executeUpdate();
         }catch(SQLException e){
-            System.out.println(e);
-        } finally {
-            closeResources();
+            System.out.println("ngu2");
         }
     }
-    
     public ArrayList<PostContent> getByPostId(int postId) {
         ArrayList<PostContent> contents = new ArrayList<>();
         String sql = "SELECT * FROM PostContent WHERE PostID = ? ORDER BY OrderIndex ASC";
-        PostDAO pDAO = new PostDAO();
+        PostDAO pDAO = new PostDAO() ;
         try {
-            connection = getConnection();
-            PreparedStatement pre = connection.prepareStatement(sql);
+            PreparedStatement pre = connection.prepareStatement(sql) ;
             pre.setInt(1, postId);
             ResultSet rs = pre.executeQuery();
 
@@ -56,8 +51,6 @@ public class PostContentDAO extends DBContext {
             }
         } catch (SQLException e) {
             System.out.println(e);
-        } finally {
-            closeResources();
         }
         return contents;
     }
@@ -71,8 +64,7 @@ public class PostContentDAO extends DBContext {
                 "      ,[OrderIndex] = ? \n" +
                 " WHERE ContentId =? ";
         try{
-            connection = getConnection();
-            PreparedStatement pre = connection.prepareStatement(sql);
+            PreparedStatement pre = connection.prepareStatement(sql) ;
             pre.setInt(1,p.getPost().getPostId());
             pre.setString(2,p.getContentType());
             pre.setString(3,p.getContent());
@@ -82,23 +74,18 @@ public class PostContentDAO extends DBContext {
             pre.executeUpdate();
         }catch(SQLException e){
             System.out.println("update:"+ e);
-        } finally {
-            closeResources();
         }
     }
 
     public void delete(String content){
         String sql ="DELETE FROM [dbo].[PostContent]\n" +
-                "WHERE Content = ?;\n";
+                "WHERE Content = ?;\n" ;
         try{
-            connection = getConnection();
-            PreparedStatement pre = connection.prepareStatement(sql);
+            PreparedStatement pre = connection.prepareStatement(sql) ;
             pre.setString(1,content);
             pre.executeUpdate();
         }catch(SQLException e){
             System.out.println("delete:" +e);
-        } finally {
-            closeResources();
         }
     }
 
@@ -106,23 +93,19 @@ public class PostContentDAO extends DBContext {
         String sql = "SELECT Content FROM PostContent WHERE PostID = ?";
         ArrayList<String> list = new ArrayList<>();
 
-        try {
-            connection = getConnection();
-            PreparedStatement pre = connection.prepareStatement(sql);
+        try (PreparedStatement pre = connection.prepareStatement(sql)) {
             pre.setInt(1, postId);
-            ResultSet rs = pre.executeQuery();
-            
-            while (rs.next()) {
-                list.add(rs.getString("Content"));
+
+            try (ResultSet rs = pre.executeQuery()) {
+                while (rs.next()) {
+                    list.add(rs.getString("Content"));  // Truy xuất theo tên cột thay vì chỉ số
+                }
             }
         } catch (SQLException e) {
             System.out.println("Error while fetching data: " + e.getMessage());
-        } finally {
-            closeResources();
         }
 
-        return list.isEmpty() ? null : list;
+        return list.isEmpty() ? null : list;  // Trả về null nếu không có dữ liệu
     }
-    
-    
+
 }

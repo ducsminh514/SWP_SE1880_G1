@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import  Module.Enrollment;
 import  Module.Customer;
@@ -131,6 +132,41 @@ public class EnrollmentDAO extends DBContext {
             return false;
         } finally {
             closeResources();
+        }
+    }
+    public int insertEnrollment(int customerID, int courseID, Date enrollDate, int pricePackageID, String payCode) {
+        String sql = "INSERT INTO Enrollments (CustomerID, CourseID, enrollDate, Process_Percentage, Status, Pay_Code, PricePackageID) " +
+                "VALUES (?, ?, ?, '0%', 1, ?, ?)";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            st.setInt(1, customerID);
+            st.setInt(2, courseID);
+
+            // Convert Java util.Date to SQL Date
+            java.sql.Date sqlDate = new java.sql.Date(enrollDate.getTime());
+            st.setDate(3, sqlDate);
+
+            st.setString(4, payCode);
+            st.setInt(5, pricePackageID);
+
+            int affectedRows = st.executeUpdate();
+
+            if (affectedRows == 0) {
+                return -1;
+            }
+
+            try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    return -1;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error inserting enrollment: " + e.getMessage());
+            e.printStackTrace();
+            return -1;
         }
     }
     

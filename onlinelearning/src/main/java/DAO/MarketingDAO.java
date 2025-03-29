@@ -34,31 +34,23 @@ public class MarketingDAO extends DBContext {
     }
 
     public Marketing getByID(int id) {
-        String sql = "SELECT * FROM Marketing WHERE MarketingID = ?";
+        String sql = "Select * from Marketing where MarketingID =?";
+        UserDAO uDAO = new UserDAO();
         try {
-            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, id);
             ResultSet rs = pre.executeQuery();
-            if (rs.next()) {
-                Marketing m = new Marketing();
+            Marketing m = new Marketing();
+            while (rs.next()) {
                 m.setMarketingId(rs.getInt("MarketingID"));
+                m.setUser(uDAO.getByID(rs.getInt("UserID")));
                 m.setExperienceYear(rs.getInt("ExperienceYears"));
-
-                // Lấy thông tin User từ bảng Users
-                int userId = rs.getInt("UserID");
-                UserDAO ud = new UserDAO();
-                m.setUser(ud.getByID(userId));
-
-                return m;
             }
+
+            return m;
         } catch (SQLException e) {
             System.out.println(e);
-        } finally {
-            closeResources();
         }
         return null;
     }
-    
-
 }

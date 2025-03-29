@@ -1,28 +1,58 @@
+
 package DAO;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import dal.DBContext;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import Module.*;
+import dal.DBContext1;
 
-public class CourseDAO extends DBContext {
+public class CourseDAO extends DBContext1 {
+    private final Cache<String, Object> cache;
+
+    public CourseDAO() {
+        // Khởi tạo cache với Caffeine
+        cache = Caffeine.newBuilder()
+                .expireAfterWrite(20, TimeUnit.MINUTES) // Cache hết hạn sau 10 phút
+                .maximumSize(10000) // Giới hạn 1000 mục trong cache
+                .build();
+    }
+
+    // Hàm tiện ích để tạo key cache từ tên phương thức và tham số
+    private String generateCacheKey(String methodName, Object... params) {
+        StringBuilder key = new StringBuilder(methodName);
+        for (Object param : params) {
+            key.append("_").append(param != null ? param.toString() : "null");
+        }
+        return key.toString();
+    }
+
     public ArrayList<Course> getAll() {
+        String cacheKey = generateCacheKey("getAll");
+        @SuppressWarnings("unchecked")
+        ArrayList<Course> cachedResult = (ArrayList<Course>) cache.getIfPresent(cacheKey);
+        if (cachedResult != null) {
+            return cachedResult;
+        }
         String sql = "select * from Courses";
         ArrayList<Course> listCourse = new ArrayList<>();
-        try {
-            connection = getConnection();
+        try (Connection connection = DBContext1.getConnection()) {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
             CourseTypeDAO ctDAO = new CourseTypeDAO();
-            ExpertDAO eDAO = new ExpertDAO();
+            ExpertDAO eDAO = new ExpertDAO() ;
             while (rs.next()) {
-                Course c = new Course();
+                Course c= new Course();
                 c.setCourseId(rs.getInt("CourseID"));
                 c.setCourseName(rs.getString("CourseName"));
                 c.setDescription(rs.getString("Description"));
@@ -34,32 +64,32 @@ public class CourseDAO extends DBContext {
                 c.setCourseType(ctDAO.getByID(rs.getInt("course_typeId")));
                 c.setExpert(eDAO.getByID(rs.getInt("ExpertID")));
                 c.setLevel(rs.getString("SkillLevel"));
-                listCourse.add(c);
+                listCourse.add(c) ;
             }
+            cache.put(cacheKey, listCourse);
+            return listCourse;
         } catch (SQLException e) {
-            System.out.println("Error getting all courses: " + e.getMessage());
-        } finally {
-            closeResources();
+            System.out.println(e);
         }
         return listCourse;
     }
 
-    public ArrayList<Course> getAllByPage(int start, int numCourse) {
+
+    public ArrayList<Course> getAllByPage(int start,int numCourse) {
         ArrayList<Course> listCoursePage = new ArrayList<>();
         String sql = "SELECT * FROM Courses \n" +
                 "ORDER BY CreatedDate DESC\n" +
                 "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
 
-        try {
-            connection = getConnection();
+        try (Connection connection = DBContext1.getConnection()) {
             PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1, start);
-            pre.setInt(2, numCourse);
+            pre.setInt(1,start);
+            pre.setInt(2,numCourse);
             ResultSet rs = pre.executeQuery();
             CourseTypeDAO ctDAO = new CourseTypeDAO();
-            ExpertDAO eDAO = new ExpertDAO();
+            ExpertDAO eDAO = new ExpertDAO() ;
             while (rs.next()) {
-                Course c = new Course();
+                Course c= new Course();
                 c.setCourseId(rs.getInt("CourseID"));
                 c.setCourseName(rs.getString("CourseName"));
                 c.setDescription(rs.getString("Description"));
@@ -71,57 +101,58 @@ public class CourseDAO extends DBContext {
                 c.setCourseType(ctDAO.getByID(rs.getInt("course_typeId")));
                 c.setExpert(eDAO.getByID(rs.getInt("ExpertID")));
                 c.setLevel(rs.getString("SkillLevel"));
-                listCoursePage.add(c);
+                listCoursePage.add(c) ;
             }
+            return listCoursePage;
         } catch (SQLException e) {
-            System.out.println("Error getting courses by page: " + e.getMessage());
-        } finally {
-            closeResources();
+            System.out.println("ngu");
         }
         return listCoursePage;
     }
 
-    public Course getById(int courseID) {
-        String sql = "select * from Courses where CourseID = ?";
-        ArrayList<Course> listCourse = new ArrayList<>();
-        try {
-            connection = getConnection();
-            statement = connection.prepareStatement(sql);
-            statement.setObject(1, courseID);
-            resultSet = statement.executeQuery();
+    public Course getById (int courseID){
+        String sql = "select * from Courses where CourseID =?";
+        try (Connection connection = DBContext1.getConnection()) {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, courseID);
+            ResultSet rs = pre.executeQuery();
             CourseTypeDAO ctDAO = new CourseTypeDAO();
             ExpertDAO eDAO = new ExpertDAO();
-            while (resultSet.next()) {
-                Course c = new Course();
-                c.setCourseId(resultSet.getInt("CourseID"));
-                c.setCourseName(resultSet.getString("CourseName"));
-                c.setDescription(resultSet.getString("Description"));
-                c.setCreateDate(resultSet.getDate("CreatedDate"));
-                c.setPrice(resultSet.getFloat("Price"));
-                c.setTitle(resultSet.getString("title"));
-                c.setThumbnail(resultSet.getString("thumbnail"));
-                c.setStatus(resultSet.getBoolean("status"));
-                c.setCourseType(ctDAO.getByID(resultSet.getInt("course_typeId")));
-                c.setExpert(eDAO.getByID(resultSet.getInt("ExpertID")));
-                c.setLevel(resultSet.getString("SkillLevel"));
-                listCourse.add(c);
+            Course c = new Course();
+            if (rs.next()) {
+                c.setCourseId(rs.getInt("CourseID"));
+                c.setCourseName(rs.getString("CourseName"));
+                c.setDescription(rs.getString("Description"));
+                c.setCreateDate(rs.getDate("CreatedDate"));
+                c.setPrice(rs.getFloat("Price"));
+                c.setTitle(rs.getString("title"));
+                c.setThumbnail(rs.getString("thumbnail"));
+                c.setStatus(rs.getBoolean("status"));
+                c.setCourseType(ctDAO.getByID(rs.getInt("course_typeId")));
+                c.setExpert(eDAO.getByID(rs.getInt("ExpertID")));
+                c.setLevel(rs.getString("SkillLevel"));
             }
+            return c;
         } catch (SQLException e) {
-            System.out.println("Error getting course: " + e.getMessage());
-        } finally {
-            closeResources();
+            System.out.println(e);
         }
         return null;
     }
 
-    public ArrayList<Course> getCourse(String search, int categoryID, String arrange, int start, int row) {
+    public ArrayList<Course> getCourse(String search, int categoryID , String arrange , int start , int row){
+        String cacheKey = generateCacheKey("getCourse", search, categoryID, arrange, start, row);
+        @SuppressWarnings("unchecked")
+        ArrayList<Course> cachedResult = (ArrayList<Course>) cache.getIfPresent(cacheKey);
+        if (cachedResult != null) {
+            return cachedResult;
+        }
         ArrayList<Course> listCourse = new ArrayList<>();
         String sql = "SELECT * FROM Courses WHERE 1=1";
-        if (search != null && !search.isEmpty()) {
-            sql += " AND CourseName LIKE ?";
+        if(search != null && !search.isEmpty()){
+            sql += " AND CourseName LIKE ?" ;
         }
-        if (categoryID > 0) {
-            sql += " AND course_typeId = ?";
+        if(categoryID >0){
+            sql += " AND course_typeId = ?" ;
         }
         if (arrange != null && !arrange.isEmpty()) {
             if (arrange.equalsIgnoreCase("rating")) {
@@ -136,28 +167,27 @@ public class CourseDAO extends DBContext {
         } else {
             sql += " ORDER BY CreatedDate DESC ";
         }
-        if (start >= 0) {
+        if(start>=0){
             sql += " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
         }
-        try {
-            connection = getConnection();
+        try (Connection connection = DBContext1.getConnection()) {
             PreparedStatement pre = connection.prepareStatement(sql);
-            int index = 1;
-            if (search != null && !search.isEmpty()) {
+            int index =1 ;
+            if(search != null && !search.isEmpty()){
                 pre.setString(index++, "%" + search + "%");
             }
-            if (categoryID > 0) {
-                pre.setInt(index++, categoryID);
+            if(categoryID >0){
+                pre.setInt(index++,categoryID);
             }
-            if (start >= 0) {
+            if(start>=0){
                 pre.setInt(index++, start);
-                pre.setInt(index, row);
+                pre.setInt(index , row);
             }
             ResultSet rs = pre.executeQuery();
             CourseTypeDAO ctDAO = new CourseTypeDAO();
-            ExpertDAO eDAO = new ExpertDAO();
+            ExpertDAO eDAO = new ExpertDAO() ;
             while (rs.next()) {
-                Course c = new Course();
+                Course c= new Course();
                 c.setCourseId(rs.getInt("CourseID"));
                 c.setCourseName(rs.getString("CourseName"));
                 c.setDescription(rs.getString("Description"));
@@ -168,22 +198,20 @@ public class CourseDAO extends DBContext {
                 c.setStatus(rs.getBoolean("status"));
                 c.setCourseType(ctDAO.getByID(rs.getInt("course_typeId")));
                 c.setExpert(eDAO.getByID(rs.getInt("ExpertID")));
-                listCourse.add(c);
+                listCourse.add(c) ;
             }
-        } catch (SQLException e) {
-            System.out.println("Error getting filtered courses: " + e.getMessage());
-        } finally {
-            closeResources();
+            cache.put(cacheKey, listCourse); // Lưu vào cache
+            return listCourse ;
+        }catch (SQLException e){
+            System.out.println(e);
         }
-        return listCourse;
+        return null;
     }
-
     public Course getCourseById(int courseId) {
         Course course = null;
         String sql = "SELECT * FROM Courses WHERE CourseID = ?";
 
-        try {
-            connection = getConnection();
+        try (Connection connection = DBContext1.getConnection()) {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, courseId);
             ResultSet rs = st.executeQuery();
@@ -198,34 +226,28 @@ public class CourseDAO extends DBContext {
                 course.setThumbnail(rs.getString("Thumbnail"));
                 course.setStatus(rs.getBoolean("Status"));
                 int courseTypeId = rs.getInt("course_typeId");
-                CourseTypeDAO asd = new CourseTypeDAO();
+                CourseTypeDAO asd= new CourseTypeDAO();
                 CourseType courseType = asd.getByID(courseTypeId);
                 course.setCourseType(courseType);
 
                 int expertId = rs.getInt("ExpertID");
-                ExpertDAO exd = new ExpertDAO();
+                ExpertDAO exd= new ExpertDAO();
                 Expert expert = exd.getByID(expertId);
                 course.setExpert(expert);
             }
+            rs.close();
+            st.close();
         } catch (SQLException e) {
-            System.err.println("Error retrieving course: " + e.getMessage());
-        } finally {
-            closeResources();
+            System.err.println("Error retrieving course: " + e);
         }
 
         return course;
     }
-
     public List<Course> getCoursesByCourseIds(List<Integer> courseIds) {
         List<Course> courses = new ArrayList<>();
-        if (courseIds.isEmpty()) {
-            return courses;
-        }
-        
         String sql = "SELECT * FROM Courses WHERE CourseID IN (" + String.join(",", Collections.nCopies(courseIds.size(), "?")) + ")";
 
-        try {
-            connection = getConnection();
+        try (Connection connection = DBContext1.getConnection()) {
             PreparedStatement st = connection.prepareStatement(sql);
 
             // Thiết lập các giá trị courseId vào câu lệnh SQL
@@ -240,7 +262,7 @@ public class CourseDAO extends DBContext {
                 course.setCourseId(rs.getInt("CourseID"));
                 course.setCourseName(rs.getString("CourseName"));
                 int courseTypeId = rs.getInt("course_typeId");
-                CourseTypeDAO asd = new CourseTypeDAO();
+                CourseTypeDAO asd= new CourseTypeDAO();
                 CourseType courseType = asd.getByID(courseTypeId);
                 course.setCourseType(courseType);
                 course.setDescription(rs.getString("Description"));
@@ -251,19 +273,19 @@ public class CourseDAO extends DBContext {
                 course.setStatus(rs.getBoolean("Status"));
 
                 int expertId = rs.getInt("ExpertID");
-                ExpertDAO exd = new ExpertDAO();
+                ExpertDAO exd= new ExpertDAO();
                 Expert expert = exd.getByID(expertId);
                 course.setExpert(expert);
 
+
                 courses.add(course);
             }
+            rs.close();
+            st.close();
         } catch (SQLException e) {
-            System.err.println("Error retrieving courses by IDs: " + e.getMessage());
-        } finally {
-            closeResources();
+            System.err.println("ngu1");
         }
 
         return courses;
     }
-    
 }

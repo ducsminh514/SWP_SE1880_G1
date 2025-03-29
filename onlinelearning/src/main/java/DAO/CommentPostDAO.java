@@ -23,7 +23,6 @@ public class CommentPostDAO extends DBContext {
                 "ORDER BY CreateDate DESC;\n";
         ArrayList<CommentPost> listComment = new ArrayList<>();
         try {
-            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, postId);
             ResultSet rs = pre.executeQuery();
@@ -42,8 +41,6 @@ public class CommentPostDAO extends DBContext {
             return listComment;
         } catch (SQLException e) {
             System.out.println(e);
-        } finally {
-            closeResources();
         }
         return null;
     }
@@ -58,7 +55,6 @@ public class CommentPostDAO extends DBContext {
                 "ORDER BY CreateDate DESC;\n";
         ArrayList<CommentPost> listComment = new ArrayList<>();
         try {
-            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, commentId);
             ResultSet rs = pre.executeQuery();
@@ -77,17 +73,16 @@ public class CommentPostDAO extends DBContext {
             return listComment;
         } catch (SQLException e) {
             System.out.println(e);
-        } finally {
-            closeResources();
         }
         return null;
     }
+
+
 
     public int countAll(){
         String sql ="Select Count(*) from CommentPost";
         int cnt =0;
         try{
-            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql) ;
             ResultSet rs= pre.executeQuery();
             if(rs.next()){
@@ -96,8 +91,6 @@ public class CommentPostDAO extends DBContext {
             return cnt ;
         }catch(SQLException e ){
             System.out.println(e);
-        } finally {
-            closeResources();
         }
         return cnt;
     }
@@ -116,7 +109,6 @@ public class CommentPostDAO extends DBContext {
                 "SELECT * FROM CommentHierarchy ORDER BY Depth ASC, CreateDate ASC;";
 
         try {
-            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql) ;
             PostDAO pDAO = new PostDAO();
             UserDAO uDAO = new UserDAO();
@@ -145,11 +137,10 @@ public class CommentPostDAO extends DBContext {
             }
         } catch (SQLException e) {
             System.out.println(e);
-        } finally {
-            closeResources();
         }
         return commentList;
     }
+
 
     public void insert(int parentId,int postId,int userId , String content ){
         String sql ="INSERT INTO [dbo].[CommentPost]\n" +
@@ -160,7 +151,6 @@ public class CommentPostDAO extends DBContext {
                 "     VALUES\n" +
                 "           (?,?,?,?)";
         try{
-            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql) ;
             pre.setInt(1,parentId);
             pre.setInt(2,postId);
@@ -169,9 +159,6 @@ public class CommentPostDAO extends DBContext {
             pre.executeUpdate();
         }catch (SQLException e){
             System.out.println(e);
-        } finally {
-            closeResources();
         }
     }
-    
 }

@@ -246,7 +246,6 @@
 
 <!-- External JavaScripts -->
     <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     console.log("DOMContentLoaded event fired!");

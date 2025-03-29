@@ -382,6 +382,7 @@
                                     <div class="quiz-container">
                                         <h3 class="mb-4">Quiz</h3>
 
+                                        <p>Time left: <strong id="time"></strong></p>
                                         <form id="quiz-form" method="post" action="submit-quiz">
                                             <input type="hidden" name="lessonId" value="${param.lessonId}" />
 
@@ -991,5 +992,33 @@
         }
     });
 </script>
+<script type="text/javascript">
+        window.onload = function() {
+    // Lấy giá trị TimeLimit từ request (giả sử giá trị là 5 phút){quiz.timeLimit}
+    var timeLimitInMinutes = ${quiz.timeLimit};  // Ví dụ: 5 phút
+    var timeLimitInSeconds = timeLimitInMinutes * 60; // Chuyển đổi sang giây
+
+    // Hiển thị TimeLimit ban đầu (chuyển đổi từ giây sang phút và giây)
+    function formatTime(seconds) {
+        var minutes = Math.floor(seconds / 60);
+        var remainingSeconds = seconds % 60;
+        return minutes + "m " + remainingSeconds + "s";
+    }
+
+    document.getElementById("time").innerText = formatTime(timeLimitInSeconds);
+
+    // Đếm ngược
+    var countdown = setInterval(function() {
+        timeLimitInSeconds--; // Giảm giá trị thời gian đi 1 giây
+        document.getElementById("time").innerText = formatTime(timeLimitInSeconds);
+
+        // Nếu thời gian hết, dừng đếm ngược và hiển thị thông báo
+        if (timeLimitInSeconds <= 0) {
+            clearInterval(countdown);
+            alert("Time's up! Please submit your quiz!!!!!!!!!!");
+        }
+    }, 1000);  // Mỗi giây (1000ms) đếm ngược 1 lần
+};
+     </script>
 </body>
 </html>

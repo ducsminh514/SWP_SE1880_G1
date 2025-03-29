@@ -226,7 +226,7 @@ public class QuizAttendDAO extends DBContext implements GenericDAO<QuizAttend> {
      */
     public List<QuizAttend> getPassedQuizzesByUser(int userId, int lessonQuizId) {
         List<QuizAttend> attends = new ArrayList<>();
-        String sql = "SELECT * FROM QuizAttends WHERE UserID = ? AND LessonQuizID = ? AND Passed = 1";
+        String sql = "SELECT * FROM QuizAttend WHERE UserID = ? AND LessonQuizID = ? AND Passed = 1";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, userId);
             st.setInt(2, lessonQuizId);

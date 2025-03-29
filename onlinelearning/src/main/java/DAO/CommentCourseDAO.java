@@ -30,7 +30,6 @@ public class CommentCourseDAO extends DBContext {
                 "ORDER BY Depth ASC, CreateDate ASC;\n";
 
         try {
-            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql) ;
             CourseDAO cDAO = new CourseDAO();
             UserDAO uDAO = new UserDAO();
@@ -59,8 +58,6 @@ public class CommentCourseDAO extends DBContext {
             }
         } catch (SQLException e) {
             System.out.println(e);
-        } finally {
-            closeResources();
         }
         return commentList;
     }
@@ -74,7 +71,6 @@ public class CommentCourseDAO extends DBContext {
                 "     VALUES\n" +
                 "           (?,?,?,?)";
         try{
-            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql) ;
             pre.setInt(1,parentId);
             pre.setInt(2,courseId);
@@ -83,9 +79,6 @@ public class CommentCourseDAO extends DBContext {
             pre.executeUpdate();
         }catch (SQLException e){
             System.out.println(e);
-        } finally {
-            closeResources();
         }
     }
-    
 }

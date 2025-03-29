@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import Module.ReviewCourse;
+import Module.ReviewCourse ;
 import Module.Course;
 
 public class ReviewCourseDAO extends DBContext {
@@ -21,7 +21,6 @@ public class ReviewCourseDAO extends DBContext {
                 "GROUP BY CourseID;\n";
         float rating = 0;
         try {
-            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, courseId);
             ResultSet rs = pre.executeQuery();
@@ -30,8 +29,6 @@ public class ReviewCourseDAO extends DBContext {
             }
         } catch (SQLException e) {
             System.out.println(e);
-        } finally {
-            closeResources();
         }
         return rating;
     }
@@ -41,13 +38,12 @@ public class ReviewCourseDAO extends DBContext {
         String sql = "select * from ReviewCourse";
         ArrayList<ReviewCourse> listCourseReview = new ArrayList<>();
         try {
-            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
             CourseDAO courseDAO = new CourseDAO();
             CustomerDAO cDAO = new CustomerDAO();
             while (rs.next()) {
-                ReviewCourse r = new ReviewCourse();
+                ReviewCourse r = new ReviewCourse() ;
                 r.setReviewCourseId(rs.getInt("ReviewCourseID"));
                 r.setCourse(courseDAO.getById(rs.getInt("CourseID")));
                 r.setCustomer(cDAO.getByID(rs.getInt("CustomerID")));
@@ -61,22 +57,20 @@ public class ReviewCourseDAO extends DBContext {
             return listCourseReview;
         } catch (SQLException e) {
             System.out.println(e);
-        } finally {
-            closeResources();
         }
         return listCourseReview;
     }
 
     public HashMap<Course, Float> mapRating() {
         HashMap<Course,Float> map = new HashMap<>();
+        ArrayList<Float>  listRating = new ArrayList<>() ;
         CourseDAO cDAO = new CourseDAO();
-        ArrayList<Course> listCourse = cDAO.getAll();
+        ArrayList<Course> listCourse = cDAO.getAll() ;
         for(Course c: listCourse){
             map.put(cDAO.getById(c.getCourseId()),getRatingOfCourse(c.getCourseId()));
         }
-        return map;
+        return map ;
     }
-    
 }
 
 
