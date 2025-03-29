@@ -230,8 +230,8 @@
                                     <div class="form-group">
                                         <label for="status">Status</label>
                                         <select class="form-control"  id="status" name="status">
-                                            <option value="true" ${user.isStatus() ? 'selected' : ''}>Active</option>
-                                            <option value="false" ${!user.isStatus() ? 'selected' : ''}>Inactive</option>
+                                            <option value="true" ${user.status ? 'selected' : ''}>Active</option>
+                                            <option value="false" ${!user.status ? 'selected' : ''}>Inactive</option>
                                         </select>
                                     </div>
                                     <button class="btn" type="submit" >Update Account</button>

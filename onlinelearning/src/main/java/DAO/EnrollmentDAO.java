@@ -113,5 +113,25 @@ public class EnrollmentDAO extends DBContext {
 
         return enrollments;
     }
+
+    public boolean updateProgress(int userId, int courseId, String progressPercentage) {
+        String sql = "UPDATE Enrollments SET Process_Percentage = ? WHERE CustomerID = ? AND CourseID = ?";
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, progressPercentage);
+            st.setInt(2, userId);
+            st.setInt(3, courseId);
+
+            int rowsAffected = st.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Error updating enrollment progress: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        } finally {
+            closeResources();
+        }
+    }
     
 }
