@@ -10,6 +10,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.2/css/bootstrap-select.min.css">
+<!--<script src="${pageContext.request.contextPath}/assets/vendors/chart/chart.min.js"></script>-->
+
 <script src="${pageContext.request.contextPath}/admin/assets/js/html5shiv.min.js"></script>
 <script src="${pageContext.request.contextPath}/admin/assets/js/respond.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/assets.css">

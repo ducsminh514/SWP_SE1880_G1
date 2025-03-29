@@ -1,3 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,322 +24,36 @@
 	<meta name="format-detection" content="telephone=no">
 	
 	<!-- FAVICONS ICON ============================================= -->
-	<link rel="icon" href="../error-404.html" type="image/x-icon" />
-	<link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+	<link rel="icon" href="${pageContext.request.contextPath}/assets/images/favicon.png" type="image/x-icon" />
+	<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.png" />
 	
 	<!-- PAGE TITLE HERE ============================================= -->
-	<title>EduChamp : Education HTML Template </title>
+	<title>Admin Dashboard - Online Learning Platform</title>
 	
 	<!-- MOBILE SPECIFIC ============================================= -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	<!--[if lt IE 9]>
-	<script src="assets/js/html5shiv.min.js"></script>
-	<script src="assets/js/respond.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/html5shiv.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/respond.min.js"></script>
 	<![endif]-->
+	
 	<!-- All PLUGINS CSS ============================================= -->
-	<link rel="stylesheet" type="text/css" href="assets/css/assets.css">
-	<link rel="stylesheet" type="text/css" href="assets/vendors/calendar/fullcalendar.css">
-	
-	<!-- TYPOGRAPHY ============================================= -->
-	<link rel="stylesheet" type="text/css" href="assets/css/typography.css">
-	
-	<!-- SHORTCODES ============================================= -->
-	<link rel="stylesheet" type="text/css" href="assets/css/shortcodes/shortcodes.css">
-	
-	<!-- STYLESHEETS ============================================= -->
-	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
-	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
-	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+    <jsp:include page="../common/common_admin_css.jsp"></jsp:include>
+    
+    <!-- jQuery first, then Chart.js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 	
 </head>
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 	
 	<!-- header start -->
-	<header class="ttr-header">
-		<div class="ttr-header-wrapper">
-			<!--sidebar menu toggler start -->
-			<div class="ttr-toggle-sidebar ttr-material-button">
-				<i class="ti-close ttr-open-icon"></i>
-				<i class="ti-menu ttr-close-icon"></i>
-			</div>
-			<!--sidebar menu toggler end -->
-			<!--logo start -->
-			<div class="ttr-logo-box">
-				<div>
-					<a href="index.html" class="ttr-logo">
-						<img class="ttr-logo-mobile" alt="" src="assets/images/logo-mobile.png" width="30" height="30">
-						<img class="ttr-logo-desktop" alt="" src="assets/images/logo-white.png" width="160" height="27">
-					</a>
-				</div>
-			</div>
-			<!--logo end -->
-			<div class="ttr-header-menu">
-				<!-- header left menu start -->
-				<ul class="ttr-header-navigation">
-					<li>
-						<a href="../index.html" class="ttr-material-button ttr-submenu-toggle">HOME</a>
-					</li>
-					<li>
-						<a href="#" class="ttr-material-button ttr-submenu-toggle">QUICK MENU <i class="fa fa-angle-down"></i></a>
-						<div class="ttr-header-submenu">
-							<ul>
-								<li><a href="../courses.html">Our Courses</a></li>
-								<li><a href="../event.html">New Event</a></li>
-								<li><a href="../membership.html">Membership</a></li>
-							</ul>
-						</div>
-					</li>
-				</ul>
-				<!-- header left menu end -->
-			</div>
-			<div class="ttr-header-right ttr-with-seperator">
-				<!-- header right menu start -->
-				<ul class="ttr-header-navigation">
-					<li>
-						<a href="#" class="ttr-material-button ttr-search-toggle"><i class="fa fa-search"></i></a>
-					</li>
-					<li>
-						<a href="#" class="ttr-material-button ttr-submenu-toggle"><i class="fa fa-bell"></i></a>
-						<div class="ttr-header-submenu noti-menu">
-							<div class="ttr-notify-header">
-								<span class="ttr-notify-text-top">9 New</span>
-								<span class="ttr-notify-text">User Notifications</span>
-							</div>
-							<div class="noti-box-list">
-								<ul>
-									<li>
-										<span class="notification-icon dashbg-gray">
-											<i class="fa fa-check"></i>
-										</span>
-										<span class="notification-text">
-											<span>Sneha Jogi</span> sent you a message.
-										</span>
-										<span class="notification-time">
-											<a href="#" class="fa fa-close"></a>
-											<span> 02:14</span>
-										</span>
-									</li>
-									<li>
-										<span class="notification-icon dashbg-yellow">
-											<i class="fa fa-shopping-cart"></i>
-										</span>
-										<span class="notification-text">
-											<a href="#">Your order is placed</a> sent you a message.
-										</span>
-										<span class="notification-time">
-											<a href="#" class="fa fa-close"></a>
-											<span> 7 Min</span>
-										</span>
-									</li>
-									<li>
-										<span class="notification-icon dashbg-red">
-											<i class="fa fa-bullhorn"></i>
-										</span>
-										<span class="notification-text">
-											<span>Your item is shipped</span> sent you a message.
-										</span>
-										<span class="notification-time">
-											<a href="#" class="fa fa-close"></a>
-											<span> 2 May</span>
-										</span>
-									</li>
-									<li>
-										<span class="notification-icon dashbg-green">
-											<i class="fa fa-comments-o"></i>
-										</span>
-										<span class="notification-text">
-											<a href="#">Sneha Jogi</a> sent you a message.
-										</span>
-										<span class="notification-time">
-											<a href="#" class="fa fa-close"></a>
-											<span> 14 July</span>
-										</span>
-									</li>
-									<li>
-										<span class="notification-icon dashbg-primary">
-											<i class="fa fa-file-word-o"></i>
-										</span>
-										<span class="notification-text">
-											<span>Sneha Jogi</span> sent you a message.
-										</span>
-										<span class="notification-time">
-											<a href="#" class="fa fa-close"></a>
-											<span> 15 Min</span>
-										</span>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</li>
-					<li>
-						<a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets/images/testimonials/pic3.jpg" width="32" height="32"></span></a>
-						<div class="ttr-header-submenu">
-							<ul>
-								<li><a href="user-profile.html">My profile</a></li>
-								<li><a href="list-view-calendar.html">Activity</a></li>
-								<li><a href="mailbox.html">Messages</a></li>
-								<li><a href="../login.html">Logout</a></li>
-							</ul>
-						</div>
-					</li>
-					<li class="ttr-hide-on-mobile">
-						<a href="#" class="ttr-material-button"><i class="ti-layout-grid3-alt"></i></a>
-						<div class="ttr-header-submenu ttr-extra-menu">
-							<a href="#">
-								<i class="fa fa-music"></i>
-								<span>Musics</span>
-							</a>
-							<a href="#">
-								<i class="fa fa-youtube-play"></i>
-								<span>Videos</span>
-							</a>
-							<a href="#">
-								<i class="fa fa-envelope"></i>
-								<span>Emails</span>
-							</a>
-							<a href="#">
-								<i class="fa fa-book"></i>
-								<span>Reports</span>
-							</a>
-							<a href="#">
-								<i class="fa fa-smile-o"></i>
-								<span>Persons</span>
-							</a>
-							<a href="#">
-								<i class="fa fa-picture-o"></i>
-								<span>Pictures</span>
-							</a>
-						</div>
-					</li>
-				</ul>
-				<!-- header right menu end -->
-			</div>
-			<!--header search panel start -->
-			<div class="ttr-search-bar">
-				<form class="ttr-search-form">
-					<div class="ttr-search-input-wrapper">
-						<input type="text" name="qq" placeholder="search something..." class="ttr-search-input">
-						<button type="submit" name="search" class="ttr-search-submit"><i class="ti-arrow-right"></i></button>
-					</div>
-					<span class="ttr-search-close ttr-search-toggle">
-						<i class="ti-close"></i>
-					</span>
-				</form>
-			</div>
-			<!--header search panel end -->
-		</div>
-	</header>
+	<jsp:include page="../common/common_admin_header.jsp"></jsp:include>
 	<!-- header end -->
+
 	<!-- Left sidebar menu start -->
-	<div class="ttr-sidebar">
-		<div class="ttr-sidebar-wrapper content-scroll">
-			<!-- side menu logo start -->
-			<div class="ttr-sidebar-logo">
-				<a href="#"><img alt="" src="assets/images/logo.png" width="122" height="27"></a>
-				<!-- <div class="ttr-sidebar-pin-button" title="Pin/Unpin Menu">
-					<i class="material-icons ttr-fixed-icon">gps_fixed</i>
-					<i class="material-icons ttr-not-fixed-icon">gps_not_fixed</i>
-				</div> -->
-				<div class="ttr-sidebar-toggle-button">
-					<i class="ti-arrow-left"></i>
-				</div>
-			</div>
-			<!-- side menu logo end -->
-			<!-- sidebar menu start -->
-			<nav class="ttr-sidebar-navi">
-				<ul>
-					<li>
-						<a href="index.html" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-home"></i></span>
-		                	<span class="ttr-label">Dashborad</span>
-		                </a>
-		            </li>
-					<li>
-						<a href="courses.html" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-book"></i></span>
-		                	<span class="ttr-label">Courses</span>
-		                </a>
-		            </li>
-					<li>
-						<a href="#" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-email"></i></span>
-		                	<span class="ttr-label">Mailbox</span>
-		                	<span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-		                </a>
-		                <ul>
-		                	<li>
-		                		<a href="mailbox.html" class="ttr-material-button"><span class="ttr-label">Mail Box</span></a>
-		                	</li>
-		                	<li>
-		                		<a href="mailbox-compose.html" class="ttr-material-button"><span class="ttr-label">Compose</span></a>
-		                	</li>
-							<li>
-		                		<a href="mailbox-read.html" class="ttr-material-button"><span class="ttr-label">Mail Read</span></a>
-		                	</li>
-		                </ul>
-		            </li>
-					<li>
-						<a href="#" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-calendar"></i></span>
-		                	<span class="ttr-label">Calendar</span>
-		                	<span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-		                </a>
-		                <ul>
-		                	<li>
-		                		<a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Basic Calendar</span></a>
-		                	</li>
-		                	<li>
-		                		<a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">List View</span></a>
-		                	</li>
-		                </ul>
-		            </li>
-					<li>
-						<a href="bookmark.html" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
-		                	<span class="ttr-label">Bookmarks</span>
-		                </a>
-		            </li>
-					<li>
-						<a href="review.html" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-comments"></i></span>
-		                	<span class="ttr-label">Review</span>
-		                </a>
-		            </li>
-					<li>
-						<a href="add-listing.jsp" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
-		                	<span class="ttr-label">Add listing</span>
-		                </a>
-		            </li>
-					<li>
-						<a href="#" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-user"></i></span>
-		                	<span class="ttr-label">My Profile</span>
-		                	<span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-		                </a>
-		                <ul>
-		                	<li>
-		                		<a href="user-profile.html" class="ttr-material-button"><span class="ttr-label">User Profile</span></a>
-		                	</li>
-		                	<li>
-		                		<a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Teacher Profile</span></a>
-		                	</li>
-		                </ul>
-		            </li>
-					<li>
-						<a href="${pageContext.request.contextPath}/manage-account" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
-							<span class="ttr-label">Manage account</span>
-						</a>
-					</li>
-		            <li class="ttr-seperate"></li>
-				</ul>
-				<!-- sidebar menu end -->
-			</nav>
-			<!-- sidebar menu end -->
-		</div>
-	</div>
+	<jsp:include page="../common/common_admin_sidebar_menu.jsp"></jsp:include>
 	<!-- Left sidebar menu end -->
 
 	<!--Main container start -->
@@ -355,23 +72,23 @@
 					<div class="widget-card widget-bg1">					 
 						<div class="wc-item">
 							<h4 class="wc-title">
-								Total Frofit
+								Total Users
 							</h4>
 							<span class="wc-des">
-								All Customs Value
+								Active User Accounts
 							</span>
 							<span class="wc-stats">
-								$<span class="counter">18</span>M 
+								<span class="counter">${userStats['totalUsers']}</span>
 							</span>		
 							<div class="progress wc-progress">
-								<div class="progress-bar" role="progressbar" style="width: 78%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+								<div class="progress-bar" role="progressbar" style="width: ${(userStats['activeUsers'] / userStats['totalUsers']) * 100}%;" aria-valuenow="${(userStats['activeUsers'] / userStats['totalUsers']) * 100}" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
 							<span class="wc-progress-bx">
 								<span class="wc-change">
-									Change
+									Active Users
 								</span>
 								<span class="wc-number ml-auto">
-									78%
+									${userStats['activeUsers']}
 								</span>
 							</span>
 						</div>				      
@@ -381,23 +98,23 @@
 					<div class="widget-card widget-bg2">					 
 						<div class="wc-item">
 							<h4 class="wc-title">
-								 New Feedbacks
+								Total Courses
 							</h4>
 							<span class="wc-des">
-								Customer Review
+								Available Courses
 							</span>
 							<span class="wc-stats counter">
-								120 
+								${courseEnrollmentStats.size()}
 							</span>		
 							<div class="progress wc-progress">
-								<div class="progress-bar" role="progressbar" style="width: 88%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+								<div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
 							<span class="wc-progress-bx">
 								<span class="wc-change">
-									Change
+									Course Categories
 								</span>
 								<span class="wc-number ml-auto">
-									88%
+									${courseEnrollmentStats.size()}
 								</span>
 							</span>
 						</div>				      
@@ -407,23 +124,25 @@
 					<div class="widget-card widget-bg3">					 
 						<div class="wc-item">
 							<h4 class="wc-title">
-								New Orders 
+								Quiz Attempts
 							</h4>
 							<span class="wc-des">
-								Fresh Order Amount 
+								Total Quiz Attempts
 							</span>
 							<span class="wc-stats counter">
-								772 
+								${quizStats['totalAttempts']}
 							</span>		
 							<div class="progress wc-progress">
-								<div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+								<div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
 							<span class="wc-progress-bx">
 								<span class="wc-change">
-									Change
+									Available Quizzes
 								</span>
 								<span class="wc-number ml-auto">
-									65%
+									<c:if test="${quizStats['quizData'] != null}">
+                                        ${quizStats['quizData'].size()}
+                                    </c:if>
 								</span>
 							</span>
 						</div>				      
@@ -436,20 +155,20 @@
 								New Users 
 							</h4>
 							<span class="wc-des">
-								Joined New User
+								Last 30 Days
 							</span>
 							<span class="wc-stats counter">
-								350 
+								<span id="newUsersCount">0</span>
 							</span>		
 							<div class="progress wc-progress">
-								<div class="progress-bar" role="progressbar" style="width: 90%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+								<div class="progress-bar" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
 							<span class="wc-progress-bx">
 								<span class="wc-change">
-									Change
+									Growth Rate
 								</span>
 								<span class="wc-number ml-auto">
-									90%
+									<span id="userGrowthRate">0</span>%
 								</span>
 							</span>
 						</div>				      
@@ -462,10 +181,22 @@
 				<div class="col-lg-8 m-b30">
 					<div class="widget-box">
 						<div class="wc-title">
-							<h4>Your Profile Views</h4>
+							<h4>User Registration Trends</h4>
 						</div>
 						<div class="widget-inner">
-							<canvas id="chart" width="100" height="45"></canvas>
+							<div class="row">
+                                <div class="col-md-12">
+                                    <div class="text-right mb-3">
+                                        <button class="period-btn active btn btn-sm" data-period="monthly">Monthly</button>
+                                        <button class="period-btn btn btn-sm" data-period="weekly">Weekly</button>
+                                        <button class="period-btn btn btn-sm" data-period="daily">Daily</button>
+                                        <button class="period-btn btn btn-sm" data-period="yearly">Yearly</button>
+                                    </div>
+                                    <div id="userRegistrationChartContainer" style="height: 300px;">
+                                        <canvas id="userRegistrationChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
 						</div>
 					</div>
 				</div>
@@ -473,214 +204,38 @@
 				<div class="col-lg-4 m-b30">
 					<div class="widget-box">
 						<div class="wc-title">
-							<h4>Notifications</h4>
+							<h4>User Roles Distribution</h4>
 						</div>
 						<div class="widget-inner">
-							<div class="noti-box-list">
-								<ul>
-									<li>
-										<span class="notification-icon dashbg-gray">
-											<i class="fa fa-check"></i>
-										</span>
-										<span class="notification-text">
-											<span>Sneha Jogi</span> sent you a message.
-										</span>
-										<span class="notification-time">
-											<a href="#" class="fa fa-close"></a>
-											<span> 02:14</span>
-										</span>
-									</li>
-									<li>
-										<span class="notification-icon dashbg-yellow">
-											<i class="fa fa-shopping-cart"></i>
-										</span>
-										<span class="notification-text">
-											<a href="#">Your order is placed</a> sent you a message.
-										</span>
-										<span class="notification-time">
-											<a href="#" class="fa fa-close"></a>
-											<span> 7 Min</span>
-										</span>
-									</li>
-									<li>
-										<span class="notification-icon dashbg-red">
-											<i class="fa fa-bullhorn"></i>
-										</span>
-										<span class="notification-text">
-											<span>Your item is shipped</span> sent you a message.
-										</span>
-										<span class="notification-time">
-											<a href="#" class="fa fa-close"></a>
-											<span> 2 May</span>
-										</span>
-									</li>
-									<li>
-										<span class="notification-icon dashbg-green">
-											<i class="fa fa-comments-o"></i>
-										</span>
-										<span class="notification-text">
-											<a href="#">Sneha Jogi</a> sent you a message.
-										</span>
-										<span class="notification-time">
-											<a href="#" class="fa fa-close"></a>
-											<span> 14 July</span>
-										</span>
-									</li>
-									<li>
-										<span class="notification-icon dashbg-primary">
-											<i class="fa fa-file-word-o"></i>
-										</span>
-										<span class="notification-text">
-											<span>Sneha Jogi</span> sent you a message.
-										</span>
-										<span class="notification-time">
-											<a href="#" class="fa fa-close"></a>
-											<span> 15 Min</span>
-										</span>
-									</li>
-								</ul>
-							</div>
+                            <div id="userRolesChartContainer" style="height: 300px;">
+							    <canvas id="userRolesChart"></canvas>
+                            </div>
 						</div>
 					</div>
 				</div>
+				
 				<div class="col-lg-6 m-b30">
 					<div class="widget-box">
 						<div class="wc-title">
-							<h4>New Users</h4>
+							<h4>Course Enrollment Distribution</h4>
 						</div>
 						<div class="widget-inner">
-							<div class="new-user-list">
-								<ul>
-									<li>
-										<span class="new-users-pic">
-											<img src="assets/images/testimonials/pic1.jpg" alt=""/>
-										</span>
-										<span class="new-users-text">
-											<a href="#" class="new-users-name">Anna Strong </a>
-											<span class="new-users-info">Visual Designer,Google Inc </span>
-										</span>
-										<span class="new-users-btn">
-											<a href="#" class="btn button-sm outline">Follow</a>
-										</span>
-									</li>
-									<li>
-										<span class="new-users-pic">
-											<img src="assets/images/testimonials/pic2.jpg" alt=""/>
-										</span>
-										<span class="new-users-text">
-											<a href="#" class="new-users-name"> Milano Esco </a>
-											<span class="new-users-info">Product Designer, Apple Inc </span>
-										</span>
-										<span class="new-users-btn">
-											<a href="#" class="btn button-sm outline">Follow</a>
-										</span>
-									</li>
-									<li>
-										<span class="new-users-pic">
-											<img src="assets/images/testimonials/pic1.jpg" alt=""/>
-										</span>
-										<span class="new-users-text">
-											<a href="#" class="new-users-name">Nick Bold  </a>
-											<span class="new-users-info">Web Developer, Facebook Inc </span>
-										</span>
-										<span class="new-users-btn">
-											<a href="#" class="btn button-sm outline">Follow</a>
-										</span>
-									</li>
-									<li>
-										<span class="new-users-pic">
-											<img src="assets/images/testimonials/pic2.jpg" alt=""/>
-										</span>
-										<span class="new-users-text">
-											<a href="#" class="new-users-name">Wiltor Delton </a>
-											<span class="new-users-info">Project Manager, Amazon Inc </span>
-										</span>
-										<span class="new-users-btn">
-											<a href="#" class="btn button-sm outline">Follow</a>
-										</span>
-									</li>
-									<li>
-										<span class="new-users-pic">
-											<img src="assets/images/testimonials/pic3.jpg" alt=""/>
-										</span>
-										<span class="new-users-text">
-											<a href="#" class="new-users-name">Nick Stone </a>
-											<span class="new-users-info">Project Manager, Amazon Inc  </span>
-										</span>
-										<span class="new-users-btn">
-											<a href="#" class="btn button-sm outline">Follow</a>
-										</span>
-									</li>
-								</ul>
-							</div>
+                            <div id="courseEnrollmentChartContainer" style="height: 300px;">
+							    <canvas id="courseEnrollmentChart"></canvas>
+                            </div>
 						</div>
 					</div>
 				</div>
+				
 				<div class="col-lg-6 m-b30">
 					<div class="widget-box">
 						<div class="wc-title">
-							<h4>Orders</h4>
+							<h4>Quiz Performance</h4>
 						</div>
 						<div class="widget-inner">
-							<div class="orders-list">
-								<ul>
-									<li>
-										<span class="orders-title">
-											<a href="#" class="orders-title-name">Anna Strong </a>
-											<span class="orders-info">Order #02357 | Date 12/08/2019</span>
-										</span>
-										<span class="orders-btn">
-											<a href="#" class="btn button-sm red">Unpaid</a>
-										</span>
-									</li>
-									<li>
-										<span class="orders-title">
-											<a href="#" class="orders-title-name">Revenue</a>
-											<span class="orders-info">Order #02357 | Date 12/08/2019</span>
-										</span>
-										<span class="orders-btn">
-											<a href="#" class="btn button-sm red">Unpaid</a>
-										</span>
-									</li>
-									<li>
-										<span class="orders-title">
-											<a href="#" class="orders-title-name">Anna Strong </a>
-											<span class="orders-info">Order #02357 | Date 12/08/2019</span>
-										</span>
-										<span class="orders-btn">
-											<a href="#" class="btn button-sm green">Paid</a>
-										</span>
-									</li>
-									<li>
-										<span class="orders-title">
-											<a href="#" class="orders-title-name">Revenue</a>
-											<span class="orders-info">Order #02357 | Date 12/08/2019</span>
-										</span>
-										<span class="orders-btn">
-											<a href="#" class="btn button-sm green">Paid</a>
-										</span>
-									</li>
-									<li>
-										<span class="orders-title">
-											<a href="#" class="orders-title-name">Anna Strong </a>
-											<span class="orders-info">Order #02357 | Date 12/08/2019</span>
-										</span>
-										<span class="orders-btn">
-											<a href="#" class="btn button-sm green">Paid</a>
-										</span>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-12 m-b30">
-					<div class="widget-box">
-						<div class="wc-title">
-							<h4>Basic Calendar</h4>
-						</div>
-						<div class="widget-inner">
-							<div id="calendar"></div>
+                            <div id="quizPerformanceChartContainer" style="height: 300px;">
+							    <canvas id="quizPerformanceChart"></canvas>
+                            </div>
 						</div>
 					</div>
 				</div>
@@ -690,103 +245,441 @@
 	<div class="ttr-overlay"></div>
 
 <!-- External JavaScripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/vendors/bootstrap/js/popper.min.js"></script>
-	<script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
-	<script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
-	<script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
-	<script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
-	<script src="assets/vendors/counter/waypoints-min.js"></script>
-	<script src="assets/vendors/counter/counterup.min.js"></script>
-	<script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
-	<script src="assets/vendors/masonry/masonry.js"></script>
-	<script src="assets/vendors/masonry/filter.js"></script>
-	<script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
-	<script src='assets/vendors/scroll/scrollbar.min.js'></script>
-	<script src="assets/js/functions.js"></script>
-	<script src="assets/vendors/chart/chart.min.js"></script>
-	<script src="assets/js/admin.js"></script>
-	<script src='assets/vendors/calendar/moment.min.js'></script>
-	<script src='assets/vendors/calendar/fullcalendar.js'></script>
-	<script src='assets/vendors/switcher/switcher.js'></script>
+    <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
+
 <script>
-  $(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOMContentLoaded event fired!");
+    
+    // Biến toàn cục để theo dõi các biểu đồ
+    window.charts = {
+        userRegistration: null,
+        userRoles: null,
+        courseEnrollment: null,
+        quizPerformance: null
+    };
+    
+    // Check if Chart.js is loaded
+    if (typeof Chart === 'undefined') {
+        console.error("Chart.js is not loaded! Loading it now...");
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js';
+        script.onload = function() {
+            console.log("Chart.js loaded successfully!");
+            initializeCharts();
+        };
+        document.head.appendChild(script);
+    } else {
+        console.log("Chart.js is already loaded!");
+        setTimeout(initializeCharts, 500); // Đợi 500ms để đảm bảo DOM hoàn toàn sẵn sàng
+    }
 
-    $('#calendar').fullCalendar({
-      header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'month,agendaWeek,agendaDay,listWeek'
-      },
-      defaultDate: '2019-03-12',
-      navLinks: true, // can click day/week names to navigate views
-
-      weekNumbers: true,
-      weekNumbersWithinDays: true,
-      weekNumberCalculation: 'ISO',
-
-      editable: true,
-      eventLimit: true, // allow "more" link when too many events
-      events: [
-        {
-          title: 'All Day Event',
-          start: '2019-03-01'
-        },
-        {
-          title: 'Long Event',
-          start: '2019-03-07',
-          end: '2019-03-10'
-        },
-        {
-          id: 999,
-          title: 'Repeating Event',
-          start: '2019-03-09T16:00:00'
-        },
-        {
-          id: 999,
-          title: 'Repeating Event',
-          start: '2019-03-16T16:00:00'
-        },
-        {
-          title: 'Conference',
-          start: '2019-03-11',
-          end: '2019-03-13'
-        },
-        {
-          title: 'Meeting',
-          start: '2019-03-12T10:30:00',
-          end: '2019-03-12T12:30:00'
-        },
-        {
-          title: 'Lunch',
-          start: '2019-03-12T12:00:00'
-        },
-        {
-          title: 'Meeting',
-          start: '2019-03-12T14:30:00'
-        },
-        {
-          title: 'Happy Hour',
-          start: '2019-03-12T17:30:00'
-        },
-        {
-          title: 'Dinner',
-          start: '2019-03-12T20:00:00'
-        },
-        {
-          title: 'Birthday Party',
-          start: '2019-03-13T07:00:00'
-        },
-        {
-          title: 'Click for Google',
-          url: 'http://google.com/',
-          start: '2019-03-28'
+    // Check canvas elements
+    function checkCanvasElements() {
+        console.log("Canvas elements check:", {
+            userRegistrationChart: document.getElementById('userRegistrationChart'),
+            userRolesChart: document.getElementById('userRolesChart'),
+            courseEnrollmentChart: document.getElementById('courseEnrollmentChart'),
+            quizPerformanceChart: document.getElementById('quizPerformanceChart')
+        });
+    }
+    
+    // Hàm khởi tạo tất cả biểu đồ
+    function initializeCharts() {
+        checkCanvasElements();
+        
+        // Extract user stats from server data
+        var userStats = {
+            totalUsers: ${userStats['totalUsers'] != null ? userStats['totalUsers'] : 0},
+            activeUsers: ${userStats['activeUsers'] != null ? userStats['activeUsers'] : 0},
+            usersByRole: {}
+        };
+        
+        <c:if test="${userStats['usersByRole'] != null}">
+            <c:forEach items="${userStats['usersByRole']}" var="role">
+                userStats.usersByRole['${role.key}'] = ${role.value};
+            </c:forEach>
+        </c:if>
+        
+        console.log("User stats:", userStats);
+        
+        // Course enrollment stats
+        var courseEnrollmentStats = {};
+        <c:forEach items="${courseEnrollmentStats}" var="course">
+            courseEnrollmentStats['${course.key}'] = ${course.value};
+        </c:forEach>
+        console.log("Course enrollment stats:", courseEnrollmentStats);
+        
+        // Quiz stats
+        var quizStats = {
+            totalAttempts: ${quizStats['totalAttempts'] != null ? quizStats['totalAttempts'] : 0},
+            quizData: []
+        };
+        
+        <c:if test="${quizStats['quizData'] != null}">
+            <c:forEach items="${quizStats['quizData']}" var="quiz">
+                quizStats.quizData.push({
+                    quizId: '${quiz.quizId}',
+                    title: '${quiz.title}',
+                    attempts: ${quiz.attempts},
+                    avgScore: ${quiz.avgScore},
+                    passRate: ${quiz.passRate}
+                });
+            </c:forEach>
+        </c:if>
+        console.log("Quiz stats:", quizStats);
+        
+        // Initialize all charts with try-catch to capture errors
+        try {
+            setTimeout(function() {
+                // Initialize User Registration Chart
+                initUserRegistrationChart('monthly');
+                
+                // Initialize User Roles Chart
+                if (userStats.usersByRole && Object.keys(userStats.usersByRole).length > 0) {
+                    initUserRolesChart(userStats.usersByRole);
+                } else {
+                    console.warn("User roles data is missing or null");
+                    // Use sample data for testing
+                    initUserRolesChart({
+                        'Student': 8,
+                        'Teacher': 3,
+                        'Admin': 1
+                    });
+                }
+                
+                // Initialize Course Enrollment Chart
+                if (courseEnrollmentStats && Object.keys(courseEnrollmentStats).length > 0) {
+                    initCourseEnrollmentChart(courseEnrollmentStats);
+                } else {
+                    console.warn("Course enrollment data is missing or empty");
+                    // Use sample data for testing
+                    initCourseEnrollmentChart({
+                        'Java Programming': 45,
+                        'Web Development': 32,
+                        'Database Management': 28,
+                        'Mobile App Development': 15
+                    });
+                }
+                
+                // Initialize Quiz Performance Chart
+                if (quizStats.quizData && quizStats.quizData.length > 0) {
+                    initQuizPerformanceChart(quizStats.quizData);
+                } else {
+                    console.warn("Quiz data is missing or empty");
+                    // Use sample data for testing
+                    initQuizPerformanceChart([
+                        {title: 'Java Basics', passRate: 82},
+                        {title: 'Database Fundamentals', passRate: 72},
+                        {title: 'Web Development', passRate: 94}
+                    ]);
+                }
+            }, 1000); // Tăng thời gian delay để đảm bảo DOM đã sẵn sàng
+            
+            // Period selector for user registration chart
+            $('.period-btn').click(function() {
+                $('.period-btn').removeClass('active');
+                $(this).addClass('active');
+                const period = $(this).data('period');
+                fetchUserRegistrationData(period);
+            });
+        } catch (e) {
+            console.error("Error initializing charts:", e);
         }
-      ]
+    }
+});
+
+// Fetch user registration data by period
+function fetchUserRegistrationData(period) {
+    console.log("Fetching data for period:", period);
+    $.ajax({
+        url: '${pageContext.request.contextPath}/admin-dashboard',
+        data: {
+            action: 'userRegistration',
+            period: period
+        },
+        success: function(response) {
+            console.log("Received data:", response);
+            
+            if (response && response.data) {
+                updateUserRegistrationChart(response.data, period);
+                
+                // Update new users count for last 30 days if daily data
+                if (period === 'daily') {
+                    const values = Object.values(response.data);
+                    const newUsersCount = values.reduce((sum, current) => sum + current, 0);
+                    $('#newUsersCount').text(newUsersCount);
+                    
+                    // Calculate growth rate (new users / total users)
+                    const totalUsers = ${userStats['totalUsers'] != null ? userStats['totalUsers'] : 1};
+                    const growthRate = Math.round((newUsersCount / totalUsers) * 100);
+                    $('#userGrowthRate').text(growthRate);
+                }
+            } else {
+                console.error("Invalid response format:", response);
+            }
+        },
+        error: function(error) {
+            console.error('Error fetching user registration data:', error);
+            // Use sample data if there's an error
+            const sampleData = getSampleRegistrationData(period);
+            updateUserRegistrationChart(sampleData, period);
+        }
     });
+}
 
-  });
+// Sample data function for testing
+function getSampleRegistrationData(period) {
+    const data = {};
+    
+    switch (period) {
+        case 'daily':
+            data['2023-07-01'] = 1;
+            data['2023-07-02'] = 0;
+            data['2023-07-03'] = 2;
+            data['2023-07-04'] = 1;
+            data['2023-07-05'] = 3;
+            data['2023-07-06'] = 2;
+            data['2023-07-07'] = 1;
+            break;
+            
+        case 'weekly':
+            data['2023-Week 26'] = 5;
+            data['2023-Week 27'] = 8;
+            data['2023-Week 28'] = 12;
+            data['2023-Week 29'] = 7;
+            break;
+            
+        case 'yearly':
+            data['2020'] = 45;
+            data['2021'] = 78;
+            data['2022'] = 112;
+            data['2023'] = 87;
+            break;
+            
+        case 'monthly':
+        default:
+            data['2023-01'] = 8;
+            data['2023-02'] = 12;
+            data['2023-03'] = 15;
+            data['2023-04'] = 10;
+            data['2023-05'] = 14;
+            data['2023-06'] = 9;
+            data['2023-07'] = 11;
+            break;
+    }
+    
+    return data;
+}
 
+// Initialize User Registration Chart
+function initUserRegistrationChart(period) {
+    console.log("Initializing user registration chart with period:", period);
+    fetchUserRegistrationData(period);
+}
+
+// Update user registration chart with fetched data
+function updateUserRegistrationChart(data, period) {
+    console.log("Updating user registration chart with data:", data);
+    
+    const ctx = document.getElementById('userRegistrationChart');
+    if (!ctx) {
+        console.error("Canvas element 'userRegistrationChart' not found!");
+        return;
+    }
+    
+    const labels = Object.keys(data);
+    const values = Object.values(data);
+    
+    let periodLabel;
+    switch(period) {
+        case 'daily':
+            periodLabel = 'Daily';
+            break;
+        case 'weekly':
+            periodLabel = 'Weekly';
+            break;
+        case 'monthly':
+            periodLabel = 'Monthly';
+            break;
+        case 'yearly':
+            periodLabel = 'Yearly';
+            break;
+        default:
+            periodLabel = 'Monthly';
+    }
+    
+    // Destroy existing chart if it exists
+    if (window.charts && window.charts.userRegistration) {
+        window.charts.userRegistration.destroy();
+    }
+    
+    // Create new chart
+    window.charts.userRegistration = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: periodLabel + ' User Registrations',
+                data: values,
+                borderColor: '#4c1864',
+                backgroundColor: 'rgba(76, 24, 100, 0.2)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Initialize User Roles Chart
+function initUserRolesChart(userRolesData) {
+    console.log("Initializing user roles chart with data:", userRolesData);
+    
+    const ctx = document.getElementById('userRolesChart');
+    if (!ctx) {
+        console.error("Canvas element 'userRolesChart' not found!");
+        return;
+    }
+    
+    const labels = Object.keys(userRolesData);
+    const data = Object.values(userRolesData);
+    
+    // Destroy existing chart if it exists
+    if (window.charts && window.charts.userRoles) {
+        window.charts.userRoles.destroy();
+    }
+    
+    window.charts.userRoles = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    '#4099ff', '#2ed8b6', '#ffb64d', '#ff5370', '#7759de'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right'
+                }
+            }
+        }
+    });
+}
+
+// Initialize Course Enrollment Chart
+function initCourseEnrollmentChart(courseEnrollmentData) {
+    console.log("Initializing course enrollment chart with data:", courseEnrollmentData);
+    
+    const ctx = document.getElementById('courseEnrollmentChart');
+    if (!ctx) {
+        console.error("Canvas element 'courseEnrollmentChart' not found!");
+        return;
+    }
+    
+    const labels = Object.keys(courseEnrollmentData);
+    const data = Object.values(courseEnrollmentData);
+    
+    // Destroy existing chart if it exists
+    if (window.charts && window.charts.courseEnrollment) {
+        window.charts.courseEnrollment.destroy();
+    }
+    
+    window.charts.courseEnrollment = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Enrollments',
+                data: data,
+                backgroundColor: '#2ed8b6'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Initialize Quiz Performance Chart
+function initQuizPerformanceChart(quizData) {
+    console.log("Initializing quiz performance chart with data:", quizData);
+    
+    const ctx = document.getElementById('quizPerformanceChart');
+    if (!ctx) {
+        console.error("Canvas element 'quizPerformanceChart' not found!");
+        return;
+    }
+    
+    const labels = quizData.map(item => item.title || ('Quiz ' + item.quizId));
+    const data = quizData.map(item => item.passRate);
+    
+    // Destroy existing chart if it exists
+    if (window.charts && window.charts.quizPerformance) {
+        window.charts.quizPerformance.destroy();
+    }
+    
+    window.charts.quizPerformance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Pass Rate (%)',
+                data: data,
+                backgroundColor: '#ffb64d'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            }
+        }
+    });
+}
+
+// Tắt tính năng mCustomScrollbar nếu không được hỗ trợ
+$(document).ready(function(){
+    // Kiểm tra nếu mCustomScrollbar được định nghĩa
+    if ($.fn.mCustomScrollbar === undefined) {
+        console.warn("mCustomScrollbar plugin is not available, disabling related functions");
+        // Override hàm để tránh lỗi
+        $.fn.mCustomScrollbar = function() {
+            console.warn("mCustomScrollbar called but not available");
+            return this; // Trả về đối tượng hiện tại để không phá vỡ chuỗi
+        };
+    }
+});
 </script>
 </body>
 
