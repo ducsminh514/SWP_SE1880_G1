@@ -101,7 +101,7 @@
                 <div class="container clearfix">
                     <!-- Header Logo ==== -->
                     <div class="menu-logo">
-                        <a href="index.jsp"><img src="assets/images/logo.png" alt=""></a>
+                        <a href="home"><img src="assets/images/logo.png" alt=""></a>
                     </div>
 
                     <!-- Author Nav ==== -->
@@ -126,32 +126,19 @@
                     <!-- Navigation Menu ==== -->
                     <div class="menu-links navbar-collapse collapse justify-content-start" id="menuDropdown">
                         <div class="menu-logo">
-                            <a href="index.jsp"><img src="assets/images/logo.png" alt=""></a>
+                            <a href="home"><img src="assets/images/logo.png" alt=""></a>
                         </div>
 
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="home">Home</a></li>
-                            <li><a href="javascript:;">Pages <i class="fa fa-chevron-down"></i></a>
-                                <ul class="sub-menu">
 
-                                    <li><a href="javascript:;">Event<i class="fa fa-angle-right"></i></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="event.jsp">Event</a></li>
-                                            <li><a href="events-details.jsp">Events Details</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="about-2.jsp">About 2</a></li>
-                                    <li><a href="faq-1.jsp">FAQ's 1</a></li>
-                                    <li><a href="contact-1.jsp">Contact Us 1</a></li>
-                                </ul>
-                            </li>
                             <li class="add-mega-menu"><a href="javascript:;">Our Courses <i class="fa fa-chevron-down"></i></a>
                                 <ul class="sub-menu add-menu">
                                     <li class="add-menu-left">
                                         <h5 class="menu-adv-title">Our Courses</h5>
                                         <ul>
-                                            <li><a href="courses.jsp">Courses </a></li>
-                                            <li><a href="courses-details.jsp">Courses Details</a></li>
+                                            <li><a href="listCourse">Courses </a></li>
+
                                         </ul>
                                     </li>
 
@@ -159,11 +146,8 @@
                             </li>
                             <li><a href="javascript:;">Blog <i class="fa fa-chevron-down"></i></a>
                                 <ul class="sub-menu">
-                                    <li><a href="blog-classic-grid.jsp">Blog Classic</a></li>
-                                    <li><a href="blog-classic-sidebar.jsp">Blog Classic Sidebar</a></li>
-                                    <li><a href="blog-list-sidebar.jsp">Blog List Sidebar</a></li>
-                                    <li><a href="blog-standard-sidebar.jsp">Blog Standard Sidebar</a></li>
-                                    <li><a href="blog-details.jsp">Blog Details</a></li>
+                                    <li><a href="listPost">Blog Classic</a></li>
+
                                 </ul>
                             </li>
 

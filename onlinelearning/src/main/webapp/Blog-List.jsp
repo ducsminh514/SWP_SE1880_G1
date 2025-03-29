@@ -96,7 +96,7 @@
                 <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner1.jpg);">
                     <div class="container">
                         <div class="page-banner-entry">
-                            <h1 class="text-white">Blog Classic Sidebar</h1>
+                            <h1 class="text-white">Blog </h1>
                         </div>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
                     <div class="container">
                         <ul class="list-inline">
                             <li><a href="home">Home</a></li>
-                            <li>Blog Classic Sidebar</li>
+                            <li>Blog </li>
                         </ul>
                     </div>
                 </div>
