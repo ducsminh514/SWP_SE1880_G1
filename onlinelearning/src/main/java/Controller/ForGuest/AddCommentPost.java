@@ -21,14 +21,14 @@ public class AddCommentPost extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddCommentPsot</title>");  
+            out.println("<title>Servlet AddCommentPost</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddCommentPsot at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet AddCommentPost at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -53,14 +53,33 @@ public class AddCommentPost extends HttpServlet {
          session.removeAttribute("content");
          CommentPostDAO cpDAO = new CommentPostDAO();
          cpDAO.insert(parentId,postId,userId,content);
-         request.getRequestDispatcher("/postDetail?postId="+postId).forward(request,response);
+         request.getRequestDispatcher("/blogDetail?postId="+postId).forward(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
-    }
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("account") ;
+        int userId = user.getUserId() ;
+        String parentID = (String)session.getAttribute("parentId");
+        System.out.println(parentID);
+        String postID= (String)session.getAttribute("postId");
+        System.out.println(postID);
+        int parentId=0 , postId=0 ;
+        try{
+            parentId= Integer.parseInt(parentID) ;
+            postId = Integer.parseInt(postID) ;
+        }catch(NumberFormatException e){
+            System.out.println(e);
+        }
+        String content = (String)session.getAttribute("content") ;
+        session.removeAttribute("parentId");
+        session.removeAttribute("postId");
+        session.removeAttribute("content");
+        CommentPostDAO cpDAO = new CommentPostDAO();
+        cpDAO.insert(parentId,postId,userId,content);
+        request.getRequestDispatcher("/blogDetail?postId="+postId).forward(request,response);    }
 
     @Override
     public String getServletInfo() {
