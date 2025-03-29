@@ -59,15 +59,15 @@
 			<div class="account-container">
 				<div class="heading-bx left">
 					<h2 class="title-head">Forget <span>Password</span></h2>
-					<p>Login Your Account <a href="login.html">Click here</a></p>
+					<p>Login Your Account <a href="login.jsp">Click here</a></p>
 				</div>	
-				<form class="contact-bx">
+				<form method="post" action="forget"class="contact-bx">
 					<div class="row placeani">
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="input-group">
 									<label>Your Email Address</label>
-									<input name="dzName" type="email" required="" class="form-control">
+									<input name="email" type="email" required="" class="form-control">
 								</div>
 							</div>
 						</div>

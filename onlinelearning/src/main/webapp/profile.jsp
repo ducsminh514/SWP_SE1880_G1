@@ -243,23 +243,6 @@
                                                                                           <input class="form-check-input" type="checkbox" name="display" id="processPercentage">
                                                                                           <label class="form-check-label" for="processPercentage">processPercentage</label>
                                                                                           </div>
-                                                                                        <hr>
-                                                                                        <h5>Display Progress</h5>
-                                                                                       <div class="form-check">
-                                                                                           <input class="form-check-input" type="checkbox" name="progress" id="pending">
-                                                                                           <label class="form-check-label" for="pending">Pending</label>
-                                                                                       </div>
-                                                                                       <div class="form-check">
-                                                                                           <input class="form-check-input" type="checkbox" name="progress" id="done">
-                                                                                           <label class="form-check-label" for="done">Done</label>
-                                                                                       </div>
-                                                                                       <div class="form-check">
-                                                                                           <input class="form-check-input" type="checkbox" name="progress" id="not-yet">
-                                                                                           <label class="form-check-label" for="not-yet">Not Yet</label>
-                                                                                       </div>
-
-
-                                                                                        <hr>
 
                                                                                         <label for="courses-per-page">Number of Courses per Page</label>
                                                                                         <input type="number" class="form-control" id="courses-per-page" min="1" max="100" value="4">
@@ -425,26 +408,10 @@
              const showEnrollDate = document.getElementById("enrollDate").checked;
              const showProcessPercentage = document.getElementById("processPercentage").checked;
              const showTitle = document.getElementById("title").checked;
-             const showPending = document.getElementById("pending").checked;
-             const showDone = document.getElementById("done").checked;
-             const showNotYet = document.getElementById("not-yet").checked;
 
              coursesList.forEach(course => {
-                 const progressElement = course.querySelector(".price h5");
-                 const progressText = progressElement.textContent.trim(); // Assuming progress is stored as text like 'Done', 'Pending', etc.
-
-                 let showCourse = false;
-
-                 // Apply progress filter
-                 if (showPending && progressText === "Pending") {
-                     showCourse = true;
-                 }
-                 if (showDone && progressText === "Done") {
-                     showCourse = true;
-                 }
-                 if (showNotYet && progressText === "Not yet") {
-                     showCourse = true;
-                 }
+                 // Remove progress filter
+                 let showCourse = true;
 
                  // Control display of other course information
                  course.querySelector(".info-bx h5").style.display = showCourseType ? "block" : "none";
@@ -453,7 +420,7 @@
                  course.querySelector(".price h5").style.display = showProcessPercentage ? "block" : "none";
                  course.querySelector(".info-bx h6").style.display = showTitle ? "block" : "none";
 
-                 // Show or hide course based on progress filter
+                 // Show the course
                  course.style.display = showCourse ? "block" : "none";
              });
          });
