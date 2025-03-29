@@ -250,7 +250,7 @@
 									<h4 class="price">$120</h4>
 								</div>	
 								<div class="course-buy-now text-center">
-									<a href="#" class="btn radius-xl text-uppercase">Buy Now This Courses</a>
+									<a href="payment-process?courseId=${course.courseId}&pricePackageId=${pricePackage.priceId}" class="btn radius-xl text-uppercase">Buy Now This Course</a>
 								</div>
 								<div class="teacher-bx">
 									<div class="teacher-info">
@@ -320,9 +320,9 @@
 									</div>
 									<div class="col-md-12 col-lg-8">
 										<h5 class="m-b5">Course Description</h5>
-										<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+										<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
 										<h5 class="m-b5">Certification</h5>
-										<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+										<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
 										<h5 class="m-b5">Learning Outcomes</h5>
 										<ul class="list-checked primary">
 											<li>Over 37 lectures and 55.5 hours of content!</li>

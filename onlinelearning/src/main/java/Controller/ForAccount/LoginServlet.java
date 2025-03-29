@@ -53,8 +53,9 @@ public class LoginServlet  extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("account", a);
                 String redirectUrl = (String) session.getAttribute("redirectUrl");
+                System.out.println(redirectUrl);
                 if (redirectUrl != null) {
-                    response.sendRedirect(redirectUrl); // Chuyển hướng về trang trước đó
+                    request.getRequestDispatcher(redirectUrl).forward(request,response);
                     session.removeAttribute("redirectUrl");
                     // Xóa URL sau khi chuyển hướng
                 } else {

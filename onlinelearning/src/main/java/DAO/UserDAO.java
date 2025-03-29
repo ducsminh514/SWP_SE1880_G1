@@ -179,6 +179,49 @@ public class UserDAO extends DBContext {
             System.out.println(e);
         }
     }
+    public int insertUser2(User c) {
+        String sql = "INSERT INTO [dbo].[Users]\n"
+                + "           ([Username]\n"
+                + "           ,[FirstName]\n"
+                + "           ,[LastName]\n"
+                + "           ,[Password]\n"
+                + "           ,[Email]\n"
+                + "           ,[PhoneNumber]\n"
+                + "           ,[Gender]\n"
+                + "           ,[Avatar ]\n"
+                + "           ,[Age]\n"
+                + "           ,[RoleID]\n"
+                + "           ,[Status])\n"
+                + "Values(?,?,?,?,?,?,?,?,?,?,?)";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            st.setString(1, c.getUserName());
+            st.setString(2, c.getFirstName());
+            st.setString(3, c.getLastName());
+            st.setString(4, c.getPassword());
+            st.setString(5, c.getEmail());
+            st.setString(6, c.getPhoneNumber());
+            st.setString(7, c.getGender());
+            st.setString(8, c.getAvatar());
+            st.setInt(9, c.getAge());
+            st.setInt(10, c.getRole().getRoleId());
+            st.setBoolean(11, c.getStatus());
+
+            // Thực thi câu lệnh SQL
+            st.executeUpdate();
+
+            // Lấy khóa tự động (UserID) vừa được tạo
+            ResultSet rs = st.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1); // Trả về UserID vừa được tạo
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return -1; // Trả về -1 nếu không thể lấy UserID
+    }
+
     public boolean verifyUser(String email) {
         try {
             String sql = "UPDATE Users SET Status = 1 WHERE Email = ?";
@@ -465,6 +508,7 @@ public class UserDAO extends DBContext {
             return false;
         }
     }
+
     public List<User> findUserByFilter(String gender, String status, String role, String search, int page, int pageSize) {
         List<User> users = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM Users WHERE RoleID != 1"); // Admin RoleID = 1
@@ -599,5 +643,37 @@ public class UserDAO extends DBContext {
         return null;
     }
 
+    public User getUserByEmail(String email) {
+        String sql = "SELECT * FROM Users WHERE Email = ?";
+        try {
+            RoleDAO roleDAO = new RoleDAO();
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                User user = new User(
+                    rs.getInt("userId"), 
+                    rs.getString("userName"),
+                    rs.getString("firstName"),
+                    rs.getString("lastName"),
+                    rs.getString("password"),
+                    rs.getString("email"),
+                    rs.getString("phoneNumber"),
+                    rs.getDate("CreatedDate"),
+                    rs.getString("Gender"),
+                    rs.getString("Avatar"),
+                    rs.getInt("Age"),
+                    roleDAO.getByRoleID(rs.getInt("roleId")),
+                    rs.getBoolean("status")
+                );
+                System.out.println("getUserByEmail: Found user with ID " + user.getUserId());
+                return user;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting user by email: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

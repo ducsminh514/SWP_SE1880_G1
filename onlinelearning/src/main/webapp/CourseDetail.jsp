@@ -315,7 +315,7 @@ courseDetail. jsp
                                                             <p>${course.course.description}</p>
                                                         </div>
 
-                                                        <form id="pricePackageForm" action="select-price-package" method="POST">
+                                                        <form id="pricePackageForm" action="payment-process" method="GET">
                                                             <input type="hidden" name="courseId" value="${course.course.courseId}">
 
                                                             <div class="price-packages">
