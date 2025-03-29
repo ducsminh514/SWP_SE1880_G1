@@ -7,6 +7,7 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
 <html>
 <head>
     <!-- META ============================================= -->
@@ -127,7 +128,7 @@
                                                value="${param.search}">
                                     </div>
                                     <div class="col-md-2">
-                                        <button type="submit" class="btn-search form-control text-light btn">
+                                        <button type="submit" class="btn-outline-primary form-control">
                                             <i class="fa fa-search"></i>
                                         </button>
                                     </div>

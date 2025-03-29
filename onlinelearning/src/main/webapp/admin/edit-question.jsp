@@ -2,6 +2,7 @@
   Templates. --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 
@@ -295,7 +296,7 @@
 <main class="ttr-wrapper">
     <div class="container-fluid">
         <div class="db-breadcrumb">
-            <h4 class="breadcrumb-title">Chỉnh sửa câu hỏi</h4>
+            <h4 class="breadcrumb-title">Edit Question</h4>
             <ul class="db-breadcrumb-list">
                 <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
                 <li><a href="${pageContext.request.contextPath}/manage-question">Quản lý Câu hỏi</a></li>
@@ -307,53 +308,42 @@
             <div class="col-lg-12 m-b30">
                 <div class="widget-box">
                     <div class="wc-title">
-                        <h4>Chỉnh sửa câu hỏi #${question.questionId}</h4>
+                        <h4>Edit Question</h4>
                     </div>
                     <div class="widget-inner">
-                        <form class="edit-profile m-b30" action="${pageContext.request.contextPath}/manage-question" method="post" enctype="multipart/form-data">
-                            <input type="hidden" name="action" value="update">
-                            <input type="hidden" name="questionId" value="${question.questionId}">
-                            
+                        <form id="questionForm" enctype="multipart/form-data"
+                            action="${pageContext.request.contextPath}/manage-question?action=update&id=${question.questionId}"
+                            method="post" class="edit-profile">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="ml-auto">
-                                        <h3>Thông tin câu hỏi</h3>
+                                        <h3>Question Details</h3>
                                     </div>
                                 </div>
-                                
-                                <!-- Nội dung câu hỏi -->
-                                <div class="form-group col-12">
-                                    <label class="col-form-label">Nội dung câu hỏi</label>
-                                    <div>
-                                        <textarea class="form-control" name="content" rows="4">${question.content}</textarea>
-                                    </div>
-                                </div>
-                                
-                                <!-- Loại câu hỏi -->
                                 <div class="form-group col-md-6">
-                                    <label class="col-form-label">Loại câu hỏi</label>
-                                    <div>
-                                        <select class="form-control" id="questionType" name="questionType">
-                                            <c:forEach items="${questionTypes}" var="type">
-                                                <option value="${type.questionTypeId}" ${question.questionType.questionTypeId == type.questionTypeId ? 'selected' : ''}>${type.questionTypeName}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
+                                    <label for="subject">Subject</label>
+                                    <select class="form-control" id="subject" name="subjectId" required>
+                                        <option value="">Select Subject</option>
+                                        <c:forEach items="${subjects}" var="subject">
+                                            <option value="${subject.subjectId}" 
+                                                ${question.subjectId == subject.subjectId ? 'selected' : ''}>
+                                                ${subject.subjectName}
+                                            </option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
-                                
-                                <!-- Môn học -->
                                 <div class="form-group col-md-6">
-                                    <label class="col-form-label">Môn học</label>
-                                    <div>
-                                        <select class="form-control" name="subject">
-                                            <c:forEach items="${subjectList}" var="subject">
-                                                <option value="${subject.subjectId}" ${question.subject.subjectId == subject.subjectId ? 'selected' : ''}>${subject.subjectName}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
+                                    <label for="questionType">Question Type</label>
+                                    <select class="form-control" id="questionType" name="questionTypeId" required>
+                                        <option value="">Select Question Type</option>
+                                        <c:forEach items="${questionTypes}" var="type">
+                                            <option value="${type.questionTypeId}" 
+                                                ${question.questionTypeId == type.questionTypeId ? 'selected' : ''}>
+                                                ${type.questionTypeName}
+                                            </option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
-                                
-                                <!-- Cấp độ -->
                                 <div class="form-group col-md-4">
                                     <label class="col-form-label">Cấp độ</label>
                                     <div>
@@ -364,16 +354,12 @@
                                         </select>
                                     </div>
                                 </div>
-                                
-                                <!-- Điểm -->
                                 <div class="form-group col-md-4">
                                     <label class="col-form-label">Điểm</label>
                                     <div>
                                         <input class="form-control" type="number" name="mark" value="${question.mark}" min="1" max="10">
                                     </div>
                                 </div>
-                                
-                                <!-- Trạng thái -->
                                 <div class="form-group col-md-4">
                                     <label class="col-form-label">Trạng thái</label>
                                     <div>
@@ -383,8 +369,6 @@
                                         </select>
                                     </div>
                                 </div>
-                                
-                                <!-- Audio -->
                                 <div class="form-group col-12">
                                     <label class="col-form-label">Audio (MP3)</label>
                                     <div class="audio-container position-relative">
@@ -414,8 +398,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <!-- Hình ảnh hiện tại -->
                                 <div class="col-12 mt-4">
                                     <h4>Hình ảnh hiện tại</h4>
                                     <div class="row">
@@ -451,8 +433,6 @@
                                         </c:forEach>
                                     </div>
                                 </div>
-                                
-                                <!-- Thêm hình ảnh mới -->
                                 <div class="col-12 mt-4">
                                     <h4>Thêm hình ảnh mới</h4>
                                     <button type="button" id="addImageBtn" class="btn btn-warning mb-3">
@@ -477,8 +457,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <!-- Các tùy chọn -->
                                 <div class="col-12 mt-4">
                                     <div class="options-container">
                                         <div class="options-header">
@@ -511,8 +489,6 @@
                                         </button>
                                     </div>
                                 </div>
-                                
-                                <!-- Nút submit -->
                                 <div class="col-12 mt-4">
                                     <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                                     <a href="${pageContext.request.contextPath}/manage-question" class="btn btn-secondary">Hủy</a>

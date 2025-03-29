@@ -120,6 +120,12 @@
             <span class="ttr-label">Question list</span>
           </a>
         </li>
+        <li>
+          <a href="${pageContext.request.contextPath}/admin-manage-lesson-quiz" class="ttr-material-button">
+            <span class="ttr-icon"><i class="fa-solid fa-list-check"></i></span>
+            <span class="ttr-label">Lesson Quizzes</span>
+          </a>
+        </li>
         <li class="ttr-seperate"></li>
       </ul>
       <!-- sidebar menu end -->
