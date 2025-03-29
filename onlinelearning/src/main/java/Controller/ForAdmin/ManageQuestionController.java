@@ -63,8 +63,8 @@ public class ManageQuestionController extends HttpServlet {
                 case "edit":
                     ShowEditForm(request, response);
                     break;
-                case "changeStatus":
-                    changeQuestionStatus(request, response);
+                case "deactive":
+                    deactivateQuestion(request, response);
                     break;
             }
         }
@@ -429,22 +429,20 @@ public class ManageQuestionController extends HttpServlet {
         return null;
     }
 
-    private void changeQuestionStatus(HttpServletRequest request, HttpServletResponse response)
+    private void deactivateQuestion(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Get parameters
+            // Get parameter
             String questionIdStr = request.getParameter("questionId");
-            String currentStatusStr = request.getParameter("currentStatus");
-
-            if (questionIdStr == null || currentStatusStr == null) {
+            
+            if (questionIdStr == null) {
                 setToastMessage(request, "Missing parameters", "error");
                 response.sendRedirect(request.getContextPath() + "/manage-question");
                 return;
             }
 
             int questionId = Integer.parseInt(questionIdStr);
-            boolean currentStatus = Boolean.parseBoolean(currentStatusStr);
-
+            
             // Get the question from the database
             Question question = questionDAO.GetQuestionById(questionId);
             if (question == null) {
@@ -453,25 +451,25 @@ public class ManageQuestionController extends HttpServlet {
                 return;
             }
 
-            // Toggle the status
-            question.setStatus(!currentStatus);
+            // Set question status to inactive (false)
+            question.setStatus(false);
 
             // Update the question
             boolean updated = questionDAO.update(question);
 
             if (updated) {
-                setToastMessage(request, "Question status changed successfully", "success");
+                setToastMessage(request, "Question deactivated successfully", "success");
             } else {
-                setToastMessage(request, "Failed to update question status", "error");
+                setToastMessage(request, "Failed to deactivate question", "error");
             }
             
             response.sendRedirect(request.getContextPath() + "/manage-question");
             
         } catch (NumberFormatException e) {
-            setToastMessage(request, "Invalid parameters", "error");
+            setToastMessage(request, "Invalid question ID", "error");
             response.sendRedirect(request.getContextPath() + "/manage-question");
         } catch (Exception e) {
-            System.out.println("Error changing question status: " + e.getMessage());
+            System.out.println("Error deactivating question: " + e.getMessage());
             setToastMessage(request, "Unexpected error", "error");
             response.sendRedirect(request.getContextPath() + "/manage-question");
         }

@@ -215,7 +215,7 @@
                                             <c:if test="${!question.status}">
                                                 class="btn red radius-xl outline"
                                             </c:if>>
-                                                    ${question.status}
+                                                    ${question.status ? "Active" : "Inactive"}
                                             </span>
                                             </td>
                                         </c:if>
@@ -285,7 +285,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">Are you sure you want to deactivate this question? It will no longer be available for quizzes.</div>
+            <div class="modal-body">Are you sure you want to deactivate this question? This will mark it as inactive and it will no longer be available for quizzes.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                 <a class="btn btn-danger" id="confirmDeactiveBtn" href="#">Deactivate</a>
