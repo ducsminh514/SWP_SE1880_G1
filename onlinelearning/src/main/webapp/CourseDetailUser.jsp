@@ -399,7 +399,7 @@
                                                         <c:if test="${not empty question.questionImage}">
                                                             <div class="question-image mb-3">
                                                                 <c:forEach items="${question.questionImage}" var="image">
-                                                                    <img src="${image.imageTitle}" alt="Question Image" class="img-fluid mb-2">
+                                                                    <img src="${pageContext.request.contextPath}/uploads/images/${image.imageURL}"  alt="${image.imageTitle}" class="img-fluid mb-2">
                                                                 </c:forEach>
                                                             </div>
                                                         </c:if>
@@ -408,7 +408,7 @@
                                                         <c:if test="${not empty question.mp3}">
                                                             <div class="question-audio mb-3">
                                                                 <audio controls>
-                                                                    <source src="${question.mp3}" type="audio/mpeg">
+                                                                    <source src="${pageContext.request.contextPath}/uploads/audio/${question.mp3}" type="audio/mpeg">
                                                                     Your browser does not support the audio element.
                                                                 </audio>
                                                             </div>

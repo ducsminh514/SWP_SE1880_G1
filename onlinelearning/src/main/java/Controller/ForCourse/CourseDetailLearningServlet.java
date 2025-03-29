@@ -13,6 +13,7 @@ import Module.LessonQuiz;
 import Module.QuizAttend;
 import Module.Enrollment;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +29,11 @@ import java.util.Map;
 import java.util.Set;
 
 import Module.User;
-
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024, // 1 MB
+        maxFileSize = 1024 * 1024 * 10,  // 10 MB
+        maxRequestSize = 1024 * 1024 * 50 // 50 MB
+)
 @WebServlet(name = "CourseDetailLearningServlet", urlPatterns = {"/course-learning"})
 public class CourseDetailLearningServlet extends HttpServlet {
 

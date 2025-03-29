@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <%@page contentType="text/html" pageEncoding="UTF-8" %>
@@ -256,7 +257,7 @@
                                                                 width="200" height="143" alt=""> </div>
                                                         <div class="ttr-post-info">
                                                             <div class="ttr-post-header">
-                                                                <h6 class="post-title"><a href="#">${recent.course.courseName}</a></h6>
+                                                                <h6 class="post-title"><a href="courseDetail?courseId=${recent.course.courseId}">${recent.course.courseName}</a></h6>
                                                             </div>
                                                             <div class="ttr-post-meta">
                                                                 <ul>
@@ -528,6 +529,7 @@
 
             <button class="back-to-top fa fa-chevron-up" ></button>
         </div>
+
         <!-- External JavaScripts -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/vendors/bootstrap/js/popper.min.js"></script>

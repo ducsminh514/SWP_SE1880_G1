@@ -4,7 +4,6 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-
         <!-- META ============================================= -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -515,7 +514,7 @@
                     <div class="container">
                         <ul class="list-inline">
                             <li><a href="home">Home</a></li>
-                            <li>Blog Articles</li>
+                            <li><a href="listPost">Blog Articles</a></li>
                         </ul>
                     </div>
                 </div>

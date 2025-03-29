@@ -357,14 +357,14 @@
                                     <div class="info-bx">
                                         <ul class="media-post">
                                             <li><a href="#"><i class="fa fa-calendar"></i>${requestScope.post.createDate}</a></li>
-                                            <li><a href="#"><i class="fa fa-user"></i>${requestScope.post.marketing.user.firstName}</a></li>
+                                            <li><a href="#"><i class="fa fa-user"></i>${requestScope.post.marketing.user.firstName} {requestScope.post.marketing.user.lastName}</a></li>
                                             <li><a href="#"><i class="fa fa-comments-o"></i>${requestScope.cntAll} Comments</a></li>
                                             <li><a href="#"><i class="fa fa-tag"></i>${requestScope.post.categoryBlog.categoryBlogName}</a></li>
                                         </ul>
                                         <div class="post-meta">
                                             <img src="assets/images/testimonials/pic1.jpg" alt="Author" class="author-img">
                                             <div class="author-info">
-                                                <div class="author-name">${requestScope.post.marketing.user.firstName}</div>
+                                                <div class="author-name">${requestScope.post.marketing.user.firstName} ${requestScope.post.marketing.user.lastName}</div>
                                                 <div class="post-date">Published on ${requestScope.post.createDate}</div>
                                             </div>
                                         </div>

@@ -28,16 +28,22 @@ import javax.crypto.spec.SecretKeySpec;
 @WebServlet(name = "PaymentServlet", urlPatterns = {"/payment"})
 public class PaymentServlet extends HttpServlet {
 
+    private VnPayService vnPayService = new VnPayService();
+
+    long amount_global = 10000;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-                processPayment(request, response);
+            processPayment(request, response);
         }
     }
 
     private void processPayment(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        System.out.println("in that here--------------------------------------------------");
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "order-type";
@@ -69,7 +75,7 @@ public class PaymentServlet extends HttpServlet {
         // Create Order object and save to database
         Customer customer = null;
         int userId = 0;
-        
+
         if (user != null) {
             userId = user.getUserId();
             CustomerDAO customerDAO = new CustomerDAO();
@@ -78,7 +84,7 @@ public class PaymentServlet extends HttpServlet {
                 customer = customerDAO.getCustomerById(customerId);
             }
         }
-        
+
         // Tạo đối tượng Order với các thông tin cơ bản
         Order order = new Order();
         order.setOrderCode(orderId);
@@ -93,27 +99,22 @@ public class PaymentServlet extends HttpServlet {
         OrderDAO orderDAO = new OrderDAO();
         int orderDbId = orderDAO.insertOrder(order);
 
-        if (orderDbId <= 0) {
-            // Error saving order
-            request.setAttribute("errorMessage", "Failed to create order. Please try again.");
-            request.getRequestDispatcher("order-confirmation.jsp").forward(request, response);
-            return;
-        }
-        
+
         // Lưu ID của đơn hàng trong DB vào đối tượng Order
         order.setOrderId(orderDbId);
         // Save the order info in session for VNPay query later
 
         // Convert amount to VND (required by VNPay)
-        long amount = (long)(price); // Assuming 1 USD = 24,000 VND
-        
+        long amount = (long)(price *100); // Assuming 1 USD = 24,000 VND
+        amount_global = (long)(price *100);
+
         // Ensure minimum amount for testing (VNPay requires minimum 10,000 VND)
         if (amount < 10000) {
             amount = 10000;
         }
 
         String vnp_TxnRef = Config.getRandomNumber(8);
-        String vnp_IpAddr = "127.0.0.1";
+        String vnp_IpAddr = Config.getIpAddress(request);
 
         String vnp_TmnCode = Config.vnp_TmnCode;
 
@@ -178,8 +179,15 @@ public class PaymentServlet extends HttpServlet {
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = Config.vnp_PayUrl + "?" + queryUrl;
 
-        response.sendRedirect(paymentUrl);
+
+
+//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> url = " + urlTest);
+//        response.sendRedirect(urlTest);
         // Forward to payment page with QR code
+
+        int amount_tmp = (int)amount_global;
+        String urlTest = vnPayService.createOrder(amount_tmp, "Thanh toan don hang", "http://localhost:9090/onlinelearning11/");
+//        response.sendRedirect(urlTest);
     }
 
     private String generateOrderId() {
@@ -193,12 +201,18 @@ public class PaymentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        int amount_tmp = (int)amount_global;
+        String urlTest = vnPayService.createOrder(amount_tmp, "Thanh toan don hang", "http://localhost:9090/onlinelearning11/");
+        System.out.println("innnnnnnnnnnnnnnnnn" + urlTest);
         processRequest(request, response);
+        response.sendRedirect(urlTest);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("Posttttttttttttttttttttttttttttttttttttttttttttttt");
         processRequest(request, response);
     }
 
