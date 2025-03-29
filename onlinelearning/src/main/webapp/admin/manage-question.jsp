@@ -276,6 +276,26 @@
         </div>
     </div>
 </main>
+
+<!-- Deactive Confirmation Modal -->
+<div class="modal fade" id="deactiveModal" tabindex="-1" role="dialog" aria-labelledby="deactiveModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deactiveModalLabel">Confirm Deactivation</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Are you sure you want to deactivate this question? It will no longer be available for quizzes.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger" id="confirmDeactiveBtn" href="#">Deactivate</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="ttr-overlay"></div>
 
 <!-- External JavaScripts -->
@@ -287,7 +307,40 @@
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
 
 <!-- Script cuối trang -->
+<script>
+    // Toast message display
+    var toastMessage = "${sessionScope.toastMessage}";
+    var toastType = "${sessionScope.toastType}";
+    if (toastMessage) {
+        iziToast.show({
+            title: toastType === 'success' ? 'Success' : 'Error',
+            message: toastMessage,
+            position: 'topRight',
+            color: toastType === 'success' ? 'green' : 'red',
+            timeout: 5000,
+            onClosing: function () {
+                // Remove toast attributes from the session after displaying
+                fetch('${pageContext.request.contextPath}/remove-toast', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                }).then(response => {
+                    if (!response.ok) {
+                        console.error('Failed to remove toast attributes');
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    }
 
+    function confirmDeactive(questionId) {
+        $('#confirmDeactiveBtn').attr('href', '${pageContext.request.contextPath}/manage-question?action=deactive&questionId=' + questionId);
+        $('#deactiveModal').modal('show');
+    }
+</script>
 
 </body>
 

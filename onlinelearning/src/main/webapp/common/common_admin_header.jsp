@@ -28,7 +28,8 @@
 					<a href="home" class="ttr-material-button ttr-submenu-toggle">HOME</a>
 				</li>
 				<li>
-					<a href="#" class="ttr-material-button ttr-submenu-toggle">QUICK MENU <i class="fa fa-angle-down"></i></a>
+					<a href="#" class="ttr-material-button ttr-submenu-toggle">QUICK MENU <i
+							class="fa fa-angle-down"></i></a>
 					<div class="ttr-header-submenu">
 						<ul>
 							<li><a href="listCourse">Our Courses</a></li>
@@ -96,9 +97,10 @@
 					</div>
 				</li>
 				<c:if test="${sessionScope.account!=null}">
-					<c:set value="${sessionScope.account}" var="account" />
+					<c:set value="${sessionScope.account}" var="account"/>
 					<li>
-						<a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets/images/testimonials/pic3.jpg" width="32" height="32"></span></a>
+						<a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img
+								alt="" src="assets/images/testimonials/pic3.jpg" width="32" height="32"></span></a>
 						<div class="ttr-header-submenu">
 							<ul>
 								<li><a href="profile?id=${sessionScope.account.userId}">My profile</a></li>

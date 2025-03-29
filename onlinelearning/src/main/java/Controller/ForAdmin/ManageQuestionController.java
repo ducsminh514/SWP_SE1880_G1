@@ -407,6 +407,12 @@ public class ManageQuestionController extends HttpServlet {
                 // optionCount++;
                 System.out.println("Added option: " + optionValue + ", isCorrect: " + isCorrect);
             }
+            
+            // Set success toast message
+            setToastMessage(request, "Question updated successfully", "success");
+        } else {
+            // Set error toast message
+            setToastMessage(request, "Failed to update question", "error");
         }
 
         // Redirect back to the question list
@@ -431,7 +437,8 @@ public class ManageQuestionController extends HttpServlet {
             String currentStatusStr = request.getParameter("currentStatus");
 
             if (questionIdStr == null || currentStatusStr == null) {
-                response.sendRedirect(request.getContextPath() + "/manage-question?error=missing_parameters");
+                setToastMessage(request, "Missing parameters", "error");
+                response.sendRedirect(request.getContextPath() + "/manage-question");
                 return;
             }
 
@@ -441,7 +448,8 @@ public class ManageQuestionController extends HttpServlet {
             // Get the question from the database
             Question question = questionDAO.GetQuestionById(questionId);
             if (question == null) {
-                response.sendRedirect(request.getContextPath() + "/manage-question?error=question_not_found");
+                setToastMessage(request, "Question not found", "error");
+                response.sendRedirect(request.getContextPath() + "/manage-question");
                 return;
             }
 
@@ -452,15 +460,26 @@ public class ManageQuestionController extends HttpServlet {
             boolean updated = questionDAO.update(question);
 
             if (updated) {
-                response.sendRedirect(request.getContextPath() + "/manage-question?success=status_changed");
+                setToastMessage(request, "Question status changed successfully", "success");
             } else {
-                response.sendRedirect(request.getContextPath() + "/manage-question?error=update_failed");
+                setToastMessage(request, "Failed to update question status", "error");
             }
+            
+            response.sendRedirect(request.getContextPath() + "/manage-question");
+            
         } catch (NumberFormatException e) {
-            response.sendRedirect(request.getContextPath() + "/manage-question?error=invalid_parameters");
+            setToastMessage(request, "Invalid parameters", "error");
+            response.sendRedirect(request.getContextPath() + "/manage-question");
         } catch (Exception e) {
             System.out.println("Error changing question status: " + e.getMessage());
-            response.sendRedirect(request.getContextPath() + "/manage-question?error=unexpected_error");
+            setToastMessage(request, "Unexpected error", "error");
+            response.sendRedirect(request.getContextPath() + "/manage-question");
         }
+    }
+    
+    // Helper method to set toast message
+    private void setToastMessage(HttpServletRequest request, String message, String type) {
+        request.getSession().setAttribute("toastMessage", message);
+        request.getSession().setAttribute("toastType", type);
     }
 }

@@ -204,7 +204,7 @@
                                                 <c:if test="${quiz.status}">
                                                     <a href="#" class="btn button-sm red radius-xl" style="display: flex; align-items: center"
                                                        onclick="confirmDeactivate(${quiz.lessonQuizID})" title="deactivate">
-                                                        <i class="fa-solid fa-ban"></i>
+                                                        <i class="fa-solid fa-trash"></i>
                                                     </a>
                                                 </c:if>
                                             </div>
@@ -252,12 +252,35 @@
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
 
 <script>
-    $(document).ready(function() {
-        // Toast notification auto-hide
-        setTimeout(function() {
-            $('.toast').fadeOut('slow');
-        }, 5000);
+    // Toast message display
+    var toastMessage = "${sessionScope.toastMessage}";
+    var toastType = "${sessionScope.toastType}";
+    if (toastMessage) {
+        iziToast.show({
+            title: toastType === 'success' ? 'Success' : 'Error',
+            message: toastMessage,
+            position: 'topRight',
+            color: toastType === 'success' ? 'green' : 'red',
+            timeout: 5000,
+            onClosing: function () {
+                // Remove toast attributes from the session after displaying
+                fetch('${pageContext.request.contextPath}/remove-toast', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                }).then(response => {
+                    if (!response.ok) {
+                        console.error('Failed to remove toast attributes');
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    }
 
+    $(document).ready(function() {
         // Close toast when close button is clicked
         $('.close').on('click', function() {
             $(this).closest('.toast').fadeOut('slow');
