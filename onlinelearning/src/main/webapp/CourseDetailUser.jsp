@@ -276,14 +276,37 @@
             cursor: pointer;
         }
 
+        /* Improved question image styles */
+        .question-image {
+            margin-bottom: 15px;
+            text-align: center;
+            max-width: 600px; /* Limit container width */
+            height: 300px; /* Fixed height for rectangular frame */
+            margin-left: auto;
+            margin-right: auto;
+            overflow: hidden; /* Hide overflow */
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background-color: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .question-image img {
             max-width: 100%;
-            border-radius: 4px;
-            border: 1px solid #ddd;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain; /* Maintain aspect ratio while fitting in container */
+            display: block;
         }
 
         .question-audio {
             width: 100%;
+            max-width: 500px;
+            margin: 0 auto 15px;
         }
 
         .question-audio audio {
@@ -399,7 +422,7 @@
                                                         <c:if test="${not empty question.questionImage}">
                                                             <div class="question-image mb-3">
                                                                 <c:forEach items="${question.questionImage}" var="image">
-                                                                    <img src="${pageContext.request.contextPath}/uploads/images/${image.imageURL}"  alt="${image.imageTitle}" class="img-fluid mb-2">
+                                                                    <img src="${pageContext.request.contextPath}/${image.imageURL}"  alt="${image.imageTitle}" class="img-fluid mb-2">
                                                                 </c:forEach>
                                                             </div>
                                                         </c:if>
