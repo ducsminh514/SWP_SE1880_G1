@@ -15,12 +15,13 @@ public class QuestionAnswerDAO extends DBContext implements GenericDAO<QuestionA
         return List.of();
     }
 
-
     @Override
     public int insert(QuestionAnswer questionAnswer) {
         String sql = "INSERT INTO QuestionAnswer (SortOrder, Content, QuestionID, IsCorrect) "
                    + "VALUES (?, ?, ?, ?)";
-        try (PreparedStatement st = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             st.setInt(1, questionAnswer.getSortOrder());
             st.setString(2, questionAnswer.getContent());
             st.setInt(3, questionAnswer.getQuestionId());
@@ -28,14 +29,15 @@ public class QuestionAnswerDAO extends DBContext implements GenericDAO<QuestionA
             
             int affectedRows = st.executeUpdate();
             if (affectedRows > 0) {
-                try (ResultSet rs = st.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        return rs.getInt(1);
-                    }
+                ResultSet rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    return rs.getInt(1);
                 }
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            closeResources();
         }
         return 0;
     }
@@ -70,7 +72,8 @@ public class QuestionAnswerDAO extends DBContext implements GenericDAO<QuestionA
                 "  FROM [dbo].[QuestionAnswer]\n" +
                 "  WHERE QuestionID = ? ";
         List<QuestionAnswer> questionAnswers = new ArrayList<>();
-        try{
+        try {
+            connection = getConnection();
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, questionId);
             ResultSet rs = st.executeQuery();
@@ -79,18 +82,24 @@ public class QuestionAnswerDAO extends DBContext implements GenericDAO<QuestionA
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            closeResources();
         }
         return questionAnswers;
     }
 
     public boolean deleteAnswersByQuestionId(int questionId) {
         String sql = "DELETE FROM QuestionAnswer WHERE QuestionID = ?";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, questionId);
             int affectedRows = st.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            closeResources();
         }
         return false;
     }
@@ -103,7 +112,9 @@ public class QuestionAnswerDAO extends DBContext implements GenericDAO<QuestionA
                 + "WHERE qq.QuizQuestionID = ? "
                 + "ORDER BY a.SortOrder ASC";
 
-        try (PreparedStatement pre = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement pre = connection.prepareStatement(sql);
             // Set the parameter for QuizQuestionID
             pre.setInt(1, id);
 
@@ -123,15 +134,16 @@ public class QuestionAnswerDAO extends DBContext implements GenericDAO<QuestionA
         } catch (SQLException e) {
             System.err.println("Error fetching answers: " + e.getMessage());
             e.printStackTrace();
-            throw new RuntimeException(e); // Optional: Can add custom error handling
+        } finally {
+            closeResources();
         }
         return list;
     }
 
     public int GetMarkfromQuestion(int id){
-        String sql = "select q.Mark from Question q where q.QuestionID=?"
-                ;
-        try{
+        String sql = "select q.Mark from Question q where q.QuestionID=?";
+        try {
+            connection = getConnection();
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
@@ -140,8 +152,36 @@ public class QuestionAnswerDAO extends DBContext implements GenericDAO<QuestionA
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            closeResources();
         }
         return 0;
     }
+
+    public List<QuestionAnswer> getCorrectAnswersByQuestionId(int questionId) {
+        String sql = "SELECT [AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect] "
+                + "FROM [dbo].[QuestionAnswer] "
+                + "WHERE QuestionID = ? AND IsCorrect = 1";
+
+        List<QuestionAnswer> correctAnswers = new ArrayList<>();
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, questionId);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                correctAnswers.add(getFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting correct answers: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            closeResources();
+        }
+
+        return correctAnswers;
+    }
+    
 
 }

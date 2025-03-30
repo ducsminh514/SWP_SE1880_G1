@@ -7,7 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 public class QuestionTypeDAO extends DBContext implements GenericDAO<QuestionType> {
@@ -17,6 +19,7 @@ public class QuestionTypeDAO extends DBContext implements GenericDAO<QuestionTyp
         List<QuestionType> questionTypes = new ArrayList<>();
         String sql = "SELECT * FROM QuestionType";
         try {
+            connection = getConnection();
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -24,6 +27,8 @@ public class QuestionTypeDAO extends DBContext implements GenericDAO<QuestionTyp
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            closeResources();
         }
         return questionTypes;
     }
@@ -55,7 +60,8 @@ public class QuestionTypeDAO extends DBContext implements GenericDAO<QuestionTyp
         String sql = "select * from QuestionType where QuestionTypeId = ?";
         QuestionType questionType = new QuestionType();
 
-        try{
+        try {
+            connection = getConnection();
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
@@ -65,7 +71,50 @@ public class QuestionTypeDAO extends DBContext implements GenericDAO<QuestionTyp
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            closeResources();
         }
         return null;
     }
+
+
+    public Map<Integer, QuestionType> getQuestionTypesByIds(List<Integer> questionTypeIds) {
+        Map<Integer, QuestionType> questionTypeMap = new HashMap<>();
+
+        if (questionTypeIds == null || questionTypeIds.isEmpty()) {
+            return questionTypeMap;
+        }
+
+        // Build placeholders for IN clause
+        StringBuilder placeholders = new StringBuilder();
+        for (int i = 0; i < questionTypeIds.size(); i++) {
+            if (i > 0) placeholders.append(",");
+            placeholders.append("?");
+        }
+
+        String sql = "SELECT * FROM QuestionType WHERE QuestionTypeId IN (" + placeholders.toString() + ")";
+
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            // Set parameters for the IN clause
+            for (int i = 0; i < questionTypeIds.size(); i++) {
+                st.setInt(i + 1, questionTypeIds.get(i));
+            }
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                QuestionType questionType = getFromResultSet(rs);
+                questionTypeMap.put(questionType.getQuestionTypeId(), questionType);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting question types by IDs: " + e.getMessage());
+        } finally {
+            closeResources();
+        }
+
+        return questionTypeMap;
+    }
+
 }

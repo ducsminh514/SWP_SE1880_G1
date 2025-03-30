@@ -11,11 +11,11 @@
     <meta name="robots" content="" />
 
     <!-- DESCRIPTION -->
-    <meta name="description" content="EduChamp : Education HTML Template" />
+    <meta name="description" content="${requestScope.post.title}" />
 
     <!-- OG -->
-    <meta property="og:title" content="EduChamp : Education HTML Template" />
-    <meta property="og:description" content="EduChamp : Education HTML Template" />
+    <meta property="og:title" content="${requestScope.post.title}" />
+    <meta property="og:description" content="${requestScope.post.title}" />
     <meta property="og:image" content="" />
     <meta name="format-detection" content="telephone=no">
 
@@ -24,7 +24,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
     <!-- PAGE TITLE HERE ============================================= -->
-    <title>EduChamp : Education HTML Template </title>
+    <title>${requestScope.post.title} - Blog Detail</title>
 
     <!-- MOBILE SPECIFIC ============================================= -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -70,6 +70,247 @@
             cursor: pointer;
         }
 
+        /* Thêm CSS mới cho trang blog chi tiết */
+        .post-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #505050;
+            margin-bottom: 30px;
+        }
+        
+        .post-brief {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            font-weight: 500;
+            color: #555;
+            border-left: 4px solid #f7b205;
+            padding-left: 15px;
+            margin-bottom: 30px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .post-title {
+            font-size: 2.5rem;
+            line-height: 1.3;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .post-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .post-meta .author-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        
+        .post-meta .author-info {
+            line-height: 1.2;
+        }
+        
+        .post-meta .author-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .social-share {
+            margin: 20px 0;
+        }
+        
+        .social-share a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            color: #505050;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-share a:hover {
+            transform: translateY(-3px);
+        }
+        
+        .social-share .facebook:hover {
+            background: #3b5998;
+            color: #fff;
+        }
+        
+        .social-share .twitter:hover {
+            background: #1da1f2;
+            color: #fff;
+        }
+        
+        .social-share .linkedin:hover {
+            background: #0077b5;
+            color: #fff;
+        }
+
+        .tag-cloud a {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #f0f0f0;
+            color: #505050;
+            border-radius: 20px;
+            margin: 0 5px 10px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .tag-cloud a:hover {
+            background: #f7b205;
+            color: #fff;
+        }
+        
+        /* CSS cho các loại nội dung PostContent */
+        .post-content-text {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+        
+        .post-content-image {
+            margin: 2rem 0;
+        }
+        
+        .post-content-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .post-content-image img:hover {
+            transform: scale(1.02);
+        }
+        
+        .image-caption, .video-caption, .code-caption {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+        
+        .post-content-video {
+            margin: 2rem 0;
+        }
+        
+        .post-content-code {
+            margin: 2rem 0;
+        }
+        
+        .post-content-code pre {
+            background-color: #f8f9fa;
+            padding: 1.25rem;
+            border-radius: 8px;
+            border-left: 4px solid #f7b205;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .post-content-quote {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: #f8f9fa;
+            border-left: 4px solid #f7b205;
+            border-radius: 8px;
+        }
+        
+        .post-content-quote .blockquote {
+            margin-bottom: 0;
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+        
+        .post-content-quote .blockquote-footer {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        /* Cải thiện trải nghiệm người dùng cho phần comment */
+        .comment {
+            transition: all 0.3s ease;
+        }
+        
+        .comment:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .comment-body {
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .comment-author img {
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .comment-meta {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .reply a {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #f0f0f0;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #505050;
+            transition: all 0.3s ease;
+        }
+        
+        .reply a:hover {
+            background-color: #f7b205;
+            color: #fff;
+            text-decoration: none;
+        }
+        
+        /* Fix for smaller devices */
+        @media (max-width: 767.98px) {
+            .post-content-image img {
+                max-width: 100%;
+            }
+            
+            .post-content {
+                font-size: 15px;
+            }
+            
+            .post-title {
+                font-size: 1.8rem;
+            }
+            
+            .post-content-quote {
+                padding: 1rem;
+            }
+            
+            .post-content-code pre {
+                padding: 1rem;
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body id="bg">
@@ -94,8 +335,10 @@
             <div class="breadcrumb-row">
                 <div class="container">
                     <ul class="list-inline">
-                        <li><a href="#">Home</a></li>
-                        <li>Blog Details</li>
+                        <li><a href="home">Home</a></li>
+                        <li><a href="listPost">Blog</a></li>
+                        <li><a href="listPost?cate=${requestScope.post.categoryBlog.categoryBlogId}">${requestScope.post.categoryBlog.categoryBlogName}</a></li>
+                        <li>${requestScope.post.title}</li>
                     </ul>
                 </div>
             </div>
@@ -109,50 +352,78 @@
                                 <!-- blog start -->
                                 <div class="recent-news blog-lg">
                                     <div class="action-box blog-lg">
-                                        <img src="assets/images/blog/default/thum1.jpg" alt="">
+                                        <img src="${empty requestScope.post.thumbnail ? 'assets/images/blog/default/thum1.jpg' : requestScope.post.thumbnail}" alt="${requestScope.post.title}">
                                     </div>
                                     <div class="info-bx">
                                         <ul class="media-post">
-                                            <li><a href="#"><i class="fa fa-calendar"></i>May 14 2019</a></li>
-                                            <li><a href="#"><i class="fa fa-comments-o"></i>10 Comment</a></li>
+                                            <li><a href="#"><i class="fa fa-calendar"></i>${requestScope.post.createDate}</a></li>
+                                            <li><a href="#"><i class="fa fa-user"></i>${requestScope.post.marketing.user.firstName} {requestScope.post.marketing.user.lastName}</a></li>
+                                            <li><a href="#"><i class="fa fa-comments-o"></i>${requestScope.cntAll} Comments</a></li>
+                                            <li><a href="#"><i class="fa fa-tag"></i>${requestScope.post.categoryBlog.categoryBlogName}</a></li>
                                         </ul>
-                                        <h5 class="post-title"><a href="#">Why every startup should adopt Amazon’s Hot Air. Why every startup should adopt Amazon’s Hot Air.</a></h5>
-                                        <p>It is used every day in all types of businesses; Email newsletters, websites, print and online advertisements, presentations, social media updates, flyers, and brochures; the list goes on and on</p>
-                                        <p>David Ogilvy, the advertising legend once said that, On average, five times as many people read the headline as read the body copy. When you have written your headline, you have spent eighty cents out of your dollar." As Ogilvy points out, your headline is the first (and sometimes the only) thing that your audience will read.</p>
-                                        <p>You just need to enter the keyword and select the keyword type to generate a list of 6 title ideas and suggestions. If you’re not satisfied with the results, you can always hit the refresh button to generate a new list of unique titles.</p>
-                                        <p>Once you’ve gotten all the titles and have chosen the best one, the next thing you need to do is to craft a magnetic content. Great content marketers excel at creating content that their readers crave, but even the best struggle with delivering content to the right person at the right time.</p>
+                                        <div class="post-meta">
+                                            <img src="assets/images/testimonials/pic1.jpg" alt="Author" class="author-img">
+                                            <div class="author-info">
+                                                <div class="author-name">${requestScope.post.marketing.user.firstName} ${requestScope.post.marketing.user.lastName}</div>
+                                                <div class="post-date">Published on ${requestScope.post.createDate}</div>
+                                            </div>
+                                        </div>
+                                        <h2 class="post-title mb-4">${requestScope.post.title}</h2>
+                                        
+                                        <!-- Hiển thị nội dung bài viết từ các PostContent -->
+                                        <div class="post-content">
+                                            <!-- Hiển thị brief của bài viết nếu có -->
+
+                                            <c:forEach items="${requestScope.listPostContent}" var="postContent" varStatus="loop">
+                                                <c:choose>
+                                                    <c:when test="${postContent.contentType eq 'TEXT'}">
+                                                        <div class="post-content-text">
+                                                            ${postContent.content}
+                                                        </div>
+                                                    </c:when>
+                                                    <c:when test="${postContent.contentType eq 'IMAGE'}">
+                                                        <div class="post-content-image text-center my-4">
+                                                            <img src="${postContent.content}" alt="Post image" class="img-fluid rounded">
+                                                        </div>
+                                                    </c:when>
+                                                    <c:when test="${postContent.contentType eq 'VIDEO'}">
+                                                        <div class="post-content-video text-center my-4">
+                                                            <div class="embed-responsive embed-responsive-16by9">
+                                                                <iframe class="embed-responsive-item" src="${postContent.content}" allowfullscreen></iframe>
+                                                            </div>
+                                                        </div>
+                                                    </c:when>
+
+                                                    <c:otherwise>
+                                                        <div class="post-content-text">
+                                                            ${postContent.content}
+                                                        </div>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </div>
+                                        
                                         <div class="ttr-divider bg-gray"><i class="icon-dot c-square"></i></div>
                                         <div class="widget_tag_cloud">
                                             <h6>TAGS</h6>
-                                            <div class="tagcloud">
-                                                <a href="#">Design</a>
-                                                <a href="#">User interface</a>
-                                                <a href="#">SEO</a>
-                                                <a href="#">WordPress</a>
+                                            <div class="tagcloud tag-cloud">
+                                                <c:if test="${not empty requestScope.post.categoryBlog}">
+                                                    <a href="listPost?cate=${requestScope.post.categoryBlog.categoryBlogId}">${requestScope.post.categoryBlog.categoryBlogName}</a>
+                                                </c:if>
+                                                <a href="#">Web Design</a>
                                                 <a href="#">Development</a>
-                                                <a href="#">Joomla</a>
-                                                <a href="#">Design</a>
-                                                <a href="#">User interface</a>
-                                                <a href="#">SEO</a>
-                                                <a href="#">WordPress</a>
-                                                <a href="#">Development</a>
-                                                <a href="#">Joomla</a>
-                                                <a href="#">Design</a>
-                                                <a href="#">User interface</a>
-                                                <a href="#">SEO</a>
-                                                <a href="#">WordPress</a>
-                                                <a href="#">Development</a>
-                                                <a href="#">Joomla</a>
+                                                <a href="#">Learning</a>
+                                                <a href="#">Education</a>
                                             </div>
                                         </div>
                                         <div class="ttr-divider bg-gray"><i class="icon-dot c-square"></i></div>
                                         <h6>SHARE </h6>
-                                        <ul class="list-inline contact-social-bx">
-                                            <li><a href="#" class="btn outline radius-xl"><i class="fa fa-facebook"></i></a></li>
-                                            <li><a href="#" class="btn outline radius-xl"><i class="fa fa-twitter"></i></a></li>
-                                            <li><a href="#" class="btn outline radius-xl"><i class="fa fa-linkedin"></i></a></li>
-                                            <li><a href="#" class="btn outline radius-xl"><i class="fa fa-google-plus"></i></a></li>
-                                        </ul>
+                                        <div class="social-share">
+                                            <a href="javascript:void(0)" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href), 'facebook-share-dialog', 'width=626,height=436'); return false;" class="facebook"><i class="fa fa-facebook"></i></a>
+                                            <a href="javascript:void(0)" onclick="window.open('https://twitter.com/intent/tweet?text=${requestScope.post.title}&url='+encodeURIComponent(location.href), 'twitter-share-dialog', 'width=626,height=436'); return false;" class="twitter"><i class="fa fa-twitter"></i></a>
+                                            <a href="javascript:void(0)" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href), 'linkedin-share-dialog', 'width=626,height=436'); return false;" class="linkedin"><i class="fa fa-linkedin"></i></a>
+                                            <a href="javascript:void(0)" onclick="window.open('https://pinterest.com/pin/create/button/?url='+encodeURIComponent(location.href)+'&media=&description=${requestScope.post.title}', 'pinterest-share-dialog', 'width=626,height=436'); return false;"><i class="fa fa-pinterest"></i></a>
+                                        </div>
                                         <div class="ttr-divider bg-gray"><i class="icon-dot c-square"></i></div>
                                     </div>
                                 </div>
@@ -165,17 +436,17 @@
                                                 <c:forEach items= "${requestScope.listComment}"  var ="parent">
                                                     <li class="comment">
                                                         <div class="comment-body">
-                                                            <div class="comment-author vcard"> <img  class="avatar photo" src="assets/images/testimonials/pic1.jpg" alt=""> <cite class="fn">John Doe</cite> <span class="says">says:</span> </div>
+                                                            <div class="comment-author vcard"> <img  class="avatar photo" src="assets/images/testimonials/pic1.jpg" alt=""> <cite class="fn">${parent.user.firstName}</cite> <span class="says">says:</span> </div>
                                                             <div class="comment-meta"> <a href="#">${parent.createDate}</a> </div>
                                                             <p>${parent.content} </p>
                                                             <div class="reply">
                                                                 <a href="#" class="comment-reply-link" onclick="toggleReplyBox(event, this)">Reply</a>
                                                             </div>
-                                                            <form action="addCommentPost">
+                                                            <form action="addCommentPost" method="post">
                                                                 <div class="reply-box" style="display: none; margin-top: 10px; margin-bottom : 10px">
                                                                     <input type="hidden" name="parentId" value="${parent.commentPostId}">
                                                                     <input type="hidden" name="postId" value="${parent.post.postId}">
-                                                                    <textarea placeholder="Nhập nội dung bình luận" rows="3" name="content"></textarea>
+                                                                    <textarea placeholder="Nhập nội dung bình luận" rows="3" name="content" required></textarea>
                                                                     <button type="submit" class="submit-reply">Gửi</button>
                                                                 </div>
                                                             </form>
@@ -211,27 +482,29 @@
                                             <!-- comment list END -->
                                             <!-- Form -->
                                             <div class="comment-respond" id="respond">
-                                                <h4 class="comment-reply-title" id="reply-title">Leave a Reply <small> <a style="display:none;" href="#" id="cancel-comment-reply-link" rel="nofollow">Cancel reply</a> </small> </h4>
-                                                <form class="comment-form" id="commentform" method="post">
-                                                    <p class="comment-form-author">
-                                                        <label for="author">Name <span class="required">*</span></label>
-                                                        <input type="text" value="" name="Author"  placeholder="Author" id="author">
-                                                    </p>
-                                                    <p class="comment-form-email">
-                                                        <label for="email">Email <span class="required">*</span></label>
-                                                        <input type="text" value="" placeholder="Email" name="email" id="email">
-                                                    </p>
-                                                    <p class="comment-form-url">
-                                                        <label for="url">Website</label>
-                                                        <input type="text"  value=""  placeholder="Website"  name="url" id="url">
-                                                    </p>
-                                                    <p class="comment-form-comment">
-                                                        <label for="comment">Comment</label>
-                                                        <textarea rows="8" name="comment" placeholder="Comment" id="comment"></textarea>
-                                                    </p>
-                                                    <p class="form-submit">
-                                                        <input type="submit" value="Submit Comment" class="submit" id="submit" name="submit">
-                                                    </p>
+                                                <h4 class="comment-reply-title" id="reply-title">Để lại bình luận <small> <a style="display:none;" href="#" id="cancel-comment-reply-link" rel="nofollow">Hủy phản hồi</a> </small> </h4>
+                                                <form class="comment-form" id="commentform" action="addCommentPost" method="post">
+                                                    <input type="hidden" name="parentId" value="0">
+                                                    <input type="hidden" name="postId" value="${requestScope.post.postId}">
+                                                    <c:choose>
+                                                        <c:when test="${empty sessionScope.account}">
+                                                            <div class="alert alert-warning">
+                                                                Bạn cần <a href="login">đăng nhập</a> để bình luận.
+                                                            </div>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <div class="comment-user-info mb-3">
+                                                                <span>Bình luận với tên: <strong>${sessionScope.account.firstName}</strong></span>
+                                                            </div>
+                                                            <p class="comment-form-comment">
+                                                                <label for="comment">Nội dung bình luận</label>
+                                                                <textarea rows="8" name="content" placeholder="Nhập nội dung bình luận của bạn" id="comment" required></textarea>
+                                                            </p>
+                                                            <p class="form-submit">
+                                                                <input type="submit" value="Gửi bình luận" class="submit" id="submit" name="submit">
+                                                            </p>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </form>
                                             </div>
                                             <!-- Form -->
@@ -266,7 +539,7 @@
                                                     <div class="ttr-post-media"> <img src="assets/images/blog/recent-blog/pic1.jpg" width="200" height="143" alt=""> </div>
                                                     <div class="ttr-post-info">
                                                         <div class="ttr-post-header">
-                                                            <h6 class="post-title"><a href="blog-details.html">${post.key.title}</a></h6>
+                                                            <h6 class="post-title"><a href="blogDetail?postId=${post.key.postId}">${post.key.title}</a></h6>
                                                         </div>
                                                         <ul class="media-post">
                                                             <li><a href="#"><i class="fa fa-calendar"></i>${post.key.updateDate}</a></li>

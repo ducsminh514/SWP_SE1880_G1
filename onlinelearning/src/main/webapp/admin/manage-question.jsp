@@ -7,6 +7,7 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
 <html>
 <head>
     <!-- META ============================================= -->
@@ -127,7 +128,7 @@
                                                value="${param.search}">
                                     </div>
                                     <div class="col-md-2">
-                                        <button type="submit" class="btn-search form-control text-light btn">
+                                        <button type="submit" class="btn-outline-primary form-control">
                                             <i class="fa fa-search"></i>
                                         </button>
                                     </div>
@@ -214,16 +215,14 @@
                                             <c:if test="${!question.status}">
                                                 class="btn red radius-xl outline"
                                             </c:if>>
-                                                    ${question.status}
+                                                    ${question.status ? "Active" : "Inactive"}
                                             </span>
                                             </td>
                                         </c:if>
                                         <c:if test="${not empty listColum && listColum.contains('actionChoice')}">
                                             <td>
                                                 <div style="text-align: center; display: flex; justify-content: space-evenly; align-items: center;">
-                                                    <a class="btn button-sm blue radius-xl"
-                                                       style="display: flex; align-items: center"> <i
-                                                            class="fa-solid fa-eye"></i></a>
+                                                  
                                                     <a class="btn button-sm green radius-xl "
                                                        style="display: flex; align-items: center"
                                                        href="${pageContext.request.contextPath}/manage-question?action=edit&questionId=${question.questionId}"
@@ -275,6 +274,26 @@
         </div>
     </div>
 </main>
+
+<!-- Deactive Confirmation Modal -->
+<div class="modal fade" id="deactiveModal" tabindex="-1" role="dialog" aria-labelledby="deactiveModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deactiveModalLabel">Confirm Deactivation</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Are you sure you want to deactivate this question? This will mark it as inactive and it will no longer be available for quizzes.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger" id="confirmDeactiveBtn" href="#">Deactivate</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="ttr-overlay"></div>
 
 <!-- External JavaScripts -->
@@ -286,7 +305,40 @@
 <jsp:include page="../common/common_admin_js.jsp"></jsp:include>
 
 <!-- Script cuối trang -->
+<script>
+    // Toast message display
+    var toastMessage = "${sessionScope.toastMessage}";
+    var toastType = "${sessionScope.toastType}";
+    if (toastMessage) {
+        iziToast.show({
+            title: toastType === 'success' ? 'Success' : 'Error',
+            message: toastMessage,
+            position: 'topRight',
+            color: toastType === 'success' ? 'green' : 'red',
+            timeout: 5000,
+            onClosing: function () {
+                // Remove toast attributes from the session after displaying
+                fetch('${pageContext.request.contextPath}/remove-toast', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                }).then(response => {
+                    if (!response.ok) {
+                        console.error('Failed to remove toast attributes');
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    }
 
+    function confirmDeactive(questionId) {
+        $('#confirmDeactiveBtn').attr('href', '${pageContext.request.contextPath}/manage-question?action=deactive&questionId=' + questionId);
+        $('#deactiveModal').modal('show');
+    }
+</script>
 
 </body>
 

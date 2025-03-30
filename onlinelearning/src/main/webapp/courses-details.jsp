@@ -250,7 +250,7 @@
 									<h4 class="price">$120</h4>
 								</div>	
 								<div class="course-buy-now text-center">
-									<a href="#" class="btn radius-xl text-uppercase">Buy Now This Courses</a>
+									<a href="payment-process?courseId=${course.courseId}&pricePackageId=${pricePackage.priceId}" class="btn radius-xl text-uppercase">Buy Now This Course</a>
 								</div>
 								<div class="teacher-bx">
 									<div class="teacher-info">

@@ -15,6 +15,7 @@ public class ReviewPostDAO extends DBContext {
         String sql = "SELECT AVG(Rating) FROM PostReview WHERE PostID = ?";
         float rating = 0;
         try {
+            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, postId);
             ResultSet rs = pre.executeQuery();
@@ -24,6 +25,8 @@ public class ReviewPostDAO extends DBContext {
 //            System.out.println(rating);
         } catch (SQLException e) {
             System.out.println(e);
+        } finally {
+            closeResources();
         }
         return rating;
     }
@@ -32,6 +35,7 @@ public class ReviewPostDAO extends DBContext {
         String sql = "select * from PostReview";
         ArrayList<ReviewPost> listPostReview = new ArrayList<>();
         try {
+            connection = getConnection();
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
             PostDAO pDAO = new PostDAO();
@@ -49,6 +53,8 @@ public class ReviewPostDAO extends DBContext {
             return listPostReview;
         } catch (SQLException e) {
             System.out.println(e);
+        } finally {
+            closeResources();
         }
         return listPostReview;
     }
@@ -63,6 +69,7 @@ public class ReviewPostDAO extends DBContext {
         }
         return map ;
     }
+    
 }
 
 

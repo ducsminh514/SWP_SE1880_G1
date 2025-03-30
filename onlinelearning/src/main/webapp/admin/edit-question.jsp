@@ -2,6 +2,8 @@
   Templates. --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
+
 <!DOCTYPE html>
 <html>
 
@@ -588,6 +590,7 @@
             console.log('Question type changed');
             const selectedType = $(this).val();
             const optionsContainer = $('#optionsContainer');
+            const addOptionBtn = $('#addOptionBtn');
             
             // Xóa tất cả các option hiện tại
             optionsContainer.empty();
@@ -611,26 +614,31 @@
                     `;
                     optionsContainer.append(option);
                 }
-            } else if (selectedType === "2") { // True/False
-                console.log('Adding True/False options');
-                for (let i = 1; i <= 2; i++) {
-                    const value = i === 1 ? "True" : "False";
-                    const option = `
-                        <div class="option-row">
-                            <div class="option-label">Option ${i}</div>
-                            <input type="text" class="form-control option-input" name="option" value="${value}" readonly>
-                            <div class="option-correct">
-                                <input type="checkbox" id="isCorrect${i}" name="isCorrect${i}">
-                                <label for="isCorrect${i}" class="correct-label">Đáp án đúng</label>
-                            </div>
-                            <button type="button" class="delete-btn" title="Xóa tùy chọn">
-                                <i class="fa fa-times"></i>
-                            </button>
+                // Hiển thị nút thêm tùy chọn
+                addOptionBtn.show();
+            } 
+            else if (selectedType === "2") { // Fill in Blank
+                console.log('Adding Fill in Blank options');
+                // Thêm một option cho câu trả lời đúng
+                const option = `
+                    <div class="option-row">
+                        <div class="option-label">Answer</div>
+                        <input type="text" class="form-control option-input" name="option" value="">
+                        <div class="option-correct">
+                            <input type="checkbox" id="isCorrect1" name="isCorrect1" checked>
+                            <label for="isCorrect1" class="correct-label">Đáp án đúng</label>
                         </div>
-                    `;
-                    optionsContainer.append(option);
-                }
+                        <button type="button" class="delete-btn" title="Xóa tùy chọn" style="visibility: hidden">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                `;
+                optionsContainer.append(option);
+                // Ẩn nút thêm tùy chọn
+                addOptionBtn.hide();
             }
+            
+            updateOptionCount();
         });
 
         // Debug cho xử lý hình ảnh
@@ -722,6 +730,36 @@
             // e.preventDefault();
         });
     });
+</script>
+
+<script>
+    // Toast message display
+    var toastMessage = "${sessionScope.toastMessage}";
+    var toastType = "${sessionScope.toastType}";
+    if (toastMessage) {
+        iziToast.show({
+            title: toastType === 'success' ? 'Success' : 'Error',
+            message: toastMessage,
+            position: 'topRight',
+            color: toastType === 'success' ? 'green' : 'red',
+            timeout: 5000,
+            onClosing: function () {
+                // Remove toast attributes from the session after displaying
+                fetch('${pageContext.request.contextPath}/remove-toast', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                }).then(response => {
+                    if (!response.ok) {
+                        console.error('Failed to remove toast attributes');
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    }
 </script>
 
 </body>

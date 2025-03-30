@@ -7,17 +7,18 @@
         <!-- META ============================================= -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="keywords" content="" />
-        <meta name="author" content="" />
-        <meta name="robots" content="" />
+        <meta name="keywords" content="LMS, Learning, Online Education, Courses, Online Courses" />
+        <meta name="author" content="EduChamp" />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
         <!-- DESCRIPTION -->
-        <meta name="description" content="EduChamp : Education HTML Template" />
+        <meta name="description" content="EduChamp - Professional Learning Management System" />
 
         <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
-        <meta property="og:image" content="" />
+        <meta property="og:title" content="EduChamp - Online Learning Platform" />
+        <meta property="og:description" content="Discover top-quality courses and resources for your professional development" />
+        <meta property="og:image" content="assets/images/logo.png" />
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
@@ -25,15 +26,15 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>EduChamp : Education HTML Template </title>
+        <title>EduChamp | Online Learning Platform</title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!--[if lt IE 9]-->
-<script src="assets/js/html5shiv.min.js"></script>
-<script src="assets/js/respond.min.js"></script>
-<![endif]-->
+        <script src="assets/js/html5shiv.min.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
 
         <!-- All PLUGINS CSS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/assets.css">
@@ -53,9 +54,171 @@
         <link rel="stylesheet" type="text/css" href="assets/vendors/revolution/css/layers.css">
         <link rel="stylesheet" type="text/css" href="assets/vendors/revolution/css/settings.css">
         <link rel="stylesheet" type="text/css" href="assets/vendors/revolution/css/navigation.css">
+        
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        
         <style>
+            /* Cải thiện sidebar */
             aside.side-bar {
-                margin-top: 100px; /* Điều chỉnh số px để phù hợp */
+                margin-top: 30px;
+                box-shadow: 0 0 30px rgba(0,0,0,0.05);
+                border-radius: 10px;
+                padding: 20px;
+                background-color: #fff;
+            }
+            
+            /* Nâng cấp card courses */
+            .cours-bx {
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+                transition: all 0.3s ease;
+                margin-bottom: 30px;
+                border: none;
+            }
+            
+            .cours-bx:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            }
+            
+            .cours-bx .info-bx {
+                padding: 20px 15px;
+            }
+            
+            /* Nâng cấp service box */
+            .service-bx {
+                border-radius: 10px;
+                overflow: hidden;
+                transition: all 0.3s ease;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            }
+            
+            .service-bx:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            }
+            
+            .service-bx .action-box img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+            
+            .service-bx .info-bx {
+                padding: 20px 15px;
+            }
+            
+            /* Nâng cấp blog cards */
+            .recent-news {
+                transition: all 0.3s ease;
+                height: 100% !important;
+                min-height: 250px;
+            }
+            
+            .recent-news:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+            }
+            
+            /* Footer nâng cấp */
+            .footer {
+                background-color: #033d75;
+                background-image: linear-gradient(to right, #033d75, #0261bf);
+            }
+            
+            /* Nút Back to Top */
+            .back-to-top {
+                border-radius: 50%;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+                width: 50px;
+                height: 50px;
+                line-height: 50px;
+                text-align: center;
+            }
+            
+            /* Nâng cấp headings */
+            .section-head {
+                margin-bottom: 40px;
+            }
+            
+            .title-head {
+                position: relative;
+                padding-bottom: 15px;
+                margin-bottom: 20px;
+                font-weight: 600;
+                text-transform: capitalize;
+            }
+            
+            .title-head:after {
+                content: "";
+                position: absolute;
+                width: 60px;
+                height: 3px;
+                background: var(--primary);
+                bottom: 0;
+                left: 0;
+            }
+            
+            .title-head.text-center:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            /* Cấu trúc trang chính */
+            .page-content {
+                padding-top: 0;
+            }
+            
+            .content-area {
+                padding-top: 30px;
+            }
+            
+            /* Hiệu ứng hover các nút */
+            .btn {
+                border-radius: 30px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                padding: 10px 25px;
+            }
+            
+            .btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+            
+            /* Widget Recent Posts */
+            .widget.recent-posts-entry .widget-post {
+                margin-bottom: 20px;
+                padding-bottom: 20px;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .widget.recent-posts-entry .widget-post:last-child {
+                border-bottom: none;
+                padding-bottom: 0;
+                margin-bottom: 0;
+            }
+            
+            .widget.recent-posts-entry .ttr-post-media {
+                border-radius: 8px;
+                overflow: hidden;
+            }
+            
+            /* Đánh giá khóa học */
+            .review {
+                display: flex;
+                align-items: center;
+            }
+            
+            .review span {
+                margin-left: 5px;
+                font-weight: 500;
+            }
+            
+            body {
+                font-family: 'Poppins', sans-serif;
             }
         </style>
         <!-- REVOLUTION SLIDER END -->
@@ -241,18 +404,26 @@
                     </div>
                     <div class="section-area content-inner service-info-bx">
                         <div class="container">
+                            <div class="section-head text-center">
+                                <h2 class="title-head">Our <span class="text-primary">Services</span></h2>
+                                <p>Discover what we offer to enhance your learning experience</p>
+                            </div>
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-sm-6">
                                     <div class="service-bx">
                                         <div class="action-box">
                                             <img src="assets/images/our-services/pic1.jpg" alt="">
+                                            <div class="overlay-icon">
+                                                <span class="fa fa-book text-white"></span>
+                                            </div>
                                         </div>
                                         <div class="info-bx text-center">
                                             <div class="feature-box-sm radius bg-white">
-                                                <i class="fa fa-bank text-primary"></i>
+                                                <i class="fa fa-graduation-cap text-primary"></i>
                                             </div>
-                                            <h4><a href="listCourse">Learn Course Online</a></h4>
-                                            <a href="listCourse" class="btn radius-xl">View More</a>
+                                            <h4><a href="listCourse">Learn Courses Online</a></h4>
+                                            <p>Access quality courses anytime, anywhere</p>
+                                            <a href="listCourse" class="btn radius-xl">View Courses</a>
                                         </div>
                                     </div>
                                 </div>
@@ -260,13 +431,17 @@
                                     <div class="service-bx">
                                         <div class="action-box">
                                             <img src="assets/images/our-services/pic2.jpg" alt="">
+                                            <div class="overlay-icon">
+                                                <span class="fa fa-newspaper-o text-white"></span>
+                                            </div>
                                         </div>
                                         <div class="info-bx text-center">
                                             <div class="feature-box-sm radius bg-white">
                                                 <i class="fa fa-book text-primary"></i>
                                             </div>
                                             <h4><a href="listPost">Read Blogs</a></h4>
-                                            <a href="listPost" class="btn radius-xl">View More</a>
+                                            <p>Explore articles and insights from experts</p>
+                                            <a href="listPost" class="btn radius-xl">View Blogs</a>
                                         </div>
                                     </div>
                                 </div>
@@ -274,13 +449,17 @@
                                     <div class="service-bx m-b0">
                                         <div class="action-box">
                                             <img src="assets/images/our-services/pic3.jpg" alt="">
+                                            <div class="overlay-icon">
+                                                <span class="fa fa-check-square-o text-white"></span>
+                                            </div>
                                         </div>
                                         <div class="info-bx text-center">
                                             <div class="feature-box-sm radius bg-white">
                                                 <i class="fa fa-file-text-o text-primary"></i>
                                             </div>
                                             <h4><a href="#">Take Quiz</a></h4>
-                                            <a href="#" class="btn radius-xl">View More</a>
+                                            <p>Test your knowledge with interactive quizzes</p>
+                                            <a href="#" class="btn radius-xl">Start Quiz</a>
                                         </div>
                                     </div>
                                 </div>
@@ -291,122 +470,172 @@
                 <!-- Main Slider -->
 
                 <div class="row">
-                    <div class="col-lg-8 col-xl-8 col-md-7">
-                        <div class="content-block">
-                            <!-- Popular Courses -->
-                            <div class="section-area section-sp2 popular-courses-bx">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-md-12 heading-bx left">
-                                            <h2 class="title-head">Popular <span>Courses</span></h2>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="courses-carousel owl-carousel owl-btn-1 col-12 p-lr0">
-                                            <c:forEach items="${requestScope.mapRatingCourse}" var="cou">
-                                                <div class="item">
-                                                    <div class="cours-bx">
-                                                        <div class="action-box">
-                                                            <img src="assets\images\courses\pic1.jpg" alt="">
-                                                            <a href="#" class="btn">Read More</a>
-                                                        </div>
-                                                        <div class="info-bx text-center">
-                                                            <h5><a href="#">${cou.key.courseName}</a></h5>
-                                                        </div>
-                                                        <div class="cours-more-info">
-                                                            <div class="review">
-                                                                <span> ${cou.value}</span>
-                                                            </div>
-                                                            <div class="price">
-                                                                <del>$${cou.key.price}</del>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </c:forEach>
-                                        </div>
+                    <div class="col-lg-9 col-md-8 col-sm-12">
+                        <!-- Popular Courses -->
+                        <div class="section-area section-sp2 popular-courses-bx">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12 heading-bx left">
+                                        <h2 class="title-head">Popular <span class="text-primary">Courses</span></h2>
+                                        <p>Discover our most popular and highly-rated courses</p>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Popular Courses END -->
-                            <script>
-                                $(document).ready(function () {
-                                    $(".courses-carousel").owlCarousel({
-                                        loop: true, // Lặp vô hạn
-                                        margin: 5, // Khoảng cách giữa các item
-                                        nav: true, // Hiện nút điều hướng
-                                        dots: true, // Hiện chấm tròn điều hướng
-                                        autoplay: true, // Tự động chạy
-                                        autoplayTimeout: 5000, // Thời gian chuyển slide (ms)
-                                        responsive: {
-                                            0: {
-                                                items: 1  // Khi màn hình nhỏ hơn 576px, hiển thị 1 item
-                                            },
-                                            576: {
-                                                items: 2  // Khi màn hình từ 576px đến 992px, hiển thị 2 item
-                                            },
-                                            992: {
-                                                items: 3  // Khi màn hình lớn hơn 992px, hiển thị 3 item
-                                            }
-                                        }
-                                    });
-                                });
-                            </script>
-
-                            <div class="section-area section-sp2">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-md-12 heading-bx left text-center">
-                                            <h2 class="title-head text-uppercase">Hot <span>Blogs</span></h2>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <c:forEach items="${requestScope.mapRatingPost}" var="post">
-                                            <div class="col-lg-4 col-md-6 col-sm-6 mb-3">
-                                                <div class="recent-news d-flex flex-column shadow rounded overflow-hidden"
-                                                     style="height: 220px; font-size: 14px; padding: 8px;">
-
-                                                    <!-- Ảnh bài viết -->
-                                                    <div class="action-box" style="height: 140px; overflow: hidden; border-radius: 8px;">
-                                                        <img src="assets/images/blog/latest-blog/pic1.jpg" class="img-fluid w-100"
-                                                             style="height: 100%; object-fit: cover;" alt="Blog Image">
+                                <div class="row">
+                                    <div class="courses-carousel owl-carousel owl-btn-1 col-12 p-lr0">
+                                        <c:forEach items="${requestScope.mapRatingCourse}" var="cou">
+                                            <div class="item">
+                                                <div class="cours-bx">
+                                                    <div class="action-box">
+                                                        <img src="assets/images/courses/pic1.jpg" alt="">
+                                                        <div class="course-overlay">
+                                                            <span class="badge badge-primary">Popular</span>
+                                                            <a href="courseDetail?courseId=${cou.key.courseId}" class="btn">View Details</a>
+                                                        </div>
                                                     </div>
-
-                                                    <!-- Thông tin bài viết -->
-                                                    <div class="info-bx flex-grow-1 d-flex flex-column px-2 py-1">
-                                                        <h6 class="post-title mb-1 text-truncate" style="max-height: 40px; font-size: 14px;">
-                                                            <a href="blog-details.html" class="text-dark">${post.key.title}</a>
-                                                        </h6>
-                                                        <div class="post-extra mt-auto d-flex justify-content-between align-items-center">
-                                                            <a href="#" class="text-muted"><i class="fa fa-calendar"></i> ${post.key.updateDate}</a>
-                                                            <span class="comments-bx text-primary font-weight-bold">${post.value}</span>
+                                                    <div class="info-bx text-center">
+                                                        <h5><a href="courseDetail?courseId=${cou.key.courseId}">${cou.key.courseName}</a></h5>
+                                                        <div class="course-info-meta">
+                                                            <span><i class="fa fa-user"></i>${cou.key.expert.user.firstName} ${cou.key.expert.user.lastName}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="cours-more-info d-flex justify-content-between align-items-center">
+                                                        <div class="review">
+                                                            <div class="star-ratings">
+                                                                <c:forEach begin="1" end="5" var="i">
+                                                                    <c:choose>
+                                                                        <c:when test="${i <= cou.value}">
+                                                                            <i class="fa fa-star text-warning"></i>
+                                                                        </c:when>
+                                                                        <c:when test="${i - 0.5 <= cou.value}">
+                                                                            <i class="fa fa-star-half-o text-warning"></i>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <i class="fa fa-star-o text-warning"></i>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                </c:forEach>
+                                                            </div>
+                                                            <span class="rating-value">${cou.value}/5</span>
+                                                        </div>
+                                                        <div class="price">
+                                                            <del class="text-muted">$${cou.key.price}</del>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </c:forEach>
                                     </div>
-
                                 </div>
-                                <div class="text-center mt-4">
-                                    <a href="listPost" class="btn btn-primary px-4 py-2"
-                                       style="border-radius: 8px; font-size: 16px; font-weight: 600; transition: 0.3s;">
-                                        View More Blogs
-                                    </a>
-                                </div>
-
                             </div>
-
-                            <!-- Testimonials END ==== -->
                         </div>
-                        <!-- contact area END -->
-                        <!-- Content END-->
+                        <!-- Popular Courses END -->
+                        
+                        <script>
+                            $(document).ready(function () {
+                                $(".courses-carousel").owlCarousel({
+                                    loop: true, // Lặp vô hạn
+                                    margin: 20, // Khoảng cách giữa các item
+                                    nav: true, // Hiện nút điều hướng
+                                    dots: true, // Hiện chấm tròn điều hướng
+                                    autoplay: true, // Tự động chạy
+                                    autoplayTimeout: 5000, // Thời gian chuyển slide (ms)
+                                    autoplayHoverPause: true, // Dừng khi hover
+                                    responsive: {
+                                        0: {
+                                            items: 1  // Khi màn hình nhỏ hơn 576px, hiển thị 1 item
+                                        },
+                                        576: {
+                                            items: 2  // Khi màn hình từ 576px đến 992px, hiển thị 2 item
+                                        },
+                                        992: {
+                                            items: 3  // Khi màn hình lớn hơn 992px, hiển thị 3 item
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
+                        <!-- Hot Blogs Section -->
+                        <div class="section-area section-sp2">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12 heading-bx left text-center">
+                                        <h2 class="title-head text-uppercase">Hot <span class="text-primary">Blogs</span></h2>
+                                        <p>Latest articles and insights from our experts</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <c:forEach items="${requestScope.mapRatingPost}" var="post">
+                                        <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                                            <div class="recent-news blog-card d-flex flex-column shadow rounded overflow-hidden h-100">
+                                                <!-- Ảnh bài viết -->
+                                                <div class="action-box position-relative" style="height: 200px; overflow: hidden;">
+                                                    <img src="assets/images/blog/latest-blog/pic1.jpg" class="img-fluid w-100 h-100"
+                                                         style="object-fit: cover;" alt="Blog Image">
+                                                    <span class="blog-date position-absolute bg-primary text-white px-3 py-2" 
+                                                          style="top: 15px; right: 15px; border-radius: 5px;">
+                                                        ${post.key.updateDate}
+                                                    </span>
+                                                </div>
+
+                                                <!-- Thông tin bài viết -->
+                                                <div class="info-bx flex-grow-1 d-flex flex-column p-3">
+                                                    <div class="post-meta mb-2">
+                                                        <span class="badge badge-info">
+                                                            <i class="fa fa-folder-o"></i> ${post.key.categoryBlog.categoryBlogName}
+                                                        </span>
+                                                        <span class="badge badge-warning ml-2">
+                                                            <i class="fa fa-star"></i> ${post.value}
+                                                        </span>
+                                                    </div>
+                                                    
+                                                    <h5 class="post-title mb-3">
+                                                        <a href="blogDetail?postId=${post.key.postId}" class="text-dark">${post.key.title}</a>
+                                                    </h5>
+                                                    
+                                                    <div class="post-footer mt-auto d-flex justify-content-between align-items-center">
+                                                        <div class="author d-flex align-items-center">
+                                                            <img src="assets/images/testimonials/pic1.jpg" alt=""
+                                                                 class="rounded-circle mr-2" style="width: 30px; height: 30px;">
+                                                        </div>
+                                                        <a href="blogDetail?postId=${post.key.postId}"
+                                                           class="btn btn-sm btn-outline-primary">Read More</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                            <div class="text-center mt-4">
+                                <a href="listPost" class="btn btn-primary px-4 py-2"
+                                   style="border-radius: 8px; font-size: 16px; font-weight: 600; transition: 0.3s;">
+                                    <i class="fa fa-newspaper-o mr-2"></i> View More Blogs
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Testimonials END ==== -->
                     </div>
 
                     <!-- Side bar-->
-                    <div class="col-lg-3 col-xl-3 col-md-4 sticky-top">
+                    <div class="col-lg-3 col-md-4 col-sm-12">
                         <aside class="side-bar sticky-top">
-
+                            <!-- Search Widget -->
+                            <div class="widget">
+                                <h6 class="widget-title">Search</h6>
+                                <div class="search-bx style-1">
+                                    <form action="listCourse">
+                                        <div class="input-group">
+                                            <input name="search" class="form-control" placeholder="Enter your keywords..." type="text">
+                                            <span class="input-group-append">
+                                                <button type="submit" class="btn"><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            
                             <!-- Recent Posts Widget -->
                             <div class="widget recent-posts-entry">
                                 <h6 class="widget-title">Recent Posts</h6>
@@ -419,7 +648,7 @@
                                             <div class="ttr-post-info">
                                                 <div class="ttr-post-header">
                                                     <h6 class="post-title">
-                                                        <a href="blog-details.html">${recentPost.title}</a>
+                                                        <a href="blogDetail?postId=${recentPost.postId}">${recentPost.title}</a>
                                                     </h6>
                                                 </div>
                                                 <ul class="media-post">
@@ -435,12 +664,29 @@
                     </div>
                 </div>
 
+                <!-- Call to Action Section -->
+                <div class="section-area bg-primary section-sp1">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-7 col-md-6">
+                                <h2 class="text-white">Ready to start your learning journey?</h2>
+                                <p class="text-white">Join thousands of students who have already taken the first step!</p>
+                            </div>
+                            <div class="col-lg-5 col-md-6 text-right">
+                                <a href="listCourse" class="btn btn-light radius-xl">Browse Courses</a>
+                                <a href="login" class="btn btn-outline-light radius-xl ml-2">Sign Up Today</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Footer ==== -->
                 <%@include file="footer.jsp" %>
                 <!-- Footer END ==== -->
                 <button class="back-to-top fa fa-chevron-up"></button>
             </div>
         </div>
+        
         <!-- External JavaScripts -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
@@ -457,6 +703,7 @@
         <script src="assets/js/functions.js"></script>
         <script src="assets/js/contact.js"></script>
         <script src='assets/vendors/switcher/switcher.js'></script>
+        
         <!-- Revolution JavaScripts Files -->
         <script src="assets/vendors/revolution/js/jquery.themepunch.tools.min.js"></script>
         <script src="assets/vendors/revolution/js/jquery.themepunch.revolution.min.js"></script>
@@ -470,6 +717,7 @@
         <script src="assets/vendors/revolution/js/extensions/revolution.extension.parallax.min.js"></script>
         <script src="assets/vendors/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
         <script src="assets/vendors/revolution/js/extensions/revolution.extension.video.min.js"></script>
+        
         <script>
             jQuery(document).ready(function () {
                 var ttrevapi;

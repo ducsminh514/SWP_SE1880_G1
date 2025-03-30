@@ -1,88 +1,11 @@
 USE [master]
 GO
-/****** Object:  Database [SWP10]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Database [SWP10]    Script Date: 3/29/2025 5:59:00 PM ******/
 CREATE DATABASE [SWP10]
- CONTAINMENT = NONE
- ON  PRIMARY 
-( NAME = N'SWP10', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\DATA\SWP10.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
- LOG ON 
-( NAME = N'SWP10_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\DATA\SWP10_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
- WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
-GO
-ALTER DATABASE [SWP10] SET COMPATIBILITY_LEVEL = 160
-GO
-IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
-begin
-EXEC [SWP10].[dbo].[sp_fulltext_database] @action = 'enable'
-end
-GO
-ALTER DATABASE [SWP10] SET ANSI_NULL_DEFAULT OFF 
-GO
-ALTER DATABASE [SWP10] SET ANSI_NULLS OFF 
-GO
-ALTER DATABASE [SWP10] SET ANSI_PADDING OFF 
-GO
-ALTER DATABASE [SWP10] SET ANSI_WARNINGS OFF 
-GO
-ALTER DATABASE [SWP10] SET ARITHABORT OFF 
-GO
-ALTER DATABASE [SWP10] SET AUTO_CLOSE ON 
-GO
-ALTER DATABASE [SWP10] SET AUTO_SHRINK OFF 
-GO
-ALTER DATABASE [SWP10] SET AUTO_UPDATE_STATISTICS ON 
-GO
-ALTER DATABASE [SWP10] SET CURSOR_CLOSE_ON_COMMIT OFF 
-GO
-ALTER DATABASE [SWP10] SET CURSOR_DEFAULT  GLOBAL 
-GO
-ALTER DATABASE [SWP10] SET CONCAT_NULL_YIELDS_NULL OFF 
-GO
-ALTER DATABASE [SWP10] SET NUMERIC_ROUNDABORT OFF 
-GO
-ALTER DATABASE [SWP10] SET QUOTED_IDENTIFIER OFF 
-GO
-ALTER DATABASE [SWP10] SET RECURSIVE_TRIGGERS OFF 
-GO
-ALTER DATABASE [SWP10] SET  ENABLE_BROKER 
-GO
-ALTER DATABASE [SWP10] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
-GO
-ALTER DATABASE [SWP10] SET DATE_CORRELATION_OPTIMIZATION OFF 
-GO
-ALTER DATABASE [SWP10] SET TRUSTWORTHY OFF 
-GO
-ALTER DATABASE [SWP10] SET ALLOW_SNAPSHOT_ISOLATION OFF 
-GO
-ALTER DATABASE [SWP10] SET PARAMETERIZATION SIMPLE 
-GO
-ALTER DATABASE [SWP10] SET READ_COMMITTED_SNAPSHOT OFF 
-GO
-ALTER DATABASE [SWP10] SET HONOR_BROKER_PRIORITY OFF 
-GO
-ALTER DATABASE [SWP10] SET RECOVERY SIMPLE 
-GO
-ALTER DATABASE [SWP10] SET  MULTI_USER 
-GO
-ALTER DATABASE [SWP10] SET PAGE_VERIFY CHECKSUM  
-GO
-ALTER DATABASE [SWP10] SET DB_CHAINING OFF 
-GO
-ALTER DATABASE [SWP10] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
-GO
-ALTER DATABASE [SWP10] SET TARGET_RECOVERY_TIME = 60 SECONDS 
-GO
-ALTER DATABASE [SWP10] SET DELAYED_DURABILITY = DISABLED 
-GO
-ALTER DATABASE [SWP10] SET ACCELERATED_DATABASE_RECOVERY = OFF  
-GO
-ALTER DATABASE [SWP10] SET QUERY_STORE = ON
-GO
-ALTER DATABASE [SWP10] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
-GO
+
 USE [SWP10]
 GO
-/****** Object:  Table [dbo].[Carts]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Carts]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -98,7 +21,7 @@ CREATE TABLE [dbo].[Carts](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CategoryBlog]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[CategoryBlog]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -112,7 +35,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CommentCourse]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[CommentCourse]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -130,7 +53,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CommentPost]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[CommentPost]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -148,7 +71,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Course_Type]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Course_Type]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -162,7 +85,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Courses]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Courses]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -185,7 +108,7 @@ CREATE TABLE [dbo].[Courses](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Customers]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Customers]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -201,7 +124,7 @@ CREATE TABLE [dbo].[Customers](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Enrollments]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Enrollments]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -220,7 +143,7 @@ CREATE TABLE [dbo].[Enrollments](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Experts]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Experts]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -239,7 +162,7 @@ CREATE TABLE [dbo].[Experts](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[LessonFile]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[LessonFile]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -251,7 +174,7 @@ CREATE TABLE [dbo].[LessonFile](
 	[FileSize] [int] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[LessonQuiz]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[LessonQuiz]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -271,7 +194,7 @@ CREATE TABLE [dbo].[LessonQuiz](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Lessons]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Lessons]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -293,7 +216,7 @@ CREATE TABLE [dbo].[Lessons](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[LessonText]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[LessonText]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -303,7 +226,7 @@ CREATE TABLE [dbo].[LessonText](
 	[Content] [nvarchar](max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[LessonVideo]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[LessonVideo]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -316,7 +239,7 @@ CREATE TABLE [dbo].[LessonVideo](
 	[DownloadAllowed] [bit] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Marketing]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Marketing]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -331,7 +254,7 @@ CREATE TABLE [dbo].[Marketing](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Notificaion]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Notificaion]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -347,7 +270,7 @@ CREATE TABLE [dbo].[Notificaion](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[PostContent]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[PostContent]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -365,7 +288,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[PostReview]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[PostReview]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -384,7 +307,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Posts]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Posts]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -407,7 +330,7 @@ CREATE TABLE [dbo].[Posts](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[PriceCourse]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[PriceCourse]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -427,7 +350,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Question]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Question]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -443,13 +366,14 @@ CREATE TABLE [dbo].[Question](
 	[CreateAt] [datetime] NULL,
 	[UpdateAt] [datetime] NULL,
 	[Mp3] [nvarchar](max) NULL,
+	[LessonQuizId] [int] NULL,
  CONSTRAINT [PK_Question] PRIMARY KEY CLUSTERED 
 (
 	[QuestionID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[QuestionAnswer]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[QuestionAnswer]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -466,7 +390,7 @@ CREATE TABLE [dbo].[QuestionAnswer](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[QuestionImages]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[QuestionImages]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -482,7 +406,7 @@ CREATE TABLE [dbo].[QuestionImages](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[QuestionType]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[QuestionType]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -496,7 +420,7 @@ CREATE TABLE [dbo].[QuestionType](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[QuizAttend]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[QuizAttend]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -515,23 +439,7 @@ CREATE TABLE [dbo].[QuizAttend](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[QuizQuestions]    Script Date: 3/23/2025 9:09:33 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[QuizQuestions](
-	[QuizQuestionID] [int] IDENTITY(1,1) NOT NULL,
-	[QuestionID] [int] NOT NULL,
-	[SortOrder] [int] NULL,
-	[LessonQuizID] [int] NULL,
- CONSTRAINT [PK_QuizQuestions] PRIMARY KEY CLUSTERED 
-(
-	[QuizQuestionID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[QuizResultDetail]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[QuizResultDetail]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -550,7 +458,7 @@ CREATE TABLE [dbo].[QuizResultDetail](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[QuizResultDetailImage]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[QuizResultDetailImage]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -565,7 +473,7 @@ CREATE TABLE [dbo].[QuizResultDetailImage](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ReviewCourse]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[ReviewCourse]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -585,7 +493,7 @@ CREATE TABLE [dbo].[ReviewCourse](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Roles]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Roles]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -599,7 +507,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Sales]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Sales]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -614,7 +522,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Setting]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Setting]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -634,7 +542,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Sliders]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Sliders]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -658,7 +566,7 @@ CREATE TABLE [dbo].[Sliders](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Subjects]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Subjects]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -676,7 +584,7 @@ CREATE TABLE [dbo].[Subjects](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Users]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Table [dbo].[Users]    Script Date: 3/29/2025 5:59:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -744,6 +652,8 @@ GO
 INSERT [dbo].[CommentCourse] ([CommentCourseID], [ParentID], [CourseID], [UserID], [Content], [CreateDate]) VALUES (10, 9, 1, 1, N'cam on', CAST(N'2025-03-09T03:39:07.650' AS DateTime))
 GO
 INSERT [dbo].[CommentCourse] ([CommentCourseID], [ParentID], [CourseID], [UserID], [Content], [CreateDate]) VALUES (11, 9, 1, 1, N'cam on lan 2 ', CAST(N'2025-03-09T03:51:33.210' AS DateTime))
+GO
+INSERT [dbo].[CommentCourse] ([CommentCourseID], [ParentID], [CourseID], [UserID], [Content], [CreateDate]) VALUES (17, 5, 1, 1, N'vl', CAST(N'2025-03-23T21:42:32.863' AS DateTime))
 GO
 SET IDENTITY_INSERT [dbo].[CommentCourse] OFF
 GO
@@ -832,13 +742,19 @@ INSERT [dbo].[Customers] ([CustomerID], [SocialRole], [LevelOfEnglish], [UserID]
 GO
 INSERT [dbo].[Customers] ([CustomerID], [SocialRole], [LevelOfEnglish], [UserID]) VALUES (2, N'Student', N'Intermediate', 3)
 GO
+INSERT [dbo].[Customers] ([CustomerID], [SocialRole], [LevelOfEnglish], [UserID]) VALUES (3, N'Student', N'Beginner', 1)
+GO
+INSERT [dbo].[Customers] ([CustomerID], [SocialRole], [LevelOfEnglish], [UserID]) VALUES (4, N'Student', N'Beginner', 11)
+GO
+INSERT [dbo].[Customers] ([CustomerID], [SocialRole], [LevelOfEnglish], [UserID]) VALUES (1005, N'Student', N'Beginner', 1012)
+GO
 SET IDENTITY_INSERT [dbo].[Customers] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Enrollments] ON 
 GO
-INSERT [dbo].[Enrollments] ([EnrollmentID], [EnrollDate], [Status], [Pay_Code], [Process_Percentage], [CustomerID], [CourseID]) VALUES (1, CAST(N'2025-03-03T15:16:52.530' AS DateTime), NULL, NULL, NULL, 1, 1)
+INSERT [dbo].[Enrollments] ([EnrollmentID], [EnrollDate], [Status], [Pay_Code], [Process_Percentage], [CustomerID], [CourseID]) VALUES (1, CAST(N'2025-03-03T15:16:52.530' AS DateTime), NULL, NULL, N'0', 1, 1)
 GO
-INSERT [dbo].[Enrollments] ([EnrollmentID], [EnrollDate], [Status], [Pay_Code], [Process_Percentage], [CustomerID], [CourseID]) VALUES (2, CAST(N'2025-03-10T14:25:30.000' AS DateTime), N'Active', N'PAY-2025031001', N'25', 1, 2)
+INSERT [dbo].[Enrollments] ([EnrollmentID], [EnrollDate], [Status], [Pay_Code], [Process_Percentage], [CustomerID], [CourseID]) VALUES (2, CAST(N'2025-03-03T15:17:03.287' AS DateTime), NULL, NULL, NULL, NULL, 2)
 GO
 INSERT [dbo].[Enrollments] ([EnrollmentID], [EnrollDate], [Status], [Pay_Code], [Process_Percentage], [CustomerID], [CourseID]) VALUES (3, CAST(N'2025-03-12T09:45:15.000' AS DateTime), N'Active', N'PAY-2025031202', N'15', 1, 5)
 GO
@@ -847,6 +763,18 @@ GO
 INSERT [dbo].[Enrollments] ([EnrollmentID], [EnrollDate], [Status], [Pay_Code], [Process_Percentage], [CustomerID], [CourseID]) VALUES (5, CAST(N'2025-03-18T11:20:45.000' AS DateTime), N'Pending', N'PAY-2025031804', N'0', 1, 12)
 GO
 INSERT [dbo].[Enrollments] ([EnrollmentID], [EnrollDate], [Status], [Pay_Code], [Process_Percentage], [CustomerID], [CourseID]) VALUES (6, CAST(N'2025-03-20T13:15:30.000' AS DateTime), N'Active', N'PAY-2025032005', N'5', 1, 15)
+GO
+INSERT [dbo].[Enrollments] ([EnrollmentID], [EnrollDate], [Status], [Pay_Code], [Process_Percentage], [CustomerID], [CourseID]) VALUES (7, CAST(N'2025-03-03T15:16:52.530' AS DateTime), NULL, NULL, NULL, 3, 1)
+GO
+INSERT [dbo].[Enrollments] ([EnrollmentID], [EnrollDate], [Status], [Pay_Code], [Process_Percentage], [CustomerID], [CourseID]) VALUES (8, CAST(N'2025-03-10T14:25:30.000' AS DateTime), N'Active', N'PAY-2025031001', N'25', 3, 2)
+GO
+INSERT [dbo].[Enrollments] ([EnrollmentID], [EnrollDate], [Status], [Pay_Code], [Process_Percentage], [CustomerID], [CourseID]) VALUES (9, CAST(N'2025-03-12T09:45:15.000' AS DateTime), N'Active', N'PAY-2025031202', N'15', 3, 5)
+GO
+INSERT [dbo].[Enrollments] ([EnrollmentID], [EnrollDate], [Status], [Pay_Code], [Process_Percentage], [CustomerID], [CourseID]) VALUES (10, CAST(N'2025-03-15T16:30:00.000' AS DateTime), N'Active', N'PAY-2025031503', N'10', 3, 8)
+GO
+INSERT [dbo].[Enrollments] ([EnrollmentID], [EnrollDate], [Status], [Pay_Code], [Process_Percentage], [CustomerID], [CourseID]) VALUES (11, CAST(N'2025-03-18T11:20:45.000' AS DateTime), N'Pending', N'PAY-2025031804', N'0', 3, 12)
+GO
+INSERT [dbo].[Enrollments] ([EnrollmentID], [EnrollDate], [Status], [Pay_Code], [Process_Percentage], [CustomerID], [CourseID]) VALUES (12, CAST(N'2025-03-20T13:15:30.000' AS DateTime), N'Active', N'PAY-2025032005', N'5', 3, 15)
 GO
 SET IDENTITY_INSERT [dbo].[Enrollments] OFF
 GO
@@ -860,47 +788,57 @@ SET IDENTITY_INSERT [dbo].[Experts] OFF
 GO
 SET IDENTITY_INSERT [dbo].[LessonQuiz] ON 
 GO
-INSERT [dbo].[LessonQuiz] ([LessonQuizID], [LessonID], [PassPercentage], [TimeLimit], [AttemptAllowed], [Status], [ImageUrl], [Mp3Url]) VALUES (1, 1, 70, 30, 3, 1, NULL, NULL)
+INSERT [dbo].[LessonQuiz] ([LessonQuizID], [LessonID], [PassPercentage], [TimeLimit], [AttemptAllowed], [Status], [ImageUrl], [Mp3Url]) VALUES (1, 1, 70, 30, 3, 1, N'/uploads/quiz-images/313120253_1117764852463289_6276083577784418490_n.png', NULL)
 GO
 INSERT [dbo].[LessonQuiz] ([LessonQuizID], [LessonID], [PassPercentage], [TimeLimit], [AttemptAllowed], [Status], [ImageUrl], [Mp3Url]) VALUES (2, 3, 75, 25, 2, 1, NULL, NULL)
 GO
-INSERT [dbo].[LessonQuiz] ([LessonQuizID], [LessonID], [PassPercentage], [TimeLimit], [AttemptAllowed], [Status], [ImageUrl], [Mp3Url]) VALUES (3, 5, 80, 20, 2, 1, NULL, NULL)
+INSERT [dbo].[LessonQuiz] ([LessonQuizID], [LessonID], [PassPercentage], [TimeLimit], [AttemptAllowed], [Status], [ImageUrl], [Mp3Url]) VALUES (3, 5, 80, 20, 2, 1, N'/uploads/quiz-images/313120253_1117764852463289_6276083577784418490_n.png', NULL)
 GO
 INSERT [dbo].[LessonQuiz] ([LessonQuizID], [LessonID], [PassPercentage], [TimeLimit], [AttemptAllowed], [Status], [ImageUrl], [Mp3Url]) VALUES (4, 6, 65, 40, 3, 1, NULL, NULL)
+GO
+INSERT [dbo].[LessonQuiz] ([LessonQuizID], [LessonID], [PassPercentage], [TimeLimit], [AttemptAllowed], [Status], [ImageUrl], [Mp3Url]) VALUES (5, 1, 99, 30, 10, 1, NULL, NULL)
+GO
+INSERT [dbo].[LessonQuiz] ([LessonQuizID], [LessonID], [PassPercentage], [TimeLimit], [AttemptAllowed], [Status], [ImageUrl], [Mp3Url]) VALUES (6, 15, 70, 30, 3, 1, NULL, NULL)
 GO
 SET IDENTITY_INSERT [dbo].[LessonQuiz] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Lessons] ON 
 GO
-INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (1, 1, N'Basic Vocabulary - Introduction', N'This lesson introduces basic vocabulary for beginners, including everyday words and expressions.', 30, 1, 1, CAST(N'2025-03-08T22:31:58.167' AS DateTime), NULL, NULL)
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (1, 1, N'Basic Vocabulary - Introduction', N'This lesson introduces basic vocabulary for beginners, including everyday words and expressions.', 30, 1, 1, CAST(N'2025-03-08T00:00:00.000' AS DateTime), N'quiz', CAST(N'2025-03-29T00:00:00.000' AS DateTime))
 GO
-INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (2, 1, N'Basic Vocabulary - Everyday Items', N'Learn vocabulary for common everyday items such as food, clothing, and household objects.', 30, 2, 1, CAST(N'2025-03-08T22:31:58.167' AS DateTime), NULL, NULL)
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (2, 1, N'Basic Vocabulary - Everyday Items', N'Learn vocabulary for common everyday items such as food, clothing, and household objects.', 30, 2, 1, CAST(N'2025-03-08T22:31:58.167' AS DateTime), N'video', NULL)
 GO
-INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (3, 1, N'Basic Vocabulary - Numbers', N'Learn the numbers from 1 to 100 and how to use them in everyday situations.', 25, 3, 1, CAST(N'2025-03-08T22:31:58.167' AS DateTime), NULL, NULL)
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (3, 1, N'Basic Vocabulary - Numbers', N'Learn the numbers from 1 to 100 and how to use them in everyday situations.', 25, 3, 1, CAST(N'2025-03-08T22:31:58.167' AS DateTime), N'video', NULL)
 GO
-INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (4, 1, N'Basic Vocabulary - Colors', N'Learn the names of colors and how to describe things using colors.', 30, 4, 1, CAST(N'2025-03-08T22:31:58.167' AS DateTime), NULL, NULL)
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (4, 1, N'Basic Vocabulary - Colors', N'Learn the names of colors and how to describe things using colors.', 30, 4, 1, CAST(N'2025-03-08T22:31:58.167' AS DateTime), N'quiz', NULL)
 GO
-INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (5, 2, N'Introduction to Grammar', N'Learn the basic rules of English grammar, including sentence structure and parts of speech.', 45, 1, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), NULL, NULL)
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (5, 2, N'Introduction to Grammar', N'Learn the basic rules of English grammar, including sentence structure and parts of speech.', 45, 1, 1, CAST(N'2025-03-08T00:00:00.000' AS DateTime), N'quiz', CAST(N'2025-03-29T00:00:00.000' AS DateTime))
 GO
-INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (6, 2, N'Present Simple Tense', N'This lesson covers the present simple tense, used for routines and facts.', 40, 2, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), NULL, NULL)
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (6, 2, N'Present Simple Tense', N'This lesson covers the present simple tense, used for routines and facts.', 40, 2, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), N'quiz', NULL)
 GO
-INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (7, 2, N'Present Continuous Tense', N'This lesson introduces the present continuous tense, used for actions happening now.', 35, 3, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), NULL, NULL)
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (7, 2, N'Present Continuous Tense', N'This lesson introduces the present continuous tense, used for actions happening now.', 35, 3, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), N'quiz', NULL)
 GO
-INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (8, 2, N'Past Simple Tense', N'Learn how to use the past simple tense to describe actions that happened in the past.', 40, 4, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), NULL, NULL)
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (8, 2, N'Past Simple Tense', N'Learn how to use the past simple tense to describe actions that happened in the past.', 40, 4, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), N'quiz', NULL)
 GO
-INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (9, 2, N'Future Tense', N'Learn the future tense and how to express future plans and predictions.', 40, 5, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), NULL, NULL)
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (9, 2, N'Future Tense', N'Learn the future tense and how to express future plans and predictions.', 40, 5, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), N'quiz', NULL)
 GO
-INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (10, 3, N'Pronunciation of Vowels', N'Practice the pronunciation of English vowels, focusing on correct mouth position and sound clarity.', 30, 1, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), NULL, NULL)
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (10, 3, N'Pronunciation of Vowels', N'Practice the pronunciation of English vowels, focusing on correct mouth position and sound clarity.', 30, 1, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), N'quiz', NULL)
 GO
-INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (11, 3, N'Pronunciation of Consonants', N'Learn how to correctly pronounce English consonants and their variations.', 35, 2, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), NULL, NULL)
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (11, 3, N'Pronunciation of Consonants', N'Learn how to correctly pronounce English consonants and their variations.', 35, 2, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), N'quiz', NULL)
 GO
-INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (12, 3, N'Intonation and Stress', N'Learn how to stress words in sentences and practice correct intonation patterns.', 30, 3, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), NULL, NULL)
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (12, 3, N'Intonation and Stress', N'Learn how to stress words in sentences and practice correct intonation patterns.', 30, 3, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), N'quiz', NULL)
 GO
-INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (13, 3, N'Linking Sounds', N'Understand how to link words together in fluent speech for better pronunciation.', 35, 4, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), NULL, NULL)
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (13, 3, N'Linking Sounds', N'Understand how to link words together in fluent speech for better pronunciation.', 35, 4, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), N'quiz', NULL)
 GO
-INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (14, 3, N'Pronunciation Practice with Sentences', N'Practice pronunciation with full sentences, focusing on natural speech rhythms.', 40, 5, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), NULL, NULL)
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (14, 3, N'Pronunciation Practice with Sentences', N'Practice pronunciation with full sentences, focusing on natural speech rhythms.', 40, 5, 1, CAST(N'2025-03-08T22:31:58.170' AS DateTime), N'quiz', NULL)
+GO
+INSERT [dbo].[Lessons] ([LessonID], [SubjectID], [LessonName], [Content], [Duration], [OrderNo], [status_lesson], [CreatedDate], [Type], [UpdateDate]) VALUES (15, 1, N'Learning Englishh', N'', 30, 1, 1, CAST(N'2025-03-28T00:00:00.000' AS DateTime), N'QUIZ', CAST(N'2025-03-28T00:00:00.000' AS DateTime))
 GO
 SET IDENTITY_INSERT [dbo].[Lessons] OFF
+GO
+INSERT [dbo].[LessonVideo] ([LessonID], [VideoUrl], [VideoDuration], [Transcript], [DownloadAllowed]) VALUES (2, N'https://www.youtube.com/embed/5MZmSJtP7fE?si=wyx_-hl_mHoQWrz2', 30, NULL, NULL)
+GO
+INSERT [dbo].[LessonVideo] ([LessonID], [VideoUrl], [VideoDuration], [Transcript], [DownloadAllowed]) VALUES (3, N'https://www.youtube.com/embed/O-NGwm9lnSY?si=NsPLy7pTbmxJhWgR', 15, NULL, NULL)
 GO
 SET IDENTITY_INSERT [dbo].[Marketing] ON 
 GO
@@ -1110,29 +1048,25 @@ SET IDENTITY_INSERT [dbo].[PriceCourse] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Question] ON 
 GO
-INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3]) VALUES (1, N'What is the correct form of the verb "to be" in the present tense for "she"?', 1, 2, 1, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), CAST(N'2025-03-20T13:57:53.587' AS DateTime), N'1742410542905_bai_nghe_tieng_anh_9_unit_1_7ff1bccde1.mp3')
+INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3], [LessonQuizId]) VALUES (2, N'Choose the correct sentence: where did she go', 2, 2, 2, 2, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), CAST(N'2025-03-29T16:56:17.693' AS DateTime), NULL, 1)
 GO
-INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3]) VALUES (2, N'Choose the correct sentence:', 2, 2, 2, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), CAST(N'2025-03-20T00:04:44.633' AS DateTime), NULL)
+INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3], [LessonQuizId]) VALUES (3, N'The word "book" is a:', 1, 1, 1, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL, 1)
 GO
-INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3]) VALUES (3, N'The word "book" is a:', 1, 1, 1, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL)
+INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3], [LessonQuizId]) VALUES (4, N'Listen to the audio and select the correct answer.', 3, 3, 3, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL, 2)
 GO
-INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3]) VALUES (4, N'Listen to the audio and select the correct answer.', 3, 3, 3, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL)
+INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3], [LessonQuizId]) VALUES (5, N'The past tense of "go" is:', 2, 2, 1, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL, 2)
 GO
-INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3]) VALUES (5, N'The past tense of "go" is:', 2, 2, 1, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL)
+INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3], [LessonQuizId]) VALUES (6, N'Business emails should always include a formal greeting. True or False?', 1, 7, 1, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL, 2)
 GO
-INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3]) VALUES (6, N'Business emails should always include a formal greeting. True or False?', 1, 7, 1, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL)
+INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3], [LessonQuizId]) VALUES (8, N'Select the correct definition for the word "diligent":', 2, 5, 3, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), CAST(N'2025-03-27T22:31:40.010' AS DateTime), NULL, 1)
 GO
-INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3]) VALUES (7, N'Fill in the blank: "I _____ to the store yesterday."', 2, 2, 2, 2, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL)
+INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3], [LessonQuizId]) VALUES (9, N'Fill in the blank: "She _____ English for five years now."', 3, 2, 5, 2, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL, 2)
 GO
-INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3]) VALUES (8, N'Select the correct definition for the word "diligent":', 2, 5, 3, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL)
+INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3], [LessonQuizId]) VALUES (10, N'Choose the best description of the image:', 2, 15, 3, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL, 1)
 GO
-INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3]) VALUES (9, N'Fill in the blank: "She _____ English for five years now."', 3, 2, 5, 2, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL)
+INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3], [LessonQuizId]) VALUES (11, N'Select the correct interpretation of the chart showing English proficiency trends:', 3, 22, 5, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL, 1)
 GO
-INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3]) VALUES (10, N'Choose the best description of the image:', 2, 15, 3, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL)
-GO
-INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3]) VALUES (11, N'Select the correct interpretation of the chart showing English proficiency trends:', 3, 22, 5, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL)
-GO
-INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3]) VALUES (12, N'Identify the correct pronunciation of these words based on the phonetic symbols:', 2, 6, 2, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL)
+INSERT [dbo].[Question] ([QuestionID], [Content], [Level], [SubjectId], [Mark], [QuestionTypeID], [IsActive], [CreateAt], [UpdateAt], [Mp3], [LessonQuizId]) VALUES (12, N'Identify the correct pronunciation of these words based on the phonetic symbols:', 2, 6, 2, 1, 1, CAST(N'2025-03-17T13:42:27.797' AS DateTime), NULL, NULL, 1)
 GO
 SET IDENTITY_INSERT [dbo].[Question] OFF
 GO
@@ -1162,20 +1096,6 @@ INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID],
 GO
 INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (20, 4, N'going', 5, 0)
 GO
-INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (21, 1, N'True', 6, 1)
-GO
-INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (22, 2, N'False', 6, 0)
-GO
-INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (23, 1, N'went', 7, 1)
-GO
-INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (24, 1, N'Lazy or slow to act', 8, 0)
-GO
-INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (25, 2, N'Hard-working and attentive', 8, 1)
-GO
-INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (26, 3, N'Careless or negligent', 8, 0)
-GO
-INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (27, 4, N'Intelligent or clever', 8, 0)
-GO
 INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (28, 1, N'has been studying', 9, 1)
 GO
 INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (29, 1, N'A family having dinner together', 10, 0)
@@ -1202,19 +1122,17 @@ INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID],
 GO
 INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (40, 4, N'/ʌ/ as in "cup"', 12, 0)
 GO
-INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (53, 1, N'She doesn''t likes coffee.', 2, 0)
+INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (65, 0, N'Lazy or slow to act', 8, 0)
 GO
-INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (54, 2, N'She doesn''t like coffee.', 2, 1)
+INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (66, 1, N'Hard-working and attentive', 8, 1)
 GO
-INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (55, 3, N'She not like coffee.', 2, 0)
+INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (67, 2, N'Careless or negligent', 8, 0)
 GO
-INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (116, 0, N'is', 1, 1)
+INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (68, 3, N'Intelligent or clever', 8, 0)
 GO
-INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (117, 1, N'keke', 1, 0)
+INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (69, 4, N'kekkee', 8, 0)
 GO
-INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (118, 2, N'aaaaa', 1, 0)
-GO
-INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (119, 3, N'iss', 1, 0)
+INSERT [dbo].[QuestionAnswer] ([AnswerID], [SortOrder], [Content], [QuestionID], [IsCorrect]) VALUES (87, 0, N'she go to the sea', 2, 1)
 GO
 SET IDENTITY_INSERT [dbo].[QuestionAnswer] OFF
 GO
@@ -1240,15 +1158,7 @@ INSERT [dbo].[QuestionImages] ([ImageID], [ImageTitle], [ImageURL], [QuestionIma
 GO
 INSERT [dbo].[QuestionImages] ([ImageID], [ImageTitle], [ImageURL], [QuestionImageID]) VALUES (10, N'Pronunciation guide', NULL, 12)
 GO
-INSERT [dbo].[QuestionImages] ([ImageID], [ImageTitle], [ImageURL], [QuestionImageID]) VALUES (11, N'1742401189567_score.jpg', NULL, 1)
-GO
-INSERT [dbo].[QuestionImages] ([ImageID], [ImageTitle], [ImageURL], [QuestionImageID]) VALUES (12, N'bản đồ', N'/uploads/images/1742407135897_to-mau-ban-do-viet-nam-phan-chia-tinh.jpg', 1)
-GO
-INSERT [dbo].[QuestionImages] ([ImageID], [ImageTitle], [ImageURL], [QuestionImageID]) VALUES (13, N'aaa', N'/uploads/images/1742407196724_315884657_529020569125065_4519966603991056224_n.png', 1)
-GO
-INSERT [dbo].[QuestionImages] ([ImageID], [ImageTitle], [ImageURL], [QuestionImageID]) VALUES (14, N'13131', N'/uploads/images/1742416585068_score.jpg', 1)
-GO
-INSERT [dbo].[QuestionImages] ([ImageID], [ImageTitle], [ImageURL], [QuestionImageID]) VALUES (15, N'aaaa', N'/uploads/images/1742453873567_322421437_499493725408597_6101320243472695863_n.jpg', 1)
+INSERT [dbo].[QuestionImages] ([ImageID], [ImageTitle], [ImageURL], [QuestionImageID]) VALUES (14, N'123', N'/uploads/images/1743242125472_score.jpg', 2)
 GO
 SET IDENTITY_INSERT [dbo].[QuestionImages] OFF
 GO
@@ -1273,30 +1183,6 @@ GO
 INSERT [dbo].[QuizAttend] ([QuizAttendID], [UserID], [LessonQuizID], [Score], [Passed], [StartTime], [EndTime]) VALUES (5, 2, 4, CAST(75.00 AS Decimal(5, 2)), 1, CAST(N'2025-03-07T16:30:00.000' AS DateTime), CAST(N'2025-03-07T17:05:00.000' AS DateTime))
 GO
 SET IDENTITY_INSERT [dbo].[QuizAttend] OFF
-GO
-SET IDENTITY_INSERT [dbo].[QuizQuestions] ON 
-GO
-INSERT [dbo].[QuizQuestions] ([QuizQuestionID], [QuestionID], [SortOrder], [LessonQuizID]) VALUES (3, 3, 1, 1)
-GO
-INSERT [dbo].[QuizQuestions] ([QuizQuestionID], [QuestionID], [SortOrder], [LessonQuizID]) VALUES (4, 4, 2, 1)
-GO
-INSERT [dbo].[QuizQuestions] ([QuizQuestionID], [QuestionID], [SortOrder], [LessonQuizID]) VALUES (5, 5, 3, 1)
-GO
-INSERT [dbo].[QuizQuestions] ([QuizQuestionID], [QuestionID], [SortOrder], [LessonQuizID]) VALUES (6, 6, 1, 2)
-GO
-INSERT [dbo].[QuizQuestions] ([QuizQuestionID], [QuestionID], [SortOrder], [LessonQuizID]) VALUES (7, 7, 2, 2)
-GO
-INSERT [dbo].[QuizQuestions] ([QuizQuestionID], [QuestionID], [SortOrder], [LessonQuizID]) VALUES (8, 8, 3, 2)
-GO
-INSERT [dbo].[QuizQuestions] ([QuizQuestionID], [QuestionID], [SortOrder], [LessonQuizID]) VALUES (9, 9, 1, 3)
-GO
-INSERT [dbo].[QuizQuestions] ([QuizQuestionID], [QuestionID], [SortOrder], [LessonQuizID]) VALUES (10, 10, 2, 3)
-GO
-INSERT [dbo].[QuizQuestions] ([QuizQuestionID], [QuestionID], [SortOrder], [LessonQuizID]) VALUES (11, 11, 1, 4)
-GO
-INSERT [dbo].[QuizQuestions] ([QuizQuestionID], [QuestionID], [SortOrder], [LessonQuizID]) VALUES (12, 12, 2, 4)
-GO
-SET IDENTITY_INSERT [dbo].[QuizQuestions] OFF
 GO
 SET IDENTITY_INSERT [dbo].[ReviewCourse] ON 
 GO
@@ -1394,11 +1280,13 @@ SET IDENTITY_INSERT [dbo].[Sales] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Setting] ON 
 GO
-INSERT [dbo].[Setting] ([settingID], [type], [value], [order], [status], [createdAt], [updatedAt], [description]) VALUES (4, N'system', N'Maintenance mode hehehe', 4, 1, NULL, NULL, N'ddaay la transcrip')
+INSERT [dbo].[Setting] ([settingID], [type], [value], [order], [status], [createdAt], [updatedAt], [description]) VALUES (4, N'system', N'Maintenance mode', 4, 1, NULL, NULL, N'ddaay la transcrip')
 GO
-INSERT [dbo].[Setting] ([settingID], [type], [value], [order], [status], [createdAt], [updatedAt], [description]) VALUES (5, N'user', N'Notification settings', 5, 0, NULL, NULL, N'Cài d?t thông báo cho ngu?i dùng')
+INSERT [dbo].[Setting] ([settingID], [type], [value], [order], [status], [createdAt], [updatedAt], [description]) VALUES (5, N'system', N'Notification settings', 5, 0, NULL, NULL, N'Cài d?t thông báo cho ngu?i dùngaaa')
 GO
 INSERT [dbo].[Setting] ([settingID], [type], [value], [order], [status], [createdAt], [updatedAt], [description]) VALUES (13, N'user', N'aa', 1, 0, NULL, NULL, N'a')
+GO
+INSERT [dbo].[Setting] ([settingID], [type], [value], [order], [status], [createdAt], [updatedAt], [description]) VALUES (14, N'user', N'123', 123, 1, CAST(N'2025-03-28T04:06:26.000' AS DateTime), CAST(N'2025-03-28T04:06:26.000' AS DateTime), N'123')
 GO
 SET IDENTITY_INSERT [dbo].[Setting] OFF
 GO
@@ -1498,9 +1386,9 @@ SET IDENTITY_INSERT [dbo].[Users] ON
 GO
 INSERT [dbo].[Users] ([UserID], [Username], [FirstName], [LastName], [Password], [Email], [PhoneNumber], [CreatedDate], [Gender], [Avatar], [Age], [RoleID], [Status]) VALUES (1, N'admin01', N'Admin', N'User', N'Minh@12345678', N'admin01@example.com', N'0901234567', NULL, N'Male', N'avatar1.jpg', 30, 1, 1)
 GO
-INSERT [dbo].[Users] ([UserID], [Username], [FirstName], [LastName], [Password], [Email], [PhoneNumber], [CreatedDate], [Gender], [Avatar], [Age], [RoleID], [Status]) VALUES (2, N'customer01', N'John', N'Doe', N'Minh@123456789', N'john.doe@example.com', N'0902345678', NULL, N'Male', N'avatar2.jpg', 25, 2, 1)
+INSERT [dbo].[Users] ([UserID], [Username], [FirstName], [LastName], [Password], [Email], [PhoneNumber], [CreatedDate], [Gender], [Avatar], [Age], [RoleID], [Status]) VALUES (2, N'customer01', N'Johnthnh', N'Doe', N'Minh@12345678910', N'john.doe@example.com', N'0902345678', NULL, N'Male', N'avatar2.jpg', 25, 3, 0)
 GO
-INSERT [dbo].[Users] ([UserID], [Username], [FirstName], [LastName], [Password], [Email], [PhoneNumber], [CreatedDate], [Gender], [Avatar], [Age], [RoleID], [Status]) VALUES (3, N'customer02', N'Jane', N'Smith', N'password123', N'jane.smith@example.com', N'0903456789', NULL, N'Female', N'avatar3.jpg', 28, 2, 1)
+INSERT [dbo].[Users] ([UserID], [Username], [FirstName], [LastName], [Password], [Email], [PhoneNumber], [CreatedDate], [Gender], [Avatar], [Age], [RoleID], [Status]) VALUES (3, N'customer02', N'Jane', N'Smith', N'password123', N'jane.smith@example.com', N'0903456789', NULL, N'Female', N'avatar3.jpg', 28, 3, 1)
 GO
 INSERT [dbo].[Users] ([UserID], [Username], [FirstName], [LastName], [Password], [Email], [PhoneNumber], [CreatedDate], [Gender], [Avatar], [Age], [RoleID], [Status]) VALUES (4, N'expert01', N'Alice', N'Johnson', N'password123', N'alice.johnson@example.com', N'0904567890', NULL, N'Female', N'avatar4.jpg', 35, 3, 1)
 GO
@@ -1516,41 +1404,17 @@ INSERT [dbo].[Users] ([UserID], [Username], [FirstName], [LastName], [Password],
 GO
 INSERT [dbo].[Users] ([UserID], [Username], [FirstName], [LastName], [Password], [Email], [PhoneNumber], [CreatedDate], [Gender], [Avatar], [Age], [RoleID], [Status]) VALUES (10, N'admin02', N'Sophia', N'Wilson', N'password123', N'sophia.wilson@example.com', N'0901230987', NULL, N'Female', N'avatar10.jpg', 33, 1, 1)
 GO
+INSERT [dbo].[Users] ([UserID], [Username], [FirstName], [LastName], [Password], [Email], [PhoneNumber], [CreatedDate], [Gender], [Avatar], [Age], [RoleID], [Status]) VALUES (11, N'manhtruong4879', N'Truong', N'Mạnh', N'123', N'truongnguyenmanh411@gmail.com', N'1231312311', CAST(N'2025-03-24T15:40:46.020' AS DateTime), N'Male', N'https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg', 18, 2, 1)
+GO
+INSERT [dbo].[Users] ([UserID], [Username], [FirstName], [LastName], [Password], [Email], [PhoneNumber], [CreatedDate], [Gender], [Avatar], [Age], [RoleID], [Status]) VALUES (1012, N'nguyenduy5096', N'duy', N'nguyen', N'123', N'truongnmhe187209@fpt.edu.vn', N'0825239239', CAST(N'2025-03-24T17:11:10.660' AS DateTime), N'Male', N'https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg', 27, 2, 1)
+GO
 SET IDENTITY_INSERT [dbo].[Users] OFF
 GO
-/****** Object:  Index [UQ__Carts__A4AE64B93120BAE1]    Script Date: 3/23/2025 9:09:33 PM ******/
+/****** Object:  Index [UQ__Carts__A4AE64B93120BAE1]    Script Date: 3/29/2025 5:59:00 PM ******/
 ALTER TABLE [dbo].[Carts] ADD  CONSTRAINT [UQ__Carts__A4AE64B93120BAE1] UNIQUE NONCLUSTERED 
 (
 	[CustomerID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-GO
-/****** Object:  Index [IX_Courses_CourseType_CreatedDate]    Script Date: 3/23/2025 9:09:33 PM ******/
-CREATE NONCLUSTERED INDEX [IX_Courses_CourseType_CreatedDate] ON [dbo].[Courses]
-(
-	[course_typeId] ASC,
-	[CreatedDate] DESC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-GO
-/****** Object:  Index [IX_Enrollments_CourseID]    Script Date: 3/23/2025 9:09:33 PM ******/
-CREATE NONCLUSTERED INDEX [IX_Enrollments_CourseID] ON [dbo].[Enrollments]
-(
-	[CourseID] ASC
-)
-INCLUDE([CustomerID]) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-GO
-/****** Object:  Index [IX_PriceCourse_CourseID_SalePrice]    Script Date: 3/23/2025 9:09:33 PM ******/
-CREATE NONCLUSTERED INDEX [IX_PriceCourse_CourseID_SalePrice] ON [dbo].[PriceCourse]
-(
-	[CourseID] ASC,
-	[SalePrice] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-GO
-/****** Object:  Index [IX_ReviewCourse_CourseID_Rating]    Script Date: 3/23/2025 9:09:33 PM ******/
-CREATE NONCLUSTERED INDEX [IX_ReviewCourse_CourseID_Rating] ON [dbo].[ReviewCourse]
-(
-	[CourseID] ASC,
-	[Rating] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[Carts] ADD  DEFAULT (getdate()) FOR [CreatedDate]
 GO
@@ -1685,6 +1549,11 @@ REFERENCES [dbo].[Courses] ([CourseID])
 GO
 ALTER TABLE [dbo].[PriceCourse] CHECK CONSTRAINT [FK_PriceCourse_Courses]
 GO
+ALTER TABLE [dbo].[Question]  WITH CHECK ADD  CONSTRAINT [FK_Question_LessonQuiz] FOREIGN KEY([LessonQuizId])
+REFERENCES [dbo].[LessonQuiz] ([LessonQuizID])
+GO
+ALTER TABLE [dbo].[Question] CHECK CONSTRAINT [FK_Question_LessonQuiz]
+GO
 ALTER TABLE [dbo].[Question]  WITH CHECK ADD  CONSTRAINT [FK_Question_QuestionType] FOREIGN KEY([QuestionTypeID])
 REFERENCES [dbo].[QuestionType] ([QuestionTypeID])
 GO
@@ -1714,16 +1583,6 @@ ALTER TABLE [dbo].[QuizAttend]  WITH CHECK ADD  CONSTRAINT [FK_QuizAttend_Users]
 REFERENCES [dbo].[Users] ([UserID])
 GO
 ALTER TABLE [dbo].[QuizAttend] CHECK CONSTRAINT [FK_QuizAttend_Users]
-GO
-ALTER TABLE [dbo].[QuizQuestions]  WITH CHECK ADD  CONSTRAINT [FK_QuizQuestions_LessonQuiz] FOREIGN KEY([LessonQuizID])
-REFERENCES [dbo].[LessonQuiz] ([LessonQuizID])
-GO
-ALTER TABLE [dbo].[QuizQuestions] CHECK CONSTRAINT [FK_QuizQuestions_LessonQuiz]
-GO
-ALTER TABLE [dbo].[QuizQuestions]  WITH CHECK ADD  CONSTRAINT [FK_QuizQuestions_Question] FOREIGN KEY([QuestionID])
-REFERENCES [dbo].[Question] ([QuestionID])
-GO
-ALTER TABLE [dbo].[QuizQuestions] CHECK CONSTRAINT [FK_QuizQuestions_Question]
 GO
 ALTER TABLE [dbo].[QuizResultDetail]  WITH CHECK ADD  CONSTRAINT [FK_QuizResultDetail_Question] FOREIGN KEY([QuestionID])
 REFERENCES [dbo].[Question] ([QuestionID])

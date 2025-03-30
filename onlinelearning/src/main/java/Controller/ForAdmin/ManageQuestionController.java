@@ -12,6 +12,10 @@ import Module.Subject;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 import Module.QuestionAnswer;
 import Module.Question;
@@ -24,10 +28,27 @@ import java.io.File;
 import Module.CourseType;
 import Module.QuestionType;
 
+import java.util.Set;
+import java.util.HashSet;
+
 @MultipartConfig
 @WebServlet(name = "ManageQuestion", urlPatterns = {"/manage-question"})
 public class ManageQuestionController extends HttpServlet {
 
+    private QuestionDAO questionDAO;
+    private QuestionTypeDAO questionTypeDAO;
+    private SubjectDAO subjectDAO;
+    private QuestionAnswerDAO questionAnswerDAO;
+    private QuestionImageDAO questionImageDAO;
+
+    @Override
+    public void init() throws ServletException {
+        questionDAO = new QuestionDAO();
+        questionTypeDAO = new QuestionTypeDAO();
+        subjectDAO = new SubjectDAO();
+        questionAnswerDAO = new QuestionAnswerDAO();
+        questionImageDAO = new QuestionImageDAO();
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,6 +62,9 @@ public class ManageQuestionController extends HttpServlet {
             switch (action) {
                 case "edit":
                     ShowEditForm(request, response);
+                    break;
+                case "deactive":
+                    deactivateQuestion(request, response);
                     break;
             }
         }
@@ -64,6 +88,71 @@ public class ManageQuestionController extends HttpServlet {
         return "Short description";
     }
 
+    /**
+     * Efficiently fetch questions and their related data in bulk to avoid N+1 query problem
+     * @param search Search term for question content
+     * @param subject Filter by subject ID
+     * @param level Filter by question level
+     * @param status Filter by question status
+     * @param page Current page number
+     * @param pageSize Number of items per page
+     * @return List of questions with their related data
+     */
+    private List<Question> getQuestionsWithRelatedData(String search, String subject, String level, String status, int page, int pageSize) {
+        // 1. Get basic question data
+        List<Question> questions = questionDAO.getQuestionByFilter(search, subject, level, status, page, pageSize);
+
+        if (questions.isEmpty()) {
+            return questions;
+        }
+
+        // 2. Extract IDs for bulk fetching
+        Set<Integer> questionIds = new HashSet<>();
+        Set<Integer> subjectIds = new HashSet<>();
+        Set<Integer> questionTypeIds = new HashSet<>();
+
+        for (Question question : questions) {
+            questionIds.add(question.getQuestionId());
+            if (question.getSubject() != null) {
+                subjectIds.add(question.getSubject().getSubjectId());
+            }
+            if (question.getQuestionType() != null) {
+                questionTypeIds.add(question.getQuestionType().getQuestionTypeId());
+            }
+        }
+
+        // 3. Fetch all related data in bulk
+        Map<Integer, List<QuestionImage>> imagesByQuestionId = new HashMap<>();
+        List<QuestionImage> allImages = questionImageDAO.getImagesByQuestionIds(new ArrayList<>(questionIds));
+        for (QuestionImage image : allImages) {
+            imagesByQuestionId.computeIfAbsent(image.getQuestionImangeId(), k -> new ArrayList<>()).add(image);
+        }
+
+        // Get subjects and question types in bulk
+        Map<Integer, Subject> subjectMap = questionDAO.getSubjectsByIds(new ArrayList<>(subjectIds));
+        Map<Integer, QuestionType> questionTypeMap = questionTypeDAO.getQuestionTypesByIds(new ArrayList<>(questionTypeIds));
+
+        // 4. Update questions with the fetched data
+        for (Question question : questions) {
+            // Set subject
+            if (question.getSubject() != null && subjectMap.containsKey(question.getSubject().getSubjectId())) {
+                question.setSubject(subjectMap.get(question.getSubject().getSubjectId()));
+            }
+
+            // Set question type
+            if (question.getQuestionType() != null && questionTypeMap.containsKey(question.getQuestionType().getQuestionTypeId())) {
+                question.setQuestionType(questionTypeMap.get(question.getQuestionType().getQuestionTypeId()));
+            }
+
+            // Set images
+            List<QuestionImage> images = imagesByQuestionId.get(question.getQuestionId());
+            if (images != null) {
+                question.setQuestionImage(images);
+            }
+        }
+
+        return questions;
+    }
 
     private void searchByFilter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String search = request.getParameter("search");
@@ -94,15 +183,12 @@ public class ManageQuestionController extends HttpServlet {
             }
         }
 
-        SubjectDAO subjectDAO = new SubjectDAO();
+        // Get all subjects and question types up front (these are typically small tables)
         List<Subject> subjectList = subjectDAO.findAll();
-
-
-        QuestionTypeDAO questionTypeDAO = new QuestionTypeDAO();
         List<QuestionType> questionTypes = questionTypeDAO.findAll();
 
-        QuestionDAO questionDAO = new QuestionDAO();
-        List<Question> questionList = questionDAO.getQuestionByFilter(search, subject, level, status, page, pageSize);
+        // Use the new optimized method instead of the standard DAO method
+        List<Question> questionList = getQuestionsWithRelatedData(search, subject, level, status, page, pageSize);
         int totalQuestion = questionDAO.getTotalQuestionByFilter(search, subject, level, status);
         int totalPage = (int) Math.ceil((double) totalQuestion / pageSize);
 
@@ -157,7 +243,6 @@ public class ManageQuestionController extends HttpServlet {
         request.getRequestDispatcher("/admin/manage-question.jsp").forward(request, response);
     }
 
-
     private void ShowEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Nhận tham số
         String questionIdStr = request.getParameter("questionId");
@@ -166,26 +251,22 @@ public class ManageQuestionController extends HttpServlet {
             questionId = Integer.parseInt(questionIdStr);
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/manage-question?error=invalid_id");
+            return;
         }
 
-        // Lấy ra question cần edit
-        QuestionDAO questionDAO = new QuestionDAO();
+        // Lấy ra question cần edit - sử dụng DAO đã khởi tạo
         Question question = questionDAO.GetQuestionById(questionId);
 
-        // Lấy ra hình ảnh của question
-        QuestionImageDAO questionImageDAO = new QuestionImageDAO();
+        if (question == null) {
+            response.sendRedirect(request.getContextPath() + "/manage-question?error=not_found");
+            return;
+        }
+
+        // Lấy dữ liệu cần thiết cho form - all in one go
         List<QuestionImage> questionImages = questionImageDAO.getImageByQuestionId(questionId);
-
-        // Lấy ra questionType
-        QuestionTypeDAO questionTypeDAO = new QuestionTypeDAO();
         List<QuestionType> questionTypes = questionTypeDAO.findAll();
-
-        // Lấy ra subject
-        SubjectDAO subjectDAO = new SubjectDAO();
         List<Subject> subjectList = subjectDAO.findAll();
-
-        // Lấy ra Answer của question
-        QuestionAnswerDAO questionAnswerDAO = new QuestionAnswerDAO();
         List<QuestionAnswer> questionAnswers = questionAnswerDAO.getAnswerByQuestionId(questionId);
 
         // Set Attribute
@@ -211,7 +292,6 @@ public class ManageQuestionController extends HttpServlet {
         boolean isActive = Boolean.parseBoolean(request.getParameter("status"));
 
         // Get the current question
-        QuestionDAO questionDAO = new QuestionDAO();
         Question question = questionDAO.GetQuestionById(questionId);
 
         // Update question properties
@@ -219,15 +299,14 @@ public class ManageQuestionController extends HttpServlet {
         question.setLevel(level);
 
         // Set subject
-        SubjectDAO subjectDAO = new SubjectDAO();
         Subject subject = subjectDAO.getSubjectById(subjectId);
         question.setSubject(subject);
         question.setMark(mark);
         // Set question type
-        QuestionTypeDAO questionTypeDAO = new QuestionTypeDAO();
         QuestionType questionType = questionTypeDAO.getQuestionTypeById(questionTypeId);
         question.setQuestionType(questionType);
         question.setStatus(isActive);
+        question.setLessonQuizId(1);
         // Handle MP3 file if uploaded
         Part audioPart = request.getPart("audioFile");
         String deleteAudio = request.getParameter("deleteAudio");
@@ -247,7 +326,6 @@ public class ManageQuestionController extends HttpServlet {
         }
 
         // Handle existing images
-        QuestionImageDAO imageDAO = new QuestionImageDAO();
         String[] imageIds = request.getParameterValues("imageId");
         String[] deleteFlags = request.getParameterValues("deleteImage");
 
@@ -260,7 +338,7 @@ public class ManageQuestionController extends HttpServlet {
                     // Delete the image
                     QuestionImage image = new QuestionImage();
                     image.setImageId(imageId);
-                    imageDAO.delete(image);
+                    questionImageDAO.delete(image);
                 }
             }
         }
@@ -296,7 +374,7 @@ public class ManageQuestionController extends HttpServlet {
                 String relativePath = "/uploads/images/" + uniqueFileName;
                 newImage.setImageURL(relativePath);
                 newImage.setQuestionImangeId(questionId);
-                imageDAO.insert(newImage);
+                questionImageDAO.insert(newImage);
             }
         }
 
@@ -306,8 +384,7 @@ public class ManageQuestionController extends HttpServlet {
         // Handle question answers
         if (updated) {
             // First delete existing answers
-            QuestionAnswerDAO answerDAO = new QuestionAnswerDAO();
-            answerDAO.deleteAnswersByQuestionId(questionId);
+            questionAnswerDAO.deleteAnswersByQuestionId(questionId);
 
             // Then add new answers
             int optionCount = 0;
@@ -326,10 +403,16 @@ public class ManageQuestionController extends HttpServlet {
                         (isCorrectParam.equals("on") || isCorrectParam.equals("true"));
                 answer.setCorrect(isCorrect);
 
-                answerDAO.insert(answer);
+                questionAnswerDAO.insert(answer);
                 // optionCount++;
                 System.out.println("Added option: " + optionValue + ", isCorrect: " + isCorrect);
             }
+            
+            // Set success toast message
+            setToastMessage(request, "Question updated successfully", "success");
+        } else {
+            // Set error toast message
+            setToastMessage(request, "Failed to update question", "error");
         }
 
         // Redirect back to the question list
@@ -344,5 +427,57 @@ public class ManageQuestionController extends HttpServlet {
             }
         }
         return null;
+    }
+
+    private void deactivateQuestion(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            // Get parameter
+            String questionIdStr = request.getParameter("questionId");
+            
+            if (questionIdStr == null) {
+                setToastMessage(request, "Missing parameters", "error");
+                response.sendRedirect(request.getContextPath() + "/manage-question");
+                return;
+            }
+
+            int questionId = Integer.parseInt(questionIdStr);
+            
+            // Get the question from the database
+            Question question = questionDAO.GetQuestionById(questionId);
+            if (question == null) {
+                setToastMessage(request, "Question not found", "error");
+                response.sendRedirect(request.getContextPath() + "/manage-question");
+                return;
+            }
+
+            // Set question status to inactive (false)
+            question.setStatus(false);
+
+            // Update the question
+            boolean updated = questionDAO.update(question);
+
+            if (updated) {
+                setToastMessage(request, "Question deactivated successfully", "success");
+            } else {
+                setToastMessage(request, "Failed to deactivate question", "error");
+            }
+            
+            response.sendRedirect(request.getContextPath() + "/manage-question");
+            
+        } catch (NumberFormatException e) {
+            setToastMessage(request, "Invalid question ID", "error");
+            response.sendRedirect(request.getContextPath() + "/manage-question");
+        } catch (Exception e) {
+            System.out.println("Error deactivating question: " + e.getMessage());
+            setToastMessage(request, "Unexpected error", "error");
+            response.sendRedirect(request.getContextPath() + "/manage-question");
+        }
+    }
+    
+    // Helper method to set toast message
+    private void setToastMessage(HttpServletRequest request, String message, String type) {
+        request.getSession().setAttribute("toastMessage", message);
+        request.getSession().setAttribute("toastType", type);
     }
 }

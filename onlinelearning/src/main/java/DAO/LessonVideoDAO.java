@@ -20,7 +20,9 @@ public class LessonVideoDAO extends DBContext {
         LessonVideo lessonVideo = null;
         String sql = "SELECT * FROM LessonVideo WHERE lessonId = ?";
         
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, lessonId);
             ResultSet rs = ps.executeQuery();
             
@@ -35,8 +37,12 @@ public class LessonVideoDAO extends DBContext {
             
         } catch (SQLException e) {
             System.out.println("Error retrieving lesson video: " + e.getMessage());
+        } finally {
+            closeResources();
         }
         
         return lessonVideo;
     }
+    
+   
 } 

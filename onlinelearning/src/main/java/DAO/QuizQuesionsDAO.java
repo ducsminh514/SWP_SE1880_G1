@@ -15,13 +15,17 @@ public class QuizQuesionsDAO extends DBContext implements GenericDAO<QuizzQuesti
     public List<QuizzQuestion> findAll() {
         List<QuizzQuestion> questions = new ArrayList<>();
         String sql = "SELECT * FROM QuizQuestions";
-        try (PreparedStatement st = connection.prepareStatement(sql);
-             ResultSet rs = st.executeQuery()) {
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 questions.add(mapResultSet(rs));
             }
         } catch (SQLException e) {
             handleException(e);
+        } finally {
+            closeResources();
         }
         return questions;
     }
@@ -42,21 +46,33 @@ public class QuizQuesionsDAO extends DBContext implements GenericDAO<QuizzQuesti
 
     @Override
     public int insert(QuizzQuestion quizzQuestion) {
-        String sql = "INSERT INTO QuizQuestions (QuestionID, SortOrder, LessonQuizID) OUTPUT INSERTED.QuizQuestionID VALUES (?, ?, ?)";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
+        String sql = "INSERT INTO QuizQuestions (QuestionID, SortOrder, LessonQuizID) "
+                + "VALUES (?, ?, ?)";
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             st.setInt(1, quizzQuestion.getQuestionId());
             st.setInt(2, quizzQuestion.getSortOrder());
             st.setInt(3, quizzQuestion.getLessonQuizId());
-            
-            try (ResultSet rs = st.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1);
+
+            int affectedRows = st.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating quiz question failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Creating quiz question failed, no ID obtained.");
                 }
             }
         } catch (SQLException e) {
             handleException(e);
+        } finally {
+            closeResources();
         }
-        return 0;
+        return -1;
     }
 
     @Override
@@ -78,15 +94,19 @@ public class QuizQuesionsDAO extends DBContext implements GenericDAO<QuizzQuesti
                 + "SortOrder = ?, "
                 + "LessonQuizID = ? "
                 + "WHERE QuizQuestionID = ?";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, quizzQuestion.getQuestionId());
             st.setInt(2, quizzQuestion.getSortOrder());
             st.setInt(3, quizzQuestion.getLessonQuizId());
             st.setInt(4, quizzQuestion.getQuizQuestionId());
-            
+
             return st.executeUpdate() > 0;
         } catch (SQLException e) {
             handleException(e);
+        } finally {
+            closeResources();
         }
         return false;
     }
@@ -95,42 +115,52 @@ public class QuizQuesionsDAO extends DBContext implements GenericDAO<QuizzQuesti
     public List<QuizzQuestion> findByLessonQuiz(int lessonQuizId) {
         List<QuizzQuestion> questions = new ArrayList<>();
         String sql = "SELECT * FROM QuizQuestions WHERE LessonQuizID = ? ORDER BY SortOrder";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, lessonQuizId);
-            try (ResultSet rs = st.executeQuery()) {
-                while (rs.next()) {
-                    questions.add(mapResultSet(rs));
-                }
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                questions.add(mapResultSet(rs));
             }
         } catch (SQLException e) {
             handleException(e);
+        } finally {
+            closeResources();
         }
         return questions;
     }
 
     public void updateSortOrder(int quizQuestionId, int newSortOrder) {
         String sql = "UPDATE QuizQuestions SET SortOrder = ? WHERE QuizQuestionID = ?";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, newSortOrder);
             st.setInt(2, quizQuestionId);
             st.executeUpdate();
         } catch (SQLException e) {
             handleException(e);
+        } finally {
+            closeResources();
         }
     }
 
     public boolean exists(int lessonQuizId, int questionId) {
         String sql = "SELECT COUNT(*) FROM QuizQuestions WHERE LessonQuizID = ? AND QuestionID = ?";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, lessonQuizId);
             st.setInt(2, questionId);
-            try (ResultSet rs = st.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0;
-                }
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
             }
         } catch (SQLException e) {
             handleException(e);
+        } finally {
+            closeResources();
         }
         return false;
     }
@@ -144,10 +174,12 @@ public class QuizQuesionsDAO extends DBContext implements GenericDAO<QuizzQuesti
         ArrayList<Question> listQuestion = new ArrayList<>();
         String sql = "SELECT q.*, qq.SortOrder FROM Question q "
                 + "JOIN QuizQuestions qq ON q.QuestionId = qq.QuestionId "
-                + "WHERE qq.QuizQuestionID = ? "
+                +"JOIN LessonQuiz lq ON qq.LessonQuizID = lq.LessonQuizID "
+                + "WHERE lq.LessonQuizID = ? "
                 ;
         QuestionTypeDAO qtd= new QuestionTypeDAO();
         try{
+            connection = getConnection();
             QuestionDAO qd= new QuestionDAO();
             QuestionImageDAO qim= new QuestionImageDAO();
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -166,13 +198,15 @@ public class QuizQuesionsDAO extends DBContext implements GenericDAO<QuizzQuesti
                 c.setMark(rs.getInt("Mark"));
                 c.setQuestionType(qtd.getQuestionTypeById(rs.getInt("QuestionTypeId")));
                 listQuestion.add(c);
-
             }
             return listQuestion ;
         }catch (SQLException e){
             System.out.println(e);
             System.out.println("getQuestion");
+        } finally {
+            closeResources();
         }
         return null;
     }
+
 }

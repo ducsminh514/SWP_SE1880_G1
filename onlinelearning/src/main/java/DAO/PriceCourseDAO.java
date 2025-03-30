@@ -12,14 +12,15 @@ import Module.Course ;
 import Module.PriceCourse ;
 public class PriceCourseDAO extends DBContext {
    public int lowestSalePrice (int courseId){
-       String sql ="DECLARE @CourseID INT;\n" +
-               "SET @CourseID = ?;  \n" +
+       String sql = "DECLARE @CourseID INT;\n" +
+               "SET @CourseID = ?;\n" +
                "\n" +
-               "SELECT PriceID\n" +
-               "FROM PriceCourse\n" +
-               "WHERE CourseID = @CourseID\n" +
-               "AND SalePrice = (SELECT MIN(SalePrice) FROM PriceCourse WHERE CourseID = @CourseID);\n";
-        int priceId =0;
+               "SELECT TOP 1 PriceID " +
+               "FROM PriceCourse " +
+               "WHERE CourseID = @CourseID " +
+               "ORDER BY SalePrice ASC";
+
+       int priceId =0;
        try{
            PreparedStatement pre = connection.prepareStatement(sql) ;
            pre.setInt(1,courseId);

@@ -16,13 +16,17 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
     public List<Lesson> findAll() {
         List<Lesson> lessons = new ArrayList<>();
         String sql = "SELECT * FROM Lessons";
-        try (PreparedStatement st = connection.prepareStatement(sql);
-             ResultSet rs = st.executeQuery()) {
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 lessons.add(getFromResultSet(rs));
             }
         } catch (SQLException ex) {
             handleException("Error finding all lessons", ex);
+        } finally {
+            closeResources();
         }
         return lessons;
     }
@@ -48,7 +52,9 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
         String sql = "INSERT INTO Lessons (SubjectID, LessonName, Content, Duration, "
                    + "OrderNo, status_lesson, CreatedDate, Type, UpdateDate) "
                    + "OUTPUT INSERTED.LessonID VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, lesson.getSubjectId());
             st.setString(2, lesson.getLessonName());
             st.setString(3, lesson.getContent());
@@ -59,13 +65,14 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
             st.setString(8, lesson.getType());
             st.setDate(9, new java.sql.Date(lesson.getUpdateDate().getTime()));
             
-            try (ResultSet rs = st.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
             }
         } catch (SQLException ex) {
             handleException("Error inserting lesson", ex);
+        } finally {
+            closeResources();
         }
         return -1;
     }
@@ -73,11 +80,15 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
     @Override
     public boolean delete(Lesson lesson) {
         String sql = "DELETE FROM Lessons WHERE LessonID = ?";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, lesson.getLessonId());
             return st.executeUpdate() > 0;
         } catch (SQLException ex) {
             handleException("Error deleting lesson", ex);
+        } finally {
+            closeResources();
         }
         return false;
     }
@@ -89,7 +100,9 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
                    + "OrderNo = ?, status_lesson = ?, CreatedDate = ?, "
                    + "Type = ?, UpdateDate = ? "
                    + "WHERE LessonID = ?";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, lesson.getSubjectId());
             st.setString(2, lesson.getLessonName());
             st.setString(3, lesson.getContent());
@@ -104,6 +117,8 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
             return st.executeUpdate() > 0;
         } catch (SQLException ex) {
             handleException("Error updating lesson", ex);
+        } finally {
+            closeResources();
         }
         return false;
     }
@@ -111,15 +126,18 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
     // Additional methods
     public Lesson findById(int id) {
         String sql = "SELECT * FROM Lessons WHERE LessonID = ?";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
-            try (ResultSet rs = st.executeQuery()) {
-                if (rs.next()) {
-                    return getFromResultSet(rs);
-                }
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return getFromResultSet(rs);
             }
         } catch (SQLException ex) {
             handleException("Error finding lesson by ID", ex);
+        } finally {
+            closeResources();
         }
         return null;
     }
@@ -128,31 +146,38 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
         List<Lesson> lessons = new ArrayList<>();
         String sql = "SELECT * FROM Lessons WHERE SubjectID = ? "
                    + "ORDER BY OrderNo OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, subjectId);
             st.setInt(2, (page - 1) * pageSize);
             st.setInt(3, pageSize);
             
-            try (ResultSet rs = st.executeQuery()) {
-                while (rs.next()) {
-                    lessons.add(getFromResultSet(rs));
-                }
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                lessons.add(getFromResultSet(rs));
             }
         } catch (SQLException ex) {
             handleException("Error finding lessons by subject", ex);
+        } finally {
+            closeResources();
         }
         return lessons;
     }
 
     public int getTotalLessons() {
         String sql = "SELECT COUNT(*) FROM Lessons";
-        try (PreparedStatement st = connection.prepareStatement(sql);
-             ResultSet rs = st.executeQuery()) {
+        try {
+            connection = getConnection();
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);
             }
         } catch (SQLException ex) {
             handleException("Error counting lessons", ex);
+        } finally {
+            closeResources();
         }
         return 0;
     }
@@ -161,6 +186,36 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
         System.err.println(message + ": " + ex.getMessage());
         ex.printStackTrace();
     }
+
+    public ArrayList<Lesson> getBySubject(int subjectId){
+        String sql = "DECLARE @SubjectID INT; \n" +
+                "SET @SubjectID = ?;  \n" +
+                "SELECT * \n" +
+                "FROM Lessons\n" +
+                "WHERE SubjectID = @SubjectID;" ;
+        ArrayList<Lesson> list = new ArrayList<>() ;
+        try{
+            connection = getConnection();
+            PreparedStatement pre = connection.prepareStatement(sql) ;
+            pre.setInt(1,subjectId);
+            ResultSet rs = pre.executeQuery() ;
+            while(rs.next()){
+                Lesson l = new Lesson() ;
+                l.setLessonId(rs.getInt("LessonID"));
+                l.setLessonName(rs.getString("LessonName"));
+                l.setDuration(rs.getInt("Duration"));
+                list.add(l) ;
+            }
+            return list ;
+        }catch(SQLException e){
+            System.out.println(e);
+        } finally {
+            closeResources();
+        }
+        return list ;
+    }
+    
+
 
     public static void main(String[] args) {
         LessonDAO dao = new LessonDAO();
@@ -231,30 +286,4 @@ public class LessonDAO extends DBContext implements GenericDAO<Lesson>{
         System.out.println("Ngày cập nhật: " + lesson.getUpdateDate());
         System.out.println("-----------------------------------");
     }
-
-    public ArrayList<Lesson> getBySubject(int subjectId){
-        String sql = "DECLARE @SubjectID INT; \n" +
-                "SET @SubjectID = ?;  \n" +
-                "SELECT * \n" +
-                "FROM Lessons\n" +
-                "WHERE SubjectID = @SubjectID;" ;
-        ArrayList<Lesson> list = new ArrayList<>() ;
-        try{
-            PreparedStatement pre = connection.prepareStatement(sql) ;
-            pre.setInt(1,subjectId);
-            ResultSet rs = pre.executeQuery() ;
-            while(rs.next()){
-                Lesson l = new Lesson() ;
-                l.setLessonId(rs.getInt("LessonID"));
-                l.setLessonName(rs.getString("LessonName"));
-                l.setDuration(rs.getInt("Duration"));
-                list.add(l) ;
-            }
-            return list ;
-        }catch(SQLException e){
-            System.out.println(e);
-        }
-        return list ;
-    }
-
 }

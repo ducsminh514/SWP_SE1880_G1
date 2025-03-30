@@ -6,14 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import Module.Slider ;
+import Module.Slider;
 public class SliderDAO extends DBContext {
     public ArrayList<Slider> getAll(){
-        String sql = "select * from Sliders" ;
-        ArrayList<Slider> listSlider = new ArrayList<>() ;
+        String sql = "select * from Sliders";
+        ArrayList<Slider> listSlider = new ArrayList<>();
         try{
-            PreparedStatement pre = connection.prepareStatement(sql) ;
-            ResultSet rs = pre .executeQuery();
+            connection = getConnection();
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
             MarketingDAO mDAO = new MarketingDAO();
             while(rs.next()){
                 Slider s = new Slider();
@@ -28,12 +29,16 @@ public class SliderDAO extends DBContext {
                 s.setUpdateDate(rs.getDate("UpdateDate"));
                 s.setTitle(rs.getString("Title"));
                 s.setMarketing(mDAO.getByID(rs.getInt("MarketingID")));
-                listSlider.add(s) ;
+                listSlider.add(s);
             }
-            return listSlider ;
+            return listSlider;
         }catch(SQLException e){
             System.out.println(e);
+        }finally{
+            closeResources();
         }
-        return listSlider ;
+        return listSlider;
     }
+    
+  
 }

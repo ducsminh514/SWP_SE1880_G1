@@ -6,12 +6,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
 
 <div class="ttr-sidebar">
   <div class="ttr-sidebar-wrapper content-scroll">
     <!-- side menu logo start -->
     <div class="ttr-sidebar-logo">
-      <a href="#"><img alt="" src="assets/images/logo.png" width="122" height="27"></a>
+      <a href="#"><img alt="" src="${pageContext.request.contextPath}/assets/images/logo.png" width="122" height="27"></a>
       <!-- <div class="ttr-sidebar-pin-button" title="Pin/Unpin Menu">
           <i class="material-icons ttr-fixed-icon">gps_fixed</i>
           <i class="material-icons ttr-not-fixed-icon">gps_not_fixed</i>
@@ -25,15 +27,39 @@
     <nav class="ttr-sidebar-navi">
       <ul>
         <li>
-          <a href="index.html" class="ttr-material-button">
+          <a href="${pageContext.request.contextPath}/admin-dashboard" class="ttr-material-button">
             <span class="ttr-icon"><i class="ti-home"></i></span>
             <span class="ttr-label">Dashborad</span>
           </a>
         </li>
         <li>
-          <a href="courses.html" class="ttr-material-button">
+          <a href="${pageContext.request.contextPath}/admin/user-management" class="ttr-material-button">
+            <span class="ttr-icon"><i class="ti-user"></i></span>
+            <span class="ttr-label">User Management</span>
+          </a>
+        </li>
+        <li>
+          <a href="${pageContext.request.contextPath}/admin/subject" class="ttr-material-button">
             <span class="ttr-icon"><i class="ti-book"></i></span>
-            <span class="ttr-label">Courses</span>
+            <span class="ttr-label">Course Management</span>
+          </a>
+        </li>
+        <li>
+          <a href="${pageContext.request.contextPath}/admin/user-requests" class="ttr-material-button">
+            <span class="ttr-icon"><i class="ti-alert"></i></span>
+            <span class="ttr-label">Requests</span>
+          </a>
+        </li>
+        <li>
+          <a href="${pageContext.request.contextPath}/admin-settings" class="ttr-material-button">
+            <span class="ttr-icon"><i class="ti-settings"></i></span>
+            <span class="ttr-label">System Settings</span>
+          </a>
+        </li>
+        <li>
+          <a href="${pageContext.request.contextPath}/admin-statistics" class="ttr-material-button">
+            <span class="ttr-icon"><i class="ti-bar-chart"></i></span>
+            <span class="ttr-label">Statistics Dashboard</span>
           </a>
         </li>
         <li>
@@ -118,6 +144,12 @@
           <a href="${pageContext.request.contextPath}/manage-question" class="ttr-material-button">
             <span class="ttr-icon"><i class="fa-solid fa-clipboard-question"></i></span>
             <span class="ttr-label">Question list</span>
+          </a>
+        </li>
+        <li>
+          <a href="${pageContext.request.contextPath}/admin-manage-lesson-quiz" class="ttr-material-button">
+            <span class="ttr-icon"><i class="fa-solid fa-list-check"></i></span>
+            <span class="ttr-label">Lesson Quizzes</span>
           </a>
         </li>
         <li class="ttr-seperate"></li>
