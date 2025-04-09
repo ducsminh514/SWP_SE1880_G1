@@ -1942,7 +1942,7 @@ button.back-to-top {
 	line-height: 34px;
 }
 .recent-news .info-bx{
-	padding: 20px;	
+	padding: 20px;
     border: 1px solid #EEEEEE;
 }
 .comments-bx{
@@ -2576,12 +2576,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#391800', end
 	font-weight: 400;
 }
 /* course detail bx */
-.course-detail-bx{
-	padding:20px;
-	border:1px solid rgba(0,0,0,0.1);
-	position: sticky;
-	top: 100px;
-}
 .course-price{
 	text-align:center;
 	padding: 10px 0 20px;
@@ -2660,8 +2654,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#391800', end
 	padding: 8px 20px;
 	font-size: 15px;
 	color: #808080;
-	display: flex;
-	align-items: center;
+	/*display: flex;
+	align-items: center;*/
 	transition:all 0.5s;
 	-moz-transition:all 0.5s;
 	-webkit-transition:all 0.5s;
@@ -2684,7 +2678,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#391800', end
 .course-features{
 	margin:0;
 	margin-bottom: 30px;
-	padding:0;
+	margin-top: 20px;
+	padding:10px;
 	list-style:none;
 	position:sticky;
 	top:80px;

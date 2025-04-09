@@ -10,7 +10,9 @@ public class DBContext1 {
     private static final String SERVER_NAME = "localhost";
     private static final String DATABASE_NAME = "SWP10";
     private static final String USERNAME = "sa";
+
     private static final String PASSWORD = "123456";
+
     private static final int PORT = 1433;
 
     private static HikariDataSource dataSource;
